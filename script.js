@@ -110,6 +110,9 @@ function loadPage(pageName) {
             break;
         default:
             pageContent.innerHTML = '<h1>Página não encontrada!</h1>';
+            if (pageName === 'consultar-clientes') {
+                atualizarClientes();
+            }
     }
 
     // Adiciona event listeners após carregar o conteúdo da página
@@ -727,13 +730,13 @@ function registrarVenda(event) {
             lucroTotal += novoPedido.lucro; // Adiciona o lucro do pedido ao lucro total
 
             // Limpa os dados da venda
+            alert('Venda registrada com sucesso!');
             fecharModal();
             carrinho = [];
             atualizarCarrinho();
             limparFormulario('nova-venda-form');
-            atualizarClientes();
             atualizarLucroTotal();
-            alert('Venda registrada com sucesso!');
+            
         }
     );
 }
