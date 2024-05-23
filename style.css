@@ -207,3 +207,9 @@ select {
     width: 95%;
   }
 }
+
+/* ... seus estilos existentes ... */
+
+#modal-adicionar-produto .modal-content button {
+    margin-top: 10px; /* Adiciona uma margem superior aos botões */
+}

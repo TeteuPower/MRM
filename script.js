@@ -541,55 +541,95 @@ function adicionarCliente(event) {
 // Funções para manipular vendas
 let carrinho = [];
 
+// ... (seu código JavaScript existente) ...
+
+function abrirModalAdicionarProduto() {
+    document.getElementById('modal-adicionar-produto').style.display = 'block';
+}
+
+function fecharModalAdicionarProduto() {
+    document.getElementById('modal-adicionar-produto').style.display = 'none';
+}
+
+// Função para limpar o conteúdo do modal
+function limparModalAdicionarProduto() {
+    document.getElementById('modal-produto-conteudo').innerHTML = '';
+}
+
 function adicionarProdutoAoCarrinho() {
-    let produto = prompt(
-        'Qual produto deseja adicionar? (Rapé, Couripes, Sananga, Artesanatos)'
-    );
-    let quantidade = 0;
+    let modalConteudo = `
+        <label for="produto-select">Produto:</label>
+        <select id="produto-select">
+            <option value="">Selecione</option>
+            <option value="rapé">Rapé</option>
+            <option value="couripes">Couripes</option>
+            <option value="sananga">Sananga</option>
+            <option value="artesanatos">Artesanatos</option>
+        </select>
+        <div id="produto-opcoes"></div> 
+        <label for="quantidade-input">Quantidade:</label>
+        <input type="number" id="quantidade-input" min="1" value="1">
+        <button class="action-button" onclick="confirmarAdicaoProduto()">Adicionar</button>
+    `;
 
-    if (produto) {
-        produto = produto.toLowerCase();
+    document.getElementById('modal-produto-conteudo').innerHTML = modalConteudo;
+    
+    // Chama a função para exibir as opções iniciais (vazio)
+    exibirOpcoesProduto(""); 
 
-        if (
-            produto !== 'rapé' &&
-            produto !== 'couripes' &&
-            produto !== 'sananga' &&
-            produto !== 'artesanatos'
-        ) {
-            alert('Produto inválido!');
-            return;
-        }
+    abrirModalAdicionarProduto();
 
-        quantidade = parseInt(prompt(`Digite a quantidade de ${produto}:`));
-        if (isNaN(quantidade) || quantidade <= 0) {
-            alert('Quantidade inválida!');
-            return;
-        }
+    // Adiciona um Event Listener para o select de produtos
+    document.getElementById('produto-select').addEventListener('change', (event) => {
+        const produtoSelecionado = event.target.value;
+        exibirOpcoesProduto(produtoSelecionado);
+    });
+}
 
-        if (produto === 'rapé') {
-            let tipoRapé = prompt(
-                'Digite o tipo de rapé (ou cancelar para voltar):'
-            );
-            if (tipoRapé) {
-                tipoRapé = tipoRapé.toUpperCase();
-                if (!estoque.rape.tipos[tipoRapé]) {
-                    alert('Tipo de rapé inválido!');
-                    return;
-                }
-                carrinho.push({
-                    produto: 'rapé',
-                    tipo: tipoRapé,
-                    quantidade: quantidade,
-                });
-            } else {
-                return; // O usuário cancelou a adição do rapé
-            }
-        } else {
-            carrinho.push({ produto: produto, quantidade: quantidade });
-        }
+function exibirOpcoesProduto(produto) {
+    let opcoesHTML = '';
+    if (produto === 'rapé') {
+        opcoesHTML = `
+            <label for="tipo-rape-select">Tipo de Rapé:</label>
+            <select id="tipo-rape-select">
+                ${Object.keys(estoque.rape.tipos)
+                    .map((tipo) => `<option value="${tipo}">${tipo}</option>`)
+                    .join('')}
+            </select>
+        `;
+    } 
+    // Adicione aqui outros produtos com opções, se necessário (ex: Sananga)
 
-        atualizarCarrinho();
+    document.getElementById('produto-opcoes').innerHTML = opcoesHTML;
+}
+
+function confirmarAdicaoProduto() {
+    const produto = document.getElementById('produto-select').value;
+    const quantidade = parseInt(document.getElementById('quantidade-input').value);
+
+    if (!produto || isNaN(quantidade) || quantidade <= 0) {
+        alert('Por favor, selecione um produto e insira uma quantidade válida.');
+        return;
     }
+
+    let tipoRapé = null;
+    if (produto === 'rapé') {
+        tipoRapé = document.getElementById('tipo-rape-select').value;
+        if (!tipoRapé) {
+            alert('Por favor, selecione um tipo de rapé.');
+            return;
+        }
+    }
+
+    carrinho.push({
+        produto: produto,
+        tipo: tipoRapé,
+        quantidade: quantidade,
+    });
+
+    atualizarCarrinho();
+    fecharModalAdicionarProduto();
+    limparModalAdicionarProduto(); 
 }
 
 function atualizarCarrinho() {
