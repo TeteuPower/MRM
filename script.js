@@ -727,6 +727,7 @@ function registrarVenda(event) {
             lucroTotal += novoPedido.lucro; // Adiciona o lucro do pedido ao lucro total
 
             // Limpa os dados da venda
+            fecharModal();
             carrinho = [];
             atualizarCarrinho();
             limparFormulario('nova-venda-form');
