@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema MRM</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><button class="page-button" data-page="estoque">Estoque</button></li>
+                <li><button class="page-button" data-page="novo-cliente">Novo Cliente</button></li>
+                <li><button class="page-button" data-page="nova-venda">Nova Venda</button></li>
+                <li><button class="page-button" data-page="consultar-pedidos">Consultar Pedidos</button></li>
+                <li><button class="page-button" data-page="consultar-clientes">Consultar Clientes</button></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main id="page-content">
+        
+    </main>
+
+    <div id="modal-confirmacao" class="modal">
+        <div class="modal-content">
+            <h3 id="modal-titulo">Confirmação</h3>
+            <p id="modal-mensagem">Tem certeza que deseja continuar?</p>
+            <button class="action-button" id="confirmar-acao">Sim</button>
+            <button class="action-button reduce" id="cancelar-acao">Não</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
