@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funcionários</title>
+    <link rel="stylesheet" href="../css/estiloFuncionarios.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="menu-paginas">
+            <button class="btn-pagina btn-3d" data-pagina="estoque">Estoque</button>
+            <button class="btn-pagina btn-3d" data-pagina="novoCliente">Novo Cliente</button>
+            <button class="btn-pagina btn-3d" data-pagina="novaVenda">Nova Venda</button>
+            <button class="btn-pagina btn-3d" data-pagina="consultarPedidos">Consultar Pedidos</button>
+            <button class="btn-pagina btn-3d" data-pagina="consultarCliente">Consultar Cliente</button>
+            <button class="btn-pagina btn-3d" data-pagina="funcionarios">Funcionários</button>
+            <button class="btn-pagina btn-3d" data-pagina="financas">Finanças</button>
+        </nav>
+
+        <h2>Gerenciar Funcionários</h2>
+
+        <div class="secao">
+            <h3>Vendedores</h3>
+            <ul id="lista-vendedores"></ul>
+            <div class="input-group">
+                <label for="novo-vendedor">Adicionar Vendedor:</label>
+                <input type="text" id="novo-vendedor">
+                <button id="btn-adicionar-vendedor" class="btn-3d btn-verde">Adicionar</button>
+            </div>
+        </div>
+
+        <div class="secao">
+            <h3>Produtores</h3>
+            <ul id="lista-produtores"></ul>
+            <div class="input-group">
+                <label for="novo-produtor">Adicionar Produtor:</label>
+                <input type="text" id="novo-produtor">
+                <button id="btn-adicionar-produtor" class="btn-3d btn-verde">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/constantesVariaveis.js"></script>
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/scriptFuncionarios.js"></script>
+</body>
+</html>

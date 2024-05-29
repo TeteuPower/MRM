@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estoque</title>
+    <link rel="stylesheet" href="../css/estiloEstoque.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="menu-paginas">
+            <button class="btn-pagina btn-3d" data-pagina="estoque">Estoque</button>
+            <button class="btn-pagina btn-3d" data-pagina="novoCliente">Novo Cliente</button>
+            <button class="btn-pagina btn-3d" data-pagina="novaVenda">Nova Venda</button>
+            <button class="btn-pagina btn-3d" data-pagina="consultarPedidos">Consultar Pedidos</button>
+            <button class="btn-pagina btn-3d" data-pagina="consultarCliente">Consultar Cliente</button>
+            <button class="btn-pagina btn-3d" data-pagina="funcionarios">Funcionários</button>
+            <button class="btn-pagina btn-3d" data-pagina="financas">Finanças</button>
+        </nav>
+
+        <div class="secao" id="secao-produtos-disponiveis">
+            <h2>Produtos Disponíveis</h2>
+            <p id="rape-disponivel"></p>
+            <button id="exibir-variedades-rape" class="btn-3d">Exibir Variedades</button>
+            <p id="couripes-disponiveis"></p>
+            <p id="sananga-disponivel"></p>
+            <p id="artesanatos-disponiveis"></p>
+        </div>
+
+        <div class="secao" id="secao-materias-primas">
+            <h2>Matérias-Primas</h2>
+            <p id="tabaco-disponivel"></p>
+            <p id="cinzas-disponiveis"></p>
+            <button id="exibir-variedades-cinzas" class="btn-3d">Exibir Variedades</button>
+            <p id="pacotes-disponiveis"></p>
+            <p id="adesivos-grandes-disponiveis"></p>
+        </div>
+
+        <div class="secao" id="secao-manipulacao">
+            <h2>Manipulação</h2>
+            <div class="subsecao" id="subsecao-produtos">
+                <h3>Produtos</h3>
+                <!-- Subseções para cada produto -->
+            </div>
+            <div class="subsecao" id="subsecao-insumos">
+                <h3>Insumos</h3>
+                <!-- Subseções para cada insumo -->
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-variedades" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2 id="modal-titulo"></h2>
+            <div id="modal-conteudo"></div>
+        </div>
+    </div>
+
+    <script src="../js/constantesVariaveis.js"></script>
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/scriptEstoque.js"></script>
+</body>
+</html>

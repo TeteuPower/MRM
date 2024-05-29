@@ -1,0 +1,140 @@
+/* Estilos gerais da página */
+body {
+    background-color: #222;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    margin: 0;
+}
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estilos do formulário */
+form {
+    background-color: #333;
+    padding: 30px;
+    border-radius: 5px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="password"],
+select,
+textarea {
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    background-color: #444;
+    color: #fff;
+    width: 100%;
+}
+
+textarea {
+    height: 100px;
+}
+
+/* Estilos dos botões */
+.btn-3d {
+    background-color: #007bff;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.btn-3d:hover {
+    box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.btn-3d:active {
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    transform: translateY(1px);
+}
+
+.btn-verde {
+    background-color: #28a745;
+}
+
+.btn-vermelho {
+    background-color: #dc3545;
+}
+
+.botoes-form {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.botoes-form button {
+    margin: 0 10px;
+}
+
+/* Estilos do carrinho de compras */
+#carrinho-compras {
+    margin-bottom: 20px;
+}
+
+#tabela-carrinho {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tabela-carrinho th,
+#tabela-carrinho td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+/* Estilos do modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #333;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 5px;
+    width: 40%;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.close {
+    color: #fff;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}

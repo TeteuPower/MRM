@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Venda</title>
+    <link rel="stylesheet" href="../css/estiloNovaVenda.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="menu-paginas">
+            <button class="btn-pagina btn-3d" data-pagina="estoque">Estoque</button>
+            <button class="btn-pagina btn-3d" data-pagina="novoCliente">Novo Cliente</button>
+            <button class="btn-pagina btn-3d" data-pagina="novaVenda">Nova Venda</button>
+            <button class="btn-pagina btn-3d" data-pagina="consultarPedidos">Consultar Pedidos</button>
+            <button class="btn-pagina btn-3d" data-pagina="consultarCliente">Consultar Cliente</button>
+            <button class="btn-pagina btn-3d" data-pagina="funcionarios">Funcionários</button>
+            <button class="btn-pagina btn-3d" data-pagina="financas">Finanças</button>
+        </nav>
+
+        <h2>Nova Venda</h2>
+
+        <form id="form-nova-venda">
+            <div class="input-group">
+                <label for="cliente">Cliente:</label>
+                <select id="cliente" required>
+                    </select>
+            </div>
+            <div class="input-group">
+                <label for="vendedor">Vendedor:</label>
+                <select id="vendedor" required>
+                    <option value="Maithê">Maithê</option>
+                    <option value="Rafael">Rafael</option>
+                </select>
+            </div>
+            <div id="carrinho-compras">
+                <h3>Carrinho de Compras</h3>
+                <button type="button" id="btn-adicionar-produto" class="btn-3d btn-verde">Adicionar Produto</button>
+                <table id="tabela-carrinho">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+                <p id="resumo-rape"></p>
+            </div>
+            <div class="input-group">
+                <label for="valor-venda">Valor da Venda:</label>
+                <div class="moeda-group">
+                    <select id="moeda" required>
+                        <option value="real">Real (R$)</option>
+                        <option value="dolar">Dólar (US$)</option>
+                    </select>
+                    <input type="number" id="valor-venda" min="0" step="0.01" required>
+                </div>
+            </div>
+            <div class="input-group">
+                <label for="valor-pago">Valor Pago pelo Cliente:</label>
+                <input type="number" id="valor-pago" min="0" step="0.01" required>
+            </div>
+            <p id="saldo-venda"></p>
+            <div class="input-group">
+                <label for="descricao">Descrição/Comentários:</label>
+                <textarea id="descricao"></textarea>
+            </div>
+            <div class="botoes-form">
+                <button type="submit" class="btn-3d btn-verde">Finalizar Venda</button>
+                <button type="reset" class="btn-3d btn-vermelho">Limpar</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="modal-adicionar-produto" class="modal">
+        <div class="modal-content">
+            <span class="close">×</span>
+            <h2>Adicionar Produto</h2>
+            <form id="form-adicionar-produto">
+                <div class="input-group">
+                    <label for="produto">Produto:</label>
+                    <select id="produto" required>
+                        <option value="">Selecione o Produto</option>
+                        <option value="Rapé">Rapé</option>
+                        <option value="Couripes">Couripes</option>
+                        <option value="Sananga">Sananga</option>
+                        <option value="Artesanatos">Artesanatos</option>
+                    </select>
+                </div>
+                <div id="opcoes-produto">
+                    </div>
+                <div class="input-group">
+                    <label for="quantidade-produto">Quantidade:</label>
+                    <input type="number" id="quantidade-produto" min="1" required>
+                </div>
+                <button type="submit" class="btn-3d btn-verde">Adicionar</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/constantesVariaveis.js"></script>
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/scriptNovaVenda.js"></script>
+</body>
+</html>

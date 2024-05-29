@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanças</title>
+    <link rel="stylesheet" href="../css/estiloFinancas.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="menu-paginas">
+            <button class="btn-pagina btn-3d" data-pagina="estoque">Estoque</button>
+            <button class="btn-pagina btn-3d" data-pagina="novoCliente">Novo Cliente</button>
+            <button class="btn-pagina btn-3d" data-pagina="novaVenda">Nova Venda</button>
+            <button class="btn-pagina btn-3d" data-pagina="consultarPedidos">Consultar Pedidos</button>
+            <button class="btn-pagina btn-3d" data-pagina="consultarCliente">Consultar Cliente</button>
+            <button class="btn-pagina btn-3d" data-pagina="funcionarios">Funcionários</button>
+            <button class="btn-pagina btn-3d" data-pagina="financas">Finanças</button>
+        </nav>
+
+        <h2>Finanças</h2>
+
+        <div class="secao">
+            <h3>Repasses para Produtores</h3>
+            <ul id="lista-repasses"></ul>
+        </div>
+
+        <div class="secao">
+            <h3>Pagamentos de Clientes</h3>
+            <div class="input-group">
+                <label for="cliente-pagamento">Cliente:</label>
+                <select id="cliente-pagamento" required>
+                    </select>
+            </div>
+            <div class="input-group">
+                <label for="valor-pagamento">Valor:</label>
+                <input type="number" id="valor-pagamento" min="0" step="0.01" required>
+            </div>
+            <div class="input-group">
+                <label for="moeda-pagamento">Moeda:</label>
+                <select id="moeda-pagamento" required>
+                    <option value="real">Real (R$)</option>
+                    <option value="dolar">Dólar (US$)</option>
+                </select>
+            </div>
+            <button id="btn-adicionar-pagamento" class="btn-3d btn-verde">Adicionar Pagamento</button>
+        </div>
+
+        <div class="secao">
+            <h3>Clientes com Saldo Negativo</h3>
+            <ul id="lista-clientes-negativos"></ul>
+        </div>
+
+        <div class="secao">
+            <h3>Resumo Geral</h3>
+            <p><strong>Lucro Total (Real):</strong> R$ <span id="lucro-total-real">0.00</span></p>
+            <p><strong>Lucro Total (Dólar):</strong> US$ <span id="lucro-total-dolar">0.00</span></p>
+            <h4>Lucro por Vendedor (Real):</h4>
+            <ul id="lista-lucro-vendedor-real"></ul>
+            <h4>Lucro por Vendedor (Dólar):</h4>
+            <ul id="lista-lucro-vendedor-dolar"></ul>
+            <h4>Lucro por Produtor (Real):</h4>
+            <ul id="lista-lucro-produtor-real"></ul>
+            <h4>Lucro por Produtor (Dólar):</h4>
+            <ul id="lista-lucro-produtor-dolar"></ul>
+        </div>
+    </div>
+
+    <script src="../js/constantesVariaveis.js"></script>
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/scriptFinancas.js"></script>
+</body>
+</html>
