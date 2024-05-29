@@ -13,7 +13,7 @@ const exibirVariedadesCinzas = document.getElementById("exibir-variedades-cinzas
 const modalVariedades = document.getElementById("modal-variedades");
 const modalTitulo = document.getElementById("modal-titulo");
 const modalConteudo = document.getElementById("modal-conteudo");
-const spanClose = document.getElementsByClassName("close")[1]; // Segundo elemento com a classe "close"
+const spanClose = document.getElementsByClassName("close")[0]; // Segundo elemento com a classe "close"
 
 // Função para atualizar a exibição do estoque
 function atualizarEstoque() {
