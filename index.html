@@ -1,44 +1,44 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema MRM</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Página de Login</title>
+    <link rel="stylesheet" href="css/estiloIndex.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><button class="page-button" data-page="estoque">Estoque</button></li>
-                <li><button class="page-button" data-page="novo-cliente">Novo Cliente</button></li>
-                <li><button class="page-button" data-page="nova-venda">Nova Venda</button></li>
-                <li><button class="page-button" data-page="consultar-pedidos">Consultar Pedidos</button></li>
-                <li><button class="page-button" data-page="consultar-clientes">Consultar Clientes</button></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main id="page-content">
-        
-    </main>
-
-    <div id="modal-confirmacao" class="modal">
-        <div class="modal-content">
-            <h3 id="modal-titulo">Confirmação</h3>
-            <p id="modal-mensagem">Tem certeza que deseja continuar?</p>
-            <button class="action-button" id="confirmar-acao">Sim</button>
-            <button class="action-button reduce" id="cancelar-acao">Não</button>
-        </div>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="form-login">
+            <div class="input-group">
+                <label for="login">Login:</label>
+                <input type="text" id="login" required>
+            </div>
+            <div class="input-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" required>
+            </div>
+            <button type="submit" class="btn-3d">Entrar</button>
+        </form>
+        <button id="btn-admin" class="btn-3d">Administração</button>
     </div>
-    <div id="modal-adicionar-produto" class="modal">
+
+    <div id="modal-admin" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="fecharModalAdicionarProduto()">×</span>
-            <h3 id="modal-produto-titulo">Adicionar Produto</h3>
-            <div id="modal-produto-conteudo">
+            <span class="close">×</span>
+            <h2>Senha Administrativa</h2>
+            <form id="form-senha-admin">
+                <div class="input-group">
+                    <label for="senhaAdmin">Senha:</label>
+                    <input type="password" id="senhaAdmin" required>
                 </div>
+                <button type="submit" class="btn-3d">Acessar</button>
+            </form>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <script src="js/constantesVariaveis.js"></script>
+    <script src="js/funcoes.js"></script>
+    <script src="js/scriptIndex.js"></script>
 </body>
 </html>
