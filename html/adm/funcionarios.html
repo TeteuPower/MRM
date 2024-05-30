@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Funcionários</title>
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="css/funcionarios.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Funcionários</h1>
+    <div class="funcionarios-container">
+      <div class="funcionarios-secao">
+        <h2 class="funcionarios-titulo">Desempenho de Funcionário</h2>
+        <div class="funcionarios-lista">
+          <div class="estoque-secao">
+            <h2 class="estoque-titulo">Vendedores</h2>
+            <div id="vendedores-container" class="funcionarios-lista"></div>
+          </div>
+          <div class="estoque-secao">
+            <h2 class="estoque-titulo">Produtores</h2>
+            <div id="produtores-container" class="funcionarios-lista"></div>
+          </div>
+        </div>
+      </div>
+      <div class="funcionarios-secao">
+        <h2 class="funcionarios-titulo">Gerenciamento de Funcionários</h2>
+        <div class="funcionarios-lista">
+          <div class="estoque-secao">
+            <h2 class="estoque-titulo">Vendedores</h2>
+            <div class="adicionar-funcionarios-container">
+              <input type="text" id="novo-vendedor" class="adicionar-funcionarios-input" placeholder="Adicionar vendedor...">
+              <button class="modal-button" onclick="adicionarNovoVendedor()">Adicionar</button>
+            </div>
+            <div id="vendedores-container" class="funcionarios-lista"></div>
+          </div>
+          <div class="estoque-secao">
+            <h2 class="estoque-titulo">Produtores</h2>
+            <div class="adicionar-funcionarios-container">
+              <input type="text" id="novo-produtor" class="adicionar-funcionarios-input" placeholder="Adicionar produtor...">
+              <button class="modal-button" onclick="adicionarNovoProdutor()">Adicionar</button>
+            </div>
+            <div id="produtores-container" class="funcionarios-lista"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../js/dados.js"></script>
+  <script src="../../js/funcoes.js"></script>
+  <script src="js/funcionarios.js"></script>
+</body>
+</html>

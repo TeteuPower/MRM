@@ -1,0 +1,68 @@
+/* Estilos para a página de funcionários */
+.funcionarios-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .funcionarios-secao {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 45%;
+  }
+  
+  .funcionarios-titulo {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .funcionarios-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .vendedor-container,
+  .produtor-container {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Estilos para a área de adicionar funcionários */
+  .adicionar-funcionarios-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .adicionar-funcionarios-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  /* Responsividade */
+  @media screen and (max-width: 768px) {
+    .funcionarios-container {
+      flex-direction: column;
+    }
+  
+    .funcionarios-secao {
+      width: 100%;
+    }
+  
+    .adicionar-funcionarios-container {
+      flex-direction: column;
+    }
+  }

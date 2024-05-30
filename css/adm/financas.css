@@ -1,0 +1,114 @@
+/* Estilos para a página de finanças */
+.financas-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .financas-secao {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .financas-titulo {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .financas-lista {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .vendedor-lucro-container,
+  .produtor-lucro-container,
+  .cliente-saldo-negativo-container {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /* Estilos para a área de adicionar pagamentos */
+  .adicionar-pagamentos-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .adicionar-pagamentos-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .adicionar-pagamentos-select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: white;
+    appearance: none; /* Remove a seta padrão do select */
+    -webkit-appearance: none; /* Remove a seta padrão do select no Chrome/Safari */
+    -moz-appearance: none; /* Remove a seta padrão do select no Firefox */
+  }
+  
+  /* Estilos para a área de marcar repasse de comissão */
+  .marcar-repasse-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .marcar-repasse-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .marcar-repasse-select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: white;
+    appearance: none; /* Remove a seta padrão do select */
+    -webkit-appearance: none; /* Remove a seta padrão do select no Chrome/Safari */
+    -moz-appearance: none; /* Remove a seta padrão do select no Firefox */
+  }
+  
+  /* Responsividade */
+  @media screen and (max-width: 768px) {
+    .financas-container {
+      flex-direction: column;
+    }
+  
+    .financas-secao {
+      width: 100%;
+    }
+  
+    .adicionar-pagamentos-container,
+    .marcar-repasse-container {
+      flex-direction: column;
+    }
+  }

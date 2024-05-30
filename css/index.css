@@ -1,0 +1,62 @@
+/* Estilos para a página de login */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .login-form {
+    background-color: #282828;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .login-titulo {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .login-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .login-botoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  /* Estilos para o botão de administração */
+  .administracao-button {
+    background-color: #4CAF50; /* Verde */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transição para o efeito hover */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra do botão */
+  }
+  
+  .administracao-button:hover {
+    background-color: #3e8e41; /* Verde mais escuro */
+  }
+  
+  .administracao-button:active {
+    transform: translateY(2px); /* Efeito de clique */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Sombra ao clicar */
+  }

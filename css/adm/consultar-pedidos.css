@@ -1,0 +1,56 @@
+/* Estilos para a página de consultar pedidos */
+.consultar-pedidos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .pedidos-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .pedido-container {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .pedido-resumo {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  /* Estilos para a área de pesquisa */
+  .pesquisa-pedidos-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .pesquisa-pedidos-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  /* Responsividade */
+  @media screen and (max-width: 768px) {
+    .consultar-pedidos-container {
+      flex-direction: column;
+    }
+  
+    .pedidos-container {
+      flex-direction: column;
+    }
+  }

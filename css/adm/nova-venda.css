@@ -1,0 +1,114 @@
+/* Estilos para a página de nova venda */
+.nova-venda-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .nova-venda-form {
+    background-color: #282828;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  }
+  
+  .nova-venda-titulo {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .nova-venda-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .nova-venda-select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: white;
+    appearance: none; /* Remove a seta padrão do select */
+    -webkit-appearance: none; /* Remove a seta padrão do select no Chrome/Safari */
+    -moz-appearance: none; /* Remove a seta padrão do select no Firefox */
+  }
+  
+  .nova-venda-botoes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  /* Estilos para o carrinho de compras */
+  .carrinho-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .item-carrinho {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+  }
+  
+  .coluna-produto {
+    font-weight: bold;
+  }
+  
+  .coluna-quantidade {
+    font-size: 18px;
+  }
+  
+  .coluna-acoes {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  /* Estilos para o resumo da venda */
+  .resumo-venda {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .resumo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .resumo-titulo {
+    font-weight: bold;
+  }
+  
+  .resumo-valor {
+    font-size: 18px;
+  }
+  
+  /* Responsividade */
+  @media screen and (max-width: 768px) {
+    .nova-venda-container {
+      flex-direction: column;
+    }
+  
+    .nova-venda-form {
+      width: 100%;
+    }
+  }

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Novo Cliente</title>
+  <link rel="stylesheet" href="../../css/global.css">
+  <link rel="stylesheet" href="css/novo-cliente.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Novo Cliente</h1>
+    <div class="novo-cliente-container">
+      <form class="novo-cliente-form">
+        <h2 class="novo-cliente-titulo">Cadastro de Cliente</h2>
+        <label for="nome-cliente">Nome:</label>
+        <input type="text" id="nome-cliente" class="novo-cliente-input" required>
+
+        <label for="email-cliente">E-mail:</label>
+        <input type="email" id="email-cliente" class="novo-cliente-input" required>
+
+        <label for="telefone-cliente">Telefone:</label>
+        <input type="tel" id="telefone-cliente" class="novo-cliente-input" required>
+
+        <label for="endereco-cliente">Endereço:</label>
+        <input type="text" id="endereco-cliente" class="novo-cliente-input" required>
+
+        <label for="login-cliente">Login:</label>
+        <input type="text" id="login-cliente" class="novo-cliente-input" required>
+
+        <label for="senha-cliente">Senha:</label>
+        <input type="password" id="senha-cliente" class="novo-cliente-input" required>
+
+        <div class="novo-cliente-botoes">
+          <button class="modal-button" onclick="registrarCliente()">Registrar</button>
+          <button class="modal-button" onclick="limparFormularioNovoCliente()">Limpar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="../../js/dados.js"></script>
+  <script src="../../js/funcoes.js"></script>
+  <script src="js/novo-cliente.js"></script>
+</body>
+</html>

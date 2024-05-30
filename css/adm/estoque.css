@@ -1,0 +1,103 @@
+/* Estilos para a página de estoque */
+.estoque-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  
+  .estoque-secao {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 30%;
+  }
+  
+  .estoque-titulo {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .estoque-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .estoque-quantidade {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  /* Estilos para a área de manipulação */
+  .manipulacao-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-top: 20px;
+  }
+  
+  .manipulacao-secao {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 45%;
+  }
+  
+  .manipulacao-titulo {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .manipulacao-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .manipulacao-input {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+  
+  .manipulacao-select {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: transparent;
+    color: white;
+    appearance: none; /* Remove a seta padrão do select */
+    -webkit-appearance: none; /* Remove a seta padrão do select no Chrome/Safari */
+    -moz-appearance: none; /* Remove a seta padrão do select no Firefox */
+  }
+  
+  .manipulacao-botoes {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  
+  /* Responsividade */
+  @media screen and (max-width: 768px) {
+    .estoque-container,
+    .manipulacao-container {
+      flex-direction: column;
+    }
+  
+    .estoque-secao,
+    .manipulacao-secao {
+      width: 100%;
+    }
+  }
