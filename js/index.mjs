@@ -6,14 +6,14 @@ import {
     ESTOQUE,
     CLIENTES,
     VENDORES,
-    PRODUTOES,
+    PRODUTORES,
     SENHA_ADM,
     PEDIDOS,
     PAGAMENTOS,
     carregarDados,
     salvarDados,
     isAdministrador
-  } from "../js/funcoes.js";
+  } from "../js/funcoes.mjs";
   
   // Inicialização
   carregarDados();

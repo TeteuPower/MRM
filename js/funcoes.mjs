@@ -6,13 +6,13 @@ import {
     ESTOQUE,
     CLIENTES,
     VENDORES,
-    PRODUTOES,
+    PRODUTORES,
     SENHA_ADM,
     PEDIDOS,
     PAGAMENTOS,
     carregarDados,
     salvarDados
-  } from "../js/dados.js";
+  } from "./dados.mjs";
   
   // Funções gerais
   
@@ -276,13 +276,13 @@ import {
   
   // Função para adicionar um novo produtor
   function adicionarNovoProdutor(nome) {
-    PRODUTOES.push(nome);
+    PRODUTORES.push(nome);
     salvarDados();
   }
   
   // Função para remover um produtor
   function removerProdutor(nome) {
-    PRODUTOES = PRODUTOES.filter((produtor) => produtor !== nome);
+    PRODUTORES = PRODUTORES.filter((produtor) => produtor !== nome);
     salvarDados();
   }
   

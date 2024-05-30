@@ -49,7 +49,7 @@ const RAPES = [
   ];
   const PRODUTOS = ["Rapé", "Couripes", "Sananga", "Artesanatos"];
   const INSUMOS = ["Tabaco", "Cinzas", "Pacotes", "Adesivos Grandes"];
-  const ESTOQUE = {
+  let ESTOQUE = {
     Rapé: {
       total: 0,
       variedades: {},
@@ -75,19 +75,19 @@ const RAPES = [
     Pacotes: 0,
     "Adesivos Grandes": 0
   };
-  const CLIENTES = {};
-  const VENDORES = ["Maithê", "Rafael"];
-  const PRODUTORES = ["Matheus"];
+  let CLIENTES = {};
+  let VENDORES = ["Maithê", "Rafael"];
+  let PRODUTORES = ["Matheus"];
   const SENHA_ADM = "adm123";
-  const PEDIDOS = {};
-  const PAGAMENTOS = {};
+  let PEDIDOS = {};
+  let PAGAMENTOS = {};
   
   // Função para carregar dados do localStorage
   function carregarDados() {
     ESTOQUE = JSON.parse(localStorage.getItem("ESTOQUE")) || ESTOQUE;
     CLIENTES = JSON.parse(localStorage.getItem("CLIENTES")) || CLIENTES;
     VENDORES = JSON.parse(localStorage.getItem("VENDORES")) || VENDORES;
-    PRODUTOES = JSON.parse(localStorage.getItem("PRODUTOES")) || PRODUTORES;
+    PRODUTORES = JSON.parse(localStorage.getItem("PRODUTORES")) || PRODUTORES;
     PEDIDOS = JSON.parse(localStorage.getItem("PEDIDOS")) || PEDIDOS;
     PAGAMENTOS = JSON.parse(localStorage.getItem("PAGAMENTOS")) || PAGAMENTOS;
   }
@@ -97,7 +97,7 @@ const RAPES = [
     localStorage.setItem("ESTOQUE", JSON.stringify(ESTOQUE));
     localStorage.setItem("CLIENTES", JSON.stringify(CLIENTES));
     localStorage.setItem("VENDORES", JSON.stringify(VENDORES));
-    localStorage.setItem("PRODUTOES", JSON.stringify(PRODUTOES));
+    localStorage.setItem("PRODUTORES", JSON.stringify(PRODUTORES));
     localStorage.setItem("PEDIDOS", JSON.stringify(PEDIDOS));
     localStorage.setItem("PAGAMENTOS", JSON.stringify(PAGAMENTOS));
   }
@@ -114,7 +114,7 @@ const RAPES = [
     ESTOQUE,
     CLIENTES,
     VENDORES,
-    PRODUTOES,
+    PRODUTORES,
     SENHA_ADM,
     PEDIDOS,
     PAGAMENTOS,
