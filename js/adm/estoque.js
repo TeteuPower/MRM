@@ -1,10 +1,13 @@
 // Importa a função verificarAutenticacaoAdmin do arquivo funcoes.js
 import { verificarAutenticacaoAdmin } from '../../js/funcoes.js';
+verificarAutenticacaoAdmin();
+
+
+// --- Funções para imprimir o estoque na tela ---
+
 
 // Importa o array de tipos de Rapé e Cinzas do arquivo dados.js
 import dados from '../../js/dados.js'; // Correção: caminho relativo correto
-
-// ... (resto do código do arquivo estoque.js - sem alterações) ...
 
 // Função para exibir um modal
 function exibirModal(modalId) {
@@ -129,3 +132,96 @@ fecharModalRape.addEventListener('click', () => fecharModal('modalRape'));
 // Botão de fechar do modal de Cinzas
 const fecharModalCinzas = document.getElementById('fecharModalCinzas');
 fecharModalCinzas.addEventListener('click', () => fecharModal('modalCinzas'));
+
+
+
+// --- Funções para manipulação do estoque ---
+
+
+// Função para adicionar um produto ao estoque
+function adicionarProduto(produto, quantidade) {
+  // Verifica se o produto é Rapé ou Cinzas
+  if (produto === 'Rapé' || produto === 'Cinzas') {
+    // Se o produto é Rapé ou Cinzas, adiciona a quantidade ao tipo específico
+    if (produto === 'Rapé') {
+      dados.produtos[0].quantidade[quantidade.tipo] += quantidade.valor;
+    } else {
+      dados.materiasPrimas[1].quantidade[quantidade.tipo] += quantidade.valor;
+    }
+  } else {
+    // Se o produto não é Rapé ou Cinzas, adiciona a quantidade ao produto
+    const indiceProduto = dados.produtos.findIndex(p => p.nome === produto);
+    if (indiceProduto !== -1) {
+      dados.produtos[indiceProduto].quantidade += quantidade;
+    }
+  }
+}
+
+// Função para reduzir um produto do estoque
+function reduzirProduto(produto, quantidade) {
+  // Verifica se o produto é Rapé ou Cinzas
+  if (produto === 'Rapé' || produto === 'Cinzas') {
+    // Se o produto é Rapé ou Cinzas, reduz a quantidade ao tipo específico
+    if (produto === 'Rapé') {
+      dados.produtos[0].quantidade[quantidade.tipo] -= quantidade.valor;
+    } else {
+      dados.materiasPrimas[1].quantidade[quantidade.tipo] -= quantidade.valor;
+    }
+  } else {
+    // Se o produto não é Rapé ou Cinzas, reduz a quantidade do produto
+    const indiceProduto = dados.produtos.findIndex(p => p.nome === produto);
+    if (indiceProduto !== -1) {
+      dados.produtos[indiceProduto].quantidade -= quantidade;
+    }
+  }
+}
+
+// Função para abrir um modal de confirmação
+function abrirModalConfirmacao(produto, quantidade, operacao) {
+  // Cria um modal de confirmação dinamicamente
+  const modalConfirmacao = document.createElement('div');
+  modalConfirmacao.classList.add('modal');
+  modalConfirmacao.id = 'modalConfirmacao';
+
+  const modalContent = document.createElement('div');
+  modalContent.classList.add('modal-content');
+
+  const closeButton = document.createElement('span');
+  closeButton.classList.add('close');
+  closeButton.textContent = '×';
+  closeButton.onclick = () => fecharModal('modalConfirmacao');
+
+  const mensagem = document.createElement('p');
+  mensagem.textContent = `Você deseja ${operacao} ${quantidade} ${produto}?`;
+
+  const botaoConfirmar = document.createElement('button');
+  botaoConfirmar.textContent = 'Sim';
+  botaoConfirmar.onclick = () => {
+    // Chama a função para adicionar ou reduzir o produto, dependendo da operação
+    if (operacao === 'adicionar') {
+      adicionarProduto(produto, quantidade);
+    } else if (operacao === 'reduzir') {
+      reduzirProduto(produto, quantidade);
+    }
+    // Atualiza o estoque e fecha o modal
+    atualizarEstoque();
+    fecharModal('modalConfirmacao');
+  };
+
+  const botaoCancelar = document.createElement('button');
+  botaoCancelar.textContent = 'Não';
+  botaoCancelar.onclick = () => fecharModal('modalConfirmacao');
+
+  // Adiciona os elementos ao modal
+  modalContent.appendChild(closeButton);
+  modalContent.appendChild(mensagem);
+  modalContent.appendChild(botaoConfirmar);
+  modalContent.appendChild(botaoCancelar);
+  modalConfirmacao.appendChild(modalContent);
+
+  // Adiciona o modal ao documento
+  document.body.appendChild(modalConfirmacao);
+
+  // Exibe o modal
+  exibirModal('modalConfirmacao');
+}
