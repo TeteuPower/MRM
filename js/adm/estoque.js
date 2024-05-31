@@ -23,12 +23,12 @@ function carregarListaVariedadesRape() {
   const listaVariedadesRape = document.getElementById('listaVariedadesRape');
   listaVariedadesRape.innerHTML = ''; // Limpa a lista antes de adicionar itens
 
-  // Itera sobre cada tipo de Rapé e adiciona um item de lista
-  dados.forEach(tipo => {
+  // Itera sobre os tipos de Rapé dentro do objeto 'dados.produtos[0].quantidade'
+  for (const tipo in dados.produtos[0].quantidade) {  
     const listItem = document.createElement('li');
-    listItem.textContent = tipo;
+    listItem.textContent = `${tipo}: ${dados.produtos[0].quantidade[tipo]}Kg`;
     listaVariedadesRape.appendChild(listItem);
-  });
+  }
 }
 
 // Função para carregar a lista de variedades de Cinzas no modal
@@ -36,11 +36,12 @@ function carregarListaVariedadesCinzas() {
   const listaVariedadesCinzas = document.getElementById('listaVariedadesCinzas');
   listaVariedadesCinzas.innerHTML = ''; 
 
-  tiposCinzas.forEach(tipo => {
+  // Itera sobre os tipos de Cinzas dentro do objeto 'dados.materiasPrimas[1].quantidade'
+  for (const tipo in dados.materiasPrimas[1].quantidade) { 
     const listItem = document.createElement('li');
-    listItem.textContent = tipo;
+    listItem.textContent = `${tipo}: ${dados.materiasPrimas[1].quantidade[tipo]}Kg`;
     listaVariedadesCinzas.appendChild(listItem);
-  });
+  }
 }
 
 // Função para fechar um modal
