@@ -22,7 +22,7 @@
                 </div>
                 <button type="button" onclick="fazerLogin()">Entrar</button>
             </form>
-            <button class="admin-button" onclick="abrirModalAdmin()">Administração</button>
+            <button class="admin-button" id="botaoAdmin">Administração</button>
         </div>
         <div id="modalAdmin" class="modal">
             <div class="modal-content">
@@ -32,12 +32,12 @@
                     <label for="senhaAdmin">Senha:</label>
                     <input type="password" id="senhaAdmin" required>
                 </div>
-                <button type="button" onclick="verificarSenhaAdmin()">Entrar</button>
+                <button type="button" id="botaoEntrarAdmin">Entrar</button> </div>
             </div>
         </div>
     </div>
-    <script src="js/dados.js"></script>
-    <script src="js/funcoes.js"></script>
-    <script src="js/index.js"></script>
+    <script src="js/dados.js" type="module"></script>
+    <script src="js/funcoes.js" type="module"></script>
+    <script src="js/index.js" type="module"></script>
 </body>
 </html>

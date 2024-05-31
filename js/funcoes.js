@@ -1,5 +1,5 @@
 // Função para verificar a autenticação de administrador
-function verificarAutenticacaoAdmin() {
+export function verificarAutenticacaoAdmin() {
     // Armazena o status de autenticação (inicialmente falso)
     let autenticado = false;
   

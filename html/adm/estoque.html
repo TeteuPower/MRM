@@ -8,74 +8,73 @@
     <link rel="stylesheet" href="../../css/adm/estoque.css">
 </head>
 <body>
-    <div class="container">
-        <nav class="menu">
-            <a href="estoque.html">Estoque</a>
-            <a href="novo-cliente.html">Novo Cliente</a>
-            <a href="nova-venda.html">Nova Venda</a>
-            <a href="consultar-pedidos.html">Consultar Pedidos</a>
-            <a href="consultar-cliente.html">Consultar Cliente</a>
-            <a href="funcionarios.html">Funcionários</a>
-            <a href="financas.html">Finanças</a>
-        </nav>
-
-        <div class="content">
-            <h1>Estoque</h1>
-
-            <div class="section" id="produtosDisponiveis">
-                <h2>Produtos Disponíveis</h2>
-                <p><span id="rapeDisponivel">Rapé disponível: Carregando...</span> 
-                    <button onclick="exibirModalRape()">Exibir variedades</button>
-                </p>
-                <p><span id="couripesDisponiveis">Couripes disponíveis: Carregando...</span></p>
-                <p><span id="sanangaDisponivel">Sananga disponível: Carregando...</span></p>
-                <p><span id="artesanatosDisponiveis">Artesanatos disponíveis: Carregando...</span></p>
+        <div class="container">
+            <nav class="menu">
+                <a href="estoque.html">Estoque</a>
+                <a href="novo-cliente.html">Novo Cliente</a>
+                <a href="nova-venda.html">Nova Venda</a>
+                <a href="consultar-pedidos.html">Consultar Pedidos</a>
+                <a href="consultar-cliente.html">Consultar Cliente</a>
+                <a href="funcionarios.html">Funcionários</a>
+                <a href="financas.html">Finanças</a>
+            </nav>
+    
+            <div class="content">
+                <h1>Estoque</h1>
+    
+                <div class="section" id="produtosDisponiveis">
+                    <h2>Produtos Disponíveis</h2>
+                    <p><span id="rapeDisponivel">Rapé disponível: Carregando...</span> 
+                        <button id="botaoExibirModalRape">Exibir variedades</button> </p>
+                    <p><span id="couripesDisponiveis">Couripes disponíveis: Carregando...</span></p>
+                    <p><span id="sanangaDisponivel">Sananga disponível: Carregando...</span></p>
+                    <p><span id="artesanatosDisponiveis">Artesanatos disponíveis: Carregando...</span></p>
+                </div>
+    
+                <div class="section" id="materiasPrimas">
+                    <h2>Matérias-Primas</h2>
+                    <p><span id="tabacoDisponivel">Tabaco: Carregando...</span></p>
+                    <p><span id="cinzasDisponiveis">Cinzas: Carregando...</span> 
+                        <button id="botaoExibirModalCinzas">Exibir variedades</button> </p>
+                    <p><span id="pacotesDisponiveis">Pacotes: Carregando...</span></p>
+                    <p><span id="adesivosDisponiveis">Adesivos grandes: Carregando...</span></p>
+                </div>
+    
+                <div class="section" id="manipulacao">
+                    <h2>Manipulação</h2>
+                    <div class="subsections">
+                        <div class="produtos">
+                            <h3>Produtos</h3>
+                            </div>
+                        <div class="insumos">
+                            <h3>Insumos</h3>
+                            </div>
+                    </div>
+                </div>
             </div>
-
-            <div class="section" id="materiasPrimas">
-                <h2>Matérias-Primas</h2>
-                <p><span id="tabacoDisponivel">Tabaco: Carregando...</span></p>
-                <p><span id="cinzasDisponiveis">Cinzas: Carregando...</span> 
-                    <button onclick="exibirModalCinzas()">Exibir variedades</button>
-                </p>
-                <p><span id="pacotesDisponiveis">Pacotes: Carregando...</span></p>
-                <p><span id="adesivosDisponiveis">Adesivos grandes: Carregando...</span></p>
+    
+            <div id="modalRape" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="fecharModalRape">×</span>
+                    <h2>Variedades de Rapé</h2>
+                    <ul id="listaVariedadesRape">
+                        </ul>
+                </div>
             </div>
-
-            <div class="section" id="manipulacao">
-                <h2>Manipulação</h2>
-                <div class="subsections">
-                    <div class="produtos">
-                        <h3>Produtos</h3>
-                        </div>
-                    <div class="insumos">
-                        <h3>Insumos</h3>
-                        </div>
+    
+            <div id="modalCinzas" class="modal">
+                <div class="modal-content">
+                    <span class="close" id="fecharModalCinzas">×</span>
+                    <h2>Variedades de Cinzas</h2>
+                    <ul id="listaVariedadesCinzas">
+                        </ul>
                 </div>
             </div>
         </div>
-
-        <div id="modalRape" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="fecharModal('modalRape')">×</span>
-                <h2>Variedades de Rapé</h2>
-                <ul id="listaVariedadesRape">
-                    </ul>
-            </div>
-        </div>
-
-        <div id="modalCinzas" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="fecharModal('modalCinzas')">×</span>
-                <h2>Variedades de Cinzas</h2>
-                <ul id="listaVariedadesCinzas">
-                    </ul>
-            </div>
-        </div>
-    </div>
-
-    <script src="../../js/dados.js"></script>
-    <script src="../../js/funcoes.js"></script>
-    <script src="../../js/adm/estoque.js"></script>
-</body>
-</html>
+    
+        <script src="../../js/dados.js" type="module"></script>
+        <script src="../../js/funcoes.js" type="module"></script>
+        <script src="../../js/adm/estoque.js" type="module" defer></script>
+    
+    </body>
+    </html>

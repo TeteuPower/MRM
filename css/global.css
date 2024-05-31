@@ -13,6 +13,7 @@ body {
 
 .container {
     display: flex;
+    flex-direction: column; /* Define a direção do flexbox como coluna */
     justify-content: center;
     align-items: center;
     min-height: 100vh;
