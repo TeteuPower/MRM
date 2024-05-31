@@ -1,32 +1,43 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistema de Vendas</title>
-  <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/index.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome da Empresa - Login</title>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Sistema de Vendas</h1>
-    <div class="login-container">
-      <form class="login-form">
-        <label for="login">Login:</label>
-        <input type="text" id="login" class="login-input">
-
-        <label for="senha">Senha:</label>
-        <input type="password" id="senha" class="login-input">
-
-        <div class="login-botoes">
-          <button class="modal-button" onclick="verificarLogin()">Entrar</button>
-          <button class="administracao-button" onclick="abrirModalAdministracao()">Administração</button>
+    <div class="container">
+        <div class="login-box">
+            <h2>Login</h2>
+            <form>
+                <div class="input-group">
+                    <label for="login">Usuário:</label>
+                    <input type="text" id="login" required>
+                </div>
+                <div class="input-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" required>
+                </div>
+                <button type="button" onclick="fazerLogin()">Entrar</button>
+            </form>
+            <button class="admin-button" onclick="abrirModalAdmin()">Administração</button>
         </div>
-      </form>
+        <div id="modalAdmin" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModalAdmin()">×</span>
+                <h2>Acesso Administrativo</h2>
+                <div class="input-group">
+                    <label for="senhaAdmin">Senha:</label>
+                    <input type="password" id="senhaAdmin" required>
+                </div>
+                <button type="button" onclick="verificarSenhaAdmin()">Entrar</button>
+            </div>
+        </div>
     </div>
-  </div>
-
-  <script type="module" src="js/funcoes.mjs"></script>
-  <script type="module" src="js/index.mjs"></script>
+    <script src="js/dados.js"></script>
+    <script src="js/funcoes.js"></script>
+    <script src="js/index.js"></script>
 </body>
 </html>

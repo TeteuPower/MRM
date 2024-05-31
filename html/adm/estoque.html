@@ -1,137 +1,81 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Estoque</title>
-  <link rel="stylesheet" href="../../css/global.css">
-  <link rel="stylesheet" href="css/estoque.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração - Estoque</title>
+    <link rel="stylesheet" href="../../css/global.css">
+    <link rel="stylesheet" href="../../css/adm/estoque.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Estoque</h1>
-    <div class="estoque-container">
-      <div class="estoque-secao">
-        <h2 class="estoque-titulo">Produtos Disponíveis</h2>
-        <div class="estoque-item">
-          <p>Rapé disponível:</p>
-          <p id="estoque-rapee" class="estoque-quantidade"></p>
-        </div>
-        <div class="estoque-item">
-          <p>Couripes disponíveis:</p>
-          <p id="estoque-couripes" class="estoque-quantidade"></p>
-        </div>
-        <div class="estoque-item">
-          <p>Sananga disponível:</p>
-          <p id="estoque-sananga" class="estoque-quantidade"></p>
-        </div>
-        <div class="estoque-item">
-          <p>Artesanatos disponíveis:</p>
-          <p id="estoque-artesanatos" class="estoque-quantidade"></p>
-        </div>
-      </div>
-      <div class="estoque-secao">
-        <h2 class="estoque-titulo">Matérias-Primas</h2>
-        <div class="estoque-item">
-          <p>Tabaco disponível:</p>
-          <p id="estoque-tabaco" class="estoque-quantidade"></p>
-        </div>
-        <div class="estoque-item">
-          <p>Cinzas disponíveis:</p>
-          <p id="estoque-cinzas" class="estoque-quantidade"></p>
-        </div>
-        <div class="estoque-item">
-          <p>Pacotes disponíveis:</p>
-          <p id="estoque-pacotes" class="estoque-quantidade"></p>
-        </div>
-        <div class="estoque-item">
-          <p>Adesivos Grandes disponíveis:</p>
-          <p id="estoque-adesivos" class="estoque-quantidade"></p>
-        </div>
-      </div>
-    </div>
-    <div class="manipulacao-container">
-      <div class="manipulacao-secao">
-        <h2 class="manipulacao-titulo">Produtos</h2>
-        <div class="manipulacao-item">
-          <p>Rapé:</p>
-          <input type="number" id="quantidade-rapee" class="manipulacao-input" placeholder="Quantidade">
-          <select id="tipo-rapee" class="manipulacao-select">
-            <option value="">Selecione o tipo</option>
-          </select>
-          <div class="manipulacao-botoes">
-            <button class="modal-button" onclick="adicionarRape()">Adicionar</button>
-            <button class="modal-button" onclick="removerRape()">Reduzir</button>
-          </div>
-        </div>
-        <div class="manipulacao-item">
-          <p>Couripes:</p>
-          <input type="number" id="quantidade-couripes" class="manipulacao-input" placeholder="Quantidade">
-          <div class="manipulacao-botoes">
-            <button class="modal-button" onclick="adicionarCouripes()">Adicionar</button>
-            <button class="modal-button" onclick="removerCouripes()">Reduzir</button>
-          </div>
-        </div>
-        <div class="manipulacao-item">
-          <p>Sananga:</p>
-          <input type="number" id="quantidade-sananga" class="manipulacao-input" placeholder="Quantidade">
-          <div class="manipulacao-botoes">
-            <button class="modal-button" onclick="adicionarSananga()">Adicionar</button>
-            <button class="modal-button" onclick="removerSananga()">Reduzir</button>
-          </div>
-        </div>
-        <div class="manipulacao-item">
-          <p>Artesanatos:</p>
-          <input type="number" id="quantidade-artesanatos" class="manipulacao-input" placeholder="Quantidade">
-          <div class="manipulacao-botoes">
-            <button class="modal-button" onclick="adicionarArtesanatos()">Adicionar</button>
-            <button class="modal-button" onclick="removerArtesanatos()">Reduzir</button>
-          </div>
-        </div>
-      </div>
-      <div class="manipulacao-secao">
-        <h2 class="manipulacao-titulo">Insumos</h2>
-        <div class="manipulacao-item">
-          <p>Tabaco:</p>
-          <input type="number" id="quantidade-tabaco" class="manipulacao-input" placeholder="Quantidade">
-          <div class="manipulacao-botoes">
-            <button class="modal-button" onclick="adicionarTabaco()">Adicionar</button>
-            <button class="modal-button" onclick="removerTabaco()">Reduzir</button>
-          </div>
-        </div>
-        <div class="manipulacao-item">
-          <p>Cinzas:</p>
-          <input type="number" id="quantidade-cinzas" class="manipulacao-input" placeholder="Quantidade">
-          <select id="tipo-cinzas" class="manipulacao-select">
-            <option value="">Selecione o tipo</option>
-          </select>
-          <div class="manipulacao-botoes">
-            <button class="modal-button" onclick="adicionarCinzas()">Adicionar</button>
-            <button class="modal-button" onclick="removerCinzas()">Reduzir</button>
-          </div>
-        </div>
-        <div class="manipulacao-item">
-          <p>Pacotes:</p>
-          <input type="number" id="quantidade-pacotes" class="manipulacao-input" placeholder="Quantidade">
-          <div class="manipulacao-botoes">
-            <button class="modal-button" onclick="adicionarPacotes()">Adicionar</button>
-            <button class="modal-button" onclick="removerPacotes()">Reduzir</button>
-          </div>
-        </div>
-        <div class="manipulacao-item">
-          <p>Adesivos Grandes:</p>
-          <input type="number" id="quantidade-adesivos" class="manipulacao-input" placeholder="Quantidade">
-          <div class="manipulacao-botoes">
-            <button class="modal-button" onclick="adicionarAdesivos()">Adicionar</button>
-            <button class="modal-button" onclick="removerAdesivos()">Reduzir</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div class="container">
+        <nav class="menu">
+            <a href="estoque.html">Estoque</a>
+            <a href="novo-cliente.html">Novo Cliente</a>
+            <a href="nova-venda.html">Nova Venda</a>
+            <a href="consultar-pedidos.html">Consultar Pedidos</a>
+            <a href="consultar-cliente.html">Consultar Cliente</a>
+            <a href="funcionarios.html">Funcionários</a>
+            <a href="financas.html">Finanças</a>
+        </nav>
 
-  <script src="../../js/dados.js"></script>
-  <script src="../../js/funcoes.js"></script>
-  <script src="js/estoque.js"></script>
+        <div class="content">
+            <h1>Estoque</h1>
+
+            <div class="section" id="produtosDisponiveis">
+                <h2>Produtos Disponíveis</h2>
+                <p><span id="rapeDisponivel">Rapé disponível: Carregando...</span> 
+                    <button onclick="exibirModalRape()">Exibir variedades</button>
+                </p>
+                <p><span id="couripesDisponiveis">Couripes disponíveis: Carregando...</span></p>
+                <p><span id="sanangaDisponivel">Sananga disponível: Carregando...</span></p>
+                <p><span id="artesanatosDisponiveis">Artesanatos disponíveis: Carregando...</span></p>
+            </div>
+
+            <div class="section" id="materiasPrimas">
+                <h2>Matérias-Primas</h2>
+                <p><span id="tabacoDisponivel">Tabaco: Carregando...</span></p>
+                <p><span id="cinzasDisponiveis">Cinzas: Carregando...</span> 
+                    <button onclick="exibirModalCinzas()">Exibir variedades</button>
+                </p>
+                <p><span id="pacotesDisponiveis">Pacotes: Carregando...</span></p>
+                <p><span id="adesivosDisponiveis">Adesivos grandes: Carregando...</span></p>
+            </div>
+
+            <div class="section" id="manipulacao">
+                <h2>Manipulação</h2>
+                <div class="subsections">
+                    <div class="produtos">
+                        <h3>Produtos</h3>
+                        </div>
+                    <div class="insumos">
+                        <h3>Insumos</h3>
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="modalRape" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModal('modalRape')">×</span>
+                <h2>Variedades de Rapé</h2>
+                <ul id="listaVariedadesRape">
+                    </ul>
+            </div>
+        </div>
+
+        <div id="modalCinzas" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="fecharModal('modalCinzas')">×</span>
+                <h2>Variedades de Cinzas</h2>
+                <ul id="listaVariedadesCinzas">
+                    </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/dados.js"></script>
+    <script src="../../js/funcoes.js"></script>
+    <script src="../../js/adm/estoque.js"></script>
 </body>
 </html>

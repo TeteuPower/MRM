@@ -1,103 +1,84 @@
-/* Estilos para a página de estoque */
-.estoque-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-  }
-  
-  .estoque-secao {
-    background-color: #333;
+/* Estilos específicos para a página de Estoque (estoque.html) */
+.content {
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 30%;
-  }
-  
-  .estoque-titulo {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    margin-top: 20px; /* Espaçamento em relação ao menu */
     text-align: center;
-    font-size: 24px;
+}
+
+.content h1 {
+    color: #00d166;
+    margin-bottom: 20px;
+}
+
+.section {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 2px solid #333; /* Cor da borda da seção */
+    border-radius: 8px;
+}
+
+.section:not(:last-child) {
+    margin-bottom: 20px; /* Espaçamento entre as seções */
+}
+
+.section h2 {
+    color: #00a352; /* Cor do título da seção */
+    margin-bottom: 15px;
+}
+
+.section p {
     margin-bottom: 10px;
-  }
-  
-  .estoque-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .estoque-quantidade {
-    font-size: 18px;
+    text-align: left; /* Alinha o texto à esquerda */
+}
+
+.section span {
     font-weight: bold;
-  }
-  
-  /* Estilos para a área de manipulação */
-  .manipulacao-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    margin-top: 20px;
-  }
-  
-  .manipulacao-secao {
-    background-color: #333;
+}
+
+/* Estilos para os botões dentro das seções */
+.section button {
+    background-color: #007bff; /* Cor de fundo do botão */
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.section button:hover {
+    background-color: #0056b3; /* Cor de fundo do botão ao passar o mouse */
+}
+
+
+/* Estilos para a área de Manipulação */
+.subsections {
+    display: flex; /* Divide a seção em duas colunas */
+    justify-content: space-around; /* Distribui as colunas com espaço entre elas */
+    align-items: flex-start; /* Alinha as colunas ao topo */
+}
+
+/* Seções de Produtos e Insumos dentro da área de Manipulação */
+.produtos, 
+.insumos {
+    width: 48%; /* Define a largura das colunas */
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    width: 45%;
-  }
-  
-  .manipulacao-titulo {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .manipulacao-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .manipulacao-input {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-  }
-  
-  .manipulacao-select {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    background-color: transparent;
-    color: white;
-    appearance: none; /* Remove a seta padrão do select */
-    -webkit-appearance: none; /* Remove a seta padrão do select no Chrome/Safari */
-    -moz-appearance: none; /* Remove a seta padrão do select no Firefox */
-  }
-  
-  .manipulacao-botoes {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  /* Responsividade */
-  @media screen and (max-width: 768px) {
-    .estoque-container,
-    .manipulacao-container {
-      flex-direction: column;
+    border: 2px solid #333; /* Cor da borda da seção */
+    border-radius: 8px;
+}
+
+/* Estilos responsivos para telas menores (celulares) */
+@media (max-width: 768px) {
+    .subsections {
+        flex-direction: column; /* Organiza as colunas em vertical */
     }
-  
-    .estoque-secao,
-    .manipulacao-secao {
-      width: 100%;
+
+    .produtos,
+    .insumos {
+        width: 100%; /* Define a largura das colunas para ocupar 100% */
+        margin-bottom: 20px; /* Adiciona espaçamento entre as seções */
     }
-  }
+}

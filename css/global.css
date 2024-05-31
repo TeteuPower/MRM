@@ -1,418 +1,65 @@
 /* Estilos Globais */
-body {
-    background-color: #181818; /* Fundo escuro */
-    color: white; /* Cor da fonte branca */
-    font-family: 'Arial', sans-serif; /* Fonte Arial */
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #121212; /* Fundo escuro */
+    color: #f5f5f5; /* Texto claro */
+}
+
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-  }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-weight: bold;
-  }
-  
-  .container {
-    background-color: #282828; /* Fundo da container */
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra da container */
-  }
-  
-  .modal {
-    display: none; /* Oculta o modal por padrão */
-    position: fixed; /* Posiciona o modal fixamente na tela */
-    z-index: 1; /* Define o modal como o elemento com a maior prioridade de renderização */
-    left: 0;
-    top: 0;
+}
+
+/* Estilos para formulários */
+form {
     width: 100%;
-    height: 100%;
-    overflow: auto; /* Permite scroll no modal se o conteúdo for maior que a tela */
-    background-color: rgba(0, 0, 0, 0.4); /* Fundo do modal */
-  }
-  
-  .modal-content {
-    background-color: #282828; /* Fundo do conteúdo do modal */
-    margin: 15% auto; /* Centraliza o conteúdo do modal na tela */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Largura do conteúdo do modal */
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra do conteúdo do modal */
-  }
-  
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  .modal-title {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .modal-text {
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  
-  .modal-button {
-    background-color: #4CAF50; /* Verde */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s; /* Transição para o efeito hover */
-  }
-  
-  .modal-button:hover {
-    background-color: #3e8e41; /* Verde mais escuro */
-  }
-  
-  .modal-list {
-    list-style: none;
-    padding: 0;
-    text-align: center;
-  }
-  
-  .modal-list li {
+    max-width: 400px;
+    padding: 30px;
+    border-radius: 8px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
     margin-bottom: 5px;
-  }
-  
-  .input {
+}
+
+input[type="text"],
+input[type="password"] {
     width: 100%;
     padding: 10px;
-    margin: 5px 0;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-  }
-  
-  .select {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-    background-color: transparent;
-    color: white;
-    appearance: none; /* Remove a seta padrão do select */
-    -webkit-appearance: none; /* Remove a seta padrão do select no Chrome/Safari */
-    -moz-appearance: none; /* Remove a seta padrão do select no Firefox */
-  }
-  
-  /* Estilos para o efeito 3D nos botões */
-  .button-3d {
-    position: relative;
-    display: inline-block;
+    border-radius: 4px;
+    background-color: #1e1e1e; /* Fundo escuro para inputs */
+    color: #f5f5f5; /* Texto claro para inputs */
+}
+
+/* Estilos para botões */
+button {
     padding: 10px 20px;
-    margin: 5px;
     border: none;
-    border-radius: 5px;
-    background-color: #4CAF50; /* Verde */
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
+    border-radius: 4px;
     cursor: pointer;
-  }
-  
-  .button-3d::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.1); /* Fundo transparente */
-    z-index: -1;
-    transform: translate3d(0, 0, 0);
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .button-3d:hover::before {
-    transform: translate3d(-10px, -10px, 0); /* Efeito de sombra ao passar o mouse */
-  }
-  
-  .button-3d:active::before {
-    transform: translate3d(-20px, -20px, 0); /* Efeito de clique */
-  }
-  
-  /* Estilos para o efeito 3D nos elementos */
-  .elemento-3d {
-    position: relative;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Sombra do elemento */
-    border-radius: 10px; /* Borda arredondada */
-    overflow: hidden; /* Oculta o conteúdo que está fora do elemento */
-  }
-  
-  .elemento-3d::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.1); /* Fundo transparente */
-    z-index: -1;
-    transform: translate3d(0, 0, 0);
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .elemento-3d:hover::before {
-    transform: translate3d(-10px, -10px, 0); /* Efeito de sombra ao passar o mouse */
-  }
-  
-  .elemento-3d:active::before {
-    transform: translate3d(-20px, -20px, 0); /* Efeito de clique */
-  }
-  
-  /* Estilos para as áreas de estoque */
-  .estoque-area {
-    background-color: #333;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-  }
-  
-  .estoque-titulo {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-  
-  .estoque-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  .estoque-quantidade {
-    font-size: 18px;
     font-weight: bold;
-  }
-  
-  /* Estilos para o carrinho de compras */
-  .carrinho-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .item-carrinho {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    padding: 10px;
-    border-radius: 5px;
-  }
-  
-  .coluna-produto {
-    font-weight: bold;
-  }
-  
-  .coluna-quantidade {
-    font-size: 18px;
-  }
-  
-  .coluna-acoes {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  /* Estilos para o resumo da venda */
-  .resumo-venda {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .resumo-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .resumo-titulo {
-    font-weight: bold;
-  }
-  
-  .resumo-valor {
-    font-size: 18px;
-  }
-  
-  /* Estilos para as áreas de pedidos */
-  .pedidos-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .pedido-container {
-    background-color: #333;
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .pedido-resumo {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-  
-  /* Estilos para as áreas de clientes */
-  .clientes-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .cliente-container {
-    background-color: #333;
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  /* Estilos para as áreas de funcionários */
-  .funcionarios-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .vendedor-container,
-  .produtor-container {
-    background-color: #333;
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  /* Estilos para as áreas de finanças */
-  .financas-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 20px;
-  }
-  
-  .vendedor-lucro-container,
-  .produtor-lucro-container,
-  .cliente-saldo-negativo-container {
-    background-color: #333;
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  /* Responsividade */
-  @media screen and (max-width: 768px) {
-    .container {
-      width: 90%;
-    }
-  
-    .estoque-area {
-      flex-direction: column;
-    }
-  
-    .estoque-item {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .carrinho-container {
-      flex-direction: column;
-    }
-  
-    .item-carrinho {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .resumo-venda {
-      flex-direction: column;
-    }
-  
-    .resumo-item {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .pedidos-container {
-      flex-direction: column;
-    }
-  
-    .pedido-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .clientes-container {
-      flex-direction: column;
-    }
-  
-    .cliente-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .funcionarios-container {
-      flex-direction: column;
-    }
-  
-    .vendedor-container,
-    .produtor-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .financas-container {
-      flex-direction: column;
-    }
-  
-    .vendedor-lucro-container,
-    .produtor-lucro-container,
-    .cliente-saldo-negativo-container {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  }
+}
+
+/* Estilos para links */
+a {
+    color: #007bff; /* Cor padrão para links */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
