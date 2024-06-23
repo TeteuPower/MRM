@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Venda</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/nova_venda.css">
+</head>
+<body>
+    <nav class="admin-menu">
+        <ul>
+            <li><a href="admin.html">Estoque</a></li>
+            <li><a href="novo_cliente.html">Novo Cliente</a></li>
+            <li><a href="nova_venda.html" class="active">Nova Venda</a></li>
+            <li><a href="consultar_pedidos.html">Consultar Pedidos</a></li>
+            <li><a href="consultar_cliente.html">Consultar Cliente</a></li>
+            <li><a href="funcionarios.html">Funcionários</a></li>
+            <li><a href="financas.html">Finanças</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="nova-venda">
+            <h2>Nova Venda</h2>
+
+            <form id="form-nova-venda">
+                <div class="input-group">
+                    <label for="cliente">Cliente:</label>
+                    <select id="cliente">
+                        <option value="">Selecione o Cliente</option>
+                        <!-- Opções de clientes serão adicionadas aqui -->
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="vendedor">Vendedor:</label>
+                    <select id="vendedor">
+                        <option value="">Selecione o Vendedor</option>
+                        <option value="Maithê">Maithê</option>
+                        <option value="Rafael">Rafael</option>
+                    </select>
+                </div>
+
+                <div id="carrinho-compras">
+                    <h3>Carrinho de Compras</h3>
+                    <table id="tabela-carrinho">
+                        <thead>
+                            <tr>
+                                <th>Produto</th>
+                                <th>Quantidade</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Itens do carrinho serão adicionados aqui -->
+                        </tbody>
+                    </table>
+
+                    <button type="button" id="btn-adicionar-produto">Adicionar Produto</button>
+                </div>
+
+                <div class="resumo-venda">
+                    <h3>Resumo da Venda</h3>
+                    <p>Quantidade total de rapé: <span id="total-rape">0Kg (0 Pacotes)</span></p>
+
+                    <div class="input-group">
+                        <label for="moeda">Moeda:</label>
+                        <select id="moeda">
+                            <option value="real">Real (R$)</option>
+                            <option value="dolar">Dólar (US$)</option>
+                        </select>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="valor-venda">Valor da Venda:</label>
+                        <input type="number" id="valor-venda" required>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="valor-pago">Valor Pago pelo Cliente:</label>
+                        <input type="number" id="valor-pago">
+                    </div>
+
+                    <p>Saldo da Venda: <span id="saldo-venda">R$ 0</span></p> <textarea id="descricao" placeholder="Descrição/Comentários"></textarea>
+                </div>
+
+                <div class="botoes-acao">
+                    <button type="submit" class="btn-acao verde">Finalizar Venda</button>
+                    <button type="reset" class="btn-acao vermelho">Limpar</button>
+                </div>
+            </form>
+        </section>
+
+        <div id="modal-adicionar-produto" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalAdicionarProduto()">×</span>
+                <h2>Adicionar Produto</h2>
+
+                <div class="input-group">
+                    <label for="produto">Produto:</label>
+                    <select id="produto">
+                        <option value="">Selecione o Produto</option>
+                        <option value="rape">Rapé</option>
+                        <option value="couripes">Couripes</option>
+                        <option value="sananga">Sananga</option>
+                        <option value="artesanatos">Artesanatos</option>
+                    </select>
+                </div>
+
+                <div id="opcoes-tipo-rape" class="input-group" style="display: none;">
+                    <label for="tipo-rape">Tipo de Rapé:</label>
+                    <select id="tipo-rape">
+                        <option value="">Selecione o Tipo</option>
+                        <!-- Opções de tipos de rapé serão adicionadas aqui -->
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="quantidade">Quantidade:</label>
+                    <input type="number" id="quantidade" min="1" value="1">
+                </div>
+
+                <button type="button" onclick="adicionarAoCarrinho()">Adicionar</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/dados.js"></script>
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/nova_venda.js"></script>
+</body>
+</html>

@@ -14,3 +14,31 @@ function carregarClientesDoLocalStorage() {
         window.clientes = [];
     }
 }
+
+
+function gerarIdVenda() {
+    const novoId = proximaIdVenda;
+    proximaIdVenda++;
+    return novoId;
+}
+
+function salvarVendasNoLocalStorage() {
+    localStorage.setItem('vendas', JSON.stringify(vendas));
+    localStorage.setItem('proximaIdVenda', proximaIdVenda);
+}
+
+function carregarVendasDoLocalStorage() {
+    const vendasStorage = localStorage.getItem('vendas');
+    if (vendasStorage) {
+        vendas = JSON.parse(vendasStorage);
+    } else {
+        vendas = [];
+    }
+
+    const proximaIdVendaStorage = localStorage.getItem('proximaIdVenda');
+    if (proximaIdVendaStorage) {
+        proximaIdVenda = parseInt(proximaIdVendaStorage);
+    } else {
+        proximaIdVenda = 1;
+    }
+}
