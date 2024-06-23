@@ -1,18 +1,16 @@
-// Função para verificar a autenticação de administrador
-export function verificarAutenticacaoAdmin() {
-    // Armazena o status de autenticação (inicialmente falso)
-    let autenticado = false;
-  
-    // Tenta recuperar o status de autenticação do localStorage
-    if (localStorage.getItem('autenticadoAdmin')) {
-      autenticado = JSON.parse(localStorage.getItem('autenticadoAdmin'));
+// funcoes.js
+
+// Função para salvar a lista de clientes no Local Storage
+function salvarClientesNoLocalStorage() {
+    localStorage.setItem('clientes', JSON.stringify(window.clientes));
+}
+
+// Função para carregar a lista de clientes do Local Storage
+function carregarClientesDoLocalStorage() {
+    const clientesStorage = localStorage.getItem('clientes');
+    if (clientesStorage) {
+        window.clientes = JSON.parse(clientesStorage);
+    } else {
+        window.clientes = [];
     }
-  
-    // Se não estiver autenticado, redireciona para a página de login
-    if (!autenticado) {
-      window.location.href = "../../index.html"; // Redireciona para o index.html
-    }
-  }
-  
-  // Chame esta função no início de cada página da área administrativa
-  verificarAutenticacaoAdmin();
+}

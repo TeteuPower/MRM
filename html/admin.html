@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administração</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin.css"> 
+</head>
+<body>
+    <nav class="admin-menu">
+        <ul>
+            <li><a href="admin.html" class="active">Estoque</a></li>
+            <li><a href="novo_cliente.html">Novo Cliente</a></li>
+            <li><a href="nova_venda.html">Nova Venda</a></li>
+            <li><a href="consultar_pedidos.html">Consultar Pedidos</a></li>
+            <li><a href="consultar_cliente.html">Consultar Cliente</a></li>
+            <li><a href="funcionarios.html">Funcionários</a></li>
+            <li><a href="financas.html">Finanças</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="estoque">
+            <h2>Estoque</h2>
+
+            <div class="section-container">
+                <div class="section-item" id="produtos-disponiveis">
+                    <h3>Produtos Disponíveis</h3>
+                    <p>Rapé disponível: <span id="rape-disponivel">Carregando...</span></p> 
+                    <button id="exibir-variedades-rape">Exibir Variedades</button>
+                    <p>Couripes disponíveis: <span id="couripes-disponiveis">Carregando...</span></p>
+                    <p>Sananga disponível: <span id="sananga-disponivel">Carregando...</span></p>
+                    <p>Artesanatos disponíveis: <span id="artesanatos-disponiveis">Carregando...</span></p>
+                </div>
+
+                <div class="section-item" id="materias-primas">
+                    <h3>Matérias-Primas</h3>
+                    <p>Tabaco: <span id="tabaco-disponivel">Carregando...</span></p>
+                    <p>Cinzas: <span id="cinzas-disponivel">Carregando...</span></p>
+                    <button id="exibir-variedades-cinzas">Exibir Variedades</button>
+                    <p>Pacotes: <span id="pacotes-disponiveis">Carregando...</span></p>
+                    <p>Adesivos Grandes: <span id="adesivos-grandes-disponiveis">Carregando...</span></p>
+                </div>
+            </div>
+
+            <div class="section-item" id="manipulacao">
+                <h3>Manipulação</h3>
+
+                <div class="manipulacao-container">
+                    <div class="produtos">
+                        <h4>Produtos</h4>
+
+                        <div class="produto-item">
+                            <h5>Rapé</h5>
+                            <div class="input-group">
+                                <input type="number" id="input-quantidade-rape" placeholder="Quantidade (Pacotes)">
+                                <select id="select-tipo-rape">
+                                    <option value="">Selecione o Tipo</option>
+                                    <!-- Opções de tipos de rapé serão adicionadas aqui -->
+                                </select>
+                            </div>
+                            <button id="btn-adicionar-rape" class="btn-acao verde">Adicionar</button>
+                            <button id="btn-reduzir-rape" class="btn-acao vermelho">Reduzir</button>
+                        </div>
+
+                        <div class="produto-item">
+                            <h5>Couripes</h5>
+                            <input type="number" id="input-quantidade-couripes" placeholder="Quantidade">
+                            <button id="btn-adicionar-couripes" class="btn-acao verde">Adicionar</button>
+                            <button id="btn-reduzir-couripes" class="btn-acao vermelho">Reduzir</button>
+                        </div>
+
+                        <div class="produto-item">
+                            <h5>Sananga</h5>
+                            <input type="number" id="input-quantidade-sananga" placeholder="Quantidade (Kg)">
+                            <button id="btn-adicionar-sananga" class="btn-acao verde">Adicionar</button>
+                            <button id="btn-reduzir-sananga" class="btn-acao vermelho">Reduzir</button>
+                        </div>
+
+                        <div class="produto-item">
+                            <h5>Artesanatos</h5>
+                            <input type="number" id="input-quantidade-artesanatos" placeholder="Quantidade">
+                            <button id="btn-adicionar-artesanatos" class="btn-acao verde">Adicionar</button>
+                            <button id="btn-reduzir-artesanatos" class="btn-acao vermelho">Reduzir</button>
+                        </div>
+                    </div>
+
+                    <div class="insumos">
+                        <h4>Insumos</h4>
+
+                        <div class="insumo-item">
+                            <h5>Tabaco</h5>
+                            <input type="number" id="input-quantidade-tabaco" placeholder="Quantidade (Kg)">
+                            <button id="btn-adicionar-tabaco" class="btn-acao verde">Adicionar</button>
+                            <button id="btn-reduzir-tabaco" class="btn-acao vermelho">Reduzir</button>
+                        </div>
+
+                        <div class="insumo-item">
+                            <h5>Cinzas</h5>
+                            <div class="input-group">
+                                <input type="number" id="input-quantidade-cinzas" placeholder="Quantidade (Kg)">
+                                <select id="select-tipo-cinzas">
+                                    <option value="">Selecione o Tipo</option>
+                                    <!-- Opções de tipos de cinzas serão adicionadas aqui -->
+                                </select>
+                            </div>
+                            <button id="btn-adicionar-cinzas" class="btn-acao verde">Adicionar</button>
+                            <button id="btn-reduzir-cinzas" class="btn-acao vermelho">Reduzir</button>
+                        </div>
+
+                        <div class="insumo-item">
+                            <h5>Pacotes</h5>
+                            <input type="number" id="input-quantidade-pacotes" placeholder="Quantidade">
+                            <button id="btn-adicionar-pacotes" class="btn-acao verde">Adicionar</button>
+                            <button id="btn-reduzir-pacotes" class="btn-acao vermelho">Reduzir</button>
+                        </div>
+
+                        <div class="insumo-item">
+                            <h5>Adesivos Grandes</h5>
+                            <input type="number" id="input-quantidade-adesivos-grandes" placeholder="Quantidade">
+                            <button id="btn-adicionar-adesivos-grandes" class="btn-acao verde">Adicionar</button>
+                            <button id="btn-reduzir-adesivos-grandes" class="btn-acao vermelho">Reduzir</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="modal-variedades-rape" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal('modal-variedades-rape')">×</span>
+            <h2>Variedades de Rapé</h2>
+            <ul id="lista-variedades-rape">
+                <!-- Lista de variedades de rapé aqui -->
+            </ul>
+        </div>
+    </div>
+
+    <div id="modal-variedades-cinzas" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="fecharModal('modal-variedades-cinzas')">×</span>
+            <h2>Variedades de Cinzas</h2>
+            <ul id="lista-variedades-cinzas">
+                <!-- Lista de variedades de cinzas aqui -->
+            </ul>
+        </div>
+    </div>
+
+    <script src="../js/dados.js"></script> 
+    <script src="../js/funcoes.js"></script> 
+    <script src="../js/admin.js"></script> 
+</body>
+</html>

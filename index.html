@@ -1,43 +1,38 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nome da Empresa - Login</title>
+    <title>Página de Login</title>
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
     <div class="container">
-        <div class="login-box">
-            <h2>Login</h2>
-            <form>
-                <div class="input-group">
-                    <label for="login">Usuário:</label>
-                    <input type="text" id="login" required>
-                </div>
-                <div class="input-group">
-                    <label for="senha">Senha:</label>
-                    <input type="password" id="senha" required>
-                </div>
-                <button type="button" onclick="fazerLogin()">Entrar</button>
-            </form>
-            <button class="admin-button" id="botaoAdmin">Administração</button>
-        </div>
-        <div id="modalAdmin" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="fecharModalAdmin()">×</span>
-                <h2>Acesso Administrativo</h2>
-                <div class="input-group">
-                    <label for="senhaAdmin">Senha:</label>
-                    <input type="password" id="senhaAdmin" required>
-                </div>
-                <button type="button" id="botaoEntrarAdmin">Entrar</button> </div>
+        <h1>Login</h1>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" required>
             </div>
+            <div class="input-group">
+                <label for="password">Senha:</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit">Entrar</button>
+            <button type="button" id="adminBtn">Administração</button>
+        </form>
+    </div>
+
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2>Acesso Administrativo</h2>
+            <label for="adminPassword">Senha:</label>
+            <input type="password" id="adminPassword">
+            <button type="button" onclick="checkAdminPassword()">Acessar</button>
         </div>
     </div>
-    <script src="js/dados.js" type="module"></script>
-    <script src="js/funcoes.js" type="module"></script>
-    <script src="js/index.js" type="module"></script>
+
+    <script src="js/login.js"></script>
 </body>
 </html>

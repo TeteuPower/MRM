@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Novo Cliente</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin.css"> 
+    <link rel="stylesheet" href="../css/novo_cliente.css"> 
+</head>
+<body>
+    <nav class="admin-menu">
+        <ul>
+            <li><a href="admin.html">Estoque</a></li>
+            <li><a href="novo_cliente.html" class="active">Novo Cliente</a></li>
+            <li><a href="nova_venda.html">Nova Venda</a></li>
+            <li><a href="consultar_pedidos.html">Consultar Pedidos</a></li>
+            <li><a href="consultar_cliente.html">Consultar Cliente</a></li>
+            <li><a href="funcionarios.html">Funcionários</a></li>
+            <li><a href="financas.html">Finanças</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="novo-cliente">
+            <h2>Cadastro de Cliente</h2>
+
+            <form id="form-cadastro-cliente">
+                <div class="input-group">
+                    <label for="nome">Nome:</label>
+                    <input type="text" id="nome" required>
+                </div>
+                <div class="input-group">
+                    <label for="email">E-mail:</label>
+                    <input type="email" id="email" required>
+                </div>
+                <div class="input-group">
+                    <label for="telefone">Telefone:</label>
+                    <input type="tel" id="telefone" required>
+                </div>
+                <div class="input-group">
+                    <label for="endereco">Endereço:</label>
+                    <input type="text" id="endereco" required>
+                </div>
+                <div class="input-group">
+                    <label for="login">Login:</label>
+                    <input type="text" id="login" required>
+                </div>
+                <div class="input-group">
+                    <label for="senha">Senha:</label>
+                    <input type="password" id="senha" required>
+                </div>
+
+                <div class="botoes-acao">
+                    <button type="submit" class="btn-acao verde">Registrar</button>
+                    <button type="reset" class="btn-acao vermelho">Limpar</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <script src="../js/dados.js"></script>
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/novo_cliente.js"></script> </body>
+</html>

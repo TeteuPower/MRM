@@ -1,0 +1,37 @@
+/* consultar_cliente.css */
+#consultar-cliente {
+    text-align: center;
+}
+
+#pesquisa-cliente {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 3px;
+    background-color: #111;
+    color: #eee;
+    margin-bottom: 20px;
+}
+
+#lista-clientes {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column; /* Organiza os itens em coluna */
+    gap: 10px;
+    width: 50%;
+    margin: 0 auto;
+}
+
+#lista-clientes li {
+    background-color: #333;
+    padding: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#lista-clientes li:hover {
+    background-color: #555;
+}
+

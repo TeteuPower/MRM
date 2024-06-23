@@ -1,0 +1,85 @@
+/* Estilos da página admin.html */
+.admin-menu {
+    background-color: #222;
+    color: #eee;
+    padding: 20px;
+}
+
+.admin-menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Para tornar os itens de menu horizontais */
+    justify-content: space-around; /* Distribui o espaço entre os itens */
+}
+
+.admin-menu li a {
+    text-decoration: none;
+    color: #eee;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease; /* Adiciona uma transição suave */
+}
+
+.admin-menu li a.active, /* Estilo para o link da página atual */
+.admin-menu li a:hover {
+    background-color: #555;
+}
+
+main {
+    padding: 20px;
+}
+
+.section-container {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.section-item {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    flex: 1; 
+    text-align: center;
+}
+
+/* Estilos Responsivos - Ajusta o layout para telas menores */
+@media (max-width: 768px) {
+    .section-container {
+        flex-direction: column; 
+    }
+
+    .admin-menu ul {
+        flex-direction: column; /* Itens do menu em coluna */
+    }
+
+    .admin-menu li {
+        margin-bottom: 10px; /* Espaçamento entre itens do menu */
+    }
+}
+
+/* ... (seus estilos CSS existentes) ... */
+
+/* Estilos do Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #333;
+    margin: 5% auto;
+    /* Alterado para 5% para centralizar melhor */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 30%;
+    /* Largura do modal */
+}
