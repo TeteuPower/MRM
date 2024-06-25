@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    carregarEstoqueDoLocalStorage();
     atualizarInformacoesEstoque();
     exibirModal();
     carregarVariedadesRape();
@@ -160,6 +161,7 @@ function atualizarInformacoesEstoque() {
     } else {
         adesivosGrandesDisponiveisSpan.style.color = 'green';
     }
+    salvarEstoqueNoLocalStorage();
 }
 
 
@@ -291,6 +293,7 @@ function adicionarRape() {
             );
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 function reduzirRape() {
@@ -323,6 +326,7 @@ function reduzirRape() {
             carregarVariedadesRape();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 // Funções para manipular o estoque de Couripes
@@ -342,6 +346,7 @@ function adicionarCouripes() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 function reduzirCouripes() {
@@ -360,6 +365,7 @@ function reduzirCouripes() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 // Funções para manipular o estoque de Sananga
@@ -379,6 +385,7 @@ function adicionarSananga() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 function reduzirSananga() {
@@ -397,6 +404,7 @@ function reduzirSananga() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 // Funções para manipular o estoque de Artesanatos
@@ -416,6 +424,7 @@ function adicionarArtesanatos() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 function reduzirArtesanatos() {
@@ -434,6 +443,7 @@ function reduzirArtesanatos() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 // Funções para manipular o estoque de Tabaco
@@ -453,6 +463,7 @@ function adicionarTabaco() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 function reduzirTabaco() {
@@ -474,6 +485,7 @@ function reduzirTabaco() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 // Funções para manipular o estoque de Cinzas
@@ -508,6 +520,7 @@ function adicionarCinzas() {
             carregarVariedadesCinzas();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 function reduzirCinzas() {
@@ -545,6 +558,7 @@ function reduzirCinzas() {
             carregarVariedadesCinzas();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 // Funções para manipular o estoque de Pacotes
@@ -564,6 +578,7 @@ function adicionarPacotes() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 function reduzirPacotes() {
@@ -585,6 +600,7 @@ function reduzirPacotes() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 // Funções para manipular o estoque de Adesivos Grandes
@@ -605,6 +621,7 @@ function adicionarAdesivosGrandes() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 function reduzirAdesivosGrandes() {
@@ -627,6 +644,7 @@ function reduzirAdesivosGrandes() {
             atualizarInformacoesEstoque();
         }
     );
+    atualizarInformacoesEstoque();
 }
 
 // ... (sua função atualizarInformacoesEstoque existente)

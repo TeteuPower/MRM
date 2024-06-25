@@ -3,6 +3,7 @@
 let carrinho = []; // Array para armazenar os itens do carrinho
 
 document.addEventListener('DOMContentLoaded', function () {
+    carregarEstoqueDoLocalStorage();
     carregarClientesDoLocalStorage();
     carregarVendasDoLocalStorage();
     popularSelectClientes();
@@ -199,9 +200,4 @@ function atualizarEstoque(venda) {
     });
 
     salvarEstoqueNoLocalStorage(); // Função para salvar o estoque no Local Storage (você precisa criá-la)
-}
-
-// Função para salvar o estoque no Local Storage (crie esta função em funcoes.js)
-function salvarEstoqueNoLocalStorage() {
-    localStorage.setItem('estoque', JSON.stringify(estoque));
 }
