@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Pedidos</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/consultar_pedidos.css">
+</head>
+<body>
+    <nav class="admin-menu">
+        <ul>
+            <li><a href="admin.html">Estoque</a></li>
+            <li><a href="novo_cliente.html">Novo Cliente</a></li>
+            <li><a href="nova_venda.html">Nova Venda</a></li>
+            <li><a href="consultar_pedidos.html" class="active">Consultar Pedidos</a></li>
+            <li><a href="consultar_cliente.html">Consultar Cliente</a></li>
+            <li><a href="funcionarios.html">Funcionários</a></li>
+            <li><a href="financas.html">Finanças</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="consultar-pedidos">
+            <h2>Consultar Pedidos</h2>
+
+            <input type="text" id="pesquisa-pedido" placeholder="Pesquisar por número de pedido ou nome do cliente...">
+
+            <div class="pedidos-container">
+                <div class="pedidos-nao-finalizados">
+                    <h3>Pedidos Não Finalizados</h3>
+                    <ul id="lista-pedidos-nao-finalizados">
+                        <!-- Pedidos não finalizados serão adicionados aqui -->
+                    </ul>
+                </div>
+
+                <div class="pedidos-finalizados">
+                    <h3>Pedidos Finalizados</h3>
+                    <ul id="lista-pedidos-finalizados">
+                        <!-- Pedidos finalizados serão adicionados aqui -->
+                    </ul>
+                    <button id="btn-proxima-pagina" style="display: none;">Próxima Página</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="modal-detalhes-pedido" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalDetalhesPedido()">×</span>
+                <h3 id="modal-numero-pedido">Detalhes do Pedido</h3>
+                <p><strong>Cliente:</strong> <span id="modal-cliente"></span></p>
+                <p><strong>Vendedor:</strong> <span id="modal-vendedor"></span></p>
+                <p><strong>Descrição/Comentários:</strong> <span id="modal-descricao"></span></p>
+                <p><strong>Data de Criação:</strong> <span id="modal-data-criacao"></span></p>
+                <p><strong>Valor da Venda:</strong> <span id="modal-valor-venda"></span></p>
+                <p><strong>Valor Pago:</strong> <span id="modal-valor-pago"></span></p>
+                <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                <p><strong>Solicitado por:</strong> <span id="modal-solicitado-por">Administrador</span></p>
+
+                <h4>Itens do Pedido:</h4>
+                <table id="modal-tabela-itens">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Lote</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itens do pedido serão adicionados aqui -->
+                    </tbody>
+                </table>
+
+                <div id="area-frete" style="display: none;">
+                    <div class="input-group">
+                        <label for="modal-valor-frete">Valor do Frete:</label>
+                        <input type="number" id="modal-valor-frete">
+                    </div>
+                    <div class="input-group">
+                        <label for="modal-produtor">Produtor:</label>
+                        <select id="modal-produtor">
+                            <option value="Matheus">Matheus</option>
+                            <!-- Opções de produtores serão adicionadas aqui -->
+                        </select>
+                    </div>
+                    <button id="btn-finalizar-pedido" class="btn-acao verde">Finalizar Pedido</button>
+                </div>
+
+                <div id="area-nota-fiscal" style="display: none;">
+                    <button id="btn-adicionar-nota-fiscal" class="btn-acao azul">Adicionar Nota Fiscal</button>
+                    <button id="btn-consultar-nota-fiscal" class="btn-acao azul" style="display: none;">Consultar Nota Fiscal</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/dados.js"></script>
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/consultar_pedidos.js"></script>
+</body>
+</html>
