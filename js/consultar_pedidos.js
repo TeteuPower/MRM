@@ -18,7 +18,8 @@ let paginaAtualPedidosFinalizados = 1;
 const pedidosPorPagina = 5; // Número de pedidos finalizados por página
 
 function exibirPedidos() {
-    exibirPedidosNaoFinalizados();
+    exibirPedidosAguardandoProducao();
+    exibirPedidosFinalizadosAguardandoEnvio();
     exibirPedidosFinalizados();
 }
 
@@ -244,4 +245,50 @@ function formatarData(data) {
     const horas = data.getHours().toString().padStart(2, '0');
     const minutos = data.getMinutes().toString().padStart(2, '0');
     return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
+}
+
+function exibirPedidosAguardandoProducao() {
+    const listaPedidos = document.getElementById('lista-pedidos-aguardando-producao');
+    listaPedidos.innerHTML = ''; // Limpa a lista
+
+    const termoPesquisa = document.getElementById('pesquisa-pedido').value.toLowerCase();
+
+    const pedidosAguardandoProducao = vendas.filter(pedido => {
+        return pedido.status === 'Em produção' &&
+               (pedido.id.toString().includes(termoPesquisa) || pedido.cliente.toLowerCase().includes(termoPesquisa));
+    });
+
+    pedidosAguardandoProducao.forEach(pedido => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.status}`;
+
+        listItem.addEventListener('click', () => {
+            exibirDetalhesPedido(pedido);
+        });
+
+        listaPedidos.appendChild(listItem);
+    });
+}
+
+function exibirPedidosFinalizadosAguardandoEnvio() {
+    const listaPedidos = document.getElementById('lista-pedidos-finalizados-aguardando-envio');
+    listaPedidos.innerHTML = ''; // Limpa a lista
+
+    const termoPesquisa = document.getElementById('pesquisa-pedido').value.toLowerCase();
+
+    const pedidosFinalizadosAguardandoEnvio = vendas.filter(pedido => {
+        return pedido.status === 'Pronto, aguardando envio' &&
+               (pedido.id.toString().includes(termoPesquisa) || pedido.cliente.toLowerCase().includes(termoPesquisa));
+    });
+
+    pedidosFinalizadosAguardandoEnvio.forEach(pedido => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.status}`;
+
+        listItem.addEventListener('click', () => {
+            exibirDetalhesPedido(pedido);
+        });
+
+        listaPedidos.appendChild(listItem);
+    });
 }

@@ -18,29 +18,34 @@
     justify-content: space-around;
     gap: 20px;
     margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite que as divs quebrem para a próxima linha se necessário */
 }
 
-.pedidos-nao-finalizados,
+.pedidos-aguardando-producao, 
+.pedidos-finalizados-aguardando-envio,
 .pedidos-finalizados {
-    flex: 1;
+    flex: 1 1 300px; /* Cada div ocupa pelo menos 300px e pode crescer */
     background-color: #333;
     padding: 20px;
     border-radius: 5px;
     text-align: left;
 }
 
-.pedidos-nao-finalizados h3,
+.pedidos-aguardando-producao h3, 
+.pedidos-finalizados-aguardando-envio h3,
 .pedidos-finalizados h3 {
     margin-bottom: 15px;
 }
 
-#lista-pedidos-nao-finalizados,
+#lista-pedidos-aguardando-producao,
+#lista-pedidos-finalizados-aguardando-envio,
 #lista-pedidos-finalizados {
     list-style: none;
     padding: 0;
 }
 
-#lista-pedidos-nao-finalizados li,
+#lista-pedidos-aguardando-producao li,
+#lista-pedidos-finalizados-aguardando-envio li,
 #lista-pedidos-finalizados li {
     background-color: #222;
     padding: 10px;
@@ -50,7 +55,8 @@
     transition: background-color 0.3s ease;
 }
 
-#lista-pedidos-nao-finalizados li:hover,
+#lista-pedidos-aguardando-producao li:hover,
+#lista-pedidos-finalizados-aguardando-envio li:hover,
 #lista-pedidos-finalizados li:hover {
     background-color: #444;
 }
