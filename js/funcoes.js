@@ -119,3 +119,15 @@ function carregarPedidosDoLocalStorage() {
         vendas = []; // Inicia um array vazio se não houver vendas
     }
 }
+
+function salvarPedidosNoLocalStorage() {
+    // Antes de salvar, converta os objetos Date para strings
+    const vendasParaSalvar = vendas.map(venda => {
+        return {
+            ...venda,
+            dataCriacao: venda.dataCriacao.toISOString() // Converte Date para string ISO
+        };
+    });
+
+    localStorage.setItem('vendas', JSON.stringify(vendasParaSalvar));
+}

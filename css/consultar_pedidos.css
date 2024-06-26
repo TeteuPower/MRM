@@ -76,3 +76,7 @@
 .azul { /* Nova classe para botões azuis */
     background-color: #337ab7;
 }
+
+.laranja {
+    background-color: orange; 
+}

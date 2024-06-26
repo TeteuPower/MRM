@@ -90,6 +90,55 @@ function exibirDetalhesPedido(pedido) {
     document.getElementById('modal-valor-pago').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorPago.toFixed(2)}`;
     document.getElementById('modal-status').textContent = pedido.status;
 
+        // Controle de exibição da área de lote
+        const areaLote = document.getElementById('area-lote');
+        if (pedido.status === 'Em produção') {
+            areaLote.style.display = 'block';
+            exibirInputsLote(pedido); // Chama a função para exibir os inputs de lote
+    
+            // Adiciona evento ao botão "Pronto, aguardando envio"
+            const btnAtualizarStatus = document.getElementById('btn-atualizar-status');
+            btnAtualizarStatus.onclick = () => {
+                atualizarStatusPedido(pedido);
+            };
+        } else {
+            areaLote.style.display = 'none';
+        }
+
+        function atualizarStatusPedido(pedido) {
+            const lotes = {};
+            let todosOsLotesPreenchidos = true;
+        
+            pedido.itens.forEach(item => {
+                if (item.produto === 'rape') {
+                    const inputId = `lote-${item.tipoRape.replace(/\s+/g, '')}`;
+                    const lote = document.getElementById(inputId).value.trim();
+                    if (lote === '') {
+                        todosOsLotesPreenchidos = false;
+                        return; // Sai do loop se algum lote estiver vazio
+                    }
+                    lotes[item.tipoRape] = lote;
+                }
+            });
+        
+            if (!todosOsLotesPreenchidos) {
+                alert('Por favor, preencha todos os lotes!');
+                return;
+            }
+        
+            if (confirm(`Confirma a atualização do status do pedido nº ${pedido.id} para "Pronto, aguardando envio"?`)) {
+                pedido.status = 'Pronto, aguardando envio';
+                pedido.itens.forEach(item => {
+                    if (item.produto === 'rape') {
+                        item.lote = lotes[item.tipoRape];
+                    }
+                });
+                salvarPedidosNoLocalStorage();
+                exibirPedidos();
+                fecharModalDetalhesPedido();
+            }
+        }
+
     // Exibe os itens do pedido na tabela
     const tbodyItens = document.getElementById('modal-tabela-itens').getElementsByTagName('tbody')[0];
     tbodyItens.innerHTML = ''; // Limpa a tabela
@@ -146,6 +195,31 @@ function exibirDetalhesPedido(pedido) {
 
     // Exibe o modal
     document.getElementById('modal-detalhes-pedido').style.display = 'block';
+}
+
+function exibirInputsLote(pedido) {
+    const inputsLote = document.getElementById('inputs-lote');
+    inputsLote.innerHTML = ''; // Limpa os inputs existentes
+
+    pedido.itens.forEach(item => {
+        if (item.produto === 'rape') {
+            const inputGroup = document.createElement('div');
+            inputGroup.classList.add('input-group');
+
+            const label = document.createElement('label');
+            label.textContent = `${item.tipoRape} (${item.quantidade / 2}Kg - ${item.quantidade} Pacotes):`;
+            inputGroup.appendChild(label);
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = `lote-${item.tipoRape.replace(/\s+/g, '')}`; // Cria um ID único para o input
+            input.placeholder = 'Lote';
+            input.value = item.lote || ''; // Define o valor do input com o lote existente, se houver
+            inputGroup.appendChild(input);
+
+            inputsLote.appendChild(inputGroup);
+        }
+    });
 }
 
 function fecharModalDetalhesPedido() {
