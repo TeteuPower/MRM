@@ -103,3 +103,19 @@ function carregarEstoqueDoLocalStorage() {
         };
     }
 }
+
+
+
+function carregarPedidosDoLocalStorage() {
+    const pedidosStorage = localStorage.getItem('vendas');
+    if (pedidosStorage) {
+        vendas = JSON.parse(pedidosStorage, (key, value) => {
+            if (key === 'dataCriacao') {
+                return new Date(value); // Converte a string de data para um objeto Date
+            }
+            return value;
+        });
+    } else {
+        vendas = []; // Inicia um array vazio se não houver vendas
+    }
+}

@@ -52,7 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
             valorVenda: parseFloat(document.getElementById('valor-venda').value),
             valorPago: parseFloat(document.getElementById('valor-pago').value) || 0,
             descricao: document.getElementById('descricao').value,
-            dataCriacao: new Date() // Adiciona a data e hora da criação
+            dataCriacao: new Date(), // Adiciona a data e hora da criação
+            status: 'Em produção', // Adiciona o status inicial
         };
 
         vendas.push(venda);

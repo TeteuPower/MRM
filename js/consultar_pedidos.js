@@ -1,0 +1,173 @@
+// consultar_pedidos.js - lógica da página consultar_pedidos.html
+
+document.addEventListener('DOMContentLoaded', function () {
+    carregarClientesDoLocalStorage();
+    carregarPedidosDoLocalStorage();
+    exibirPedidos();
+
+    const pesquisaInput = document.getElementById('pesquisa-pedido');
+    pesquisaInput.addEventListener('input', exibirPedidos);
+
+    document.getElementById('btn-proxima-pagina').addEventListener('click', () => {
+        paginaAtualPedidosFinalizados++;
+        exibirPedidosFinalizados();
+    });
+});
+
+let paginaAtualPedidosFinalizados = 1;
+const pedidosPorPagina = 5; // Número de pedidos finalizados por página
+
+function exibirPedidos() {
+    exibirPedidosNaoFinalizados();
+    exibirPedidosFinalizados();
+}
+
+function exibirPedidosNaoFinalizados() {
+    const listaPedidos = document.getElementById('lista-pedidos-nao-finalizados');
+    listaPedidos.innerHTML = ''; // Limpa a lista
+
+    const termoPesquisa = document.getElementById('pesquisa-pedido').value.toLowerCase();
+
+    const pedidosNaoFinalizados = vendas.filter(pedido => {
+        return (pedido.status === 'Em produção' || pedido.status === 'Pronto, aguardando envio') &&
+               (pedido.id.toString().includes(termoPesquisa) || pedido.cliente.toLowerCase().includes(termoPesquisa));
+    });
+
+    pedidosNaoFinalizados.forEach(pedido => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.status}`;
+
+        listItem.addEventListener('click', () => {
+            exibirDetalhesPedido(pedido);
+        });
+
+        listaPedidos.appendChild(listItem);
+    });
+}
+
+function exibirPedidosFinalizados() {
+    const listaPedidos = document.getElementById('lista-pedidos-finalizados');
+    listaPedidos.innerHTML = ''; // Limpa a lista
+
+    const termoPesquisa = document.getElementById('pesquisa-pedido').value.toLowerCase();
+
+    const pedidosFinalizados = vendas.filter(pedido => {
+        return pedido.status === 'Finalizado' &&
+               (pedido.id.toString().includes(termoPesquisa) || pedido.cliente.toLowerCase().includes(termoPesquisa));
+    });
+
+    const inicio = (paginaAtualPedidosFinalizados - 1) * pedidosPorPagina;
+    const fim = inicio + pedidosPorPagina;
+    const pedidosPaginaAtual = pedidosFinalizados.slice(inicio, fim);
+
+    pedidosPaginaAtual.forEach(pedido => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.status}`;
+
+        listItem.addEventListener('click', () => {
+            exibirDetalhesPedido(pedido);
+        });
+
+        listaPedidos.appendChild(listItem);
+    });
+
+    // Controle de exibição do botão "Próxima Página"
+    const btnProximaPagina = document.getElementById('btn-proxima-pagina');
+    if (fim < pedidosFinalizados.length) {
+        btnProximaPagina.style.display = 'block';
+    } else {
+        btnProximaPagina.style.display = 'none';
+    }
+}
+
+function exibirDetalhesPedido(pedido) {
+    document.getElementById('modal-numero-pedido').textContent = `Detalhes do Pedido nº ${pedido.id}`;
+    document.getElementById('modal-cliente').textContent = pedido.cliente;
+    document.getElementById('modal-vendedor').textContent = pedido.vendedor;
+    document.getElementById('modal-descricao').textContent = pedido.descricao;
+    document.getElementById('modal-data-criacao').textContent = formatarData(pedido.dataCriacao);
+    document.getElementById('modal-valor-venda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorVenda.toFixed(2)}`;
+    document.getElementById('modal-valor-pago').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorPago.toFixed(2)}`;
+    document.getElementById('modal-status').textContent = pedido.status;
+
+    // Exibe os itens do pedido na tabela
+    const tbodyItens = document.getElementById('modal-tabela-itens').getElementsByTagName('tbody')[0];
+    tbodyItens.innerHTML = ''; // Limpa a tabela
+    pedido.itens.forEach(item => {
+        const row = tbodyItens.insertRow();
+        const cellProduto = row.insertCell();
+        const cellQuantidade = row.insertCell();
+        const cellLote = row.insertCell();
+
+        let nomeProduto = item.produto;
+        if (item.produto === 'rape' && item.tipoRape) {
+            nomeProduto += ` (${item.tipoRape})`;
+        }
+
+        cellProduto.textContent = nomeProduto;
+        cellQuantidade.textContent = item.quantidade;
+        cellLote.textContent = item.lote || '-'; // Exibe o lote se existir, caso contrário, exibe "-"
+    });
+
+    // Controle de exibição das áreas de frete e nota fiscal
+    const areaFrete = document.getElementById('area-frete');
+    const areaNotaFiscal = document.getElementById('area-nota-fiscal');
+    const btnFinalizarPedido = document.getElementById('btn-finalizar-pedido');
+    const btnAdicionarNotaFiscal = document.getElementById('btn-adicionar-nota-fiscal');
+    const btnConsultarNotaFiscal = document.getElementById('btn-consultar-nota-fiscal');
+
+    if (pedido.status === 'Pronto, aguardando envio') {
+        areaFrete.style.display = 'block';
+        areaNotaFiscal.style.display = 'block';
+        btnFinalizarPedido.onclick = () => {
+            finalizarPedido(pedido);
+        };
+
+        // Se já tiver nota fiscal, exibe o botão "Consultar" e oculta o botão "Adicionar"
+        if (pedido.notaFiscal) {
+            btnAdicionarNotaFiscal.style.display = 'none';
+            btnConsultarNotaFiscal.style.display = 'block';
+            btnConsultarNotaFiscal.onclick = () => {
+                // Implemente a lógica para consultar a nota fiscal aqui
+                console.log('Consultar nota fiscal do pedido:', pedido.id);
+            };
+        } else {
+            btnAdicionarNotaFiscal.style.display = 'block';
+            btnConsultarNotaFiscal.style.display = 'none';
+            btnAdicionarNotaFiscal.onclick = () => {
+                // Implemente a lógica para adicionar a nota fiscal aqui
+                console.log('Adicionar nota fiscal ao pedido:', pedido.id);
+            };
+        }
+    } else {
+        areaFrete.style.display = 'none';
+        areaNotaFiscal.style.display = 'none';
+    }
+
+    // Exibe o modal
+    document.getElementById('modal-detalhes-pedido').style.display = 'block';
+}
+
+function fecharModalDetalhesPedido() {
+    document.getElementById('modal-detalhes-pedido').style.display = 'none';
+}
+
+function finalizarPedido(pedido) {
+    if (confirm(`Confirma a finalização do pedido nº ${pedido.id}?`)) {
+        pedido.status = 'Finalizado';
+        pedido.valorFrete = parseFloat(document.getElementById('modal-valor-frete').value) || 0;
+        pedido.produtor = document.getElementById('modal-produtor').value;
+        salvarPedidosNoLocalStorage();
+        exibirPedidos();
+        fecharModalDetalhesPedido();
+    }
+}
+
+function formatarData(data) {
+    const dia = data.getDate().toString().padStart(2, '0');
+    const mes = (data.getMonth() + 1).toString().padStart(2, '0');
+    const ano = data.getFullYear();
+    const horas = data.getHours().toString().padStart(2, '0');
+    const minutos = data.getMinutes().toString().padStart(2, '0');
+    return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
+}
