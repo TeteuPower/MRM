@@ -46,40 +46,6 @@ function exibirPedidosNaoFinalizados() {
     });
 }
 
-function exibirPedidosFinalizados() {
-    const listaPedidos = document.getElementById('lista-pedidos-finalizados');
-    listaPedidos.innerHTML = ''; // Limpa a lista
-
-    const termoPesquisa = document.getElementById('pesquisa-pedido').value.toLowerCase();
-
-    const pedidosFinalizados = vendas.filter(pedido => {
-        return pedido.status === 'Finalizado' &&
-               (pedido.id.toString().includes(termoPesquisa) || pedido.cliente.toLowerCase().includes(termoPesquisa));
-    });
-
-    const inicio = (paginaAtualPedidosFinalizados - 1) * pedidosPorPagina;
-    const fim = inicio + pedidosPorPagina;
-    const pedidosPaginaAtual = pedidosFinalizados.slice(inicio, fim);
-
-    pedidosPaginaAtual.forEach(pedido => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.status}`;
-
-        listItem.addEventListener('click', () => {
-            exibirDetalhesPedido(pedido);
-        });
-
-        listaPedidos.appendChild(listItem);
-    });
-
-    // Controle de exibição do botão "Próxima Página"
-    const btnProximaPagina = document.getElementById('btn-proxima-pagina');
-    if (fim < pedidosFinalizados.length) {
-        btnProximaPagina.style.display = 'block';
-    } else {
-        btnProximaPagina.style.display = 'none';
-    }
-}
 
 function exibirDetalhesPedido(pedido) {
     document.getElementById('modal-numero-pedido').textContent = `Detalhes do Pedido nº ${pedido.id}`;
@@ -255,8 +221,11 @@ function exibirPedidosAguardandoProducao() {
 
     const pedidosAguardandoProducao = vendas.filter(pedido => {
         return pedido.status === 'Em produção' &&
-               (pedido.id.toString().includes(termoPesquisa) || pedido.cliente.toLowerCase().includes(termoPesquisa));
-    });
+        (pedido.id.toString().includes(termoPesquisa) || 
+        pedido.cliente.toLowerCase().includes(termoPesquisa) ||
+        pedido.vendedor.toLowerCase().includes(termoPesquisa)); // Adiciona pesquisa por vendedor
+    })
+    .sort((a, b) => b.dataCriacao - a.dataCriacao); // Ordena por data (mais recentes primeiro)
 
     pedidosAguardandoProducao.forEach(pedido => {
         const listItem = document.createElement('li');
@@ -278,8 +247,11 @@ function exibirPedidosFinalizadosAguardandoEnvio() {
 
     const pedidosFinalizadosAguardandoEnvio = vendas.filter(pedido => {
         return pedido.status === 'Pronto, aguardando envio' &&
-               (pedido.id.toString().includes(termoPesquisa) || pedido.cliente.toLowerCase().includes(termoPesquisa));
-    });
+        (pedido.id.toString().includes(termoPesquisa) || 
+        pedido.cliente.toLowerCase().includes(termoPesquisa) ||
+        pedido.vendedor.toLowerCase().includes(termoPesquisa)); // Adiciona pesquisa por vendedor
+})
+.sort((a, b) => b.dataCriacao - a.dataCriacao); // Ordena por data (mais recentes primeiro)
 
     pedidosFinalizadosAguardandoEnvio.forEach(pedido => {
         const listItem = document.createElement('li');
@@ -291,4 +263,42 @@ function exibirPedidosFinalizadosAguardandoEnvio() {
 
         listaPedidos.appendChild(listItem);
     });
+}
+
+function exibirPedidosFinalizados() {
+    const listaPedidos = document.getElementById('lista-pedidos-finalizados');
+    listaPedidos.innerHTML = ''; // Limpa a lista
+
+    const termoPesquisa = document.getElementById('pesquisa-pedido').value.toLowerCase();
+
+    const pedidosFinalizados = vendas.filter(pedido => {
+        return pedido.status === 'Finalizado' &&
+        (pedido.id.toString().includes(termoPesquisa) || 
+        pedido.cliente.toLowerCase().includes(termoPesquisa) ||
+        pedido.vendedor.toLowerCase().includes(termoPesquisa)); // Adiciona pesquisa por vendedor
+})
+.sort((a, b) => b.dataCriacao - a.dataCriacao); // Ordena por data (mais recentes primeiro)
+
+    const inicio = (paginaAtualPedidosFinalizados - 1) * pedidosPorPagina;
+    const fim = inicio + pedidosPorPagina;
+    const pedidosPaginaAtual = pedidosFinalizados.slice(inicio, fim);
+
+    pedidosPaginaAtual.forEach(pedido => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.status}`;
+
+        listItem.addEventListener('click', () => {
+            exibirDetalhesPedido(pedido);
+        });
+
+        listaPedidos.appendChild(listItem);
+    });
+
+    // Controle de exibição do botão "Próxima Página"
+    const btnProximaPagina = document.getElementById('btn-proxima-pagina');
+    if (fim < pedidosFinalizados.length) {
+        btnProximaPagina.style.display = 'block';
+    } else {
+        btnProximaPagina.style.display = 'none';
+    }
 }
