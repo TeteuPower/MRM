@@ -294,11 +294,50 @@ function exibirPedidosFinalizados() {
         listaPedidos.appendChild(listItem);
     });
 
-    // Controle de exibição do botão "Próxima Página"
-    const btnProximaPagina = document.getElementById('btn-proxima-pagina');
-    if (fim < pedidosFinalizados.length) {
-        btnProximaPagina.style.display = 'block';
-    } else {
-        btnProximaPagina.style.display = 'none';
+ // Controle de exibição dos botões de paginação
+ const btnProximaPagina = document.getElementById('btn-proxima-pagina');
+ const btnPaginaAnterior = document.getElementById('btn-pagina-anterior');
+ if (fim < pedidosFinalizados.length) {
+     btnProximaPagina.style.display = 'block';
+ } else {
+     btnProximaPagina.style.display = 'none';
+ }
+ if (paginaAtualPedidosFinalizados > 1) {
+     btnPaginaAnterior.style.display = 'block';
+ } else {
+     btnPaginaAnterior.style.display = 'none';
+ }
+
+ // Criação do menu de paginação
+ criarMenuPaginacao(pedidosFinalizados.length);
+}
+
+function criarMenuPaginacao(totalPedidos) {
+    const menuPaginacao = document.getElementById('menu-paginacao');
+    menuPaginacao.innerHTML = ''; // Limpa o menu
+
+    const totalPaginas = Math.ceil(totalPedidos / pedidosPorPagina);
+    const paginaInicial = Math.max(1, paginaAtualPedidosFinalizados - 3); // Exibe até 3 páginas antes da atual
+    const paginaFinal = Math.min(totalPaginas, paginaInicial + 7); // Exibe até 7 páginas no total
+
+    for (let i = paginaInicial; i <= paginaFinal; i++) {
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = i;
+    
+        // Adiciona o evento onclick ao listItem (em vez do link)
+        listItem.onclick = () => {
+            paginaAtualPedidosFinalizados = i;
+            exibirPedidosFinalizados();
+        };
+    
+        listItem.appendChild(link);
+        menuPaginacao.appendChild(listItem);
+
+        if (i === paginaAtualPedidosFinalizados) {
+            listItem.classList.add('ativo'); // Adiciona a classe 'ativo' ao item da página atual
+        }
     }
 }
+

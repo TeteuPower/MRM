@@ -86,3 +86,39 @@
 .laranja {
     background-color: orange; 
 }
+
+.paginacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/*.paginacao button {
+     ... (seus estilos para botões) ... 
+}*/
+
+.paginacao ul {
+    display: flex;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+}
+
+.paginacao li {
+    background-color: #222; /* Cor de fundo dos itens */
+    padding: 8px 12px; /* Espaçamento interno */
+    border-radius: 5px; /* Cantos arredondados */
+    border: 1px solid #555; /* Borda sutil */
+}
+
+.paginacao li a {
+    text-decoration: none; /* Remove a decoração do link */
+    color: #eee; /* Cor do texto do link */
+    font-weight: bold; /* Texto em negrito */
+}
+
+.paginacao li.ativo { /* Estilo para a página atual */
+    background-color: #555; /* Cor de fundo mais escura */
+}
