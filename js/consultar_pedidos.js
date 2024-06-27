@@ -167,6 +167,14 @@ function exibirDetalhesPedido(pedido) {
         areaNotaFiscal.style.display = 'none';
     }
 
+        // Preenche o valor do frete
+        const valorFreteExibicao = document.getElementById('modal-valor-frete-exibicao');
+        if (pedido.valorFrete) {
+            valorFreteExibicao.textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorFrete.toFixed(2)}`;
+        } else {
+            valorFreteExibicao.textContent = '-'; // Ou qualquer outro valor padrão se o frete não estiver definido
+        }
+
     // Exibe o modal
     document.getElementById('modal-detalhes-pedido').style.display = 'block';
 }
