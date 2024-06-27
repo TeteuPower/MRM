@@ -11,6 +11,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('btn-proxima-pagina').addEventListener('click', () => {
         paginaAtualPedidosFinalizados++;
         exibirPedidosFinalizados();
+        
+    document.getElementById('btn-pagina-anterior').addEventListener('click', () => {
+        if (paginaAtualPedidosFinalizados > 1) { // Verifica se não está na primeira página
+            paginaAtualPedidosFinalizados--;
+            exibirPedidosFinalizados();
+        }
+    });
     });
 });
 
