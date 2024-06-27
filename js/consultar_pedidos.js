@@ -43,7 +43,7 @@ function exibirPedidosNaoFinalizados() {
 
     pedidosNaoFinalizados.forEach(pedido => {
         const listItem = document.createElement('li');
-        listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.status}`;
+        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
 
         listItem.addEventListener('click', () => {
             exibirDetalhesPedido(pedido);
@@ -244,7 +244,7 @@ function exibirPedidosAguardandoProducao() {
 
     pedidosAguardandoProducao.forEach(pedido => {
         const listItem = document.createElement('li');
-        listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.status}`;
+        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
 
         listItem.addEventListener('click', () => {
             exibirDetalhesPedido(pedido);
@@ -270,7 +270,7 @@ function exibirPedidosFinalizadosAguardandoEnvio() {
 
     pedidosFinalizadosAguardandoEnvio.forEach(pedido => {
         const listItem = document.createElement('li');
-        listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.status}`;
+        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
 
         listItem.addEventListener('click', () => {
             exibirDetalhesPedido(pedido);
@@ -300,7 +300,7 @@ function exibirPedidosFinalizados() {
 
     pedidosPaginaAtual.forEach(pedido => {
         const listItem = document.createElement('li');
-        listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.status}`;
+        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
 
         listItem.addEventListener('click', () => {
             exibirDetalhesPedido(pedido);
