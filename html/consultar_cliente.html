@@ -43,6 +43,32 @@
                 <button id="btn-extrato-cliente" class="btn-acao verde">Extrato do Cliente</button>
             </div>
         </div>
+        <div id="modal-extrato-cliente" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalExtratoCliente()">×</span>
+                <h3 id="extrato-nome-cliente">Extrato do Cliente</h3>
+        
+                <div id="saldo-cliente">
+                    <p><strong>Saldo em Reais:</strong> <span id="saldo-reais">R$ 0.00</span></p>
+                    <p><strong>Saldo em Dólares:</strong> <span id="saldo-dolares">US$ 0.00</span></p>
+                </div>
+        
+                <h4>Extrato de Transações</h4>
+                <table id="tabela-extrato">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <th>Saldo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Transações serão adicionadas aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </main>
 
     <script src="../js/dados.js"></script>

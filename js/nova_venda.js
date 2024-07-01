@@ -61,6 +61,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Lógica para atualizar o estoque (deduzir os itens vendidos)
         atualizarEstoque(venda);
+        // Atualiza o saldo do cliente
+        atualizarSaldoCliente(venda);
 
         console.log('Venda registrada com sucesso:', venda);
 
@@ -72,6 +74,20 @@ document.addEventListener('DOMContentLoaded', function () {
         calcularSaldoVenda();
     });
 });
+
+function atualizarSaldoCliente(venda) {
+    const cliente = clientes.find(c => c.nome === venda.cliente);
+
+    if (cliente) {
+        if (venda.moeda === 'real') {
+            cliente.saldoReais += venda.valorPago - venda.valorVenda;
+        } else {
+            cliente.saldoDolares += venda.valorPago - venda.valorVenda;
+        }
+
+        salvarClientesNoLocalStorage(); // Salva os clientes atualizados no Local Storage
+    }
+}
 
 function popularSelectClientes() {
     const selectCliente = document.getElementById('cliente');

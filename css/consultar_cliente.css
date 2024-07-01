@@ -1,4 +1,3 @@
-/* consultar_cliente.css */
 #consultar-cliente {
     text-align: center;
 }
@@ -35,3 +34,25 @@
     background-color: #555;
 }
 
+#modal-extrato-cliente .modal-content {
+    /* ... (seus estilos para o conteúdo do modal) ... */
+    width: 60%; /* Ajuste a largura conforme necessário */
+}
+
+#saldo-cliente {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+#tabela-extrato {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tabela-extrato th,
+#tabela-extrato td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+}
