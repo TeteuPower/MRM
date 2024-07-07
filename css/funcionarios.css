@@ -1,0 +1,109 @@
+/* funcionarios.css */
+#funcionarios {
+    text-align: center;
+}
+
+.funcionarios-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.vendedores,
+.produtores {
+    flex: 1;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.vendedores h3,
+.produtores h3 {
+    margin-bottom: 15px;
+}
+
+#lista-vendedores,
+#lista-produtores {
+    list-style: none;
+    padding: 0;
+}
+
+#lista-vendedores li,
+#lista-produtores li {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#lista-vendedores li:hover,
+#lista-produtores li:hover {
+    background-color: #444;
+}
+
+.desempenho-funcionarios {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.vendedores-desempenho,
+.produtores-desempenho {
+    flex: 1;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.vendedores-desempenho h4,
+.produtores-desempenho h4 {
+    margin-bottom: 15px;
+}
+
+#lista-vendedores-desempenho,
+#lista-produtores-desempenho {
+    list-style: none;
+    padding: 0;
+}
+
+#lista-vendedores-desempenho li,
+#lista-produtores-desempenho li {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#lista-vendedores-desempenho li:hover,
+#lista-produtores-desempenho li:hover {
+    background-color: #444;
+}
+
+#tabela-vendas-vendedor,
+#tabela-producoes-produtor {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#tabela-vendas-vendedor th,
+#tabela-vendas-vendedor td,
+#tabela-producoes-produtor th,
+#tabela-producoes-produtor td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+}
+
+/*#btn-proxima-pagina-vendedor {
+     ... (estilos para botões) ...
+}*/
