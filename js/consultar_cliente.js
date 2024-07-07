@@ -74,8 +74,8 @@ function exibirTransacoes(cliente) {
     const tbodyExtrato = document.getElementById('tabela-extrato').getElementsByTagName('tbody')[0];
     tbodyExtrato.innerHTML = ''; // Limpa a tabela
 
-    let saldoReais = 0;
-    let saldoDolares = 0;
+    let saldoReais = cliente.saldoReais; // Inicializa com o saldo do cliente
+    let saldoDolares = cliente.saldoDolares; // Inicializa com o saldo do cliente
 
     // Ordena as vendas por data de criação (mais recentes primeiro)
     const vendasOrdenadas = vendas.slice().sort((a, b) => b.dataCriacao - a.dataCriacao);
@@ -85,28 +85,38 @@ function exibirTransacoes(cliente) {
             const data = formatarData(venda.dataCriacao);
             const descricao = `Pedido nº ${venda.id}`;
             let valor = 0;
-            let saldo = 0;
 
             if (venda.moeda === 'real') {
                 valor = -venda.valorVenda; // Valor da venda é negativo no extrato
-                saldoReais += valor;
-                saldo = saldoReais;
+                saldoReais += valor; // Atualiza o saldo em reais
             } else {
                 valor = -venda.valorVenda;
-                saldoDolares += valor;
-                saldo = saldoDolares;
+                saldoDolares += valor; // Atualiza o saldo em dólares
             }
 
             const row = tbodyExtrato.insertRow();
+            row.classList.add('transacao-item');
+            row.addEventListener('click', () => {
+                exibirDetalhesPedido(venda);
+            });
+
             const cellData = row.insertCell();
             const cellDescricao = row.insertCell();
+            const cellStatus = row.insertCell();
             const cellValor = row.insertCell();
             const cellSaldo = row.insertCell();
 
             cellData.textContent = data;
             cellDescricao.textContent = descricao;
+            cellStatus.textContent = venda.status;
             cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${valor.toFixed(2)}`;
-            cellSaldo.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${saldo.toFixed(2)}`;
+
+            // Exibe o saldo correto (reais ou dólares)
+            if (venda.moeda === 'real') {
+                cellSaldo.textContent = `R$ ${saldoReais.toFixed(2)}`;
+            } else {
+                cellSaldo.textContent = `US$ ${saldoDolares.toFixed(2)}`;
+            }
         }
     });
 }

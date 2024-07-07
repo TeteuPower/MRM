@@ -56,3 +56,11 @@
     padding: 8px;
     border-bottom: 1px solid #555;
 }
+
+#tabela-extrato .transacao-item {
+    cursor: pointer; /* Torna a linha clicável */
+}
+
+#tabela-extrato .transacao-item:hover {
+    background-color: #444; /* Cor de fundo ao passar o mouse */
+}
