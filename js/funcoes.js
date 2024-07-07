@@ -9,12 +9,19 @@ function salvarClientesNoLocalStorage() {
 function carregarClientesDoLocalStorage() {
     const clientesStorage = localStorage.getItem('clientes');
     if (clientesStorage) {
-        window.clientes = JSON.parse(clientesStorage);
+        window.clientes = JSON.parse(clientesStorage, (key, value) => {
+            if (key === 'pagamentos') {
+                return value.map(pagamento => ({
+                    ...pagamento,
+                    data: new Date(pagamento.data) // Converte a string de data para um objeto Date
+                }));
+            }
+            return value;
+        });
     } else {
-        window.clientes = [];
+        window.clientes = []; // Inicializa como um array vazio se não houver dados no Local Storage
     }
 }
-
 
 function gerarIdVenda() {
     const novoId = proximaIdVenda;

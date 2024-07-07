@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             endereco: endereco,
             login: login,
             senha: senha,
+            pagamentos: [], // Inicializa a propriedade pagamentos como um array vazio
             saldoReais: 0,
             saldoDolares: 0,
         };

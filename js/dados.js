@@ -53,3 +53,5 @@ const tiposDeCinzas = [
 
 let vendas = []; // Array para armazenar as vendas
 let proximaIdVenda = 1; // Variável para controlar o próximo ID de venda
+let vendedores = []; // Array para armazenar os vendedores
+let produtores = []; // Array para armazenar os produtores

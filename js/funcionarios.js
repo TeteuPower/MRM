@@ -1,8 +1,5 @@
 // funcionarios.js - lógica da página funcionarios.html
 
-let vendedores = []; // Array para armazenar os vendedores
-let produtores = []; // Array para armazenar os produtores
-
 document.addEventListener('DOMContentLoaded', function () {
     carregarFuncionariosDoLocalStorage();
     exibirVendedores();
