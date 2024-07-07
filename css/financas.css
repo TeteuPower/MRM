@@ -1,0 +1,78 @@
+/* financas.css */
+#financas {
+    text-align: center;
+}
+
+.repasses-comissao,
+.pagamentos-clientes,
+.clientes-negativos,
+.resumo-mensal {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.repasses-comissao h3,
+.pagamentos-clientes h3,
+.clientes-negativos h3,
+.resumo-mensal h3 {
+    margin-bottom: 15px;
+}
+
+#lista-repasses-comissao,
+#lista-pagamentos-clientes,
+#lista-clientes-negativos,
+#lista-resumo-vendedores,
+#lista-resumo-produtores {
+    list-style: none;
+    padding: 0;
+}
+
+#lista-repasses-comissao li,
+#lista-pagamentos-clientes li,
+#lista-clientes-negativos li,
+#lista-resumo-vendedores li,
+#lista-resumo-produtores li {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#lista-repasses-comissao li:hover,
+#lista-pagamentos-clientes li:hover,
+#lista-clientes-negativos li:hover,
+#lista-resumo-vendedores li:hover,
+#lista-resumo-produtores li:hover {
+    background-color: #444;
+}
+
+.pagamentos-clientes .input-group {
+    margin-bottom: 10px;
+}
+
+.resumo-mensal .resumo-vendedores,
+.resumo-mensal .resumo-produtores,
+.resumo-mensal .resumo-empresa {
+    flex: 1;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.resumo-mensal .resumo-vendedores h4,
+.resumo-mensal .resumo-produtores h4,
+.resumo-mensal .resumo-empresa h4 {
+    margin-bottom: 15px;
+}
+
+.resumo-mensal .resumo-empresa p {
+    font-size: 1.2em;
+    font-weight: bold;
+}

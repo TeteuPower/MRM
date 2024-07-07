@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanças</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/financas.css">
+</head>
+<body>
+    <nav class="admin-menu">
+        <ul>
+            <li><a href="admin.html">Estoque</a></li>
+            <li><a href="novo_cliente.html">Novo Cliente</a></li>
+            <li><a href="nova_venda.html">Nova Venda</a></li>
+            <li><a href="consultar_pedidos.html">Consultar Pedidos</a></li>
+            <li><a href="consultar_cliente.html">Consultar Cliente</a></li>
+            <li><a href="funcionarios.html">Funcionários</a></li>
+            <li><a href="financas.html" class="active">Finanças</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="financas">
+            <h2>Finanças</h2>
+
+            <div class="repasses-comissao">
+                <h3>Repasses de Comissão</h3>
+                <ul id="lista-repasses-comissao">
+                    <!-- Repasses de comissão serão adicionados aqui -->
+                </ul>
+            </div>
+
+            <div class="pagamentos-clientes">
+                <h3>Pagamentos de Clientes</h3>
+                <ul id="lista-pagamentos-clientes">
+                    <!-- Pagamentos de clientes serão adicionados aqui -->
+                </ul>
+
+                <h4>Adicionar Pagamento</h4>
+                <div class="input-group">
+                    <label for="cliente-pagamento">Cliente:</label>
+                    <select id="cliente-pagamento">
+                        <option value="">Selecione o Cliente</option>
+                        <!-- Opções de clientes serão adicionadas aqui -->
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="valor-pagamento">Valor:</label>
+                    <input type="number" id="valor-pagamento" placeholder="Valor do Pagamento">
+                </div>
+
+                <div class="input-group">
+                    <label for="moeda-pagamento">Moeda:</label>
+                    <select id="moeda-pagamento">
+                        <option value="real">Real (R$)</option>
+                        <option value="dolar">Dólar (US$)</option>
+                    </select>
+                </div>
+
+                <button id="btn-adicionar-pagamento" class="btn-acao verde">Adicionar Pagamento</button>
+            </div>
+
+            <div class="clientes-negativos">
+                <h3>Clientes com Saldo Negativo</h3>
+                <ul id="lista-clientes-negativos">
+                    <!-- Clientes com saldo negativo serão adicionados aqui -->
+                </ul>
+            </div>
+
+            <div class="resumo-mensal">
+                <h3>Resumo Mensal</h3>
+                <div class="resumo-vendedores">
+                    <h4>Vendedores</h4>
+                    <ul id="lista-resumo-vendedores">
+                        <!-- Resumo de ganhos dos vendedores será adicionado aqui -->
+                    </ul>
+                </div>
+
+                <div class="resumo-produtores">
+                    <h4>Produtores</h4>
+                    <ul id="lista-resumo-produtores">
+                        <!-- Resumo de ganhos dos produtores será adicionado aqui -->
+                    </ul>
+                </div>
+
+                <div class="resumo-empresa">
+                    <h4>Empresa</h4>
+                    <p>Lucro Total: <span id="lucro-total">R$ 0.00</span></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/dados.js"></script>
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/financas.js"></script>
+</body>
+</html>
