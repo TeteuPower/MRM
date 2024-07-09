@@ -1,4 +1,3 @@
-// nova_venda.js - lógica da página nova_venda.html
 
 let carrinho = []; // Array para armazenar os itens do carrinho
 
@@ -51,6 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
             moeda: document.getElementById('moeda').value,
             valorVenda: parseFloat(document.getElementById('valor-venda').value),
             valorPago: parseFloat(document.getElementById('valor-pago').value) || 0,
+            saldoVenda: parseFloat(document.getElementById('valor-venda').value) - parseFloat(document.getElementById('valor-pago').value) || 0 ,
             descricao: document.getElementById('descricao').value,
             dataCriacao: new Date(), // Adiciona a data e hora da criação
             status: 'Em produção', // Adiciona o status inicial
