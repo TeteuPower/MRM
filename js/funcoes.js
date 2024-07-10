@@ -138,6 +138,7 @@ function exibirDetalhesPedido(pedido) {
     document.getElementById('modal-valor-venda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorVenda.toFixed(2)}`;
     document.getElementById('modal-valor-pago').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorPago.toFixed(2)}`;
     document.getElementById('modal-status').textContent = pedido.status;
+    document.getElementById('modal-saldoVenda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.saldoVenda.toFixed(2)}`;
 
         // Controle de exibição da área de lote
         const areaLote = document.getElementById('area-lote');
