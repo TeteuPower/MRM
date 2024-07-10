@@ -86,6 +86,7 @@ function fecharModalDetalhesPedido() {
 function finalizarPedido(pedido) {
     if (confirm(`Confirma a finalização do pedido nº ${pedido.id}?`)) {
         pedido.status = 'Finalizado';
+        pedido.dataFinalizacao = new Date(); // Define a data de finalização
         pedido.valorFrete = parseFloat(document.getElementById('modal-valor-frete').value) || 0;
         pedido.produtor = document.getElementById('modal-produtor').value;
         salvarPedidosNoLocalStorage();
@@ -95,6 +96,9 @@ function finalizarPedido(pedido) {
 }
 
 function formatarData(data) {
+    if (data === null) {
+        return '-'; // Ou qualquer outro valor padrão que você queira exibir quando a data for nula
+    }
     const dia = data.getDate().toString().padStart(2, '0');
     const mes = (data.getMonth() + 1).toString().padStart(2, '0');
     const ano = data.getFullYear();

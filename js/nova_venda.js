@@ -54,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function () {
             descricao: document.getElementById('descricao').value,
             dataCriacao: new Date(), // Adiciona a data e hora da criação
             status: 'Em produção', // Adiciona o status inicial
+            dataProducao: null, // Data que o pedido foi produzido
+            dataFinalizacao: null // Data que o pedido foi finalizado
         };
 
         vendas.push(venda);

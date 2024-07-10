@@ -134,7 +134,9 @@ function exibirDetalhesPedido(pedido) {
     document.getElementById('modal-cliente').textContent = pedido.cliente;
     document.getElementById('modal-vendedor').textContent = pedido.vendedor;
     document.getElementById('modal-descricao').textContent = pedido.descricao;
-    document.getElementById('modal-data-criacao').textContent = formatarData(pedido.dataCriacao);
+    document.getElementById('modal-data-criacao').textContent = formatarData(pedido.dataCriacao); //Data que o pedido foi criado
+    document.getElementById('modal-data-producao').textContent = formatarData(pedido.dataProducao); //Data que o pedido foi produzido
+    document.getElementById('modal-data-finalizacao').textContent = formatarData(pedido.dataFinalizacao); //Data que o pedido foi finalizado
     document.getElementById('modal-valor-venda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorVenda.toFixed(2)}`;
     document.getElementById('modal-valor-pago').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorPago.toFixed(2)}`;
     document.getElementById('modal-status').textContent = pedido.status;
@@ -178,6 +180,7 @@ function exibirDetalhesPedido(pedido) {
         
             if (confirm(`Confirma a atualização do status do pedido nº ${pedido.id} para "Pronto, aguardando envio"?`)) {
                 pedido.status = 'Pronto, aguardando envio';
+                pedido.dataProducao = new Date(); // Define a data de produção
                 pedido.itens.forEach(item => {
                     if (item.produto === 'rape') {
                         item.lote = lotes[item.tipoRape];
