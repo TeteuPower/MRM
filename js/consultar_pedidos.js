@@ -92,6 +92,7 @@ function finalizarPedido(pedido) {
         salvarPedidosNoLocalStorage();
         exibirPedidos();
         fecharModalDetalhesPedido();
+        atualizarPedidoNoCliente(pedido); // Atualiza o pedido dentro da array do cliente
     }
 }
 

@@ -189,6 +189,7 @@ function exibirDetalhesPedido(pedido) {
                 salvarPedidosNoLocalStorage();
                 exibirPedidos();
                 fecharModalDetalhesPedido();
+                atualizarPedidoNoCliente(pedido); // Atualiza o pedido dentro da array do cliente
             }
         }
 
@@ -295,5 +296,18 @@ function atualizarSaldoCliente(venda) {
         }
         cliente.pedidos.push(venda); // Adiciona o pedido ao array pedidos do cliente
         salvarClientesNoLocalStorage(); // Salva os clientes atualizados no Local Storage
+    }
+}
+
+
+function atualizarPedidoNoCliente(venda) {
+    const cliente = clientes.find(c => c.nome === venda.cliente);
+
+    if (cliente) {
+        const indexPedido = cliente.pedidos.findIndex(p => p.id === venda.id);
+        if (indexPedido !== -1) {
+            cliente.pedidos[indexPedido] = venda; // Atualiza o pedido no array
+            salvarClientesNoLocalStorage();
+        }
     }
 }
