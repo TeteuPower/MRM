@@ -77,47 +77,39 @@ function exibirTransacoes(cliente) {
     let saldoReais = cliente.saldoReais; // Inicializa com o saldo do cliente
     let saldoDolares = cliente.saldoDolares; // Inicializa com o saldo do cliente
 
-    // Ordena as vendas por data de criação (mais recentes primeiro)
-    const vendasOrdenadas = vendas.slice().sort((a, b) => b.dataCriacao - a.dataCriacao);
+    // Ordena os pedidos do cliente por data de criação (mais recentes primeiro)
+    const pedidosOrdenados = cliente.pedidos.slice().sort((a, b) => b.dataCriacao - a.dataCriacao);
 
-    vendasOrdenadas.forEach(venda => {
-        if (venda.cliente === cliente.nome) {
-            const data = formatarData(venda.dataCriacao);
-            const descricao = `Pedido nº ${venda.id}`;
-            let valor = 0;
+    pedidosOrdenados.forEach(pedido => {
+        //const data = formatarData(pedido.dataCriacao);
+        const PedidoExtrato = `Pedido nº ${pedido.id}`;
 
-            if (venda.moeda === 'real') {
-                valor = -venda.valorVenda; // Valor da venda é negativo no extrato
-                saldoReais += valor; // Atualiza o saldo em reais
-            } else {
-                valor = -venda.valorVenda;
-                saldoDolares += valor; // Atualiza o saldo em dólares
-            }
+        const row = tbodyExtrato.insertRow();
+        const cellData = row.insertCell(); //Coluna de data
+        const cellPedidoExtrato = row.insertCell(); //Coluna do número do pedido
+        const cellStatus = row.insertCell(); //Coluna de status do pedido
+        const cellValorVenda = row.insertCell(); //Coluna de valor do pedido
+        const cellSaldoVenda = row.insertCell(); //Coluna do saldo do pedido
 
-            const row = tbodyExtrato.insertRow();
-            row.classList.add('transacao-item');
-            row.addEventListener('click', () => {
-                exibirDetalhesPedido(venda);
-            });
+        //cellData.textContent = data;
+        cellPedidoExtrato.textContent = PedidoExtrato;
+        cellStatus.textContent = pedido.status;
+        cellValorVenda.textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorVenda}`;
+        cellSaldoVenda.textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.saldoVenda}`;
 
-            const cellData = row.insertCell();
-            const cellDescricao = row.insertCell();
-            const cellStatus = row.insertCell();
-            const cellValor = row.insertCell();
-            const cellSaldo = row.insertCell();
+        // Adiciona os itens do pedido como linhas separadas
+        pedido.itens.forEach(item => {
+            const itemRow = tbodyExtrato.insertRow();
+            const itemCellData = itemRow.insertCell();
+            const itemCellPedidoExtrato = itemRow.insertCell();
+            const itemCellStatus = itemRow.insertCell();
+            const itemCellSaldo = itemRow.insertCell();
 
-            cellData.textContent = data;
-            cellDescricao.textContent = descricao;
-            cellStatus.textContent = venda.status;
-            cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${valor.toFixed(2)}`;
-
-            // Exibe o saldo correto (reais ou dólares)
-            if (venda.moeda === 'real') {
-                cellSaldo.textContent = `R$ ${saldoReais.toFixed(2)}`;
-            } else {
-                cellSaldo.textContent = `US$ ${saldoDolares.toFixed(2)}`;
-            }
-        }
+            //itemCellData.textContent = ''; // Deixa a data em branco para os itens
+            //itemCellPedidoExtrato.textContent = `- ${item.produto} ${item.tipoRape ? `(${item.tipoRape})` : ''} x${item.quantidade}`;
+            //itemCellStatus.textContent = ''; // Deixa o valor em branco para os itens
+            //itemCellSaldo.textContent = ''; // Deixa o saldo em branco para os itens
+        });
     });
 }
 
