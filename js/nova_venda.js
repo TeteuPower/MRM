@@ -77,19 +77,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-function atualizarSaldoCliente(venda) {
-    const cliente = clientes.find(c => c.nome === venda.cliente);
-
-    if (cliente) {
-        if (venda.moeda === 'real') {
-            cliente.saldoReais += venda.valorPago - venda.valorVenda;
-        } else {
-            cliente.saldoDolares += venda.valorPago - venda.valorVenda;
-        }
-
-        salvarClientesNoLocalStorage(); // Salva os clientes atualizados no Local Storage
-    }
-}
 
 function popularSelectClientes() {
     const selectCliente = document.getElementById('cliente');

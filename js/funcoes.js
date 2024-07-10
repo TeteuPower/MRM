@@ -283,3 +283,17 @@ function salvarPedidosNoLocalStorage() {
 
     localStorage.setItem('vendas', JSON.stringify(vendasParaSalvar));
 }
+
+function atualizarSaldoCliente(venda) {
+    const cliente = clientes.find(c => c.nome === venda.cliente);
+
+    if (cliente) {
+        if (venda.moeda === 'real') {
+            cliente.saldoReais += venda.valorPago - venda.valorVenda;
+        } else {
+            cliente.saldoDolares += venda.valorPago - venda.valorVenda;
+        }
+        cliente.pedidos.push(venda); // Adiciona o pedido ao array pedidos do cliente
+        salvarClientesNoLocalStorage(); // Salva os clientes atualizados no Local Storage
+    }
+}

@@ -23,9 +23,10 @@ document.addEventListener('DOMContentLoaded', function() {
             endereco: endereco,
             login: login,
             senha: senha,
-            pagamentos: [], // Inicializa a propriedade pagamentos como um array vazio
             saldoReais: 0,
             saldoDolares: 0,
+            pagamentos: [], // Inicializa a propriedade pagamentos como um array vazio
+            pedidos: [], // Pedidos do cliente
         };
 
         // Simula adição do cliente ao "banco de dados" (array clientes)
