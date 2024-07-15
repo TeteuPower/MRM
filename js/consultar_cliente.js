@@ -70,6 +70,7 @@ function exibirExtratoCliente() {
     }
 }
 
+// Função que insere o extrato do cliente
 function exibirTransacoes(cliente) {
     const tbodyExtrato = document.getElementById('tabela-extrato').getElementsByTagName('tbody')[0];
     tbodyExtrato.innerHTML = ''; // Limpa a tabela
@@ -88,13 +89,16 @@ function exibirTransacoes(cliente) {
         const cellData = row.insertCell(); //Coluna de data
         const cellPedidoExtrato = row.insertCell(); //Coluna do número do pedido
         const cellStatus = row.insertCell(); //Coluna de status do pedido
-        const cellValorVenda = row.insertCell(); //Coluna de valor do pedido
-        const cellSaldoVenda = row.insertCell(); //Coluna do saldo do pedido
+        const cellValorVenda = row.insertCell(); //Coluna de valor da venda
+        const cellValorPago = row.insertCell(); //Coluna com o valor já pago
+        const cellSaldoVenda = row.insertCell(); //Coluna do saldo atualizado da venda
 
+        //Definindo o conteúdo das colunas
         //cellData.textContent = data;
         cellPedidoExtrato.textContent = PedidoExtrato;
         cellStatus.textContent = pedido.status;
         cellValorVenda.textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorVenda}`;
+        cellValorPago.textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorPago}`;
         cellSaldoVenda.textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.saldoVenda}`;
 
         // Adiciona os itens do pedido como linhas separadas
