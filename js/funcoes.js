@@ -311,3 +311,13 @@ function atualizarPedidoNoCliente(venda) {
         }
     }
 }
+
+function formatarData(data) {
+    const dataObj = new Date(data); // Converte a string para um objeto Date
+    const dia = dataObj.getDate().toString().padStart(2, '0');
+    const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
+    const ano = dataObj.getFullYear();
+    const horas = dataObj.getHours().toString().padStart(2, '0');
+    const minutos = dataObj.getMinutes().toString().padStart(2, '0');
+    return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
+}

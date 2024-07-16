@@ -84,7 +84,7 @@ function exibirTransacoes(cliente) {
     const pedidosOrdenados = cliente.pedidos.slice().sort((a, b) => b.dataCriacao - a.dataCriacao);
 
     pedidosOrdenados.forEach(pedido => {
-        //const data = formatarData(pedido.dataCriacao);
+        const data = formatarData(pedido.dataCriacao);
         const PedidoExtrato = `Pedido nº ${pedido.id}`;
 
         const row = tbodyExtrato.insertRow();
