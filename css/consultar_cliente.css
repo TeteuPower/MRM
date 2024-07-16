@@ -48,6 +48,7 @@
 #tabela-extrato {
     width: 100%;
     border-collapse: collapse;
+    overflow-x: auto; /* Permite rolagem horizontal */
 }
 
 #tabela-extrato th,
@@ -83,4 +84,15 @@
 
 #tabela-pagamentos .transacao-item:hover {
     background-color: #444; /* Cor de fundo ao passar o mouse */
+}
+@media (max-width: 768px) {
+    #tabela-extrato,#tabela-pagamentos  {
+        font-size: 0.8em; /* Diminui o tamanho da fonte */
+    }
+
+    /* Oculta a coluna "Saldo" em telas menores 
+    #tabela-extrato td:last-child,
+    #tabela-extrato th:last-child {
+        display: none;
+    }*/
 }
