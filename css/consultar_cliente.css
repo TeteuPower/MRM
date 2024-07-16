@@ -35,8 +35,8 @@
 }
 
 #modal-extrato-cliente .modal-content {
-    /* ... (seus estilos para o conteúdo do modal) ... */
     width: 60%; /* Ajuste a largura conforme necessário */
+    overflow-y: auto; /* Permite rolagem vertical */
 }
 
 #saldo-cliente {
@@ -89,10 +89,4 @@
     #tabela-extrato,#tabela-pagamentos  {
         font-size: 0.8em; /* Diminui o tamanho da fonte */
     }
-
-    /* Oculta a coluna "Saldo" em telas menores 
-    #tabela-extrato td:last-child,
-    #tabela-extrato th:last-child {
-        display: none;
-    }*/
 }
