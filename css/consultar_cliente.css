@@ -64,3 +64,23 @@
 #tabela-extrato .transacao-item:hover {
     background-color: #444; /* Cor de fundo ao passar o mouse */
 }
+
+#tabela-pagamentos {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#tabela-pagamentos th,
+#tabela-pagamentos td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+}
+
+#tabela-pagamentos .transacao-item {
+    cursor: pointer; /* Torna a linha clicável */
+}
+
+#tabela-pagamentos .transacao-item:hover {
+    background-color: #444; /* Cor de fundo ao passar o mouse */
+}

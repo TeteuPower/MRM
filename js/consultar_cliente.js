@@ -73,7 +73,9 @@ function exibirExtratoCliente() {
 // Função que insere o extrato do cliente
 function exibirTransacoes(cliente) {
     const tbodyExtrato = document.getElementById('tabela-extrato').getElementsByTagName('tbody')[0];
-    tbodyExtrato.innerHTML = ''; // Limpa a tabela
+    tbodyExtrato.innerHTML = ''; // Limpa a tabela de pedidos
+    const tbodyExtratoPagamentos = document.getElementById('tabela-pagamentos').getElementsByTagName('tbody')[0];
+    tbodyExtratoPagamentos.innerHTML = ''; // Limpa a tabela de pagamentos
 
     let saldoReais = cliente.saldoReais; // Inicializa com o saldo do cliente
     let saldoDolares = cliente.saldoDolares; // Inicializa com o saldo do cliente
@@ -86,7 +88,7 @@ function exibirTransacoes(cliente) {
         const PedidoExtrato = `Pedido nº ${pedido.id}`;
 
         const row = tbodyExtrato.insertRow();
-        const cellData = row.insertCell(); //Coluna de data
+        const cellVendedor = row.insertCell(); //Coluna do nome do vendedor
         const cellPedidoExtrato = row.insertCell(); //Coluna do número do pedido
         const cellStatus = row.insertCell(); //Coluna de status do pedido
         const cellValorVenda = row.insertCell(); //Coluna de valor da venda
@@ -94,7 +96,7 @@ function exibirTransacoes(cliente) {
         const cellSaldoVenda = row.insertCell(); //Coluna do saldo atualizado da venda
 
         //Definindo o conteúdo das colunas
-        //cellData.textContent = data;
+        cellVendedor.textContent = pedido.vendedor;
         cellPedidoExtrato.textContent = PedidoExtrato;
         cellStatus.textContent = pedido.status;
         cellValorVenda.textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorVenda}`;
