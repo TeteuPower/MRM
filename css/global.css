@@ -76,6 +76,13 @@ button:hover {
     width: 30%; 
 }
 
+@media (max-width: 768px) {
+    .modal-content {
+        min-width: 80%; 
+        overflow-y: auto; /* Permite rolagem vertical */
+    }
+}
+
 .close-btn {
     color: #aaa;
     float: right;
