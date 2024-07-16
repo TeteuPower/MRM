@@ -104,6 +104,11 @@
     border-bottom: 1px solid #555;
 }
 
+.modal-content {
+    min-width: 80%; 
+    overflow-y: auto; /* Permite rolagem vertical */
+}
+
 /*#btn-proxima-pagina-vendedor {
      ... (estilos para botões) ...
 }*/

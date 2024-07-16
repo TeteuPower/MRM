@@ -33,21 +33,6 @@ document.addEventListener('DOMContentLoaded', function () {
 let paginaAtualVendasVendedor = 1;
 const vendasPorPagina = 10; // Número de vendas por página
 
-function carregarFuncionariosDoLocalStorage() {
-    const vendedoresStorage = localStorage.getItem('vendedores');
-    if (vendedoresStorage) {
-        vendedores = JSON.parse(vendedoresStorage);
-    } else {
-        vendedores = ['Maithê', 'Rafael']; // Vendedores iniciais
-    }
-
-    const produtoresStorage = localStorage.getItem('produtores');
-    if (produtoresStorage) {
-        produtores = JSON.parse(produtoresStorage);
-    } else {
-        produtores = ['Matheus']; // Produtor inicial
-    }
-}
 
 function salvarFuncionariosNoLocalStorage() {
     localStorage.setItem('vendedores', JSON.stringify(vendedores));

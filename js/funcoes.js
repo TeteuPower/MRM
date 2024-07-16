@@ -23,6 +23,23 @@ function carregarClientesDoLocalStorage() {
     }
 }
 
+function carregarFuncionariosDoLocalStorage() {
+    let vendedores = []; // Declara vendedores como um array vazio
+    const vendedoresStorage = localStorage.getItem('vendedores');
+    if (vendedoresStorage) {
+        vendedores = JSON.parse(vendedoresStorage);
+    } 
+
+    window.vendedores = vendedores; // Define vendedores no escopo global
+
+    const produtoresStorage = localStorage.getItem('produtores');
+    if (produtoresStorage) {
+        window.produtores = JSON.parse(produtoresStorage);
+    } 
+}
+
+
+
 function gerarIdVenda() {
     const novoId = proximaIdVenda;
     proximaIdVenda++;

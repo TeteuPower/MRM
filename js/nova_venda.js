@@ -5,7 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     carregarEstoqueDoLocalStorage();
     carregarClientesDoLocalStorage();
     carregarVendasDoLocalStorage();
+    carregarFuncionariosDoLocalStorage();
     popularSelectClientes();
+    popularSelectVendedores();
     popularSelectTiposRape();
     exibirCarrinho();
     calcularTotalRape();
@@ -38,6 +40,12 @@ document.addEventListener('DOMContentLoaded', function () {
         const clienteSelecionado = document.getElementById('cliente').value;
         if (clienteSelecionado === '') {
             alert('Selecione um cliente!');
+            return;
+        }
+
+        const vendedorSelecionado = document.getElementById('vendedor').value;
+        if (vendedorSelecionado === '') {
+            alert('Selecione um vendedor!');
             return;
         }
 
@@ -86,6 +94,22 @@ function popularSelectClientes() {
         option.textContent = cliente.nome;
         selectCliente.appendChild(option);
     });
+}
+
+function popularSelectVendedores() {
+    const selectVendedor = document.getElementById('vendedor');
+    selectVendedor.innerHTML = '<option value="">Selecione o Vendedor</option>'; // Limpa as opções existentes
+
+    if (typeof vendedores !== 'undefined' && vendedores.length > 0) { // Verifica se vendedores está definido
+    vendedores.forEach(vendedor => {
+        const option = document.createElement('option');
+        option.value = vendedor;
+        option.textContent = vendedor;
+        selectVendedor.appendChild(option);
+    });} else {
+        alert('Não há vendedores cadastrados. Por favor, cadastre um vendedor na página de Funcionários.');
+        window.location.href = 'funcionarios.html'; // Redireciona para a página de funcionários
+    }
 }
 
 function popularSelectTiposRape() {
