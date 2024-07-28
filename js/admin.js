@@ -647,9 +647,8 @@ function reduzirAdesivosGrandes() {
     atualizarInformacoesEstoque();
 }
 
-// ... (sua função atualizarInformacoesEstoque existente)
 
-// Adicione esta função ao admin.js para popular os selects
+// função para popular os selects
 function popularSelectTipos(selectId, tipos) {
     const select = document.getElementById(selectId);
     tipos.forEach((tipo) => {

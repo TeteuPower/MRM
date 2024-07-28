@@ -1,4 +1,9 @@
 /* Estilos da página admin.html */
+
+#estoque h2 {
+    text-align: center;
+}
+
 .admin-menu {
     background-color: #222;
     color: #eee;
