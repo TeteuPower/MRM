@@ -191,7 +191,7 @@ function exibirProducoesProdutor(produtor) {
         cellPedido.textContent = `Pedido nº ${venda.id}`;
         cellVendedor.textContent = venda.vendedor;
         cellDataSolicitada.textContent = formatarData(venda.dataCriacao);
-        cellFinalizado.textContent = venda.status === 'Finalizado' ? formatarData(venda.dataCriacao) : 'Aguardando Envio!';
+        cellFinalizado.textContent = venda.status === 'Finalizado' ? formatarData(venda.dataFinalizacao) : 'Aguardando Envio!';
         cellComissao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularComissaoProdutor(venda) ?? 0).toFixed(2)}`;
         cellStatusRepasse.textContent = venda.repasseComissao ? 'Feito!' : 'Não feito';
     });

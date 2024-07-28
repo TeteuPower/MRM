@@ -123,3 +123,48 @@ function fecharModalExtratoCliente() {
     document.getElementById('modal-extrato-cliente').style.display = 'none';
 }
 
+// Adicione um event listener ao botão "Editar Cliente"
+document.getElementById('btn-editar-cliente').addEventListener('click', abrirModalEditarCliente);
+
+function abrirModalEditarCliente() {
+    const clienteNome = document.getElementById('modal-nome-cliente').textContent;
+    const cliente = clientes.find(c => c.nome === clienteNome);
+
+    if (cliente) {
+        document.getElementById('editar-nome').value = cliente.nome;
+        document.getElementById('editar-email').value = cliente.email;
+        document.getElementById('editar-telefone').value = cliente.telefone;
+        document.getElementById('editar-endereco').value = cliente.endereco;
+        document.getElementById('editar-login').value = cliente.login;
+        document.getElementById('editar-senha').value = cliente.senha;
+
+        document.getElementById('editar-nome-cliente').textContent = `Editar Cliente: ${cliente.nome}`;
+        document.getElementById('modal-editar-cliente').style.display = 'block';
+    }
+}
+
+function fecharModalEditarCliente() {
+    document.getElementById('modal-editar-cliente').style.display = 'none';
+}
+
+// Adicione um event listener ao formulário de edição
+document.getElementById('form-editar-cliente').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const clienteNome = document.getElementById('modal-nome-cliente').textContent;
+    const cliente = clientes.find(c => c.nome === clienteNome);
+
+    if (cliente) {
+        cliente.nome = document.getElementById('editar-nome').value;
+        cliente.email = document.getElementById('editar-email').value;
+        cliente.telefone = document.getElementById('editar-telefone').value;
+        cliente.endereco = document.getElementById('editar-endereco').value;
+        cliente.login = document.getElementById('editar-login').value;
+        cliente.senha = document.getElementById('editar-senha').value;
+
+        salvarClientesNoLocalStorage();
+        fecharModalEditarCliente();
+        fecharModalDetalhesCliente(); // Fecha o modal de detalhes do cliente
+        exibirClientes(); // Atualiza a lista de clientes
+    }
+});
