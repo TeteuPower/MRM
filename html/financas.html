@@ -133,6 +133,31 @@
                     <p>Lucro Total: <span id="lucro-total">R$ 0.00</span></p>
                 </div>
             </div>
+            <div id="modal-repasses-produtores" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="fecharModalRepassesProdutores()">×</span>
+                    <h3>Repasses para Produtores</h3>
+            
+                    <ul id="lista-repasses-modal">
+                        <!-- Repasses pendentes serão adicionados aqui -->
+                    </ul>
+            
+                    <div class="resumo-repasses">
+                        <h4>Resumo dos Repasses:</h4>
+                        <p>Total: <span id="total-repasses">R$ 0.00</span></p>
+                    </div>
+            
+                    <div class="input-group">
+                        <label for="vendedor-repasse">Vendedor Responsável:</label>
+                        <select id="vendedor-repasse">
+                            <option value="">Selecione o Vendedor</option>
+                            <!-- Opções de vendedores serão adicionadas aqui -->
+                        </select>
+                    </div>
+            
+                    <button id="btn-confirmar-repasses" class="btn-acao verde">Confirmar Repasses</button>
+                </div>
+            </div>
         </section>
     </main>
 

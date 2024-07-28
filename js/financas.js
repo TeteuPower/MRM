@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     exibirResumoMensal();
     popularSelectClientesPagamento();
     popularSelectVendedoresPagamento(); // Popula o select de vendedores na seção de pagamentos
+    exibirRepassesPendentes(); // Exibe os repasses pendentes
 
     document.getElementById('btn-adicionar-pagamento').addEventListener('click', adicionarPagamento);
 });
@@ -204,4 +205,17 @@ function popularSelectVendedoresPagamento() {
         window.location.href = 'funcionarios.html';
         return; // Encerra a função se não houver vendedores
     }
+}
+
+function exibirRepassesPendentes() {
+    const listaRepassesPendentes = document.getElementById('lista-repasses-pendentes-comissao');
+    listaRepassesPendentes.innerHTML = ''; // Limpa a lista
+
+    vendas.forEach(venda => {
+        if (venda.status === 'Finalizado' && !venda.repasseComissao) { // Verifica se o repasse não foi feito
+            const listItem = document.createElement('li');
+            listItem.textContent = `Pedido nº ${venda.id} - Produtor: ${venda.produtor} - Valor: ${venda.moeda === 'real' ? 'R$' : 'US$'} ${calcularComissaoProdutor(venda).toFixed(2)}`;
+            listaRepassesPendentes.appendChild(listItem);
+        }
+    });
 }

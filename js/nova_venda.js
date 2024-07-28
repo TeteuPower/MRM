@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             dataProducao: null, // Data que o pedido foi produzido
             dataFinalizacao: null, // Data que o pedido foi finalizado
             vendaAdministrador: localStorage.getItem('administrador'), // Verifica se a venda foi cadastrada por um adm
+            repasseComissao: false // Define repasseComissao como false
             
         };
 

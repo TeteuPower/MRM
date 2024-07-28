@@ -22,6 +22,7 @@
 }
 
 #lista-repasses-comissao,
+#lista-repasses-pendentes-comissao,
 #lista-pagamentos-clientes,
 #lista-clientes-negativos,
 #lista-resumo-vendedores,
@@ -31,6 +32,7 @@
 }
 
 #lista-repasses-comissao li,
+#lista-repasses-pendentes-comissao li,
 #lista-pagamentos-clientes li,
 #lista-clientes-negativos li,
 #lista-resumo-vendedores li,
@@ -44,6 +46,7 @@
 }
 
 #lista-repasses-comissao li:hover,
+#lista-repasses-pendentes-comissao li:hover,
 #lista-pagamentos-clientes li:hover,
 #lista-clientes-negativos li:hover,
 #lista-resumo-vendedores li:hover,
@@ -73,6 +76,39 @@
 }
 
 .resumo-mensal .resumo-empresa p {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+#modal-repasses-produtores .modal-content {
+    /* ... (seus estilos para o conteúdo do modal) ... */
+    width: 60%; /* Ajuste a largura conforme necessário */
+}
+
+#lista-repasses-modal {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+#lista-repasses-modal li {
+    display: flex;
+    align-items: center;
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#lista-repasses-modal input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.resumo-repasses {
+    margin-bottom: 20px;
+}
+
+.resumo-repasses p {
     font-size: 1.2em;
     font-weight: bold;
 }
