@@ -154,10 +154,10 @@ function exibirVendasVendedor(vendedor) {
         cellCliente.textContent = venda.cliente;
         cellData.textContent = formatarData(venda.dataCriacao);
         cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${venda.valorVenda.toFixed(2)}`;
-        cellFrete.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${venda.valorFrete.toFixed(2)}`;
-        cellInsumos.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${calcularValorInsumos(venda).toFixed(2)}`;
-        cellProducao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${calcularComissaoProdutor(venda).toFixed(2)}`;
-        cellLucro.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${calcularLucroVenda(venda).toFixed(2)}`;
+        cellFrete.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(venda.valorFrete ?? "Aguardando...")}`;
+        cellInsumos.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularValorInsumos(venda) ?? 0).toFixed(2)}`;
+        cellProducao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularComissaoProdutor(venda) ?? 0).toFixed(2)}`;
+        cellLucro.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularLucroVenda(venda) ?? 0).toFixed(2)}`;
         cellStatus.textContent = venda.status;
     });
 
@@ -211,13 +211,26 @@ function fecharModalDesempenhoProdutor() {
 function calcularValorInsumos(venda) {
     const valorVenda = venda.valorVenda;
     const valorFrete = venda.valorFrete;
-    return (valorVenda - valorFrete) * (4 / 25);
+
+    // Verifica se o frete foi informado
+    if (typeof valorFrete === 'number') {
+        return (valorVenda - valorFrete) * (4 / 25);
+    } else {
+        return null; // Retorna null se o cálculo não puder ser realizado
+    }
 }
 
 function calcularComissaoProdutor(venda) {
     const valorVenda = venda.valorVenda;
     const valorFrete = venda.valorFrete;
-    return (valorVenda - valorFrete) * (1 / 25);
+
+    //Verifica se o frete já foi informado
+    if(typeof valorFrete === 'number') {
+        return (valorVenda - valorFrete) * (1 / 25);
+    } else {
+        return null;
+    }
+    
 }
 
 function calcularLucroVenda(venda) {
@@ -225,5 +238,10 @@ function calcularLucroVenda(venda) {
     const valorFrete = venda.valorFrete;
     const valorInsumos = calcularValorInsumos(venda);
     const comissaoProdutor = calcularComissaoProdutor(venda);
-    return valorVenda - valorFrete - valorInsumos - comissaoProdutor;
+        //Verifica se o frete já foi informado
+        if(typeof valorFrete === 'number') {
+            return valorVenda - valorFrete - valorInsumos - comissaoProdutor;
+        } else {
+            return null;
+        }
 }
