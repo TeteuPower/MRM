@@ -181,3 +181,11 @@ button:hover {
 .hamburger-menu.active .bar:nth-child(3) {
     transform: translateY(-8px) rotate(-45deg);
 }
+
+.usuario-logado {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    color: #eee;
+    font-weight: bold;
+}

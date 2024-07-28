@@ -1,6 +1,7 @@
 // funcoes.js
 
 document.addEventListener('DOMContentLoaded', function() {
+    exibirNomeAdministrador(); // Exibe o nome do administrador
     //Lógica para o header hamburguer
     const hamburgerMenu = document.querySelector('.hamburger-menu');
     const mobileMenu = document.querySelector('.mobile-menu');
@@ -178,6 +179,7 @@ function carregarEstoqueDoLocalStorage() {
 }
 
 function exibirDetalhesPedido(pedido) {
+    const solicitadoPor = pedido.vendaAdministrador ? pedido.vendaAdministrador : 'Cliente'; // Obtém o nome do administrador ou "Cliente"
     document.getElementById('modal-numero-pedido').textContent = `Detalhes do Pedido nº ${pedido.id}`;
     document.getElementById('modal-cliente').textContent = pedido.cliente;
     document.getElementById('modal-vendedor').textContent = pedido.vendedor;
@@ -189,7 +191,8 @@ function exibirDetalhesPedido(pedido) {
     document.getElementById('modal-valor-pago').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorPago.toFixed(2)}`;
     document.getElementById('modal-status').textContent = pedido.status;
     document.getElementById('modal-saldoVenda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.saldoVenda.toFixed(2)}`;
-    document.getElementById('modal-solicitado-por').textContent = pedido.vendaAdministrador ? 'Administrador' : 'Cliente';
+    document.getElementById('modal-solicitado-por').textContent = solicitadoPor;
+
 
         // Controle de exibição da área de lote
         const areaLote = document.getElementById('area-lote');
@@ -369,4 +372,11 @@ function formatarData(data) {
     const horas = dataObj.getHours().toString().padStart(2, '0');
     const minutos = dataObj.getMinutes().toString().padStart(2, '0');
     return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
+}
+
+function exibirNomeAdministrador() {
+    const nomeAdministrador = localStorage.getItem('administrador');
+    if (nomeAdministrador) {
+        document.getElementById('nome-administrador').textContent = `Olá, ${nomeAdministrador}!`;
+    }
 }
