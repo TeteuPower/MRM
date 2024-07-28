@@ -9,7 +9,7 @@ document.querySelector('.close-btn').addEventListener('click', function() {
 function checkAdminPassword() {
     var adminPassword = document.getElementById('adminPassword').value;
     if (adminPassword === 'adm123') {
-        // Redirecionar para a área administrativa (vamos implementar isso mais tarde)
+        localStorage.setItem('administrador', 'true');
         window.location.href = 'html/consultar_pedidos.html'; 
     } else {
         alert('Senha incorreta!');

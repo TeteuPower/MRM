@@ -62,7 +62,8 @@ document.addEventListener('DOMContentLoaded', function () {
             dataCriacao: new Date(), // Adiciona a data e hora da criação
             status: 'Em produção', // Adiciona o status inicial
             dataProducao: null, // Data que o pedido foi produzido
-            dataFinalizacao: null // Data que o pedido foi finalizado
+            dataFinalizacao: null, // Data que o pedido foi finalizado
+            vendaAdministrador: localStorage.getItem('administrador') // Verifica se a venda foi cadastrada por um adm
         };
 
         vendas.push(venda);
@@ -73,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // Atualiza o saldo do cliente
         atualizarSaldoCliente(venda);
 
-        console.log('Venda registrada com sucesso:', venda);
+        alert('Venda registrada com sucesso:', venda);
 
         // Limpa o formulário e o carrinho
         evento.target.reset();

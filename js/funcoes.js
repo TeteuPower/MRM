@@ -1,5 +1,36 @@
 // funcoes.js
 
+document.addEventListener('DOMContentLoaded', function() {
+    //Lógica para o header hamburguer
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    hamburgerMenu.addEventListener('click', function() {
+        // Alterna a classe 'active' no botão hambúrguer para animá-lo
+        hamburgerMenu.classList.toggle('active');
+
+        // Exibe ou oculta o menu móvel
+        mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Adiciona um event listener ao botão de logout
+    document.getElementById('btn-logout').addEventListener('click', function() {
+        // Remove a chave "administrador" do Local Storage
+        localStorage.removeItem('administrador');
+
+        // Redireciona para a página de login
+        window.location.href = '../index.html'; // Ajuste o caminho para a página de login, se necessário
+    });
+    document.getElementById('btn-logout-mobile').addEventListener('click', function() {
+        // Remove a chave "administrador" do Local Storage
+        localStorage.removeItem('administrador');
+
+        // Redireciona para a página de login
+        window.location.href = '../index.html'; // Ajuste o caminho para a página de login, se necessário
+    });
+});
+
+
 // Função para salvar a lista de clientes no Local Storage
 function salvarClientesNoLocalStorage() {
     localStorage.setItem('clientes', JSON.stringify(window.clientes));
@@ -158,6 +189,7 @@ function exibirDetalhesPedido(pedido) {
     document.getElementById('modal-valor-pago').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorPago.toFixed(2)}`;
     document.getElementById('modal-status').textContent = pedido.status;
     document.getElementById('modal-saldoVenda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.saldoVenda.toFixed(2)}`;
+    document.getElementById('modal-solicitado-por').textContent = pedido.vendaAdministrador ? 'Administrador' : 'Cliente';
 
         // Controle de exibição da área de lote
         const areaLote = document.getElementById('area-lote');
@@ -338,18 +370,3 @@ function formatarData(data) {
     const minutos = dataObj.getMinutes().toString().padStart(2, '0');
     return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
 }
-
-//lógica para o menu hambúrguer
-
-document.addEventListener('DOMContentLoaded', function() {
-    const hamburgerMenu = document.querySelector('.hamburger-menu');
-    const mobileMenu = document.querySelector('.mobile-menu');
-
-    hamburgerMenu.addEventListener('click', function() {
-        // Alterna a classe 'active' no botão hambúrguer para animá-lo
-        hamburgerMenu.classList.toggle('active');
-
-        // Exibe ou oculta o menu móvel
-        mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
-    });
-});
