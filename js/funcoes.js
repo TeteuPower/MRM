@@ -201,19 +201,25 @@ function exibirDetalhesPedido(pedido) {
     document.getElementById('modal-status').textContent = pedido.status;
     document.getElementById('modal-saldoVenda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.saldoVenda.toFixed(2)}`;
     document.getElementById('modal-solicitado-por').textContent = solicitadoPor;
-    document.getElementById('modal-produtor-span').textContent = pedido.produtores;
+    document.getElementById('modal-produtor-span').textContent = pedido.produtor;
 
 
         // Controle de exibição da área de lote
         const areaLote = document.getElementById('area-lote');
         if (pedido.status === 'Em produção') {
             areaLote.style.display = 'block';
+            popularProdutores(); // Chama a função para popular o select de produtores
             exibirInputsLote(pedido); // Chama a função para exibir os inputs de lote
     
             // Adiciona evento ao botão "Pronto, aguardando envio"
             const btnAtualizarStatus = document.getElementById('btn-atualizar-status');
             btnAtualizarStatus.onclick = () => {
+                pedido.produtor = document.getElementById('modal-produtor').value;
                 atualizarStatusPedido(pedido);
+                salvarPedidosNoLocalStorage();
+                exibirPedidos();
+                fecharModalDetalhesPedido();
+                atualizarPedidoNoCliente(pedido); // Atualiza o pedido dentro da array do cliente
             };
         } else {
             areaLote.style.display = 'none';
@@ -341,8 +347,8 @@ function salvarPedidosNoLocalStorage() {
         return {
             ...venda,
             dataCriacao: venda.dataCriacao.toISOString(), // Converte Date para string ISO
-            dataProducao: venda.dataProducao ? venda.dataProducao.toISOString() : "-",
-            dataFinalizacao: venda.dataFinalizacao ? venda.dataFinalizacao.toISOString() : "-",
+            //dataProducao: venda.dataProducao.toISOString(),
+            //dataFinalizacao: venda.dataFinalizacao.toISOString(),
         };
     });
 

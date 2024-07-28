@@ -63,7 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
             status: 'Em produção', // Adiciona o status inicial
             dataProducao: null, // Data que o pedido foi produzido
             dataFinalizacao: null, // Data que o pedido foi finalizado
-            vendaAdministrador: localStorage.getItem('administrador') // Verifica se a venda foi cadastrada por um adm
+            vendaAdministrador: localStorage.getItem('administrador'), // Verifica se a venda foi cadastrada por um adm
+            
         };
 
         vendas.push(venda);

@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     carregarPedidosDoLocalStorage();
     exibirPedidos();
     carregarFuncionariosDoLocalStorage();
-    popularProdutores();
 
     const pesquisaInput = document.getElementById('pesquisa-pedido');
     pesquisaInput.addEventListener('input', exibirPedidos);
