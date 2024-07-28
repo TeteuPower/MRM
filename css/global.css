@@ -55,6 +55,19 @@ button:hover {
     background-color: #4cae4c;
 }
 
+.btn-logout {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    background-color: #ff0000;
+    color: #fff;
+    cursor: pointer;
+}
+
+.btn-logout:hover {
+    background-color: #610000;
+}
+
 /* Estilos do Modal */
 .modal {
     display: none; 
