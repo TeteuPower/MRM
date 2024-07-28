@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('lista-produtores').addEventListener('click', function (event) {
         if (event.target.tagName === 'LI') {
             const produtorNome = event.target.textContent;
-            exibirDesempenhoProdutor(produtorNome);
+            exibirProducoesProdutor(produtorNome);
         }
     });
 
@@ -191,8 +191,8 @@ function exibirProducoesProdutor(produtor) {
         cellPedido.textContent = `Pedido nº ${venda.id}`;
         cellVendedor.textContent = venda.vendedor;
         cellDataSolicitada.textContent = formatarData(venda.dataCriacao);
-        cellFinalizado.textContent = venda.status === 'Finalizado' ? formatarData(venda.dataCriacao) : '-';
-        cellComissao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${calcularComissaoProdutor(venda).toFixed(2)}`;
+        cellFinalizado.textContent = venda.status === 'Finalizado' ? formatarData(venda.dataCriacao) : 'Aguardando Envio!';
+        cellComissao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularComissaoProdutor(venda) ?? 0).toFixed(2)}`;
         cellStatusRepasse.textContent = venda.repasseComissao ? 'Feito!' : 'Não feito';
     });
 
@@ -214,7 +214,7 @@ function calcularValorInsumos(venda) {
 
     // Verifica se o frete foi informado
     if (typeof valorFrete === 'number') {
-        return (valorVenda - valorFrete) * (4 / 25);
+        return (valorVenda) * (1 / 5);
     } else {
         return null; // Retorna null se o cálculo não puder ser realizado
     }
@@ -226,7 +226,7 @@ function calcularComissaoProdutor(venda) {
 
     //Verifica se o frete já foi informado
     if(typeof valorFrete === 'number') {
-        return (valorVenda - valorFrete) * (1 / 25);
+        return (valorVenda - valorFrete) * (2 / 25);
     } else {
         return null;
     }

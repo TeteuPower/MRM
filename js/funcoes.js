@@ -199,7 +199,7 @@ function exibirDetalhesPedido(pedido) {
     document.getElementById('modal-valor-venda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorVenda.toFixed(2)}`;
     document.getElementById('modal-valor-pago').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorPago.toFixed(2)}`;
     document.getElementById('modal-status').textContent = pedido.status;
-    document.getElementById('modal-saldoVenda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.saldoVenda.toFixed(2)}`;
+    document.getElementById('modal-saldoVenda').textContent = pedido.saldoVenda === 0 ? 'Pago' : `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.saldoVenda.toFixed(2)}`;
     document.getElementById('modal-solicitado-por').textContent = solicitadoPor;
     document.getElementById('modal-produtor-span').textContent = pedido.produtor;
 
@@ -240,6 +240,13 @@ function exibirDetalhesPedido(pedido) {
                     lotes[item.tipoRape] = lote;
                 }
             });
+
+            // Verifica se um produtor foi selecionado
+            const produtor = document.getElementById('modal-produtor').value;
+            if (produtor === '') {
+                alert('Por favor, selecione um produtor!');
+                return;
+            }
         
             if (!todosOsLotesPreenchidos) {
                 alert('Por favor, preencha todos os lotes!');
@@ -247,6 +254,7 @@ function exibirDetalhesPedido(pedido) {
             }
         
             if (confirm(`Confirma a atualização do status do pedido nº ${pedido.id} para "Pronto, aguardando envio"?`)) {
+                pedido.produtor = produtor; // Atribui o produtor ao pedido
                 pedido.status = 'Pronto, aguardando envio';
                 pedido.dataProducao = new Date(); // Define a data de produção
                 pedido.itens.forEach(item => {

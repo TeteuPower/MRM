@@ -89,7 +89,6 @@ function finalizarPedido(pedido) {
         pedido.status = 'Finalizado';
         pedido.dataFinalizacao = new Date(); // Define a data de finalização
         pedido.valorFrete = parseFloat(document.getElementById('modal-valor-frete').value) || 0;
-        pedido.produtor = document.getElementById('modal-produtor').value;
         salvarPedidosNoLocalStorage();
         exibirPedidos();
         fecharModalDetalhesPedido();
