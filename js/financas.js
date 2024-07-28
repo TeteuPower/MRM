@@ -1,6 +1,7 @@
 // financas.js - lógica da página financas.html
 
 document.addEventListener('DOMContentLoaded', function () {
+    carregarFuncionariosDoLocalStorage();
     carregarClientesDoLocalStorage();
     carregarPedidosDoLocalStorage();
     exibirRepassesComissao();
@@ -8,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     exibirClientesNegativos();
     exibirResumoMensal();
     popularSelectClientesPagamento();
+    popularSelectVendedoresPagamento(); // Popula o select de vendedores na seção de pagamentos
 
     document.getElementById('btn-adicionar-pagamento').addEventListener('click', adicionarPagamento);
 });
@@ -32,7 +34,7 @@ function exibirPagamentosClientes() {
     clientes.forEach(cliente => {
         cliente.pagamentos.forEach(pagamento => {
             const listItem = document.createElement('li');
-            listItem.textContent = `Cliente: ${cliente.nome} - Data: ${formatarData(pagamento.data)} - Valor: ${pagamento.moeda === 'real' ? 'R$' : 'US$' } ${pagamento.valor.toFixed(2)}`;
+            listItem.textContent = `${cliente.nome} - ${formatarData(pagamento.data)} - ${pagamento.moeda === 'real' ? 'R$' : 'US$'} ${pagamento.valor.toFixed(2)} Recebido por: ${pagamento.vendedor}`;
             listaPagamentos.appendChild(listItem);
         });
     });
@@ -88,8 +90,9 @@ function adicionarPagamento() {
     const cliente = document.getElementById('cliente-pagamento').value;
     const valor = parseFloat(document.getElementById('valor-pagamento').value);
     const moeda = document.getElementById('moeda-pagamento').value;
+    const vendedor = document.getElementById('recebeu-pagamento').value; // Obtém o vendedor selecionado
 
-    if (cliente === '' || isNaN(valor) || valor <= 0) {
+    if (cliente === '' || isNaN(valor) || valor <= 0 || vendedor === '') { // Verifica se o vendedor foi selecionado
         alert('Por favor, preencha todos os campos corretamente!');
         return;
     }
@@ -100,7 +103,8 @@ function adicionarPagamento() {
         clienteObj.pagamentos.push({
             data: new Date(),
             valor: valor,
-            moeda: moeda
+            moeda: moeda,
+            vendedor: document.getElementById('recebeu-pagamento').value // Adiciona o vendedor ao pagamento
         });
 
         if (moeda === 'real') {
@@ -113,6 +117,9 @@ function adicionarPagamento() {
         exibirPagamentosClientes();
         exibirClientesNegativos();
         document.getElementById('valor-pagamento').value = ''; // Limpa o campo de input
+
+        alert('Pagamento registrado com sucesso!');
+
     }
 }
 
@@ -160,14 +167,6 @@ function calcularResumoProdutores() {
     return Object.values(resumoProdutores);
 }
 
-function formatarData(data) {
-    const dia = data.getDate().toString().padStart(2, '0');
-    const mes = (data.getMonth() + 1).toString().padStart(2, '0');
-    const ano = data.getFullYear();
-    const horas = data.getHours().toString().padStart(2, '0');
-    const minutos = data.getMinutes().toString().padStart(2, '0');
-    return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
-}
 
 function calcularValorInsumos(venda) {
     const valorVenda = venda.valorVenda;
@@ -187,4 +186,22 @@ function calcularLucroVenda(venda) {
     const valorInsumos = calcularValorInsumos(venda);
     const comissaoProdutor = calcularComissaoProdutor(venda);
     return valorVenda - valorFrete - valorInsumos - comissaoProdutor;
+}
+
+function popularSelectVendedoresPagamento() {
+    const selectVendedor = document.getElementById('recebeu-pagamento');
+    selectVendedor.innerHTML = '<option value="">Selecione o vendedor</option>'; // Limpa as opções existentes
+
+    if (typeof vendedores !== 'undefined' && vendedores.length > 0) {
+        vendedores.forEach(vendedor => {
+            const option = document.createElement('option');
+            option.value = vendedor;
+            option.textContent = vendedor;
+            selectVendedor.appendChild(option);
+        });
+    } else {
+        alert('Não existem vendedores cadastrados! Cadastre um vendedor para receber pagamentos.');
+        window.location.href = 'funcionarios.html';
+        return; // Encerra a função se não houver vendedores
+    }
 }

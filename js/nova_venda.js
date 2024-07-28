@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     carregarClientesDoLocalStorage();
     carregarVendasDoLocalStorage();
     carregarFuncionariosDoLocalStorage();
-    verificarDadosEPopularSelects()
+    verificarDadosEPopularSelects();
     popularSelectTiposRape();
     exibirCarrinho();
     calcularTotalRape();

@@ -46,22 +46,11 @@
         <section id="financas">
             <h2>Finanças</h2>
 
-            <div class="repasses-comissao">
-                <h3>Repasses de Comissão</h3>
-                <ul id="lista-repasses-comissao">
-                    <!-- Repasses de comissão serão adicionados aqui -->
-                </ul>
-            </div>
-
             <div class="pagamentos-clientes">
-                <h3>Pagamentos de Clientes</h3>
-                <ul id="lista-pagamentos-clientes">
-                    <!-- Pagamentos de clientes serão adicionados aqui -->
-                </ul>
 
-                <h4>Adicionar Pagamento</h4>
+                <h4>Adicionar um novo Pagamento de CLIENTE</h4>
                 <div class="input-group">
-                    <label for="cliente-pagamento">Cliente:</label>
+                    <label for="cliente-pagamento">Qual cliente está pagando?</label>
                     <select id="cliente-pagamento">
                         <option value="">Selecione o Cliente</option>
                         <!-- Opções de clientes serão adicionadas aqui -->
@@ -81,13 +70,45 @@
                     </select>
                 </div>
 
+                <div class="input-group">
+                    <label for="recebeu-pagamento">Quem está recebendo?</label>
+                    <select id="recebeu-pagamento">
+                        <option value="">Selecione o vendedor</option>
+                        <!-- Opções de clientes serão adicionadas aqui -->
+                    </select>
+                </div>
+
                 <button id="btn-adicionar-pagamento" class="btn-acao verde">Adicionar Pagamento</button>
+
+
+            </div>
+
+            <div class="pagamentos-clientes">
+                <h3>Últimos pagamentos dos Clientes</h3>
+                <ul id="lista-pagamentos-clientes">
+                    <!-- Pagamentos de clientes serão adicionados aqui -->
+                </ul>
             </div>
 
             <div class="clientes-negativos">
-                <h3>Clientes com Saldo Negativo</h3>
+                <h3>Clientes com o Saldo Negativo</h3>
                 <ul id="lista-clientes-negativos">
                     <!-- Clientes com saldo negativo serão adicionados aqui -->
+                </ul>
+            </div>
+
+            <div class="repasses-comissao">
+                <h3>Repasses pendentes da produção!</h3>
+                <ul id="lista-repasses-pendentes-comissao">
+                    <!-- Pedidos com o status do repasse não feito -->
+                </ul>
+                <button id="btn-adicionar-pagamento-produtor" class="btn-acao verde">Adicionar repasse para Produtor</button>
+            </div>
+
+            <div class="repasses-comissao">
+                <h3>Últimos repasses feitos para produção!</h3>
+                <ul id="lista-repasses-comissao">
+                    <!-- Últimos repasses de comissão serão adicionados aqui -->
                 </ul>
             </div>
 
