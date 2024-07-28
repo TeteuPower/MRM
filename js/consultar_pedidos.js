@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
     carregarClientesDoLocalStorage();
     carregarPedidosDoLocalStorage();
     exibirPedidos();
+    carregarFuncionariosDoLocalStorage();
+    popularProdutores();
 
     const pesquisaInput = document.getElementById('pesquisa-pedido');
     pesquisaInput.addEventListener('input', exibirPedidos);
@@ -96,7 +98,7 @@ function finalizarPedido(pedido) {
     }
 }
 
-function formatarData(data) {
+/*function formatarData(data) {
     if (data === null) {
         return '-'; // Ou qualquer outro valor padrão que você queira exibir quando a data for nula
     }
@@ -106,7 +108,7 @@ function formatarData(data) {
     const horas = data.getHours().toString().padStart(2, '0');
     const minutos = data.getMinutes().toString().padStart(2, '0');
     return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
-}
+}*/
 
 function exibirPedidosAguardandoProducao() {
     const listaPedidos = document.getElementById('lista-pedidos-aguardando-producao');
@@ -236,3 +238,21 @@ function criarMenuPaginacao(totalPedidos) {
     }
 }
 
+function popularProdutores() {
+    const selectProdutor = document.getElementById('modal-produtor');
+
+    selectProdutor.innerHTML = '<option value="">Selecione o Produtor</option>'; // Limpa as opções existentes
+
+    // Verifica se produtores está definido e se o array não está vazio
+    if (typeof produtores !== 'undefined' && produtores.length > 0) { 
+        produtores.forEach(produtor => {
+            const option = document.createElement('option');
+            option.value = produtor; // Define o valor da opção como o nome do produtor
+            option.textContent = produtor; // Define o texto da opção como o nome do produtor
+            selectProdutor.appendChild(option);
+        });
+    } else {
+        alert("Não existem produtores cadastrados, por favor cadastre um produtor!");
+        window.location.href = 'funcionarios.html';
+    }
+}

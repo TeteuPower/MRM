@@ -34,7 +34,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Função para salvar a lista de clientes no Local Storage
 function salvarClientesNoLocalStorage() {
-    localStorage.setItem('clientes', JSON.stringify(window.clientes));
+    const clientesParaSalvar = clientes.map(cliente => ({
+        ...cliente,
+        pagamentos: cliente.pagamentos.map(pagamento => ({
+            ...pagamento,
+            data: pagamento.data.toISOString()
+        }))
+    }));
+    localStorage.setItem('clientes', JSON.stringify(clientesParaSalvar));
 }
 
 // Função para carregar a lista de clientes do Local Storage
@@ -57,6 +64,7 @@ function carregarClientesDoLocalStorage() {
 
 function carregarFuncionariosDoLocalStorage() {
     let vendedores = []; // Declara vendedores como um array vazio
+    let produtores = []; // Declara vendedores como um array vazio
     const vendedoresStorage = localStorage.getItem('vendedores');
     if (vendedoresStorage) {
         vendedores = JSON.parse(vendedoresStorage);
@@ -66,8 +74,9 @@ function carregarFuncionariosDoLocalStorage() {
 
     const produtoresStorage = localStorage.getItem('produtores');
     if (produtoresStorage) {
-        window.produtores = JSON.parse(produtoresStorage);
+        produtores = JSON.parse(produtoresStorage);
     } 
+    window.produtores = produtores; // Define vendedores no escopo global
 }
 
 
@@ -192,6 +201,7 @@ function exibirDetalhesPedido(pedido) {
     document.getElementById('modal-status').textContent = pedido.status;
     document.getElementById('modal-saldoVenda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.saldoVenda.toFixed(2)}`;
     document.getElementById('modal-solicitado-por').textContent = solicitadoPor;
+    document.getElementById('modal-produtor-span').textContent = pedido.produtores;
 
 
         // Controle de exibição da área de lote
@@ -261,7 +271,7 @@ function exibirDetalhesPedido(pedido) {
 
         cellProduto.textContent = nomeProduto;
         cellQuantidade.textContent = item.quantidade;
-        cellLote.textContent = item.lote || '-'; // Exibe o lote se existir, caso contrário, exibe "-"
+        cellLote.textContent = item.lote || 'Não informado'; // Exibe o lote se existir, caso contrário, exibe "-"
     });
 
     // Controle de exibição das áreas de frete e nota fiscal
@@ -304,7 +314,7 @@ function exibirDetalhesPedido(pedido) {
         if (pedido.valorFrete) {
             valorFreteExibicao.textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorFrete.toFixed(2)}`;
         } else {
-            valorFreteExibicao.textContent = '-'; // Ou qualquer outro valor padrão se o frete não estiver definido
+            valorFreteExibicao.textContent = 'Não informado'; // Ou qualquer outro valor padrão se o frete não estiver definido
         }
 
     // Exibe o modal
@@ -315,8 +325,8 @@ function carregarPedidosDoLocalStorage() {
     const pedidosStorage = localStorage.getItem('vendas');
     if (pedidosStorage) {
         vendas = JSON.parse(pedidosStorage, (key, value) => {
-            if (key === 'dataCriacao') {
-                return new Date(value); // Converte a string de data para um objeto Date
+            if (key === 'dataCriacao' || key === 'dataProducao' || key === 'dataFinalizacao') {
+                return value ? new Date(value) : null; // Converte apenas se value não for null ou vazio a string de data para um objeto Date
             }
             return value;
         });
@@ -330,7 +340,9 @@ function salvarPedidosNoLocalStorage() {
     const vendasParaSalvar = vendas.map(venda => {
         return {
             ...venda,
-            dataCriacao: venda.dataCriacao.toISOString() // Converte Date para string ISO
+            dataCriacao: venda.dataCriacao.toISOString(), // Converte Date para string ISO
+            dataProducao: venda.dataProducao ? venda.dataProducao.toISOString() : "-",
+            dataFinalizacao: venda.dataFinalizacao ? venda.dataFinalizacao.toISOString() : "-",
         };
     });
 
@@ -365,6 +377,9 @@ function atualizarPedidoNoCliente(venda) {
 }
 
 function formatarData(data) {
+    if (data === null) {
+        return 'Não efetivado'; // Ou qualquer outro valor padrão que você queira exibir quando a data for nula
+    }
     const dataObj = new Date(data); // Converte a string para um objeto Date
     const dia = dataObj.getDate().toString().padStart(2, '0');
     const mes = (dataObj.getMonth() + 1).toString().padStart(2, '0');
