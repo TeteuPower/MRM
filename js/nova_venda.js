@@ -6,8 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     carregarClientesDoLocalStorage();
     carregarVendasDoLocalStorage();
     carregarFuncionariosDoLocalStorage();
-    popularSelectClientes();
-    popularSelectVendedores();
+    verificarDadosEPopularSelects()
     popularSelectTiposRape();
     exibirCarrinho();
     calcularTotalRape();
@@ -85,31 +84,43 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-
-function popularSelectClientes() {
+function verificarDadosEPopularSelects() {
     const selectCliente = document.getElementById('cliente');
+    const selectVendedor = document.getElementById('vendedor');
+
+    selectCliente.innerHTML = '<option value="">Selecione o Cliente</option>'; //Limpa as opções existentes
+    selectVendedor.innerHTML = '<option value="">Selecione o Vendedor</option>'; //Limpa as opções existentes
+
+    let temClientes = typeof clientes !== 'undefined' && clientes.length > 0; //Verifica se existem clientes cadastrados
+    let temVendedores = typeof vendedores !== 'undefined' && vendedores.length > 0; //Verifica se existem vendedores cadastrados
+
+    if (!temClientes || !temVendedores) {
+        let mensagem = 'Não há ';
+        mensagem += !temClientes ? 'clientes' : '';
+        mensagem += !temClientes && !temVendedores ? ' nem ' : '';
+        mensagem += !temVendedores ? 'vendedores' : '';
+        mensagem += ' cadastrados. Você será redirecionado para a página de ';
+        mensagem += !temClientes ? 'cadastro de clientes.' : 'cadastro de funcionários.';
+
+        alert(mensagem);
+        window.location.href = !temClientes ? 'novo_cliente.html' : 'funcionarios.html';
+        return; // Encerra a função se não houver clientes ou vendedores
+    }
+
+    // Popula os selects se houver clientes e vendedores
     clientes.forEach(cliente => {
         const option = document.createElement('option');
         option.value = cliente.nome;
         option.textContent = cliente.nome;
         selectCliente.appendChild(option);
     });
-}
 
-function popularSelectVendedores() {
-    const selectVendedor = document.getElementById('vendedor');
-    selectVendedor.innerHTML = '<option value="">Selecione o Vendedor</option>'; // Limpa as opções existentes
-
-    if (typeof vendedores !== 'undefined' && vendedores.length > 0) { // Verifica se vendedores está definido
     vendedores.forEach(vendedor => {
         const option = document.createElement('option');
         option.value = vendedor;
         option.textContent = vendedor;
         selectVendedor.appendChild(option);
-    });} else {
-        alert('Não há vendedores cadastrados. Por favor, cadastre um vendedor na página de Funcionários.');
-        window.location.href = 'funcionarios.html'; // Redireciona para a página de funcionários
-    }
+    });
 }
 
 function popularSelectTiposRape() {
