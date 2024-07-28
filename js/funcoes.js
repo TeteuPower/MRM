@@ -338,3 +338,18 @@ function formatarData(data) {
     const minutos = dataObj.getMinutes().toString().padStart(2, '0');
     return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
 }
+
+//lógica para o menu hambúrguer
+
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    hamburgerMenu.addEventListener('click', function() {
+        // Alterna a classe 'active' no botão hambúrguer para animá-lo
+        hamburgerMenu.classList.toggle('active');
+
+        // Exibe ou oculta o menu móvel
+        mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+    });
+});

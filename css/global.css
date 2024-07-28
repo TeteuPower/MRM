@@ -96,3 +96,75 @@ button:hover {
     text-decoration: none;
     cursor: pointer;
 }
+
+/* Estilos para o botão hambúrguer */
+.hamburger-menu {
+    display: none; /* Oculta o botão em telas maiores */
+    position: fixed; /* Fixa o botão no canto superior esquerdo */
+    top: 20px;
+    left: 20px;
+    z-index: 10; /* Garante que o botão fique acima de outros elementos */
+    cursor: pointer;
+}
+
+.hamburger-menu .bar {
+    width: 30px;
+    height: 4px;
+    background-color: #eee;
+    margin: 6px 0;
+    transition: 0.4s; /* Adiciona uma transição suave */
+}
+
+/* Estilos para o menu de navegação móvel */
+.mobile-menu {
+    display: none; /* Oculta o menu em telas maiores */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 9; /* Garante que o menu fique abaixo do botão hambúrguer */
+    overflow-y: auto; /* Permite rolagem se o menu for muito longo */
+}
+
+.mobile-menu ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 60px; /* Espaço para o botão hambúrguer */
+}
+
+.mobile-menu li {
+    padding: 15px 20px;
+    border-bottom: 1px solid #555;
+}
+
+.mobile-menu a {
+    text-decoration: none;
+    color: #eee;
+    font-size: 1.2em;
+}
+
+/* Media Query para telas menores */
+@media (max-width: 768px) {
+    .hamburger-menu {
+        display: block; /* Exibe o botão em telas menores */
+    }
+
+    .admin-menu {
+        display: none; /* Oculta o menu original em telas menores */
+    }
+}
+
+/* Estilos para o botão hambúrguer ativo */
+.hamburger-menu.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+}
+
+.hamburger-menu.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger-menu.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+}

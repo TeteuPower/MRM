@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     exibirProdutores();
     exibirDesempenhoVendedores();
     exibirDesempenhoProdutores();
+    carregarPedidosDoLocalStorage();
 
     document.getElementById('btn-adicionar-vendedor').addEventListener('click', adicionarVendedor);
     document.getElementById('btn-adicionar-produtor').addEventListener('click', adicionarProdutor);
@@ -13,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('lista-vendedores').addEventListener('click', function (event) {
         if (event.target.tagName === 'LI') {
             const vendedorNome = event.target.textContent;
-            exibirDesempenhoVendedor(vendedorNome);
+            exibirVendasVendedor(vendedorNome);
         }
     });
 
