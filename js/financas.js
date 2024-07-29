@@ -242,7 +242,18 @@ function popularSelectVendedoresRepasse() {
     const selectVendedor = document.getElementById('vendedor-repasse');
     selectVendedor.innerHTML = '<option value="">Selecione o Vendedor</option>';
 
-    // ... (seu código para popular o select com os vendedores) ...
+    if (typeof vendedores !== 'undefined' && vendedores.length > 0) {
+        vendedores.forEach(vendedor => {
+            const option = document.createElement('option');
+            option.value = vendedor;
+            option.textContent = vendedor;
+            selectVendedor.appendChild(option);
+        });
+    } else {
+        alert('Não existem vendedores cadastrados! Cadastre um vendedor para receber pagamentos.');
+        window.location.href = 'funcionarios.html';
+        return; // Encerra a função se não houver vendedores
+    }
 }
 
 function atualizarResumoRepasses() {
