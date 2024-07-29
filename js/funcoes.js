@@ -409,3 +409,41 @@ function exibirNomeAdministrador() {
         document.getElementById('nome-administrador').textContent = `Olá, ${nomeAdministrador}!`;
     }
 }
+
+function calcularValorInsumos(venda) {
+    const valorVenda = venda.valorVenda;
+    const valorFrete = venda.valorFrete;
+
+    // Verifica se o frete foi informado
+    if (typeof valorFrete === 'number') {
+        return (valorVenda) * (1 / 5);
+    } else {
+        return null; // Retorna null se o cálculo não puder ser realizado
+    }
+}
+
+function calcularComissaoProdutor(venda) {
+    const valorVenda = venda.valorVenda;
+    const valorFrete = venda.valorFrete;
+
+    //Verifica se o frete já foi informado
+    if(typeof valorFrete === 'number') {
+        return (valorVenda - valorFrete) * (2 / 25);
+    } else {
+        return null;
+    }
+    
+}
+
+function calcularLucroVenda(venda) {
+    const valorVenda = venda.valorVenda;
+    const valorFrete = venda.valorFrete;
+    const valorInsumos = calcularValorInsumos(venda);
+    const comissaoProdutor = calcularComissaoProdutor(venda);
+        //Verifica se o frete já foi informado
+        if(typeof valorFrete === 'number') {
+            return valorVenda - valorFrete - valorInsumos - comissaoProdutor;
+        } else {
+            return null;
+        }
+}

@@ -169,26 +169,6 @@ function calcularResumoProdutores() {
 }
 
 
-function calcularValorInsumos(venda) {
-    const valorVenda = venda.valorVenda;
-    const valorFrete = venda.valorFrete;
-    return (valorVenda - valorFrete) * (4 / 25);
-}
-
-function calcularComissaoProdutor(venda) {
-    const valorVenda = venda.valorVenda;
-    const valorFrete = venda.valorFrete;
-    return (valorVenda - valorFrete) * (1 / 25);
-}
-
-function calcularLucroVenda(venda) {
-    const valorVenda = venda.valorVenda;
-    const valorFrete = venda.valorFrete;
-    const valorInsumos = calcularValorInsumos(venda);
-    const comissaoProdutor = calcularComissaoProdutor(venda);
-    return valorVenda - valorFrete - valorInsumos - comissaoProdutor;
-}
-
 function popularSelectVendedoresPagamento() {
     const selectVendedor = document.getElementById('recebeu-pagamento');
     selectVendedor.innerHTML = '<option value="">Selecione o vendedor</option>'; // Limpa as opções existentes
@@ -214,8 +194,102 @@ function exibirRepassesPendentes() {
     vendas.forEach(venda => {
         if (venda.status === 'Finalizado' && !venda.repasseComissao) { // Verifica se o repasse não foi feito
             const listItem = document.createElement('li');
-            listItem.textContent = `Pedido nº ${venda.id} - Produtor: ${venda.produtor} - Valor: ${venda.moeda === 'real' ? 'R$' : 'US$'} ${calcularComissaoProdutor(venda).toFixed(2)}`;
+            listItem.textContent = `Pedido nº ${venda.id} - Produtor: ${venda.produtor} - Valor: ${venda.moeda === 'real' ? 'R$' : 'US$'} ${(calcularComissaoProdutor(venda).toFixed(2))}`;
             listaRepassesPendentes.appendChild(listItem);
         }
     });
+}
+
+// Adicione um event listener ao botão "Adicionar repasse para Produtor"
+document.getElementById('btn-adicionar-pagamento-produtor').addEventListener('click', abrirModalRepassesProdutores);
+
+function abrirModalRepassesProdutores() {
+    popularListaRepassesModal();
+    popularSelectVendedoresRepasse();
+    atualizarResumoRepasses(); // Inicializa o resumo com valor zero
+
+    document.getElementById('modal-repasses-produtores').style.display = 'block';
+}
+
+function fecharModalRepassesProdutores() {
+    document.getElementById('modal-repasses-produtores').style.display = 'none';
+}
+
+function popularListaRepassesModal() {
+    const listaRepassesModal = document.getElementById('lista-repasses-modal');
+    listaRepassesModal.innerHTML = ''; // Limpa a lista
+
+    vendas.forEach(venda => {
+        if (venda.status === 'Finalizado' && !venda.repasseComissao) {
+            const listItem = document.createElement('li');
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = venda.id;
+            checkbox.addEventListener('change', atualizarResumoRepasses); // Atualiza o resumo ao selecionar/deselecionar
+            listItem.appendChild(checkbox);
+
+            const label = document.createElement('label');
+            label.textContent = `Pedido nº ${venda.id} - Produtor: ${venda.produtor} - Valor: ${venda.moeda === 'real' ? 'R$' : 'US$'} ${(calcularComissaoProdutor(venda).toFixed(2))}`;
+            listItem.appendChild(label);
+
+            listaRepassesModal.appendChild(listItem);
+        }
+    });
+}
+
+function popularSelectVendedoresRepasse() {
+    const selectVendedor = document.getElementById('vendedor-repasse');
+    selectVendedor.innerHTML = '<option value="">Selecione o Vendedor</option>';
+
+    // ... (seu código para popular o select com os vendedores) ...
+}
+
+function atualizarResumoRepasses() {
+    const checkboxes = document.querySelectorAll('#lista-repasses-modal input[type="checkbox"]:checked');
+    let totalRepasses = 0;
+
+    checkboxes.forEach(checkbox => {
+        const vendaId = parseInt(checkbox.value);
+        const venda = vendas.find(v => v.id === vendaId);
+        if (venda) {
+            totalRepasses += calcularComissaoProdutor(venda);
+        }
+    });
+
+    document.getElementById('total-repasses').textContent = `R$ ${totalRepasses.toFixed(2)}`;
+}
+
+// Adicione um event listener ao botão "Confirmar Repasses"
+document.getElementById('btn-confirmar-repasses').addEventListener('click', confirmarRepasses);
+
+function confirmarRepasses() {
+    const checkboxes = document.querySelectorAll('#lista-repasses-modal input[type="checkbox"]:checked');
+    const vendedorResponsavel = document.getElementById('vendedor-repasse').value;
+
+    if (checkboxes.length === 0) {
+        alert('Selecione pelo menos um repasse para confirmar.');
+        return;
+    }
+
+    if (vendedorResponsavel === '') {
+        alert('Selecione o vendedor responsável pelos repasses.');
+        return;
+    }
+
+    if (confirm(`Confirma os repasses selecionados para os produtores?`)) {
+        checkboxes.forEach(checkbox => {
+            const vendaId = parseInt(checkbox.value);
+            const venda = vendas.find(v => v.id === vendaId);
+            if (venda) {
+                venda.repasseComissao = true;
+                // ... (adicione aqui a lógica para registrar o pagamento do repasse, se necessário) ...
+            }
+        });
+
+        salvarPedidosNoLocalStorage();
+        fecharModalRepassesProdutores();
+        exibirRepassesComissao();
+        exibirRepassesPendentes();
+    }
 }
