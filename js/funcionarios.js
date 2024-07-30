@@ -75,6 +75,12 @@ function adicionarVendedor() {
         return;
     }
 
+    // Verifica se o administrador logado é "Matheus"
+    if (localStorage.getItem('administrador') !== 'Matheus') {
+        alert('Apenas o administrador Matheus pode adicionar novos vendedores.');
+        return;
+    }
+
     vendedores.push(novoVendedor);
     salvarFuncionariosNoLocalStorage();
     exibirVendedores();
@@ -91,6 +97,12 @@ function adicionarProdutor() {
 
     if (produtores.includes(novoProdutor)) {
         alert('Este produtor já está cadastrado!');
+        return;
+    }
+
+    // Verifica se o administrador logado é "Matheus"
+    if (localStorage.getItem('administrador') !== 'Matheus') {
+        alert('Apenas o administrador Matheus pode adicionar novos vendedores.');
         return;
     }
 
