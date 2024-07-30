@@ -108,16 +108,80 @@ document.getElementById('btn-pagina-anterior-pagamentos').addEventListener('clic
     exibirPagamentosClientes();
 });
 
+
+let paginaAtualClientesNegativos = 1;
+const clientesPorPagina = 5; // Número de clientes por página
+
 function exibirClientesNegativos() {
     const listaClientesNegativos = document.getElementById('lista-clientes-negativos');
     listaClientesNegativos.innerHTML = ''; // Limpa a lista
 
-    clientes.filter(cliente => cliente.saldoReais < 0 || cliente.saldoDolares < 0).forEach(cliente => {
+    const clientesNegativos = clientes.filter(cliente => cliente.saldoReais < 0 || cliente.saldoDolares < 0);
+
+    const inicio = (paginaAtualClientesNegativos - 1) * clientesPorPagina;
+    const fim = inicio + clientesPorPagina;
+    const clientesPaginaAtual = clientesNegativos.slice(inicio, fim);
+
+    clientesPaginaAtual.forEach(cliente => {
         const listItem = document.createElement('li');
         listItem.textContent = `${cliente.nome} - Saldo: ${cliente.saldoReais < 0 ? `R$ ${cliente.saldoReais.toFixed(2)}` : `US$ ${cliente.saldoDolares.toFixed(2)}`}`;
         listaClientesNegativos.appendChild(listItem);
     });
+
+    // Controle de exibição dos botões de paginação
+    const btnProximaPagina = document.getElementById('btn-proxima-pagina-clientes');
+    const btnPaginaAnterior = document.getElementById('btn-pagina-anterior-clientes');
+    if (fim < clientesNegativos.length) {
+        btnProximaPagina.style.display = 'block';
+    } else {
+        btnProximaPagina.style.display = 'none';
+    }
+    if (paginaAtualClientesNegativos > 1) {
+        btnPaginaAnterior.style.display = 'block';
+    } else {
+        btnPaginaAnterior.style.display = 'none';
+    }
+
+    // Criação do menu de paginação
+    criarMenuPaginacaoClientes(clientesNegativos.length);
 }
+
+function criarMenuPaginacaoClientes(totalClientes) {
+    const menuPaginacao = document.getElementById('menu-paginacao-clientes');
+    menuPaginacao.innerHTML = ''; // Limpa o menu
+
+    const totalPaginas = Math.ceil(totalClientes / clientesPorPagina);
+    const paginaInicial = Math.max(1, paginaAtualClientesNegativos - 3);
+    const paginaFinal = Math.min(totalPaginas, paginaInicial + 7);
+
+    for (let i = paginaInicial; i <= paginaFinal; i++) {
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = i;
+        link.onclick = () => {
+            paginaAtualClientesNegativos = i;
+            exibirClientesNegativos();
+        };
+        listItem.appendChild(link);
+        menuPaginacao.appendChild(listItem);
+
+        if (i === paginaAtualClientesNegativos) {
+            listItem.classList.add('ativo');
+        }
+    }
+}
+
+// Adicione event listeners aos botões de paginação
+document.getElementById('btn-proxima-pagina-clientes').addEventListener('click', () => {
+    paginaAtualClientesNegativos++;
+    exibirClientesNegativos();
+});
+
+document.getElementById('btn-pagina-anterior-clientes').addEventListener('click', () => {
+    paginaAtualClientesNegativos--;
+    exibirClientesNegativos();
+});
 
 function exibirResumoMensal() {
     const listaResumoVendedores = document.getElementById('lista-resumo-vendedores');
