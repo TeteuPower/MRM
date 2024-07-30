@@ -43,6 +43,7 @@
 #tabela-carrinho {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* Distribui o espaço igualmente entre as colunas */
 }
 
 #tabela-carrinho th,
@@ -57,6 +58,12 @@
     border: 1px solid #555;
     padding: 15px;
     border-radius: 5px;
+}
+
+.resumo-venda input,
+.resumo-venda select,
+.resumo-venda textarea {
+    box-sizing: border-box; /* Inclui padding e border na largura total */
 }
 
 .botoes-acao {

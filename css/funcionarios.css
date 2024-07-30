@@ -16,7 +16,7 @@
     background-color: #333;
     padding: 20px;
     border-radius: 5px;
-    text-align: left;
+    text-align: center;
 }
 
 .vendedores h3,
@@ -49,9 +49,10 @@
     background-color: #333;
     padding: 20px;
     border-radius: 5px;
-    text-align: left;
+    text-align: center;
     margin-bottom: 20px;
 }
+
 
 .vendedores-desempenho,
 .produtores-desempenho {
@@ -59,7 +60,7 @@
     background-color: #333;
     padding: 20px;
     border-radius: 5px;
-    text-align: left;
+    text-align: center;
 }
 
 .vendedores-desempenho h4,

@@ -177,11 +177,15 @@ function exibirCarrinho() {
 
         let nomeProduto = item.produto;
         if (item.produto === 'rape' && item.tipoRape) {
-            nomeProduto += ` (${item.tipoRape})`;
+            nomeProduto = ` (${item.tipoRape})`;
         }
 
         cellProduto.textContent = nomeProduto;
-        cellQuantidade.textContent = item.quantidade;
+        if (item.produto === 'rape') {
+            cellQuantidade.textContent = `${item.quantidade} ${item.quantidade === 1 ? 'Pacote' : 'Pacotes'}`;
+        } else {
+            cellQuantidade.textContent = `${item.quantidade} Un.`; // Exibe "Un." para outros produtos
+        }
 
         const btnRemover = document.createElement('button');
         btnRemover.textContent = 'Remover';
