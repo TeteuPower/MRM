@@ -28,18 +28,85 @@ function exibirRepassesComissao() {
     });
 }
 
+let paginaAtualPagamentos = 1;
+const pagamentosPorPagina = 5; // Número de pagamentos por página
+
 function exibirPagamentosClientes() {
     const listaPagamentos = document.getElementById('lista-pagamentos-clientes');
     listaPagamentos.innerHTML = ''; // Limpa a lista
 
+    let todosPagamentos = [];
     clientes.forEach(cliente => {
-        cliente.pagamentos.forEach(pagamento => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${cliente.nome} - ${formatarData(pagamento.data)} - ${pagamento.moeda === 'real' ? 'R$' : 'US$'} ${pagamento.valor.toFixed(2)} Recebido por: ${pagamento.vendedor}`;
-            listaPagamentos.appendChild(listItem);
-        });
+    todosPagamentos = todosPagamentos.concat(cliente.pagamentos);
+    // Ordena os pagamentos por data em ordem decrescente (mais recentes primeiro)
+    todosPagamentos.sort((a, b) => b.data - a.data);
     });
+
+    const inicio = (paginaAtualPagamentos - 1) * pagamentosPorPagina;
+    const fim = inicio + pagamentosPorPagina;
+    const pagamentosPaginaAtual = todosPagamentos.slice(inicio, fim);
+
+    pagamentosPaginaAtual.forEach(pagamento => {
+        const cliente = clientes.find(c => c.pagamentos.includes(pagamento));
+        const listItem = document.createElement('li');
+        listItem.textContent = `${cliente.nome} - ${formatarData(pagamento.data)} - ${pagamento.moeda === 'real' ? 'R$' : 'US$'} ${pagamento.valor.toFixed(2)} Recebido por: ${pagamento.vendedor}`;
+        listaPagamentos.appendChild(listItem);
+    });
+
+    // Controle de exibição dos botões de paginação
+    const btnProximaPagina = document.getElementById('btn-proxima-pagina-pagamentos');
+    const btnPaginaAnterior = document.getElementById('btn-pagina-anterior-pagamentos');
+    if (fim < todosPagamentos.length) {
+        btnProximaPagina.style.display = 'block';
+    } else {
+        btnProximaPagina.style.display = 'none';
+    }
+    if (paginaAtualPagamentos > 1) {
+        btnPaginaAnterior.style.display = 'block';
+    } else {
+        btnPaginaAnterior.style.display = 'none';
+    }
+
+    // Criação do menu de paginação
+    criarMenuPaginacaoPagamentos(todosPagamentos.length);
 }
+
+function criarMenuPaginacaoPagamentos(totalPagamentos) {
+    const menuPaginacao = document.getElementById('menu-paginacao-pagamentos');
+    menuPaginacao.innerHTML = ''; // Limpa o menu
+
+    const totalPaginas = Math.ceil(totalPagamentos / pagamentosPorPagina);
+    const paginaInicial = Math.max(1, paginaAtualPagamentos - 3);
+    const paginaFinal = Math.min(totalPaginas, paginaInicial + 7);
+
+    for (let i = paginaInicial; i <= paginaFinal; i++) {
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = i;
+        link.onclick = () => {
+            paginaAtualPagamentos = i;
+            exibirPagamentosClientes();
+        };
+        listItem.appendChild(link);
+        menuPaginacao.appendChild(listItem);
+
+        if (i === paginaAtualPagamentos) {
+            listItem.classList.add('ativo');
+        }
+    }
+}
+
+// Adicione event listeners aos botões de paginação
+document.getElementById('btn-proxima-pagina-pagamentos').addEventListener('click', () => {
+    paginaAtualPagamentos++;
+    exibirPagamentosClientes();
+});
+
+document.getElementById('btn-pagina-anterior-pagamentos').addEventListener('click', () => {
+    paginaAtualPagamentos--;
+    exibirPagamentosClientes();
+});
 
 function exibirClientesNegativos() {
     const listaClientesNegativos = document.getElementById('lista-clientes-negativos');
