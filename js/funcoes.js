@@ -2,33 +2,7 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     exibirNomeAdministrador(); // Exibe o nome do administrador
-    //Lógica para o header hamburguer
-    const hamburgerMenu = document.querySelector('.hamburger-menu');
-    const mobileMenu = document.querySelector('.mobile-menu');
-
-    hamburgerMenu.addEventListener('click', function() {
-        // Alterna a classe 'active' no botão hambúrguer para animá-lo
-        hamburgerMenu.classList.toggle('active');
-
-        // Exibe ou oculta o menu móvel
-        mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
-    });
-
-    // Adiciona um event listener ao botão de logout
-    document.getElementById('btn-logout').addEventListener('click', function() {
-        // Remove a chave "administrador" do Local Storage
-        localStorage.removeItem('administrador');
-
-        // Redireciona para a página de login
-        window.location.href = '../index.html'; // Ajuste o caminho para a página de login, se necessário
-    });
-    document.getElementById('btn-logout-mobile').addEventListener('click', function() {
-        // Remove a chave "administrador" do Local Storage
-        localStorage.removeItem('administrador');
-
-        // Redireciona para a página de login
-        window.location.href = '../index.html'; // Ajuste o caminho para a página de login, se necessário
-    });
+    carregarHeader();
 });
 
 
@@ -446,4 +420,40 @@ function calcularLucroVenda(venda) {
         } else {
             return null;
         }
+}
+
+function carregarHeader() {
+    fetch('header.html')
+        .then(response => response.text())
+        .then(html => {
+            document.getElementById('cabecalho').innerHTML = html;
+
+    //Lógica para o header hamburguer
+    const hamburgerMenu = document.querySelector('.hamburger-menu');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    hamburgerMenu.addEventListener('click', function() {
+        // Alterna a classe 'active' no botão hambúrguer para animá-lo
+        hamburgerMenu.classList.toggle('active');
+
+        // Exibe ou oculta o menu móvel
+        mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
+    });
+
+    // Adiciona um event listener ao botão de logout
+    document.getElementById('btn-logout').addEventListener('click', function() {
+        // Remove a chave "administrador" do Local Storage
+        localStorage.removeItem('administrador');
+
+        // Redireciona para a página de login
+        window.location.href = '../index.html'; // Ajuste o caminho para a página de login, se necessário
+    });
+    document.getElementById('btn-logout-mobile').addEventListener('click', function() {
+        // Remove a chave "administrador" do Local Storage
+        localStorage.removeItem('administrador');
+
+        // Redireciona para a página de login
+        window.location.href = '../index.html'; // Ajuste o caminho para a página de login, se necessário
+    });
+        });
 }
