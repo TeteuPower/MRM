@@ -43,7 +43,7 @@
 #tabela-carrinho {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed; /* Distribui o espaço igualmente entre as colunas */
+    
 }
 
 #tabela-carrinho th,
@@ -71,4 +71,8 @@
     justify-content: center;
     gap: 10px;
     margin-top: 20px;
+}
+
+.tipo-rape {
+    font-size: 0.8em; /* Diminui o tamanho da fonte para 80% do tamanho original */
 }

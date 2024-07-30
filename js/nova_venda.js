@@ -177,10 +177,10 @@ function exibirCarrinho() {
 
         let nomeProduto = item.produto;
         if (item.produto === 'rape' && item.tipoRape) {
-            nomeProduto = ` (${item.tipoRape})`;
+            nomeProduto = `<span class="tipo-rape">(${item.tipoRape})</span>`;
         }
 
-        cellProduto.textContent = nomeProduto;
+        cellProduto.innerHTML = nomeProduto; // Use innerHTML para renderizar o HTML
         if (item.produto === 'rape') {
             cellQuantidade.textContent = `${item.quantidade} ${item.quantidade === 1 ? 'Pacote' : 'Pacotes'}`;
         } else {
