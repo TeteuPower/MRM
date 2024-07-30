@@ -15,18 +15,81 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('btn-adicionar-pagamento').addEventListener('click', adicionarPagamento);
 });
 
+let paginaAtualRepasses = 1;
+const repassesPorPagina = 5; // Número de repasses por página
+
 function exibirRepassesComissao() {
     const listaRepasses = document.getElementById('lista-repasses-comissao');
     listaRepasses.innerHTML = ''; // Limpa a lista
 
-    vendas.forEach(venda => {
-        if (venda.repasseComissao) {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Pedido nº ${venda.id} - Produtor: ${venda.produtor} - Valor: ${venda.moeda === 'real' ? 'R$' : 'US$' } ${calcularComissaoProdutor(venda).toFixed(2)}`;
-            listaRepasses.appendChild(listItem);
-        }
+    const repasses = vendas.filter(venda => venda.repasseComissao);
+    // Ordena os repasses por data de criação (mais recentes primeiro)
+    repasses.sort((a, b) => b.dataCriacao - a.dataCriacao);
+
+    const inicio = (paginaAtualRepasses - 1) * repassesPorPagina;
+    const fim = inicio + repassesPorPagina;
+    const repassesPaginaAtual = repasses.slice(inicio, fim);
+
+    repassesPaginaAtual.forEach(venda => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `Pedido nº ${venda.id} - ${venda.produtor} - ${venda.moeda === 'real' ? 'R$' : 'US$'} ${calcularComissaoProdutor(venda).toFixed(2)} - Repassado por: ${venda.vendedorRepasse || '-'}`;
+        listaRepasses.appendChild(listItem);
     });
+
+    // Controle de exibição dos botões de paginação
+    const btnProximaPagina = document.getElementById('btn-proxima-pagina-repasses');
+    const btnPaginaAnterior = document.getElementById('btn-pagina-anterior-repasses');
+    if (fim < repasses.length) {
+        btnProximaPagina.style.display = 'block';
+    } else {
+        btnProximaPagina.style.display = 'none';
+    }
+    if (paginaAtualRepasses > 1) {
+        btnPaginaAnterior.style.display = 'block';
+    } else {
+        btnPaginaAnterior.style.display = 'none';
+    }
+
+    // Criação do menu de paginação
+    criarMenuPaginacaoRepasses(repasses.length);
 }
+
+function criarMenuPaginacaoRepasses(totalRepasses) {
+    const menuPaginacao = document.getElementById('menu-paginacao-repasses');
+    menuPaginacao.innerHTML = ''; // Limpa o menu
+
+    const totalPaginas = Math.ceil(totalRepasses / repassesPorPagina);
+    const paginaInicial = Math.max(1, paginaAtualRepasses - 3);
+    const paginaFinal = Math.min(totalPaginas, paginaInicial + 7);
+
+    for (let i = paginaInicial; i <= paginaFinal; i++) {
+        const listItem = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = '#';
+        link.textContent = i;
+        link.onclick = () => {
+            paginaAtualRepasses = i;
+            exibirRepassesComissao();
+        };
+        listItem.appendChild(link);
+        menuPaginacao.appendChild(listItem);
+
+        if (i === paginaAtualRepasses) {
+            listItem.classList.add('ativo');
+        }
+    }
+}
+
+// Adicione event listeners aos botões de paginação
+document.getElementById('btn-proxima-pagina-repasses').addEventListener('click', () => {
+    paginaAtualRepasses++;
+    exibirRepassesComissao();
+});
+
+document.getElementById('btn-pagina-anterior-repasses').addEventListener('click', () => {
+    paginaAtualRepasses--;
+    exibirRepassesComissao();
+});
 
 let paginaAtualPagamentos = 1;
 const pagamentosPorPagina = 5; // Número de pagamentos por página
@@ -425,7 +488,7 @@ function confirmarRepasses() {
             const venda = vendas.find(v => v.id === vendaId);
             if (venda) {
                 venda.repasseComissao = true;
-                // ... (adicione aqui a lógica para registrar o pagamento do repasse, se necessário) ...
+                venda.vendedorRepasse = vendedorResponsavel; // Adiciona o vendedor responsável ao repasse
             }
         });
 
