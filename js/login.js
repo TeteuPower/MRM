@@ -1,4 +1,4 @@
-require('dotenv').config();
+//require('dotenv').config();
 const connection = require('../db'); // Importa a conexão
 
 connection.query('SELECT * FROM produtos', (err, results, fields) => {
