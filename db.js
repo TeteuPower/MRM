@@ -1,5 +1,6 @@
 // db.js
 const mysql = require('mysql');
+const mysql = require('mysql2'); // Importe a biblioteca mysql2
 
 // Configuração da conexão com o MySQL usando DATABASE_URL
 const connection = mysql.createConnection(process.env.DATABASE_URL);
