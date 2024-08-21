@@ -1,28 +1,29 @@
-// db.js
+const express = require('express');
+const mysql = require('mysql');
+const app = express();
+const port = process.env.PORT || 3000;
 
-const mysql = require('mysql2');
-
-// Variáveis de conexão fornecidas pelo Railway
-const host = process.env.DATABASE_HOST;
-const user = process.env.DATABASE_USER;
-const password = process.env.DATABASE_PASSWORD;
-const database = process.env.DATABASE_NAME;
-
+// Configuração da conexão com o MySQL usando variáveis de ambiente
 const connection = mysql.createConnection({
-    host: host,
-    user: user,
-    password: password,
-    database: database
+    host: process.env.MYSQL_HOST,
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    port: process.env.MYSQL_PORT // Adicione a porta do MySQL
 });
 
-// Conecte-se ao banco de dados
-connection.connect(err => {
-    if (err) {
-        console.error('Erro ao conectar ao banco de dados:', err);
-        return;
+// Testa a conexão
+connection.connect(error => {
+    if (error) {
+        console.error('Erro ao conectar ao MySQL:TETE', error);
+    } else {
+        console.log('Conexão com o MySQL estabelecida com sucesso!TETE');
     }
-    console.log('Conectado ao banco de dados MySQL!');
 });
 
-// Exporte a conexão para ser usada em outros arquivos
-module.exports = connection;
+// Rotas da sua API (exemplo: /clientes)
+// ... adicione suas rotas aqui, como no exemplo anterior ...
+
+app.listen(port, () => {
+    console.log(`TETEServidor rodando na porta ${port}`);
+});
