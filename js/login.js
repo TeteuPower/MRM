@@ -1,4 +1,14 @@
 require('dotenv').config();
+const connection = require('../db'); // Importa a conexão
+
+connection.query('SELECT * FROM produtos', (err, results, fields) => {
+    if (err) {
+        console.error('Erro ao executar a consulta:', err);
+        return;
+    }
+    console.log('Resultados da consulta:', results);
+});
+
 document.getElementById('adminBtn').addEventListener('click', function() {
     document.getElementById('adminModal').style.display = 'block';
 });
