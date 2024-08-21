@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formCadastro.reset();
 
             // Redireciona para a página de consulta de clientes (opcional)
-            // window.location.href = 'consultar_cliente.html'; 
+            window.location.href = 'consultar_cliente.html'; 
         }
     });
 });

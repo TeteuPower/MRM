@@ -1,3 +1,4 @@
+require('dotenv').config();
 document.getElementById('adminBtn').addEventListener('click', function() {
     document.getElementById('adminModal').style.display = 'block';
 });
