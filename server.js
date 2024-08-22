@@ -33,11 +33,12 @@ app.use(bodyParser.json());
 
 // Rota para autenticar administradores
 app.post('/login', (req, res) => {
-    const nome = req.body.nome;
-    const senha = req.body.senha;
+    const senha = req.body.senha; // Recebe apenas a senha do formulário
 
-    const sql = `SELECT * FROM administradores WHERE nome = ? AND senha = ?`;
-    db.query(sql, [nome, senha], (err, results) => {
+    // Consulta SQL para verificar a senha (sem verificar o nome)
+    const sql = `SELECT * FROM administradores WHERE senha = ?`; 
+
+    db.db.query(sql, [senha], (err, results) => {
         if (err) {
             console.error('Erro ao consultar o banco de dados:', err);
             res.status(500).json({ error: 'Erro ao verificar a senha.' });
