@@ -385,13 +385,20 @@ function exibirRepassesPendentes() {
     const listaRepassesPendentes = document.getElementById('lista-repasses-pendentes-comissao');
     listaRepassesPendentes.innerHTML = ''; // Limpa a lista
 
-    vendas.forEach(venda => {
-        if (venda.status === 'Finalizado' && !venda.repasseComissao) { // Verifica se o repasse não foi feito
+    const repassesPendentes = vendas.filter(venda => venda.status === 'Finalizado' && !venda.repasseComissao);
+
+    if (repassesPendentes.length > 0) {
+        repassesPendentes.forEach(venda => {
             const listItem = document.createElement('li');
-            listItem.textContent = `Pedido nº ${venda.id} - Produtor: ${venda.produtor} - Valor: ${venda.moeda === 'real' ? 'R$' : 'US$'} ${(calcularComissaoProdutor(venda).toFixed(2))}`;
+            listItem.textContent = `Pedido nº ${venda.id} - Produtor: ${venda.produtor} - Valor: ${venda.moeda === 'real' ? 'R$' : 'US$'} ${calcularComissaoProdutor(venda).toFixed(2)}`;
             listaRepassesPendentes.appendChild(listItem);
-        }
-    });
+        });
+    } else {
+        // Exibe a mensagem "Em dia com a produção" se não houver repasses pendentes
+        const listItem = document.createElement('li');
+        listItem.textContent = 'Em dia com a produção!';
+        listaRepassesPendentes.appendChild(listItem);
+    }
 }
 
 // Adicione um event listener ao botão "Adicionar repasse para Produtor"
