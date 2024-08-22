@@ -29,3 +29,28 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor em execução na porta ${PORT}`);
 });
+
+///////////////////////////////////////////////
+
+// Rota para autenticar administradores
+app.post('/login', (req, res) => {
+    const nome = req.body.nome;
+    const senha = req.body.senha;
+
+    const sql = `SELECT * FROM administradores WHERE nome = ? AND senha = ?`;
+    db.query(sql, [nome, senha], (err, results) => {
+        if (err) {
+            console.error('Erro ao consultar o banco de dados:', err);
+            res.status(500).json({ error: 'Erro ao verificar a senha.' });
+            return;
+        }
+
+        if (results.length > 0) {
+            // Administrador encontrado
+            res.json({ success: true, administrador: results[0] });
+        } else {
+            // Senha incorreta
+            res.json({ success: false });
+        }
+    });
+});
