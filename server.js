@@ -33,7 +33,7 @@ app.post('/login', (req, res) => {
     const senha = req.body.senha;
 
     const sql = `SELECT * FROM administradores WHERE nome = ? AND senha = ?`;
-    db.db.query(sql, [nome, senha], (err, results) => {
+    db.query(sql, [nome, senha], (err, results) => {
         if (err) {
             console.error('Erro ao consultar o banco de dados:', err);
             res.status(500).json({ error: 'Erro ao verificar a senha.' });

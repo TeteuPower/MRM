@@ -8,20 +8,28 @@ document.querySelector('.close-btn').addEventListener('click', function() {
 
 function checkAdminPassword() {
     const adminPassword = document.getElementById('adminPassword').value;
-    const admins = {
-        'Matheus': 'adm123',
-        'Maithê': 'maithe123',
-        'Rafael': 'rafael123'
-    };
+    const nomeAdministrador = localStorage.getItem('administrador');
 
-    for (const nome in admins) {
-        if (admins[nome] === adminPassword) {
-            localStorage.setItem('administrador', nome);
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ nome: nomeAdministrador, senha: adminPassword })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Autenticação bem-sucedida
             window.location.href = 'consultar_pedidos.html';
-            alert(`Seja bem vindo, ${nome}!`);
-            return; // Encerra a função após encontrar o administrador
+            alert(`Seja bem vindo, ${nomeAdministrador}!`);
+        } else {
+            // Senha incorreta
+            alert('Senha incorreta!');
         }
-    }
-    // Se a senha não corresponder a nenhum administrador
-    alert('Senha incorreta!');
+    })
+    .catch(error => {
+        console.error('Erro na requisição:', error);
+        alert('Erro ao verificar a senha.');
+    });
 }
