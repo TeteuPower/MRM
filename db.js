@@ -1,6 +1,7 @@
 const mysql = require('mysql2');
 const express = require('express');
 const path = require('path');
+const db = require('./db');
 
 const DATABASE_URL = process.env.DATABASE_URL;
 const connection = mysql.createConnection(DATABASE_URL);
