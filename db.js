@@ -1,12 +1,9 @@
 const mysql = require('mysql2');
+const http = require('http');
 
-// Obtém a URL de conexão do banco de dados do ambiente
 const DATABASE_URL = process.env.DATABASE_URL;
-
-// Cria a conexão com o banco de dados
 const connection = mysql.createConnection(DATABASE_URL);
 
-// Conecta ao banco de dados
 connection.connect(err => {
     if (err) {
         console.error('Erro ao conectar ao banco de dados:', err);
@@ -15,5 +12,12 @@ connection.connect(err => {
     console.log('Conectado ao banco de dados MySQL!');
 });
 
-// Exporta a conexão para ser usada em outros arquivos
-module.exports = connection;
+const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Servidor Node.js em execução!');
+});
+
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Servidor em execução na porta ${PORT}`);
+});
