@@ -453,7 +453,7 @@ function carregarHeader() {
         localStorage.removeItem('administrador');
 
         // Redireciona para a página de login
-        window.location.href = '../index.html'; // Ajuste o caminho para a página de login, se necessário
+        window.location.href = 'index.html'; // Ajuste o caminho para a página de login, se necessário
     });
         });
 }
