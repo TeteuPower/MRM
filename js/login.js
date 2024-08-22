@@ -6,9 +6,6 @@ document.querySelector('.close-btn').addEventListener('click', function() {
     document.getElementById('adminModal').style.display = 'none';
 });
 
-// login.js
-
-// ... (seu código existente) ...
 
 function checkAdminPassword() {
     const adminPassword = document.getElementById('adminPassword').value;

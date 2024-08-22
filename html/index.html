@@ -8,19 +8,24 @@
 </head>
 <body>
     <div class="container">
-        <h1>Login</h1>
-        <form id="loginForm">
-            <div class="input-group">
-                <label for="username">Usuário:</label>
-                <input type="text" id="username" required>
-            </div>
-            <div class="input-group">
-                <label for="password">Senha:</label>
-                <input type="password" id="password" required>
-            </div>
-            <button type="submit">Entrar</button>
-            <button type="button" id="adminBtn">Administração</button>
-        </form>
+        <div class="logo">
+            <img src="../statics/indigenas.jpg" alt="Logo">
+        </div>
+        <div class="form-container">
+            <h1>Login</h1>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">Usuário:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit">Entrar</button>
+                <button type="button" id="adminBtn">Administração</button>
+            </form>
+        </div>
     </div>
 
     <div id="adminModal" class="modal">
@@ -30,7 +35,6 @@
             <label for="adminPassword">Senha:</label>
             <input type="password" id="adminPassword">
             <button type="button" onclick="checkAdminPassword()">Acessar</button>
-            </form>
         </div>
     </div>
 

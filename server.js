@@ -15,22 +15,34 @@ connection.connect(err => {
     console.log('Conectado ao banco de dados MySQL!');
 });
 
+//////////////////////////////MÓDULOS///////////////////////////////////////////////////////
+
 const app = express();
 const db = require('./server'); // Importa o módulo de conexão com o banco de dados
+
+//////////////ROTAS ESTÁTICAS/////////////////////////
 
 // Define as pastas 'html', 'css' e 'js' como pastas de arquivos estáticos
 app.use('/html', express.static(path.join(__dirname, 'html')));
 app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use('/js', express.static(path.join(__dirname, 'js')));
 
+//////////////ROTA PÁGINA INICIAL//////////////////////
+
 // Define a rota para a página de login (index.html)
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'html', 'index.html'));
 });
 
+///////////////////////////////////////////////////////////
 // Middleware para processar o corpo das requisições POST
 app.use(bodyParser.json()); 
 
+module.exports = {
+    db: connection,
+    app: app // Exporta também o app do express
+};
+///////////////////////API'S///////////////////////////////////
 // API para verificar a senha do administrador
 app.get('/verificar-senha-admin', (req, res) => {
     const senha = req.query.senha; // Obtém a senha da query string
@@ -59,14 +71,7 @@ app.listen(PORT, () => {
     console.log(`Servidor em execução na porta ${PORT}`);
 });
 
-module.exports = {
-    db: connection,
-    app: app // Exporta também o app do express
-};
-
-// db.js
-
-// ... (seu código existente para conectar ao banco de dados) ...
+//////////////////////////FUNÇÕES GLOBAIS///////////////////////////////////
 
 // Função global para executar consultas SQL
 if (typeof window !== 'undefined') {
@@ -75,5 +80,3 @@ if (typeof window !== 'undefined') {
         connection.query(sql, params, callback);
     };
 }
-
-// ... (seu código existente) ...
