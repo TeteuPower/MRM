@@ -14,7 +14,8 @@ connection.connect(err => {
 });
 
 const app = express();
-const db = require('./db'); // Importa o módulo de conexão com o banco de dados
+const db = require('./server'); // Importa o módulo de conexão com o banco de dados
+require('dotenv').config(); // Carrega as variáveis do .env
 
 // Define as pastas 'html', 'css' e 'js' como pastas de arquivos estáticos
 app.use('/html', express.static(path.join(__dirname, 'html')));
