@@ -1,6 +1,7 @@
 const mysql = require('mysql2');
 const express = require('express');
 const path = require('path');
+require('dotenv').config(); // Carrega as variáveis do .env
 
 const DATABASE_URL = process.env.DATABASE_URL;
 const connection = mysql.createConnection(DATABASE_URL);
@@ -15,7 +16,6 @@ connection.connect(err => {
 
 const app = express();
 const db = require('./server'); // Importa o módulo de conexão com o banco de dados
-require('dotenv').config(); // Carrega as variáveis do .env
 
 // Define as pastas 'html', 'css' e 'js' como pastas de arquivos estáticos
 app.use('/html', express.static(path.join(__dirname, 'html')));
