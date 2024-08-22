@@ -1,5 +1,6 @@
 const mysql = require('mysql2');
 const express = require('express');
+const bodyParser = require('body-parser'); // Importa o body-parser
 const path = require('path');
 require('dotenv').config(); // Carrega as variáveis do .env
 
@@ -26,6 +27,9 @@ app.use('/js', express.static(path.join(__dirname, 'js')));
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'html', 'index.html'));
 });
+
+// Middleware para processar o corpo das requisições POST
+app.use(bodyParser.json()); 
 
 // Rota para autenticar administradores
 app.post('/login', (req, res) => {
