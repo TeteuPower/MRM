@@ -31,26 +31,25 @@ app.get('/', (req, res) => {
 // Middleware para processar o corpo das requisições POST
 app.use(bodyParser.json()); 
 
-// Rota para autenticar administradores
-app.post('/login', (req, res) => {
-    const senha = req.body.senha; // Recebe apenas a senha do formulário
+// API para verificar a senha do administrador
+app.get('/verificar-senha-admin', (req, res) => {
+    const senha = req.query.senha; // Obtém a senha da query string
 
-    // Consulta SQL para verificar a senha (sem verificar o nome)
-    const sql = `SELECT * FROM administradores WHERE senha = ?`; 
-
-    db.db.query(sql, [senha], (err, results) => {
+    const sql = `SELECT * FROM administradores WHERE senha = ?`;
+    connection.query(sql, [senha], (err, results) => {
         if (err) {
-            console.error('Erro ao consultar o banco de dados:', err);
+            console.error('Erro ao verificar a senha:', err);
             res.status(500).json({ error: 'Erro ao verificar a senha.' });
             return;
         }
 
         if (results.length > 0) {
-            // Administrador encontrado
-            res.json({ success: true, administrador: results[0] });
+            // Senha correta!
+            const administrador = results[0].nome;
+            res.json({ administrador }); // Envia o nome do administrador como resposta
         } else {
             // Senha incorreta
-            res.json({ success: false });
+            res.status(401).json({ error: 'Senha incorreta.' });
         }
     });
 });
@@ -64,3 +63,17 @@ module.exports = {
     db: connection,
     app: app // Exporta também o app do express
 };
+
+// db.js
+
+// ... (seu código existente para conectar ao banco de dados) ...
+
+// Função global para executar consultas SQL
+if (typeof window !== 'undefined') {
+    // Função global para executar consultas SQL no navegador
+    window.executarConsultaSQL = function(sql, params, callback) {
+        connection.query(sql, params, callback);
+    };
+}
+
+// ... (seu código existente) ...

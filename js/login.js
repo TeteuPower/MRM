@@ -6,66 +6,37 @@ document.querySelector('.close-btn').addEventListener('click', function() {
     document.getElementById('adminModal').style.display = 'none';
 });
 
-function checkAdminPassword() {
-    const adminPassword = document.getElementById('adminPassword').value;
-    const nomeAdministrador = localStorage.getItem('administrador');
-
-    fetch('/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ nome: nomeAdministrador, senha: adminPassword })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Autenticação bem-sucedida
-            window.location.href = 'consultar_pedidos.html';
-            alert(`Seja bem vindo, ${nomeAdministrador}!`);
-        } else {
-            // Senha incorreta
-            alert('Senha incorreta!');
-        }
-    })
-    .catch(error => {
-        console.error('Erro na requisição:', error);
-        alert('Erro ao verificar a senha.');
-    });
-}
-
 // login.js
 
-/*const formLogin = document.getElementById('loginForm');
+// ... (seu código existente) ...
 
-formLogin.addEventListener('submit', (event) => {
-    event.preventDefault();
+function checkAdminPassword() {
+    const adminPassword = document.getElementById('adminPassword').value;
 
-    const nome = document.getElementById('username').value;
-    const senha = document.getElementById('password').value;
+    // Faz uma requisição AJAX à API
+    fetch(`/verificar-senha-admin?senha=${adminPassword}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro na requisição.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Senha correta!
+            const administrador = data.administrador;
 
-    // Faz uma requisição AJAX para a API de login
-    fetch('/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ nome, senha })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // Login bem-sucedido
-            localStorage.setItem('administrador', data.administrador.nome);
+            // Define a chave "administrador" no Local Storage
+            localStorage.setItem('administrador', administrador);
+
+            // Redireciona para a página de consultar pedidos
             window.location.href = 'html/consultar_pedidos.html';
-            alert(`Seja bem vindo, ${data.administrador.nome}!`);
-        } else {
-            // Senha incorreta
-            alert('Senha incorreta!');
-        }
-    })
-    .catch(error => {
-        console.error('Erro na requisição:', error);
-        alert('Erro ao verificar a senha. Por favor, tente novamente mais tarde.');
-    });
-});*/
+
+            // Exibe o alerta de boas-vindas
+            alert(`Seja bem vindo, ${administrador}!`);
+        })
+        .catch(error => {
+            // Senha incorreta ou erro na requisição
+            alert('Senha incorreta ou erro ao verificar a senha.');
+            console.error(error);
+        });
+}
