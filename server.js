@@ -43,26 +43,20 @@ module.exports = {
     app: app // Exporta também o app do express
 };
 ///////////////////////API'S///////////////////////////////////
-// API para verificar a senha do administrador
-app.get('/verificar-senha-admin', (req, res) => {
-    const senha = req.query.senha; // Obtém a senha da query string
 
-    const sql = `SELECT * FROM administradores WHERE senha = ?`;
-    connection.query(sql, [senha], (err, results) => {
+// API para executar consultas SQL
+app.get('/consulta', (req, res) => {
+    const sql = req.query.sql; // Obtém a consulta SQL da query string
+    const params = JSON.parse(req.query.params || '[]'); // Obtém os parâmetros da query string (opcional)
+
+    connection.query(sql, params, (err, results) => {
         if (err) {
-            console.error('Erro ao verificar a senha:', err);
-            res.status(500).json({ error: 'Erro ao verificar a senha.' });
+            console.error('Erro ao executar a consulta:', err);
+            res.status(500).json({ error: 'Erro ao executar a consulta.' });
             return;
         }
 
-        if (results.length > 0) {
-            // Senha correta!
-            const administrador = results[0].nome;
-            res.json({ administrador }); // Envia o nome do administrador como resposta
-        } else {
-            // Senha incorreta
-            res.status(401).json({ error: 'Senha incorreta.' });
-        }
+        res.json(results); // Envia os resultados da consulta como resposta
     });
 });
 
