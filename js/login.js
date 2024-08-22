@@ -6,7 +6,7 @@ document.querySelector('.close-btn').addEventListener('click', function() {
     document.getElementById('adminModal').style.display = 'none';
 });
 
-function checkAdminPassword() {
+/*function checkAdminPassword() {
     const adminPassword = document.getElementById('adminPassword').value;
 
     // Consulta SQL para verificar as credenciais do administrador
@@ -31,7 +31,7 @@ function checkAdminPassword() {
             alert('Senha incorreta!');
         }
     });
-}
+}*/
 
 // login.js
 

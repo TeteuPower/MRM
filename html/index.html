@@ -27,9 +27,12 @@
         <div class="modal-content">
             <span class="close-btn">×</span>
             <h2>Acesso Administrativo</h2>
-            <label for="adminPassword">Senha:</label>
-            <input type="password" id="adminPassword">
-            <button type="button" onclick="checkAdminPassword()">Acessar</button>
+            <form id="adminLoginForm" method="POST" action="/login">
+                <label for="adminUsername">Usuário:</label>
+                <input type="text" id="adminUsername" name="nome" required> <label for="adminPassword">Senha:</label>
+                <input type="password" id="adminPassword" name="senha" required>
+                <button type="submit">Acessar</button>
+            </form>
         </div>
     </div>
 
