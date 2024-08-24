@@ -60,6 +60,21 @@ app.get('/consulta', (req, res) => {
     });
 });
 
+
+app.get('/api/administradores', (req, res) => {
+    const sql = 'SELECT * FROM administradores';
+    connection.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar administradores:', err);
+            res.status(500).json({ error: 'Erro ao buscar administradores.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor em execução na porta ${PORT}`);
