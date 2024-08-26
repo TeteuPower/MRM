@@ -452,8 +452,11 @@ function carregarHeader() {
         // Remove a chave "administrador" do Local Storage
         localStorage.removeItem('administrador');
 
+        // Remove o token do Local Storage
+        localStorage.removeItem('token');
+
         // Redireciona para a página de login
-        window.location.href = 'index.html'; // Ajuste o caminho para a página de login, se necessário
+        window.location.href = '../html/index.html'; // Ajuste o caminho para a página de login, se necessário
     });
         });
 }
