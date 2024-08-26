@@ -1,6 +1,7 @@
 // consultar_pedidos.js - lógica da página consultar_pedidos.html
 
 document.addEventListener('DOMContentLoaded', function () {
+    verificarAutenticacao();
     carregarClientesDoLocalStorage();
     carregarPedidosDoLocalStorage();
     exibirPedidos();

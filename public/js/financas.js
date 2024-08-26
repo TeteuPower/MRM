@@ -1,6 +1,7 @@
 // financas.js - lógica da página financas.html
 
 document.addEventListener('DOMContentLoaded', function () {
+    verificarAutenticacao();
     carregarFuncionariosDoLocalStorage();
     carregarClientesDoLocalStorage();
     carregarPedidosDoLocalStorage();

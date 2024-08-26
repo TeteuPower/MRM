@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
+    verificarAutenticacao();
     carregarEstoqueDoLocalStorage();
     atualizarInformacoesEstoque();
     exibirModal();

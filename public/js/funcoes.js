@@ -467,3 +467,30 @@ function carregarHeader() {
     });
         });
 }
+
+function verificarAutenticacao() {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+        // Redireciona para a página de login se não houver token
+        alert('Você deve fazer o Login primeiro')
+        window.location.href = '/';
+        return false;
+    }
+
+    // Faz uma requisição à API para verificar a validade do token
+    return fetch('/api/verificar-token', {
+        headers: {
+            'Authorization': token
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            alert('Token de segurança vencido, faça o login novamente')
+            // Redireciona para a página de login se o token for inválido
+            window.location.href = '/';
+            return false;
+        }
+        return true;
+    });
+}

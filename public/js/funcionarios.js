@@ -1,6 +1,7 @@
 // funcionarios.js - lógica da página funcionarios.html
 
 document.addEventListener('DOMContentLoaded', function () {
+    verificarAutenticacao();
     carregarFuncionariosDoLocalStorage();
     exibirVendedores();
     exibirProdutores();

@@ -2,6 +2,7 @@
 
 carregarClientesDoLocalStorage();
 document.addEventListener('DOMContentLoaded', function() {
+    verificarAutenticacao();
     const formCadastro = document.getElementById('form-cadastro-cliente');
 
     formCadastro.addEventListener('submit', function(evento) {

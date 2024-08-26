@@ -2,6 +2,7 @@
 let carrinho = []; // Array para armazenar os itens do carrinho
 
 document.addEventListener('DOMContentLoaded', function () {
+    verificarAutenticacao();
     carregarEstoqueDoLocalStorage();
     carregarClientesDoLocalStorage();
     carregarVendasDoLocalStorage();

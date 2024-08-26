@@ -3,6 +3,7 @@
 
 carregarClientesDoLocalStorage();
 document.addEventListener('DOMContentLoaded', function () {
+    verificarAutenticacao();
     exibirClientes();
     carregarClientesDoLocalStorage(); // Carrega os clientes do Local Storage
     const pesquisaInput = document.getElementById('pesquisa-cliente');

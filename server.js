@@ -75,6 +75,12 @@ app.get('/api/decodificar-token', autenticar, (req, res) => {
     }
 });
 
+// Rota para verificar a validade do token JWT
+app.get('/api/verificar-token', autenticar, (req, res) => {
+    // Se o middleware autenticar for bem-sucedido, o token é válido
+    res.json({ valido: true });
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
