@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const db = require('./db'); // Importa o módulo de conexão com o banco de dados
 const app = express();
+const jwt = require('jsonwebtoken'); // Importa o módulo jsonwebtoken
+const autenticar = require('./middleware/auth'); // Importa o middleware de autenticação
 require('dotenv').config(); // Carrega as variáveis do .env
 
 // Middleware para processar o corpo das requisições POST
@@ -22,12 +24,59 @@ module.exports = {
 };
 ///////////////////////API'S///////////////////////////////////
 
-// Usa a rota de administradores
-app.use('/api/administradores', require('./routes/administradores'));
+//API teste
+app.get('/teste', (req, res) => {
+    res.json({ message: 'Tudo ok por aqui!'})
+})
+
+// Todas as rotas dentro do administradores.js estarão disponíveis em /api/administradores se tiverem a autentificação do token
+app.use('/api/administradores', autenticar, require('./routes/administradores'));
+
+// Rota para login do administrador (gera o token)
+app.post('/api/login', (req, res) => {
+    const { senha } = req.body;
+
+    const sql = `SELECT * FROM administradores WHERE senha = ?`;
+    db.query(sql, [senha], (err, results) => {
+        if (err) {
+            console.error('Erro ao verificar a senha:', err);
+            res.status(500).json({ error: 'Erro ao verificar a senha.' });
+            return;
+        }
+
+        if (results.length > 0) {
+            // Senha correta!
+            const administrador = results[0];
+
+            // Gera um token JWT com o ID do administrador
+            const token = jwt.sign({ id: administrador.id }, process.env.JWT_SECRET);
+
+            res.json({ token });
+            
+        } else {
+            res.status(401).json({ error: 'Senha incorreta.' });
+        }
+    });
+});
+
+// Rota para decodificar o token JWT
+app.get('/api/decodificar-token', (req, res) => {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({ error: 'Token não fornecido.' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        res.json({ id: decoded.id }); // Envia o ID do administrador como resposta
+    } catch (err) {
+        return res.status(401).json({ error: 'Token inválido.' });
+    }
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor em execução na porta ${PORT}`);
 });
-
-//////////////////////////FUNÇÕES GLOBAIS///////////////////////////////////
