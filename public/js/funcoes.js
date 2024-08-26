@@ -472,7 +472,7 @@ function verificarAutenticacao() {
     const token = localStorage.getItem('token');
 
     // Verifica se estamos na página de login
-    const isLoginPage = window.location.pathname === '/html/index.html' || window.location.pathname === '/'; 
+    const isLoginPage = window.location.pathname === '/html/index.html' || window.location.pathname === '/';
 
     if (isLoginPage) {
         // Se estiver na página de login, exibe o conteúdo
@@ -487,21 +487,31 @@ function verificarAutenticacao() {
         return Promise.reject(false); // Retorna uma promessa rejeitada para evitar erros nas páginas protegidas
     }
 
-    // Faz uma requisição à API para verificar a validade do token
-    return fetch('/api/verificar-token', {
-        headers: {
-            'Authorization': token
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            alert('Token de segurança vencido, faça o login novamente');
-            window.location.href = '/';
-            return false;
-        }
+    // Função para verificar a validade do token
+    function verificarToken() {
+        fetch('/api/verificar-token', {
+            headers: {
+                'Authorization': token
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                alert('Token de segurança vencido, faça o login novamente');
+                window.location.href = '/';
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao verificar o token:', error);
+        });
+    }
 
-        // Adiciona a classe 'visivel' ao body para exibir o conteúdo
-        document.body.classList.add('visivel');
-        return true;
-    });
+    // Verifica a validade do token imediatamente
+    verificarToken();
+
+    // Verifica a validade do token a cada 10 segundos (10000 milissegundos)
+    setInterval(verificarToken, 10000);
+
+    // Adiciona a classe 'visivel' ao body para exibir o conteúdo
+    document.body.classList.add('visivel');
+    return Promise.resolve(true);
 }

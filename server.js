@@ -49,7 +49,7 @@ app.post('/api/login', (req, res) => {
             const administrador = results[0];
 
             // Gera um token JWT com o ID do administrador
-            const token = jwt.sign({ id: administrador.id }, process.env.JWT_SECRET);
+            const token = jwt.sign({ id: administrador.id }, process.env.JWT_SECRET, {expiresIn: '1h'});
 
             res.json({ token });
             
