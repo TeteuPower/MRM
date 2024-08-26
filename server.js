@@ -60,7 +60,7 @@ app.post('/api/login', (req, res) => {
 });
 
 // Rota para decodificar o token JWT
-app.get('/api/decodificar-token', (req, res) => {
+app.get('/api/decodificar-token', autenticar, (req, res) => {
     const token = req.headers.authorization;
 
     if (!token) {
