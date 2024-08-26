@@ -471,11 +471,20 @@ function carregarHeader() {
 function verificarAutenticacao() {
     const token = localStorage.getItem('token');
 
+    // Verifica se estamos na página de login
+    const isLoginPage = window.location.pathname === '/html/index.html' || window.location.pathname === '/'; 
+
+    if (isLoginPage) {
+        // Se estiver na página de login, exibe o conteúdo
+        document.body.classList.add('visivel');
+        return Promise.resolve(true); // Retorna uma promessa resolvida para evitar erros nas páginas protegidas
+    }
+
     if (!token) {
         // Redireciona para a página de login se não houver token
-        alert('Você deve fazer o Login primeiro')
+        alert('Você deve fazer o Login primeiro');
         window.location.href = '/';
-        return false;
+        return Promise.reject(false); // Retorna uma promessa rejeitada para evitar erros nas páginas protegidas
     }
 
     // Faz uma requisição à API para verificar a validade do token
@@ -486,11 +495,13 @@ function verificarAutenticacao() {
     })
     .then(response => {
         if (!response.ok) {
-            alert('Token de segurança vencido, faça o login novamente')
-            // Redireciona para a página de login se o token for inválido
+            alert('Token de segurança vencido, faça o login novamente');
             window.location.href = '/';
             return false;
         }
+
+        // Adiciona a classe 'visivel' ao body para exibir o conteúdo
+        document.body.classList.add('visivel');
         return true;
     });
 }

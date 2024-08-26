@@ -9,6 +9,11 @@ body {
     min-height: 100vh;
     margin: 0;
     flex-direction: column;
+    visibility: hidden; /* Oculta o conteúdo da página por padrão */
+}
+
+body.visivel {
+    visibility: visible; /* Exibe o conteúdo da página quando a classe 'visivel' for adicionada */
 }
 
 .container {

@@ -6,8 +6,9 @@ document.querySelector('.close-btn').addEventListener('click', function() {
     document.getElementById('adminModal').style.display = 'none';
 });
 
-
-// login.js
+document.addEventListener('DOMContentLoaded', function () {
+    exibirLogin();
+});
 
 function checkAdminPassword() {
     const adminPassword = document.getElementById('adminPassword').value;
@@ -85,4 +86,15 @@ function checkAdminPassword() {
         // Senha incorreta
         alert(error.message); 
     });
+}
+
+function exibirLogin() {
+    // Verifica se estamos na página de login
+    const isLoginPage = window.location.pathname === '/html/index.html' || window.location.pathname === '/'; 
+
+    if (isLoginPage) {
+        // Se estiver na página de login, exibe o conteúdo
+        document.body.classList.add('visivel');
+        return Promise.resolve(true); // Retorna uma promessa resolvida para evitar erros nas páginas protegidas
+    }
 }
