@@ -14,7 +14,7 @@ O MRM é um sistema web intuitivo e poderoso projetado para simplificar o gerenc
 
 ## Processo de Desenvolvimento
 
-O desenvolvimento do MRM foi um processo colaborativo e iterativo, impulsionado pela inteligência artificial Gemini 1.5 Pro. A IA forneceu sugestões de código, ajudou a resolver problemas, otimizou a lógica e aprimorou a estrutura do sistema.
+O desenvolvimento do MRM foi um processo impulsionado pela inteligência artificial Gemini 1.5 Pro. A IA forneceu sugestões de código, ajudou a resolver problemas, otimizou a lógica e aprimorou a estrutura do sistema.
 
 ## Linguagens e Tecnologias
 
@@ -22,24 +22,47 @@ O desenvolvimento do MRM foi um processo colaborativo e iterativo, impulsionado 
 - **CSS:** Estilização e layout das páginas web, com foco em um tema escuro e moderno.
 - **JavaScript:** Lógica do sistema, interação com o usuário, manipulação de dados e comunicação com o servidor.
 - **Node.js:** Ambiente de execução JavaScript no servidor para conectar o sistema ao banco de dados Postgres.
-- **Postgres Database:** Banco de dados relacional para armazenar os dados do sistema de forma persistente.
-- **Vercel:** Plataforma de implantação e hospedagem para o sistema web e o banco de dados.
+- **MySQL Database:** Banco de dados relacional para armazenar os dados do sistema de forma persistente.
+- **Railway:** Plataforma de implantação e hospedagem para o sistema web e o banco de dados.
 
 ## Estrutura do Código
 
-- **Organização em Pastas:** O código é organizado em pastas para HTML, CSS e JavaScript, com subpastas para `admin` (área administrativa) e `clientes` (área do cliente).
-- **`dados.js`:** Armazena os dados iniciais do sistema, como tipos de produtos e funcionários.
-- **`funcoes.js`:** Contém funções JavaScript reutilizáveis, como funções para salvar e carregar dados do Local Storage e formatar datas.
+O código do sistema está organizado da seguinte forma:
+
+### Backend (Node.js)
+
+- **`server.js`:** Arquivo principal do servidor Node.js, responsável por:
+    - Configurar o servidor Express.
+    - Conectar ao banco de dados MySQL.
+    - Definir as rotas principais da API.
+    - Iniciar o servidor.
+- **`db.js`:** Contém a lógica para conectar ao banco de dados MySQL e exportar a conexão.
+- **`routes/`:** Pasta que contém os arquivos que definem as rotas da API:
+- **`middleware/`:** Pasta que contém os middlewares para a API:
+    - **`auth.js`:** Middleware para autenticação com JWT.
+
+### Frontend (HTML, CSS, JavaScript)
+
+- **`public/`:** Pasta que contém os arquivos estáticos do frontend:
+    - **`html/`:**
+    - **`css/`:** 
+    - **`js/`:** 
 - **Arquivos JavaScript Específicos:** Cada página HTML possui um arquivo JavaScript correspondente para lidar com a lógica específica daquela página.
-- **`server.js`:** Define o servidor Node.js que se conecta ao banco de dados Postgres e lida com as requisições do navegador.
+- **`funcoes.js`:** Contém funções JavaScript reutilizáveis, como funções para formatar datas.
+
+### Observações
+
+- **Autenticação:** As APIs são protegidas por JWT (JSON Web Token). A rota `/api/login` gera um token para administradores autenticados, e o middleware `auth.js` verifica a validade do token em rotas protegidas.
+- **Organização:** A estrutura do backend segue boas práticas de organização, separando as responsabilidades em rotas.
+- **Escalabilidade:** A estrutura é escalável, permitindo adicionar novas rotas e funcionalidades de forma organizada.
 
 ## Destaques do Projeto
 
 - **Tema Escuro e Moderno:** O sistema possui um tema escuro e moderno, proporcionando uma experiência visual agradável.
 - **Interface Intuitiva:** A interface do usuário é intuitiva e fácil de usar, com menus de navegação claros e modais informativos.
 - **Responsividade:** O sistema é responsivo e se adapta a diferentes tamanhos de tela, incluindo dispositivos móveis.
-- **Persistência de Dados:** Os dados do sistema são armazenados em um banco de dados Postgres, garantindo a persistência das informações.
-- **Segurança:** As credenciais do banco de dados são armazenadas de forma segura usando variáveis de ambiente.
+- **Persistência de Dados:** Os dados do sistema são armazenados em um banco de dados MySQL, garantindo a persistência das informações.
+- **Segurança:** As credenciais do banco de dados são armazenadas de forma segura usando variáveis de ambiente e autentificação token JWT.
 
 ## Próximos Passos
 
