@@ -1,15 +1,29 @@
 const mysql = require('mysql2');
-require('dotenv').config(); // Carrega as variáveis do .env
+require('dotenv').config();
 
 const DATABASE_URL = process.env.DATABASE_URL;
-const connection = mysql.createConnection(DATABASE_URL);
 
-connection.connect(err => {
-    if (err) {
-        console.error('Erro ao conectar ao banco de dados:', err);
-        return;
-    }
-    console.log('Conectado ao banco de dados MySQL!');
-});
+// Função para criar a conexão com o banco de dados
+function createConnection() {
+    const connection = mysql.createConnection(DATABASE_URL);
 
-module.exports = connection; // Exporta o objeto de conexão
+    // Adiciona um event listener para o evento 'error'
+    connection.on('error', function(err) {
+        console.error('Erro na conexão com o banco de dados:', err);
+
+        // Verifica se o erro é um erro de conexão fechada
+        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+            console.log('Reconectando ao banco de dados...');
+            connection = createConnection(); // Recria a conexão
+        } else {
+            throw err; // Lança o erro para outros tratamentos de erro
+        }
+    });
+
+    return connection;
+}
+
+// Cria a conexão inicial
+let connection = createConnection();
+
+module.exports = connection;
