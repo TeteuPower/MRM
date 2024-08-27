@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     adicionarEventosManipulacao();
 });
 
+
+
 function carregarVariedadesRape() {
     const listaVariedades = document
         .getElementById('lista-variedades-rape');
@@ -57,22 +59,92 @@ function fecharModal(modalId) {
 }
 
 function atualizarInformacoesEstoque() {
+    let rapeQuantidade = 0;
+    let couripeQuantidade = 0;
+    let sanangaQuantidade = 0;
+    let artesanatosQuantidade = 0;
+
+
+    fetch('/api/estoque', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar dados do estoque.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Atualiza a exibição dos produtos
+        const produtos = data.produtos;
+        console.log(produtos)
+        produtos.forEach(produto => {
+                if (produto.nome === 'Rapé') {
+                    const quantidadeRape = document.getElementById('rape-disponivel');
+                    rapeQuantidade = parseFloat(produto.quantidade);
+                    quantidadeRape.textContent = `${rapeQuantidade.toFixed(1)}Kg (${(produto.quantidade * 2).toFixed(0)} Pacotes)`;
+                }
+                if (produto.nome === 'Couripes') {
+                    const quantidadeCouripe = document.getElementById('couripes-disponiveis');
+                    couripeQuantidade = parseFloat(produto.quantidade);
+                    quantidadeCouripe.textContent = `${couripeQuantidade.toFixed(0)} Un.`;
+                }
+                if (produto.nome === 'Sananga') {
+                    const quantidadeSananga = document.getElementById('sananga-disponivel');
+                    sanangaQuantidade = parseFloat(produto.quantidade);
+                    quantidadeSananga.textContent = `${sanangaQuantidade.toFixed(0)} Un.`;
+                }
+                if (produto.nome === 'Artesanatos') {
+                    const quantidadeArtesanatos = document.getElementById('artesanatos-disponiveis');
+                    artesanatosQuantidade = parseFloat(produto.quantidade);
+                    quantidadeArtesanatos.textContent = `${artesanatosQuantidade.toFixed(0)} Un.`;
+                }
+        });
+
+        /*const variedadesRape = data.variedadesRape;
+        console.log(variedadesRape);
+        const variedadesCinzas = data.variedadesCinzas;
+        console.log(variedadesCinzas);*/
+
+        // Atualiza a exibição das matérias-primas
+        const materiasPrimas = data.materiasPrimas;
+        console.log(materiasPrimas)
+        materiasPrimas.forEach(materiaPrima => {
+            const quantidadeSpan = document.getElementById(`${materiaPrima.nome.toLowerCase().replace(/\s+/g, '-')}-disponivel`);
+            if (quantidadeSpan) {
+                if (materiaPrima.nome === 'Cinzas') {
+                    quantidadeSpan.textContent = `${materiaPrima.quantidade_cinza}Kg`;
+                }
+            }
+        });
+    })
+    .catch(error => {
+        console.error('Erro ao carregar dados do estoque:', error);
+        alert('Erro ao carregar dados do estoque.');
+    });
+
+
+
+
     // Obtém as informações do estoque (vamos simular por enquanto)
-    let rapeDisponivel = estoque.rape.total;
-    let couripesDisponiveis = estoque.couripes;
-    let sanangaDisponivel = estoque.sananga;
-    let artesanatosDisponiveis = estoque.artesanatos;
+    let rapeDisponivel = rapeQuantidade;
+    let couripesDisponiveis = couripeQuantidade;
+    let sanangaDisponivel = sanangaQuantidade;
+    let artesanatosDisponiveis = artesanatosQuantidade;
     let tabacoDisponivel = estoque.materiaisPrimas.tabaco;
     let cinzasDisponiveis = estoque.materiaisPrimas.cinzas.total;
     let pacotesDisponiveis = estoque.materiaisPrimas.pacotes;
     let adesivosGrandesDisponiveis =
         estoque.materiaisPrimas.adesivosGrandes;
 
+
+
+
+
     // Atualiza o conteúdo HTML com as informações do estoque
-    document.getElementById(
-        'rape-disponivel'
-    ).textContent = `${rapeDisponivel}Kg (${rapeDisponivel *
-        2} Pacotes)`;
+    document.getElementById('rape-disponivel').textContent = `${rapeDisponivel}Kg (${rapeDisponivel * 2} Pacotes)`;
     document.getElementById(
         'couripes-disponiveis'
     ).textContent = `${couripesDisponiveis} Un.`;

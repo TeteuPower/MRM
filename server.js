@@ -32,8 +32,10 @@ app.get('/teste', (req, res) => {
 // Todas as rotas dentro do administradores.js estarão disponíveis em /api/administradores se tiverem a autentificação do token
 app.use('/api/administradores', autenticar, require('./routes/administradores'));
 // Rotas clientes
-app.use('/api/clientes', autenticar, require('./routes/clientes'));;
-//app.use('/api/clientes', require('./routes/clientes'));
+app.use('/api/clientes', autenticar, require('./routes/clientes'));
+//Rotas estoque
+app.use('/api/estoque', autenticar, require('./routes/estoque'));
+
 
 // Rota para login do administrador (gera o token)
 app.post('/api/login', (req, res) => {
