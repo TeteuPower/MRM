@@ -1,7 +1,5 @@
-// novo_cliente.js - lógica da página novo_cliente.html
-
 carregarClientesDoLocalStorage();
-document.addEventListener('DOMContentLoaded', function() {
+/*document.addEventListener('DOMContentLoaded', function() {
     verificarAutenticacao();
     const formCadastro = document.getElementById('form-cadastro-cliente');
 
@@ -45,4 +43,53 @@ document.addEventListener('DOMContentLoaded', function() {
             window.location.href = 'consultar_cliente.html'; 
         }
     });
+});*/
+
+document.addEventListener('DOMContentLoaded', function() {
+    verificarAutenticacao()
+        .then(autenticado => {
+            if (autenticado) {
+                const formCadastro = document.getElementById('form-cadastro-cliente');
+
+                formCadastro.addEventListener('submit', function(evento) {
+                    evento.preventDefault();
+
+                    // Obtém os dados do formulário
+                    const nome = document.getElementById('nome').value;
+                    const email = document.getElementById('email').value;
+                    const telefone = document.getElementById('telefone').value;
+                    const endereco = document.getElementById('endereco').value;
+                    const login = document.getElementById('login').value;
+                    const senha = document.getElementById('senha').value;
+
+                    // Define o saldo inicial como 0
+                    const saldoReais = 0;
+                    const saldoDolares = 0;
+
+                    // Envia os dados para a API
+                    fetch('/api/clientes', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': localStorage.getItem('token')
+                        },
+                        body: JSON.stringify({ nome, email, telefone, endereco, login, senha, saldoReais, saldoDolares }) // Inclui saldoReais e saldoDolares
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erro ao cadastrar cliente.');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert(data.message);
+                        formCadastro.reset();
+                    })
+                    .catch(error => {
+                        alert('Erro ao cadastrar cliente.');
+                        console.error(error);
+                    });
+                });
+            }
+        });
 });
