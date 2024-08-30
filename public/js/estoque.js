@@ -63,6 +63,7 @@ function atualizarInformacoesEstoque() {
     let couripeQuantidade = 0;
     let sanangaQuantidade = 0;
     let artesanatosQuantidade = 0;
+    let cinzasQuantidade = 0;
 
 
     fetch('/api/estoque', {
@@ -79,7 +80,7 @@ function atualizarInformacoesEstoque() {
     .then(data => {
         // Atualiza a exibição dos produtos
         const produtos = data.produtos;
-        console.log(produtos)
+        //console.log(produtos)
         produtos.forEach(produto => {
                 if (produto.nome === 'Rapé') {
                     const quantidadeRape = document.getElementById('rape-disponivel');
@@ -111,14 +112,18 @@ function atualizarInformacoesEstoque() {
         // Atualiza a exibição das matérias-primas
         const materiasPrimas = data.materiasPrimas;
         console.log(materiasPrimas)
-        materiasPrimas.forEach(materiaPrima => {
-            const quantidadeSpan = document.getElementById(`${materiaPrima.nome.toLowerCase().replace(/\s+/g, '-')}-disponivel`);
-            if (quantidadeSpan) {
-                if (materiaPrima.nome === 'Cinzas') {
-                    quantidadeSpan.textContent = `${materiaPrima.quantidade_cinza}Kg`;
-                }
+        materiasPrimas.forEach(materiasPrima => {
+            //
+            if (materiasPrima.nome === 'Cinzas') {
+                const quantidadeCinzas = document.getElementById('cinzas-disponivel');
+                cinzasQuantidade = parseFloat(materiasPrima.quantidade);
+                quantidadeCinzas.textContent = `${cinzasQuantidade.toFixed(1)}Kg`;
             }
-        });
+            //
+
+
+
+    });
     })
     .catch(error => {
         console.error('Erro ao carregar dados do estoque:', error);
@@ -134,7 +139,7 @@ function atualizarInformacoesEstoque() {
     let sanangaDisponivel = sanangaQuantidade;
     let artesanatosDisponiveis = artesanatosQuantidade;
     let tabacoDisponivel = estoque.materiaisPrimas.tabaco;
-    let cinzasDisponiveis = estoque.materiaisPrimas.cinzas.total;
+    let cinzasDisponiveis = cinzasQuantidade;
     let pacotesDisponiveis = estoque.materiaisPrimas.pacotes;
     let adesivosGrandesDisponiveis =
         estoque.materiaisPrimas.adesivosGrandes;
