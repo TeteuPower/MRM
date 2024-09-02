@@ -64,6 +64,9 @@ function atualizarInformacoesEstoque() {
     let sanangaQuantidade = 0;
     let artesanatosQuantidade = 0;
     let cinzasQuantidade = 0;
+    let tabacoQuantidade = 0;
+    let pacotesQuantidade = 0;
+    let adesivosGrandesQuantidade = 0;
 
 
     fetch('/api/estoque', {
@@ -78,9 +81,9 @@ function atualizarInformacoesEstoque() {
         return response.json();
     })
     .then(data => {
+
         // Atualiza a exibição dos produtos
         const produtos = data.produtos;
-        //console.log(produtos)
         produtos.forEach(produto => {
                 if (produto.nome === 'Rapé') {
                     const quantidadeRape = document.getElementById('rape-disponivel');
@@ -95,7 +98,7 @@ function atualizarInformacoesEstoque() {
                 if (produto.nome === 'Sananga') {
                     const quantidadeSananga = document.getElementById('sananga-disponivel');
                     sanangaQuantidade = parseFloat(produto.quantidade);
-                    quantidadeSananga.textContent = `${sanangaQuantidade.toFixed(0)} Un.`;
+                    quantidadeSananga.textContent = `${sanangaQuantidade.toFixed(1)} Kg.`;
                 }
                 if (produto.nome === 'Artesanatos') {
                     const quantidadeArtesanatos = document.getElementById('artesanatos-disponiveis');
@@ -103,11 +106,6 @@ function atualizarInformacoesEstoque() {
                     quantidadeArtesanatos.textContent = `${artesanatosQuantidade.toFixed(0)} Un.`;
                 }
         });
-
-        /*const variedadesRape = data.variedadesRape;
-        console.log(variedadesRape);
-        const variedadesCinzas = data.variedadesCinzas;
-        console.log(variedadesCinzas);*/
 
         // Atualiza a exibição das matérias-primas
         const materiasPrimas = data.materiasPrimas;
@@ -117,128 +115,86 @@ function atualizarInformacoesEstoque() {
             if (materiasPrima.nome === 'Cinzas') {
                 const quantidadeCinzas = document.getElementById('cinzas-disponivel');
                 cinzasQuantidade = parseFloat(materiasPrima.quantidade);
-                quantidadeCinzas.textContent = `${cinzasQuantidade.toFixed(1)}Kg`;
+                quantidadeCinzas.textContent = `${cinzasQuantidade.toFixed(1)} Kg`;
             }
-            //
+            if (materiasPrima.nome === 'Tabaco') {
+                const quantidadeTabaco = document.getElementById('tabaco-disponivel');
+                tabacoQuantidade = parseFloat(materiasPrima.quantidade);
+                quantidadeTabaco.textContent = `${tabacoQuantidade.toFixed(1)} Kg`;
+            }
+            if (materiasPrima.nome === 'Pacotes') {
+                const quantidadePacotes = document.getElementById('pacotes-disponiveis');
+                pacotesQuantidade = parseFloat(materiasPrima.quantidade);
+                quantidadePacotes.textContent = `${pacotesQuantidade.toFixed(0)} Un.`;
+            }
+            if (materiasPrima.nome === 'Adesivos Grandes') {
+                const quantidadeAdesivosGrandes = document.getElementById('adesivos-grandes-disponiveis');
+                adesivosGrandesQuantidade = parseFloat(materiasPrima.quantidade);
+                quantidadeAdesivosGrandes.textContent = `${adesivosGrandesQuantidade.toFixed(0)} Un.`;
+            }
+        });
+
+
+        // Adiciona a lógica de cores para a quantidade de rapé
+        const rapeDisponivelSpan = document.getElementById('rape-disponivel');
+        if (rapeQuantidade < 30) {
+            rapeDisponivelSpan.style.color = 'red';
+        } else if (rapeQuantidade >= 30 && rapeQuantidade <= 60) {
+            rapeDisponivelSpan.style.color = 'yellow';
+        } else {
+            rapeDisponivelSpan.style.color = 'green';
+        }
+
+        // Adiciona a lógica de cores para a quantidade de tabaco
+        const tabacoDisponivelSpan = document.getElementById('tabaco-disponivel');
+        if (tabacoQuantidade < 30) {
+            tabacoDisponivelSpan.style.color = 'red';
+        } else if (tabacoQuantidade >= 30 && tabacoQuantidade <= 60) {
+            tabacoDisponivelSpan.style.color = 'yellow';
+        } else {
+            tabacoDisponivelSpan.style.color = 'green';
+        }
+
+        // Adiciona a lógica de cores para a quantidade de cinzas
+        const cinzasDisponivelSpan = document.getElementById('cinzas-disponivel');
+        if (cinzasQuantidade < 50) {
+            cinzasDisponivelSpan.style.color = 'red';
+        } else if (cinzasQuantidade >= 50 && cinzasQuantidade <= 100)
+        {
+            cinzasDisponivelSpan.style.color = 'yellow';
+        } else {
+            cinzasDisponivelSpan.style.color = 'green';
+        }
+
+        // Adiciona a lógica de cores para a quantidade de pacotes
+        const pacotesDisponiveisSpan = document.getElementById('pacotes-disponiveis');
+        if (pacotesQuantidade < 80) {
+            pacotesDisponiveisSpan.style.color = 'red';
+        } else if (pacotesQuantidade >= 80 && pacotesQuantidade <= 150)
+        {
+            pacotesDisponiveisSpan.style.color = 'yellow';
+        } else {
+            pacotesDisponiveisSpan.style.color = 'green';
+        }
+
+        // Adiciona a lógica de cores para a quantidade de adesivos grandes
+        const adesivosGrandesDisponiveisSpan = document.getElementById('adesivos-grandes-disponiveis');
+        if (adesivosGrandesQuantidade < 80) {
+            adesivosGrandesDisponiveisSpan.style.color = 'red';
+        } else if (adesivosGrandesQuantidade >= 80 && adesivosGrandesQuantidade <= 150)
+        {
+            adesivosGrandesDisponiveisSpan.style.color = 'yellow';
+        } else {
+            adesivosGrandesDisponiveisSpan.style.color = 'green';
+        }
 
 
 
-    });
     })
     .catch(error => {
         console.error('Erro ao carregar dados do estoque:', error);
         alert('Erro ao carregar dados do estoque.');
     });
-
-
-
-
-    // Obtém as informações do estoque (vamos simular por enquanto)
-    let rapeDisponivel = rapeQuantidade;
-    let couripesDisponiveis = couripeQuantidade;
-    let sanangaDisponivel = sanangaQuantidade;
-    let artesanatosDisponiveis = artesanatosQuantidade;
-    let tabacoDisponivel = estoque.materiaisPrimas.tabaco;
-    let cinzasDisponiveis = cinzasQuantidade;
-    let pacotesDisponiveis = estoque.materiaisPrimas.pacotes;
-    let adesivosGrandesDisponiveis =
-        estoque.materiaisPrimas.adesivosGrandes;
-
-
-
-
-
-    // Atualiza o conteúdo HTML com as informações do estoque
-    document.getElementById('rape-disponivel').textContent = `${rapeDisponivel}Kg (${rapeDisponivel * 2} Pacotes)`;
-    document.getElementById(
-        'couripes-disponiveis'
-    ).textContent = `${couripesDisponiveis} Un.`;
-    document.getElementById(
-        'sananga-disponivel'
-    ).textContent = `${sanangaDisponivel}Kg (${sanangaDisponivel *
-        2} Pacotes)`;
-    document.getElementById(
-        'artesanatos-disponiveis'
-    ).textContent = `${artesanatosDisponiveis} Un.`;
-    document.getElementById(
-        'tabaco-disponivel'
-    ).textContent = `${tabacoDisponivel}Kg`;
-    document.getElementById(
-        'cinzas-disponivel'
-    ).textContent = `${cinzasDisponiveis}Kg`;
-    document.getElementById(
-        'pacotes-disponiveis'
-    ).textContent = `${pacotesDisponiveis} Un.`;
-    document.getElementById(
-        'adesivos-grandes-disponiveis'
-    ).textContent = `${adesivosGrandesDisponiveis} Un.`;
-
-    // Adiciona a lógica de cores para a quantidade de rapé
-    const rapeDisponivelSpan = document.getElementById('rape-disponivel');
-    if (rapeDisponivel < 30) {
-        rapeDisponivelSpan.style.color = 'red';
-    } else if (rapeDisponivel >= 30 && rapeDisponivel <= 60) {
-        rapeDisponivelSpan.style.color = 'yellow';
-    } else {
-        rapeDisponivelSpan.style.color = 'green';
-    }
-
-    // Adiciona a lógica de cores para a quantidade de tabaco
-    const tabacoDisponivelSpan = document.getElementById(
-        'tabaco-disponivel'
-    );
-    if (tabacoDisponivel < 30) {
-        tabacoDisponivelSpan.style.color = 'red';
-    } else if (tabacoDisponivel >= 30 && tabacoDisponivel <= 60) {
-        tabacoDisponivelSpan.style.color = 'yellow';
-    } else {
-        tabacoDisponivelSpan.style.color = 'green';
-    }
-
-    // Adiciona a lógica de cores para a quantidade de cinzas
-    const cinzasDisponivelSpan = document.getElementById(
-        'cinzas-disponivel'
-    );
-    if (cinzasDisponiveis < 50) {
-        cinzasDisponivelSpan.style.color = 'red';
-    } else if (
-        cinzasDisponiveis >= 50 &&
-        cinzasDisponiveis <= 100
-    ) {
-        cinzasDisponivelSpan.style.color = 'yellow';
-    } else {
-        cinzasDisponivelSpan.style.color = 'green';
-    }
-
-    // Adiciona a lógica de cores para a quantidade de pacotes
-    const pacotesDisponiveisSpan = document.getElementById(
-        'pacotes-disponiveis'
-    );
-    if (pacotesDisponiveis < 80) {
-        pacotesDisponiveisSpan.style.color = 'red';
-    } else if (
-        pacotesDisponiveis >= 80 &&
-        pacotesDisponiveis <= 150
-    ) {
-        pacotesDisponiveisSpan.style.color = 'yellow';
-    } else {
-        pacotesDisponiveisSpan.style.color = 'green';
-    }
-
-    // Adiciona a lógica de cores para a quantidade de adesivos grandes
-    const adesivosGrandesDisponiveisSpan = document.getElementById(
-        'adesivos-grandes-disponiveis'
-    );
-    if (adesivosGrandesDisponiveis < 80) {
-        adesivosGrandesDisponiveisSpan.style.color = 'red';
-    } else if (
-        adesivosGrandesDisponiveis >= 80 &&
-        adesivosGrandesDisponiveis <= 150
-    ) {
-        adesivosGrandesDisponiveisSpan.style.color = 'yellow';
-    } else {
-        adesivosGrandesDisponiveisSpan.style.color = 'green';
-    }
     salvarEstoqueNoLocalStorage();
 }
 
