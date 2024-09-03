@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     verificarAutenticacao();
-    carregarEstoqueDoLocalStorage();
     atualizarInformacoesEstoque();
     exibirModal();
     carregarVariedadesRape();
@@ -11,29 +10,69 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 function carregarVariedadesRape() {
-    const listaVariedades = document
-        .getElementById('lista-variedades-rape');
-    listaVariedades.innerHTML = ''; // Limpa a lista antes de adicionar itens
+    const listaVariedades = document.getElementById('lista-variedades-rape');
+    listaVariedades.innerHTML = ''; // Limpa a lista
 
-    for (const tipoRape of tiposDeRape) {
-        const quantidade = estoque.rape.variedades[tipoRape] || 0; // Obtém a quantidade ou 0 se não existir
-        const listItem = document.createElement('li');
-        listItem.textContent = `${tipoRape}: ${quantidade}Kg`;
-        listaVariedades.appendChild(listItem);
-    }
+    // Faz uma requisição à API para obter as variedades de rapé
+    fetch('/api/estoque', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar variedades de rapé.1');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const variedades = data.variedadesRape;
+        //console.log(variedades)
+        // Itera sobre as variedades e adiciona cada uma à lista
+        variedades.forEach(variedade => {
+            const listItem = document.createElement('li');
+            let variedadeQuantidade = parseFloat(variedade.quantidade);
+            listItem.textContent = `${variedade.nome}: ${variedadeQuantidade.toFixed(1)} Kg`; // Formata a quantidade com duas casas decimais
+            listaVariedades.appendChild(listItem);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar variedades de rapé.2');
+        console.error(error);
+    });
 }
 
 function carregarVariedadesCinzas() {
-    const listaVariedades = document
-        .getElementById('lista-variedades-cinzas');
+    const listaVariedades = document.getElementById('lista-variedades-cinzas');
     listaVariedades.innerHTML = ''; // Limpa a lista antes de adicionar itens
 
-    for (const tipoCinza of tiposDeCinzas) {
-        const quantidade = estoque.materiaisPrimas.cinzas.variedades[tipoCinza] || 0; // Obtém a quantidade ou 0 se não existir
-        const listItem = document.createElement('li');
-        listItem.textContent = `${tipoCinza}: ${quantidade}Kg`;
-        listaVariedades.appendChild(listItem);
-    }
+    // Faz uma requisição à API para obter as variedades de cinzas
+    fetch('/api/estoque', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar variedades de cinzas.1');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const variedades = data.variedadesCinzas;
+        //console.log(variedades)
+        // Itera sobre as variedades e adiciona cada uma à lista
+        variedades.forEach(variedade => {
+            const listItem = document.createElement('li');
+            let variedadeQuantidade = parseFloat(variedade.quantidade);
+            listItem.textContent = `${variedade.nome}: ${variedadeQuantidade.toFixed(1)} Kg`; // Formata a quantidade com duas casas decimais
+            listaVariedades.appendChild(listItem);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar variedades de cinzas.2');
+        console.error(error);
+    });
 }
 
 function exibirModal() {
@@ -109,7 +148,6 @@ function atualizarInformacoesEstoque() {
 
         // Atualiza a exibição das matérias-primas
         const materiasPrimas = data.materiasPrimas;
-        console.log(materiasPrimas)
         materiasPrimas.forEach(materiasPrima => {
             //
             if (materiasPrima.nome === 'Cinzas') {
@@ -133,7 +171,6 @@ function atualizarInformacoesEstoque() {
                 quantidadeAdesivosGrandes.textContent = `${adesivosGrandesQuantidade.toFixed(0)} Un.`;
             }
         });
-
 
         // Adiciona a lógica de cores para a quantidade de rapé
         const rapeDisponivelSpan = document.getElementById('rape-disponivel');
@@ -187,19 +224,12 @@ function atualizarInformacoesEstoque() {
         } else {
             adesivosGrandesDisponiveisSpan.style.color = 'green';
         }
-
-
-
     })
     .catch(error => {
         console.error('Erro ao carregar dados do estoque:', error);
         alert('Erro ao carregar dados do estoque.');
     });
-    salvarEstoqueNoLocalStorage();
 }
-
-
-
 
 function adicionarEventosManipulacao() {
     // Rapé

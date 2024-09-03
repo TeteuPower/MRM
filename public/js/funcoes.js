@@ -88,7 +88,7 @@ function salvarEstoqueNoLocalStorage() {
     localStorage.setItem('estoque', JSON.stringify(window.estoque));
 }
 
-function carregarEstoqueDoLocalStorage() {
+/*function carregarEstoqueDoLocalStorage() {
     const estoqueStorage = localStorage.getItem('estoque');
     if (estoqueStorage) {
         window.estoque = JSON.parse(estoqueStorage);
@@ -159,7 +159,7 @@ function carregarEstoqueDoLocalStorage() {
             }
         };
     }
-}
+}*/
 
 function exibirDetalhesPedido(pedido) {
     const solicitadoPor = pedido.vendaAdministrador ? pedido.vendaAdministrador : 'Cliente'; // Obtém o nome do administrador ou "Cliente"
