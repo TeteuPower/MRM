@@ -304,11 +304,7 @@ function obterQuantidadeInput(inputId) {
     return parseInt(document.getElementById(inputId).value) || 0;
 }
 
-function confirmarAlteracao(
-    mensagem,
-    funcaoConfirmar,
-    funcaoCancelar
-) {
+function confirmarAlteracao(mensagem,funcaoConfirmar,funcaoCancelar) {
     if (confirm(mensagem)) {
         funcaoConfirmar();
     } else {
@@ -345,9 +341,8 @@ function adicionarRape() {
             carregarVariedadesRape();
 
             // Pergunta se deseja deduzir insumos (pacote e adesivo)
-            confirmarAlteracao(
-                'Deseja deduzir os insumos (pacote e adesivo) utilizados na produção?',
-                () => {
+            confirmarAlteracao('Deseja deduzir os insumos (pacote e adesivo) utilizados na produção?',() =>
+                {
                     estoque.materiaisPrimas.pacotes -=
                         quantidadePacotes;
                     estoque.materiaisPrimas.adesivosGrandes -=
@@ -364,74 +359,93 @@ function adicionarRape() {
     const quantidadePacotes = obterQuantidadeInput('input-quantidade-rape');
     const tipoRape = document.getElementById('select-tipo-rape').value;
 
-    if (quantidadePacotes <= 0 || !tipoRape) {
+    if (quantidadePacotes <= 0 || !tipoRape)
+    {
         alert('Por favor, insira uma quantidade válida e selecione um tipo de rapé.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja adicionar ${quantidadePacotes} pacotes de rapé ${tipoRape} ao estoque?`,
-        () => {
+    confirmarAlteracao(`Deseja adicionar ${quantidadePacotes} pacotes de rapé ${tipoRape} ao estoque?`,() => 
+        {
             // Faz uma requisição POST para a API para adicionar o rapé
-            fetch('/api/estoque', {
+            fetch('/api/estoque',
+            {
                 method: 'PUT',
-                headers: {
+                headers:
+                {
                     'Content-Type': 'application/json',
                     'Authorization': localStorage.getItem('token')
                 },
-                body: JSON.stringify({
+                body: JSON.stringify
+                ({
                     nome: tipoRape,
                     quantidade: quantidadePacotes / 2 // Converte pacotes para Kg
                 })
             })
-            .then(response => {
-                if (!response.ok) {
+            .then(response =>
+            {
+                if (!response.ok)
+                {
                     throw new Error('Erro ao adicionar rapé.1');
                 }
                 return response.json();
             })
-            /*.then(data => {
-                console.log(data);
-            })*/
             .catch(error => {
                 alert('Erro ao adicionar rapé.2');
                 console.error(error);
             });
+            // Pergunta se deseja deduzir insumos (pacote e adesivo)
+            confirmarAlteracao('Deseja deduzir os insumos (pacote e adesivo) utilizados na produção?',() =>
+                {
+                //Lógica para deduzir insumos
+                }
+            );
         }
     );
 }
 
 function reduzirRape() {
-    const quantidadePacotes = obterQuantidadeInput(
-        'input-quantidade-rape'
-    );
-    const tipoRape = document.getElementById(
-        'select-tipo-rape'
-    ).value;
+    const quantidadePacotes = obterQuantidadeInput('input-quantidade-rape');
+    const tipoRape = document.getElementById('select-tipo-rape').value;
 
-    if (
-        quantidadePacotes <= 0 ||
-        !tipoRape ||
-        (estoque.rape.variedades[tipoRape] || 0) <
-            quantidadePacotes / 2
-    ) {
-        alert(
-            'Por favor, insira uma quantidade válida e/ou tipo de rapé.'
-        );
+    if (quantidadePacotes <= 0 || !tipoRape)
+    {
+        alert('Por favor, insira uma quantidade válida e/ou tipo de rapé.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja remover ${quantidadePacotes} pacotes de rapé ${tipoRape} do estoque?`,
-        () => {
-            estoque.rape.total -= quantidadePacotes / 2;
-            estoque.rape.variedades[tipoRape] -=
-                quantidadePacotes / 2;
-            atualizarInformacoesEstoque();
-            carregarVariedadesRape();
+    confirmarAlteracao(`Deseja remover ${quantidadePacotes} pacotes de rapé ${tipoRape} do estoque?`,() => 
+        {
+            // Faz uma requisição POST para a API para adicionar o rapé
+            fetch('/api/estoque',
+            {
+                method: 'PUT',
+                headers:
+                {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
+                },
+                body: JSON.stringify
+                ({
+                    nome: tipoRape,
+                    quantidade: - (quantidadePacotes / 2) // Converte pacotes para Kg
+                })
+            })
+            .then(response =>
+            {
+                if (!response.ok)
+                {
+                    throw new Error('Erro ao remover rapé.1');
+                }
+                return response.json();
+            })
+            .catch(error => {
+                alert('Erro ao remover rapé.2');
+                console.error(error);
+            });
         }
     );
-    atualizarInformacoesEstoque();
+    //atualizarInformacoesEstoque();
 }
 
 // Funções para manipular o estoque de Couripes
