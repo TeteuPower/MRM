@@ -23,4 +23,18 @@ router.post('/', autenticar, (req, res) => {
     });
 });
 
+// Rota para obter todos os funcionários (GET /api/funcionarios)
+router.get('/', autenticar, (req, res) => {
+    const sql = 'SELECT * FROM vendedores';
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar funcionários:', err);
+            res.status(500).json({ error: 'Erro ao buscar funcionários.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+
 module.exports = router;

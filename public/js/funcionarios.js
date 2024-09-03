@@ -45,10 +45,29 @@ function exibirVendedores() {
     const listaVendedores = document.getElementById('lista-vendedores');
     listaVendedores.innerHTML = ''; // Limpa a lista
 
-    vendedores.forEach(vendedor => {
-        const listItem = document.createElement('li');
-        listItem.textContent = vendedor;
-        listaVendedores.appendChild(listItem);
+    // Faz uma requisição GET para a API para obter os funcionários
+    fetch('/api/funcionarios', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar funcionários.');
+        }
+        return response.json();
+    })
+    .then(funcionarios => {
+        // Itera sobre os funcionários e adiciona cada um à lista
+        funcionarios.forEach(funcionario => {
+            const listItem = document.createElement('li');
+            listItem.textContent = funcionario.nome;
+            listaVendedores.appendChild(listItem);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar funcionários.');
+        console.error(error);
     });
 }
 
