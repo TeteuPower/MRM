@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     atualizarInformacoesEstoque();
     exibirModal();
     carregarVariedadesRape();
-    //carregarVariedadesCinzas();
+    carregarVariedadesCinzas();
     adicionarEventosManipulacao();
 });
 
@@ -357,17 +357,22 @@ function adicionarRape()
                     // Lógica para deduzir insumos
                 
                     alert('Os Rapés foram adicionados e os respectivos insumos deduzidos')
+                    window.location.reload();
                     }, () =>
                         {
                         alert('Os Rapés foram adicionados sem alterar os insumos!')
+                        window.location.reload();
                         });
-                })
+                }
+            )
+
             .catch(error =>
             {
                 alert('Erro ao adicionar rapé.2');
                 console.error(error);
             });
         });
+
 }
 
 function reduzirRape() {
@@ -410,6 +415,7 @@ function reduzirRape() {
                 console.error(error);
             });
             alert('Rapés removidos com sucesso!')
+            window.location.reload();
         }
     );
 }
@@ -451,6 +457,7 @@ function adicionarCouripes() {
                     console.error(error);
                 });
             alert('Couripes adicionados com sucesso!')
+            window.location.reload();
         }
     );
 }
@@ -491,6 +498,7 @@ function reduzirCouripes() {
                     console.error(error);
                 });
             alert('Couripes removido com sucesso!') 
+            window.location.reload();
         }
     );
 
@@ -534,6 +542,7 @@ function adicionarSananga() {
             console.error(error);
         });
         alert('Sananga adicionada com sucesso!')
+        window.location.reload();
 
     });
 }
@@ -575,247 +584,359 @@ function reduzirSananga() {
             console.error(error);
         });
         alert('Sananga removida com sucesso!')
+        window.location.reload();
     });
 }
 
 // Funções para manipular o estoque de Artesanatos
 function adicionarArtesanatos() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-artesanatos'
-    );
+    const quantidade = obterQuantidadeInput('input-quantidade-artesanatos');
     if (quantidade <= 0) {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja adicionar ${quantidade} unidades de artesanatos ao estoque?`,
-        () => {
-            estoque.artesanatos += quantidade;
-            atualizarInformacoesEstoque();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja adicionar ${quantidade} unidades de artesanatos ao estoque?`, () => {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/artesanatos', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                quantidade: quantidade
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao adicionar Artesanatos.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao adicionar Artesanatos.2');
+            console.error(error);
+        });
+        alert('Artesanatos adicionados com sucesso!');
+        window.location.reload();
+    });
 }
 
 function reduzirArtesanatos() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-artesanatos'
-    );
-    if (quantidade <= 0 || estoque.artesanatos < quantidade) {
+    const quantidade = obterQuantidadeInput('input-quantidade-artesanatos');
+    if (quantidade <= 0) {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja remover ${quantidade} unidades de artesanatos do estoque?`,
-        () => {
-            estoque.artesanatos -= quantidade;
-            atualizarInformacoesEstoque();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja remover ${quantidade} unidades de artesanatos do estoque?`, () => {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/artesanatos', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                quantidade: -quantidade
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao remover Artesanatos.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao remover Artesanatos.2');
+            console.error(error);
+        });
+        alert('Artesanatos removidos com sucesso!');
+        window.location.reload();
+    });
 }
 
 // Funções para manipular o estoque de Tabaco
 function adicionarTabaco() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-tabaco'
-    );
+    const quantidade = obterQuantidadeInput('input-quantidade-tabaco');
     if (quantidade <= 0) {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja adicionar ${quantidade} Kg de tabaco ao estoque?`,
-        () => {
-            estoque.materiaisPrimas.tabaco += quantidade;
-            atualizarInformacoesEstoque();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja adicionar ${quantidade} Kg de tabaco ao estoque?`, () => {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/tabaco', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                quantidade: quantidade
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao adicionar Tabaco.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao adicionar Tabaco.2');
+            console.error(error);
+        });
+        alert('Tabaco adicionado com sucesso!');
+        window.location.reload();
+    });
 }
 
 function reduzirTabaco() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-tabaco'
-    );
-    if (
-        quantidade <= 0 ||
-        estoque.materiaisPrimas.tabaco < quantidade
-    ) {
+    const quantidade = obterQuantidadeInput('input-quantidade-tabaco');
+    if (quantidade <= 0) {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja remover ${quantidade} Kg de tabaco do estoque?`,
-        () => {
-            estoque.materiaisPrimas.tabaco -= quantidade;
-            atualizarInformacoesEstoque();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja remover ${quantidade} Kg de tabaco do estoque?`, () => {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/tabaco', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                quantidade: -quantidade
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao remover Tabaco.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao remover Tabaco.2');
+            console.error(error);
+        });
+        alert('Tabaco removido com sucesso!');
+        window.location.reload();
+    });
 }
 
 // Funções para manipular o estoque de Cinzas
 function adicionarCinzas() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-cinzas'
-    );
-    const tipoCinzas = document.getElementById(
-        'select-tipo-cinzas'
-    ).value;
+    const quantidade = obterQuantidadeInput('input-quantidade-cinzas');
+    const tipoCinzas = document.getElementById('select-tipo-cinzas').value;
 
     if (quantidade <= 0 || !tipoCinzas) {
-        alert(
-            'Por favor, insira uma quantidade válida e selecione um tipo de cinza.'
-        );
+        alert('Por favor, insira uma quantidade válida e selecione um tipo de cinza.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja adicionar ${quantidade} Kg de cinza ${tipoCinzas} ao estoque?`,
-        () => {
-            estoque.materiaisPrimas.cinzas.total +=
-                quantidade;
-            estoque.materiaisPrimas.cinzas.variedades[
-                tipoCinzas
-            ] =
-                (
-                    estoque.materiaisPrimas.cinzas
-                        .variedades[tipoCinzas] || 0
-                ) + quantidade;
-            atualizarInformacoesEstoque();
-            carregarVariedadesCinzas();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja adicionar ${quantidade} Kg de cinza ${tipoCinzas} ao estoque?`, () => {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/cinzas', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                tipo: tipoCinzas,
+                quantidade: quantidade
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao adicionar Cinzas.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao adicionar Cinzas.2');
+            console.error(error);
+        });
+        alert('Cinzas adicionadas com sucesso!');
+        window.location.reload();
+    });
 }
 
 function reduzirCinzas() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-cinzas'
-    );
-    const tipoCinzas = document.getElementById(
-        'select-tipo-cinzas'
-    ).value;
+    const quantidade = obterQuantidadeInput('input-quantidade-cinzas');
+    const tipoCinzas = document.getElementById('select-tipo-cinzas').value;
 
-    if (
-        quantidade <= 0 ||
-        !tipoCinzas ||
-        (
-            estoque.materiaisPrimas.cinzas.variedades[
-                tipoCinzas
-            ] || 0
-        ) < quantidade
-    ) {
-        alert(
-            'Por favor, insira uma quantidade válida e/ou tipo de cinza.'
-        );
+    if (quantidade <= 0 || !tipoCinzas) {
+        alert('Por favor, insira uma quantidade válida e/ou tipo de cinza.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja remover ${quantidade} Kg de cinza ${tipoCinzas} do estoque?`,
-        () => {
-            estoque.materiaisPrimas.cinzas.total -=
-                quantidade;
-            estoque.materiaisPrimas.cinzas.variedades[
-                tipoCinzas
-            ] -= quantidade;
-            atualizarInformacoesEstoque();
-            carregarVariedadesCinzas();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja remover ${quantidade} Kg de cinza ${tipoCinzas} do estoque?`, () => {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/cinzas', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                tipo: tipoCinzas,
+                quantidade: -quantidade
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao remover Cinzas.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao remover Cinzas.2');
+            console.error(error);
+        });
+        alert('Cinzas removidas com sucesso!');
+        window.location.reload();
+    });
 }
 
 // Funções para manipular o estoque de Pacotes
 function adicionarPacotes() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-pacotes'
-    );
+    const quantidade = obterQuantidadeInput('input-quantidade-pacotes');
     if (quantidade <= 0) {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja adicionar ${quantidade} unidades de pacotes ao estoque?`,
-        () => {
-            estoque.materiaisPrimas.pacotes += quantidade;
-            atualizarInformacoesEstoque();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja adicionar ${quantidade} unidades de pacotes ao estoque?`, () => {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/pacotes', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                quantidade: quantidade
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao adicionar Pacotes.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao adicionar Pacotes.2');
+            console.error(error);
+        });
+        alert('Pacotes adicionados com sucesso!');
+        window.location.reload();
+    });
 }
 
 function reduzirPacotes() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-pacotes'
-    );
-    if (
-        quantidade <= 0 ||
-        estoque.materiaisPrimas.pacotes < quantidade
-    ) {
+    const quantidade = obterQuantidadeInput('input-quantidade-pacotes');
+    if (quantidade <= 0) {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja remover ${quantidade} unidades de pacotes do estoque?`,
-        () => {
-            estoque.materiaisPrimas.pacotes -= quantidade;
-            atualizarInformacoesEstoque();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja remover ${quantidade} unidades de pacotes do estoque?`, () => {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/pacotes', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                quantidade: -quantidade
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao remover Pacotes.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao remover Pacotes.2');
+            console.error(error);
+        });
+        alert('Pacotes removidos com sucesso!');
+        window.location.reload();
+    });
 }
 
 // Funções para manipular o estoque de Adesivos Grandes
 function adicionarAdesivosGrandes() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-adesivos-grandes'
-    );
+    const quantidade = obterQuantidadeInput('input-quantidade-adesivos-grandes');
     if (quantidade <= 0) {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja adicionar ${quantidade} unidades de adesivos grandes ao estoque?`,
-        () => {
-            estoque.materiaisPrimas.adesivosGrandes +=
-                quantidade;
-            atualizarInformacoesEstoque();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja adicionar ${quantidade} unidades de adesivos grandes ao estoque?`, () => {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/adesivos-grandes', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                quantidade: quantidade
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao adicionar Adesivos Grandes.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao adicionar Adesivos Grandes.2');
+            console.error(error);
+        });
+        alert('Adesivos Grandes adicionados com sucesso!');
+        window.location.reload();
+    });
 }
 
 function reduzirAdesivosGrandes() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-adesivos-grandes'
-    );
-    if (
-        quantidade <= 0 ||
-        estoque.materiaisPrimas.adesivosGrandes < quantidade
-    ) {
+    const quantidade = obterQuantidadeInput('input-quantidade-adesivos-grandes');
+    if (quantidade <= 0) {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja remover ${quantidade} unidades de adesivos grandes do estoque?`,
-        () => {
-            estoque.materiaisPrimas.adesivosGrandes -=
-                quantidade;
-            atualizarInformacoesEstoque();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja remover ${quantidade} unidades de adesivos grandes do estoque?`, () => {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/adesivos-grandes', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                quantidade: -quantidade
+            })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao remover Adesivos Grandes.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao remover Adesivos Grandes.2');
+            console.error(error);
+        });
+        alert('Adesivos Grandes removidos com sucesso!');
+        window.location.reload();
+    });
 }
 
 

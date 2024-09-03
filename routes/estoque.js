@@ -132,7 +132,7 @@ router.put('/couripes', autenticar, (req, res) => {
     });
 });
 
-// Rota para atualizar a quantidade total de couripes (PUT /api/estoque/couripes)
+// Rota para atualizar a quantidade total de Sananga
 router.put('/sananga', autenticar, (req, res) => {
     const { quantidade } = req.body;
 
@@ -153,6 +153,131 @@ router.put('/sananga', autenticar, (req, res) => {
             res.json({ message: 'Quantidade de Sanagas atualizada com sucesso!' });
         } else {
             res.status(404).json({ error: 'Sanangas não encontradas.' });
+        }
+    });
+});
+
+// Rota para atualizar a quantidade total de Artesanatos (PUT /api/estoque/artesanatos)
+router.put('/artesanatos', autenticar, (req, res) => {
+    const { quantidade } = req.body;
+
+    // Verifica se a quantidade foi fornecida
+    if (!quantidade) {
+        return res.status(400).json({ error: 'A quantidade é obrigatória.' });
+    }
+
+    const sql = 'UPDATE produtos SET quantidade = quantidade + ? WHERE nome = "Artesanatos"';
+    db.query(sql, [quantidade], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar quantidade total de Artesanatos:', err);
+            res.status(500).json({ error: 'Erro ao atualizar quantidade total de Artesanatos.' });
+            return;
+        }
+
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Quantidade de Artesanatos atualizada com sucesso!' });
+        } else {
+            res.status(404).json({ error: 'Artesanatos não encontrados.' });
+        }
+    });
+});
+
+// Rota para atualizar a quantidade total de Tabaco (PUT /api/estoque/tabaco)
+router.put('/tabaco', autenticar, (req, res) => {
+    const { quantidade } = req.body;
+
+    // Verifica se a quantidade foi fornecida
+    if (!quantidade) {
+        return res.status(400).json({ error: 'A quantidade é obrigatória.' });
+    }
+
+    const sql = 'UPDATE materias_primas SET quantidade = quantidade + ? WHERE nome = "Tabaco"';
+    db.query(sql, [quantidade], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar quantidade total de Tabaco:', err);
+            res.status(500).json({ error: 'Erro ao atualizar quantidade total de Tabaco.' });
+            return;
+        }
+
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Quantidade de Tabaco atualizada com sucesso!' });
+        } else {
+            res.status(404).json({ error: 'Tabaco não encontrado.' });
+        }
+    });
+});
+
+// Rota para atualizar a quantidade total de Cinzas (PUT /api/estoque/cinzas)
+router.put('/cinzas', autenticar, (req, res) => {
+    const { quantidade, tipo } = req.body;
+
+    // Verifica se a quantidade e o tipo foram fornecidos
+    if (!quantidade || !tipo) {
+        return res.status(400).json({ error: 'A quantidade e o tipo são obrigatórios.' });
+    }
+
+    const sql = 'UPDATE variedades_cinzas SET quantidade = quantidade + ? WHERE nome = ?';
+    db.query(sql, [quantidade, tipo], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar quantidade total de Cinzas:', err);
+            res.status(500).json({ error: 'Erro ao atualizar quantidade total de Cinzas.' });
+            return;
+        }
+
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Quantidade de Cinzas atualizada com sucesso!' });
+        } else {
+            res.status(404).json({ error: 'Cinzas não encontradas.' });
+        }
+    });
+});
+
+// Rota para atualizar a quantidade total de Pacotes (PUT /api/estoque/pacotes)
+router.put('/pacotes', autenticar, (req, res) => {
+    const { quantidade } = req.body;
+
+    // Verifica se a quantidade foi fornecida
+    if (!quantidade) {
+        return res.status(400).json({ error: 'A quantidade é obrigatória.' });
+    }
+
+    const sql = 'UPDATE materias_primas SET quantidade = quantidade + ? WHERE nome = "Pacotes"';
+    db.query(sql, [quantidade], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar quantidade total de Pacotes:', err);
+            res.status(500).json({ error: 'Erro ao atualizar quantidade total de Pacotes.' });
+            return;
+        }
+
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Quantidade de Pacotes atualizada com sucesso!' });
+        } else {
+            res.status(404).json({ error: 'Pacotes não encontrados.' });
+        }
+    });
+});
+
+// Rota para atualizar a quantidade total de Adesivos Grandes (PUT /api/estoque/adesivos-grandes)
+router.put('/adesivos-grandes', autenticar, (req, res) => {
+    const { quantidade } = req.body;
+
+    // Verifica se a quantidade foi fornecida
+    if (!quantidade) {
+        return res.status(400).json({ error: 'A quantidade é obrigatória.' });
+    }
+
+    const sql = 'UPDATE materias_primas SET quantidade = quantidade + ? WHERE nome = "Adesivos Grandes"';
+    db.query(sql, [quantidade], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar quantidade total de Adesivos Grandes:', err);
+            res.status(500).json({ error: 'Erro ao atualizar quantidade total de Adesivos Grandes.' });
+            return;
+        }
+
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Quantidade de Adesivos Grandes atualizada com sucesso!' });
+        } else {
+            res.status(404).json({ error: 'Adesivos Grandes não encontrados.' });
         }
     });
 });
