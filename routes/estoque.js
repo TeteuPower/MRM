@@ -132,5 +132,30 @@ router.put('/couripes', autenticar, (req, res) => {
     });
 });
 
+// Rota para atualizar a quantidade total de couripes (PUT /api/estoque/couripes)
+router.put('/sananga', autenticar, (req, res) => {
+    const { quantidade } = req.body;
+
+    // Verifica se a quantidade foi fornecida
+    if (!quantidade) {
+        return res.status(400).json({ error: 'A quantidade é obrigatória.' });
+    }
+
+    const sql = 'UPDATE produtos SET quantidade = quantidade + ? WHERE nome = "Sananga"';
+    db.query(sql, [quantidade], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar quantidade total de Sanangas:', err);
+            res.status(500).json({ error: 'Erro ao atualizar quantidade total de Sanangas.' });
+            return;
+        }
+
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Quantidade de Sanagas atualizada com sucesso!' });
+        } else {
+            res.status(404).json({ error: 'Sanangas não encontradas.' });
+        }
+    });
+});
+
 
 module.exports = router;

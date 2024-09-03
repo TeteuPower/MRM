@@ -498,41 +498,84 @@ function reduzirCouripes() {
 
 // Funções para manipular o estoque de Sananga
 function adicionarSananga() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-sananga'
-    );
-    if (quantidade <= 0) {
+    const quantidade = obterQuantidadeInput('input-quantidade-sananga');
+    if (quantidade <= 0)
+    {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja adicionar ${quantidade} Kg de sananga ao estoque?`,
-        () => {
-            estoque.sananga += quantidade;
-            atualizarInformacoesEstoque();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja adicionar ${quantidade} pacotes de sananga ao estoque?`,() =>
+    {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/sananga',
+        {
+            method: 'PUT',
+            headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify
+            ({
+                quantidade: quantidade / 2 // Converte pacotes para Kg
+            })
+        })
+        .then(response =>
+        {
+            if (!response.ok)
+            {
+                throw new Error('Erro ao adicionar Sananga.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao adicionar Sananga.2');
+            console.error(error);
+        });
+        alert('Sananga adicionada com sucesso!')
+
+    });
 }
 
 function reduzirSananga() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-sananga'
-    );
-    if (quantidade <= 0 || estoque.sananga < quantidade) {
+    const quantidade = obterQuantidadeInput('input-quantidade-sananga');
+    if (quantidade <= 0)
+    {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
 
-    confirmarAlteracao(
-        `Deseja remover ${quantidade} Kg de sananga do estoque?`,
-        () => {
-            estoque.sananga -= quantidade;
-            atualizarInformacoesEstoque();
-        }
-    );
-    atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja remover ${quantidade} pacotes de sananga do estoque?`,() =>
+    {
+        // Faz uma requisição para a API
+        fetch('/api/estoque/sananga',
+        {
+            method: 'PUT',
+            headers:
+            {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify
+            ({
+                quantidade: - quantidade / 2 // Converte pacotes para Kg
+            })
+        })
+        .then(response =>
+        {
+            if (!response.ok)
+            {
+                throw new Error('Erro ao remover Sananga.1');
+            }
+            return response.json();
+        })
+        .catch(error => {
+            alert('Erro ao remover Sananga.2');
+            console.error(error);
+        });
+        alert('Sananga removida com sucesso!')
+    });
 }
 
 // Funções para manipular o estoque de Artesanatos
