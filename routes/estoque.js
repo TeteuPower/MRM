@@ -82,4 +82,30 @@ router.get('/', autenticar, (req, res) => {
     });
 });
 
+//Rota para alterar quantidade de Rapé no estoque
+router.put('/', autenticar, (req, res) => {
+    const { nome, quantidade } = req.body;
+
+    // Verifica se todos os campos obrigatórios foram fornecidos
+    if (!nome || !quantidade) {
+        return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
+    }
+
+    const sql = 'UPDATE variedades_rape SET quantidade = quantidade + ? WHERE nome = ?';
+    db.query(sql, [quantidade, nome], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar variedade de rapé:', err);
+            res.status(500).json({ error: 'Erro ao atualizar variedade de rapé.' });
+            return;
+        }
+
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Variedade de rapé atualizada com sucesso!' });
+        } else {
+            res.status(404).json({ error: 'Variedade de rapé não encontrada.' });
+        }
+    });
+});
+
+
 module.exports = router;

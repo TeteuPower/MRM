@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     atualizarInformacoesEstoque();
     exibirModal();
     carregarVariedadesRape();
-    carregarVariedadesCinzas();
+    //carregarVariedadesCinzas();
     adicionarEventosManipulacao();
 });
 
@@ -318,7 +318,7 @@ function confirmarAlteracao(
     }
 }
 
-// Funções para manipular o estoque de Rapé
+/*// Funções para manipular o estoque de Rapé
 function adicionarRape() {
     const quantidadePacotes = obterQuantidadeInput(
         'input-quantidade-rape'
@@ -358,6 +358,47 @@ function adicionarRape() {
         }
     );
     atualizarInformacoesEstoque();
+}*/
+
+function adicionarRape() {
+    const quantidadePacotes = obterQuantidadeInput('input-quantidade-rape');
+    const tipoRape = document.getElementById('select-tipo-rape').value;
+
+    if (quantidadePacotes <= 0 || !tipoRape) {
+        alert('Por favor, insira uma quantidade válida e selecione um tipo de rapé.');
+        return;
+    }
+
+    confirmarAlteracao(
+        `Deseja adicionar ${quantidadePacotes} pacotes de rapé ${tipoRape} ao estoque?`,
+        () => {
+            // Faz uma requisição POST para a API para adicionar o rapé
+            fetch('/api/estoque', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': localStorage.getItem('token')
+                },
+                body: JSON.stringify({
+                    nome: tipoRape,
+                    quantidade: quantidadePacotes / 2 // Converte pacotes para Kg
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao adicionar rapé.1');
+                }
+                return response.json();
+            })
+            /*.then(data => {
+                console.log(data);
+            })*/
+            .catch(error => {
+                alert('Erro ao adicionar rapé.2');
+                console.error(error);
+            });
+        }
+    );
 }
 
 function reduzirRape() {
