@@ -291,10 +291,7 @@ function adicionarEventosManipulacao() {
     // Adesivos Grandes
     document
         .getElementById('btn-adicionar-adesivos-grandes')
-        .addEventListener(
-            'click',
-            adicionarAdesivosGrandes
-        );
+        .addEventListener('click', adicionarAdesivosGrandes);
     document
         .getElementById('btn-reduzir-adesivos-grandes')
         .addEventListener('click', reduzirAdesivosGrandes);
@@ -305,57 +302,20 @@ function obterQuantidadeInput(inputId) {
 }
 
 function confirmarAlteracao(mensagem,funcaoConfirmar,funcaoCancelar) {
-    if (confirm(mensagem)) {
+    if (confirm(mensagem))
+    {
         funcaoConfirmar();
-    } else {
-        if (funcaoCancelar) {
+    } else
+    {
+        if (funcaoCancelar)
+        {
             funcaoCancelar();
         }
     }
 }
 
-/*// Funções para manipular o estoque de Rapé
-function adicionarRape() {
-    const quantidadePacotes = obterQuantidadeInput(
-        'input-quantidade-rape'
-    );
-    const tipoRape = document.getElementById(
-        'select-tipo-rape'
-    ).value;
-
-    if (quantidadePacotes <= 0 || !tipoRape) {
-        alert(
-            'Por favor, insira uma quantidade válida e selecione um tipo de rapé.'
-        );
-        return;
-    }
-
-    confirmarAlteracao(
-        `Deseja adicionar ${quantidadePacotes} pacotes de rapé ${tipoRape} ao estoque?`,
-        () => {
-            estoque.rape.total += quantidadePacotes / 2;
-            estoque.rape.variedades[tipoRape] =
-                (estoque.rape.variedades[tipoRape] || 0) +
-                quantidadePacotes / 2;
-            atualizarInformacoesEstoque();
-            carregarVariedadesRape();
-
-            // Pergunta se deseja deduzir insumos (pacote e adesivo)
-            confirmarAlteracao('Deseja deduzir os insumos (pacote e adesivo) utilizados na produção?',() =>
-                {
-                    estoque.materiaisPrimas.pacotes -=
-                        quantidadePacotes;
-                    estoque.materiaisPrimas.adesivosGrandes -=
-                        quantidadePacotes;
-                    atualizarInformacoesEstoque();
-                }
-            );
-        }
-    );
-    atualizarInformacoesEstoque();
-}*/
-
-function adicionarRape() {
+function adicionarRape()
+{
     const quantidadePacotes = obterQuantidadeInput('input-quantidade-rape');
     const tipoRape = document.getElementById('select-tipo-rape').value;
 
@@ -367,7 +327,7 @@ function adicionarRape() {
 
     confirmarAlteracao(`Deseja adicionar ${quantidadePacotes} pacotes de rapé ${tipoRape} ao estoque?`,() => 
         {
-            // Faz uma requisição POST para a API para adicionar o rapé
+            // Faz uma requisição para a API para adicionar o rapé
             fetch('/api/estoque',
             {
                 method: 'PUT',
@@ -384,24 +344,30 @@ function adicionarRape() {
             })
             .then(response =>
             {
-                if (!response.ok)
-                {
-                    throw new Error('Erro ao adicionar rapé.1');
+                if (!response.ok) {
+                  throw new Error('Erro ao adicionar rapé.1');
                 }
                 return response.json();
             })
-            .catch(error => {
+            .then(data =>
+                { // Aqui você recebe a resposta da API
+                    // Se a API responder com sucesso, você pode deduzir os insumos
+                    confirmarAlteracao('Deseja deduzir os insumos (pacote e adesivo) utilizados na produção?', () =>
+                    {
+                    // Lógica para deduzir insumos
+                
+                    alert('Os Rapés foram adicionados e os respectivos insumos deduzidos')
+                    }, () =>
+                        {
+                        alert('Os Rapés foram adicionados sem alterar os insumos!')
+                        });
+                })
+            .catch(error =>
+            {
                 alert('Erro ao adicionar rapé.2');
                 console.error(error);
             });
-            // Pergunta se deseja deduzir insumos (pacote e adesivo)
-            confirmarAlteracao('Deseja deduzir os insumos (pacote e adesivo) utilizados na produção?',() =>
-                {
-                //Lógica para deduzir insumos
-                }
-            );
-        }
-    );
+        });
 }
 
 function reduzirRape() {
@@ -416,7 +382,7 @@ function reduzirRape() {
 
     confirmarAlteracao(`Deseja remover ${quantidadePacotes} pacotes de rapé ${tipoRape} do estoque?`,() => 
         {
-            // Faz uma requisição POST para a API para adicionar o rapé
+            // Faz uma requisição para a API
             fetch('/api/estoque',
             {
                 method: 'PUT',
@@ -443,48 +409,91 @@ function reduzirRape() {
                 alert('Erro ao remover rapé.2');
                 console.error(error);
             });
+            alert('Rapés removidos com sucesso!')
         }
     );
-    //atualizarInformacoesEstoque();
 }
 
 // Funções para manipular o estoque de Couripes
 function adicionarCouripes() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-couripes'
-    );
-    if (quantidade <= 0) {
+    const quantidade = obterQuantidadeInput('input-quantidade-couripes');
+    if (quantidade <= 0)
+    {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
-
-    confirmarAlteracao(
-        `Deseja adicionar ${quantidade} unidades de couripes ao estoque?`,
-        () => {
-            estoque.couripes += quantidade;
-            atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja adicionar ${quantidade} unidades de couripes ao estoque?`,() =>
+        {
+            // Faz uma requisição para a API
+            fetch('/api/estoque/couripes',
+                {
+                    method: 'PUT',
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify
+                    ({
+                        quantidade: quantidade 
+                    })
+                })
+                .then(response =>
+                {
+                    if (!response.ok)
+                    {
+                        throw new Error('Erro ao adicionar Couripe.1');
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    alert('Erro ao adicionar Couripe.2');
+                    console.error(error);
+                });
+            alert('Couripes adicionados com sucesso!')
         }
     );
-    atualizarInformacoesEstoque();
 }
 
 function reduzirCouripes() {
-    const quantidade = obterQuantidadeInput(
-        'input-quantidade-couripes'
-    );
-    if (quantidade <= 0 || estoque.couripes < quantidade) {
+    const quantidade = obterQuantidadeInput('input-quantidade-couripes');
+    if (quantidade <= 0)
+    {
         alert('Por favor, insira uma quantidade válida.');
         return;
     }
-
-    confirmarAlteracao(
-        `Deseja remover ${quantidade} unidades de couripes do estoque?`,
-        () => {
-            estoque.couripes -= quantidade;
-            atualizarInformacoesEstoque();
+    confirmarAlteracao(`Deseja remover ${quantidade} unidades de couripes do estoque?`,() =>
+        {
+            // Faz uma requisição para a API
+            fetch('/api/estoque/couripes',
+                {
+                    method: 'PUT',
+                    headers:
+                    {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify
+                    ({
+                        quantidade: - quantidade 
+                    })
+                })
+                .then(response =>
+                {
+                    if (!response.ok)
+                    {
+                        throw new Error('Erro ao remover Couripe.1');
+                    }
+                    return response.json();
+                })
+                .catch(error => {
+                    alert('Erro ao remover Couripe.2');
+                    console.error(error);
+                });
+            alert('Couripes removido com sucesso!') 
         }
     );
-    atualizarInformacoesEstoque();
+
 }
 
 // Funções para manipular o estoque de Sananga
