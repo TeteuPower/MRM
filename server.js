@@ -35,6 +35,8 @@ app.use('/api/administradores', autenticar, require('./routes/administradores'))
 app.use('/api/clientes', autenticar, require('./routes/clientes'));
 //Rotas estoque
 app.use('/api/estoque', autenticar, require('./routes/estoque'));
+// Usa a rota de vendedores
+app.use('/api/funcionarios', autenticar, require('./routes/funcionarios'));
 
 
 // Rota para login do administrador (gera o token)

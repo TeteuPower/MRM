@@ -71,21 +71,30 @@ function adicionarVendedor() {
         return;
     }
 
-    if (vendedores.includes(novoVendedor)) {
-        alert('Este vendedor já está cadastrado!');
-        return;
-    }
-
-    // Verifica se o administrador logado é "Matheus"
-    if (localStorage.getItem('administrador') !== 'Matheus') {
-        alert('Apenas o administrador Matheus pode adicionar novos vendedores.');
-        return;
-    }
-
-    vendedores.push(novoVendedor);
-    salvarFuncionariosNoLocalStorage();
-    exibirVendedores();
-    document.getElementById('novo-vendedor').value = ''; // Limpa o campo de input
+    // Faz uma requisição POST para a API para adicionar o vendedor
+    fetch('/api/funcionarios', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify({ nome: novoVendedor })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao adicionar vendedor.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        exibirVendedores();
+        document.getElementById('novo-vendedor').value = ''; // Limpa o campo de input
+    })
+    .catch(error => {
+        alert('Erro ao adicionar vendedor.');
+        console.error(error);
+    });
 }
 
 function adicionarProdutor() {
