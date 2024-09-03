@@ -36,5 +36,38 @@ router.get('/', autenticar, (req, res) => {
     });
 });
 
+// Rota para criar um novo produtor (POST /api/produtores)
+router.post('/produtores', autenticar, (req, res) => {
+    const { nome } = req.body;
+
+    // Verifica se o nome do produtor foi fornecido
+    if (!nome) {
+        return res.status(400).json({ error: 'O nome do produtor é obrigatório.' });
+    }
+
+    const sql = 'INSERT INTO produtores (nome) VALUES (?)';
+    db.query(sql, [nome], (err, result) => {
+        if (err) {
+            console.error('Erro ao criar produtor:', err);
+            res.status(500).json({ error: 'Erro ao criar produtor.' });
+            return;
+        }
+        res.json({ message: 'Produtor criado com sucesso!', id: result.insertId });
+    });
+});
+
+// Rota para obter todos os funcionários (GET /api/funcionarios)
+router.get('/produtores', autenticar, (req, res) => {
+    const sql = 'SELECT * FROM produtores';
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar produtor:', err);
+            res.status(500).json({ error: 'Erro ao buscar produtor.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 
 module.exports = router;

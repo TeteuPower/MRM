@@ -75,10 +75,29 @@ function exibirProdutores() {
     const listaProdutores = document.getElementById('lista-produtores');
     listaProdutores.innerHTML = ''; // Limpa a lista
 
-    produtores.forEach(produtor => {
-        const listItem = document.createElement('li');
-        listItem.textContent = produtor;
-        listaProdutores.appendChild(listItem);
+    // Faz uma requisição GET para a API para obter os funcionários
+    fetch('/api/funcionarios/produtores', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar produtores.');
+        }
+        return response.json();
+    })
+    .then(funcionarios => {
+        // Itera sobre os funcionários e adiciona cada um à lista
+        funcionarios.forEach(funcionario => {
+            const listItem = document.createElement('li');
+            listItem.textContent = funcionario.nome;
+            listaProdutores.appendChild(listItem);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar funcionários.');
+        console.error(error);
     });
 }
 
@@ -87,6 +106,13 @@ function adicionarVendedor() {
 
     if (novoVendedor === '') {
         alert('Por favor, insira o nome do vendedor!');
+        return;
+    }
+
+    // Verifica se o administrador logado é "Matheus"
+    if (localStorage.getItem('administrador') !== 'Matheus')
+    {
+        alert('Apenas o administrador Matheus pode adicionar novos produtores.');
         return;
     }
 
@@ -124,21 +150,37 @@ function adicionarProdutor() {
         return;
     }
 
-    if (produtores.includes(novoProdutor)) {
-        alert('Este produtor já está cadastrado!');
-        return;
-    }
-
     // Verifica se o administrador logado é "Matheus"
-    if (localStorage.getItem('administrador') !== 'Matheus') {
-        alert('Apenas o administrador Matheus pode adicionar novos vendedores.');
+    if (localStorage.getItem('administrador') !== 'Matheus')
+    {
+        alert('Apenas o administrador Matheus pode adicionar novos produtores.');
         return;
     }
 
-    produtores.push(novoProdutor);
-    salvarFuncionariosNoLocalStorage();
-    exibirProdutores();
-    document.getElementById('novo-produtor').value = ''; // Limpa o campo de input
+    // Faz uma requisição POST para a API para adicionar o vendedor
+    fetch('/api/funcionarios/produtores', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify({ nome: novoProdutor })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao adicionar produtor.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        exibirVendedores();
+        document.getElementById('novo-produtor').value = ''; // Limpa o campo de input
+    })
+    .catch(error => {
+        alert('Erro ao adicionar vendedor.');
+        console.error(error);
+    });
 }
 
 function exibirDesempenhoVendedores() {
