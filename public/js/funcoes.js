@@ -379,8 +379,14 @@ function formatarData(data) {
 
 function exibirNomeAdministrador() {
     const nomeAdministrador = localStorage.getItem('administrador');
-    if (nomeAdministrador) {
-        document.getElementById('nome-administrador').textContent = `Olá, ${nomeAdministrador}!`;
+    if (nomeAdministrador === '1') {
+        document.getElementById('nome-administrador').textContent = `Olá, Teteu!`;
+    }
+    if (nomeAdministrador === '2') {
+        document.getElementById('nome-administrador').textContent = `Olá, Tetéia!`;
+    }
+    if (nomeAdministrador === '3') {
+        document.getElementById('nome-administrador').textContent = `Olá, Rastael!`;
     }
 }
 
