@@ -3,6 +3,7 @@ let carrinho = []; // Array para armazenar os itens do carrinho
 
 document.addEventListener('DOMContentLoaded', function () {
     verificarAutenticacao();
+    popularSelectProdutos();
     //carregarEstoqueDoLocalStorage();
     carregarClientesDoLocalStorage();
     carregarVendasDoLocalStorage();
@@ -14,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('produto').addEventListener('change', function () {
         const produtoSelecionado = this.value;
-        if (produtoSelecionado === 'rape') {
+        if (produtoSelecionado === '1') {
             document.getElementById('opcoes-tipo-rape').style.display = 'block';
         } else {
             document.getElementById('opcoes-tipo-rape').style.display = 'none';
@@ -193,14 +194,50 @@ function fecharModalAdicionarProduto() {
     document.getElementById('modal-adicionar-produto').style.display = 'none';
 }
 
+
+function popularSelectProdutos() {
+    const selectProduto = document.getElementById('produto');
+    selectProduto.innerHTML = '<option value="">Selecione o Produto</option>'; // Limpa as opções existentes
+
+    // Faz uma requisição à API para obter os produtos
+    fetch('/api/estoque', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar produtos.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const produtos = data.produtos;
+        // Itera sobre os produtos e adiciona cada um ao select
+        produtos.forEach(produto => {
+            const option = document.createElement('option');
+            option.value = produto.id; // Define o valor da opção como o ID do produto
+            option.textContent = produto.nome;
+            selectProduto.appendChild(option);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar produtos.');
+        console.error(error);
+    });
+}
+
+
 function adicionarAoCarrinho() {
-    const produto = document.getElementById('produto').value;
+    const produtoSelect = document.getElementById('produto');
+    const produtoId = parseFloat(produtoSelect.value); // Obtém o valor do select (ID do produto)
+    const produto = produtoSelect.options[produtoSelect.selectedIndex].text;
     const quantidade = parseInt(document.getElementById('quantidade').value);
     let tipoRape = null;
 
-    if (produto === 'rape') {
+    if (produtoId === 1) {
         tipoRape = document.getElementById('tipo-rape').value;
-        if (tipoRape === '') {
+        if (produtoId === '') {
             alert('Selecione um tipo de rapé!');
             return;
         }
@@ -209,6 +246,7 @@ function adicionarAoCarrinho() {
     const item = {
         produto: produto,
         quantidade: quantidade,
+        produtoId: produtoId,
         tipoRape: tipoRape
     };
 
@@ -229,12 +267,12 @@ function exibirCarrinho() {
         const cellAcoes = row.insertCell();
 
         let nomeProduto = item.produto;
-        if (item.produto === 'rape' && item.tipoRape) {
+        if (item.produtoId === 1 && item.tipoRape) {
             nomeProduto = `<span class="tipo-rape">(${item.tipoRape})</span>`;
         }
 
         cellProduto.innerHTML = nomeProduto; // Use innerHTML para renderizar o HTML
-        if (item.produto === 'rape') {
+        if (item.produtoId === 1) {
             cellQuantidade.textContent = `${item.quantidade} ${item.quantidade === 1 ? 'Pacote' : 'Pacotes'}`;
         } else {
             cellQuantidade.textContent = `${item.quantidade} Un.`; // Exibe "Un." para outros produtos
@@ -261,7 +299,7 @@ function calcularTotalRape() {
     let totalPacotes = 0;
 
     carrinho.forEach(item => {
-        if (item.produto === 'rape') {
+        if (item.produtoId === 1) {
             totalKg += item.quantidade / 2; // Cada pacote tem 500g (0.5kg)
             totalPacotes += item.quantidade;
         }
