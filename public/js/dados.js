@@ -1,28 +1,3 @@
-const tiposDeRape = [
-    "CHACRONA",
-    "JUREMA BRANCA",
-    "SAMSARA",
-    "ANGICO",
-    "JATOBA",
-    "CINNAMON",
-    "NUTMEG",
-    "NUKINI JAGUAR",
-    "YAWANAWA FF",
-    "BOBINSANA",
-    "TSUNU",
-    "MURICI",
-    "CACAU",
-    "CUMARU",
-    "JUREMA",
-    "VASHAWÁ",
-    "PAU PEREIRA(PARICÁ)",
-    "MULATEIRO",
-    "RED TSUNU",
-    "CANELA DE VELHO",
-    "7 HIERBAS",
-    "PAU BRASIL"
-];
-
 const tiposDeCinzas = [
     "CHACRONA",
     "JUREMA BRANCA",

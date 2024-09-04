@@ -29,7 +29,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('valor-venda').addEventListener('input', calcularSaldoVenda);
     document.getElementById('valor-pago').addEventListener('input', calcularSaldoVenda);
 
-    document.getElementById('form-nova-venda').addEventListener('submit', function (evento) {
+    document.getElementById('form-nova-venda').addEventListener('submit',
+    function (evento)
+    {
         evento.preventDefault();
 
         if (carrinho.length === 0) {
@@ -92,48 +94,98 @@ function verificarDadosEPopularSelects() {
     const selectCliente = document.getElementById('cliente');
     const selectVendedor = document.getElementById('vendedor');
 
-    selectCliente.innerHTML = '<option value="">Selecione o Cliente</option>'; //Limpa as opções existentes
-    selectVendedor.innerHTML = '<option value="">Selecione o Vendedor</option>'; //Limpa as opções existentes
+    selectCliente.innerHTML = '<option value="">Selecione o Cliente</option>';
+    selectVendedor.innerHTML = '<option value="">Selecione o Vendedor</option>';
 
-    let temClientes = typeof clientes !== 'undefined' && clientes.length > 0; //Verifica se existem clientes cadastrados
-    let temVendedores = typeof vendedores !== 'undefined' && vendedores.length > 0; //Verifica se existem vendedores cadastrados
+    // Faz requisições para as APIs para obter clientes e vendedores
+    Promise.all([
+        fetch('/api/clientes', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        }),
+        fetch('/api/funcionarios', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+    ])
+    .then(responses => {
+        return Promise.all(responses.map(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar dados.');
+            }
+            return response.json();
+        }));
+    })
+    .then(data => {
+        const clientes = data[0];
+        const vendedores = data[1];
 
-    if (!temClientes || !temVendedores) {
-        let mensagem = 'Não há ';
-        mensagem += !temClientes ? 'clientes' : '';
-        mensagem += !temClientes && !temVendedores ? ' nem ' : '';
-        mensagem += !temVendedores ? 'vendedores' : '';
-        mensagem += ' cadastrados. Você será redirecionado para a página de ';
-        mensagem += !temClientes ? 'cadastro de clientes.' : 'cadastro de funcionários.';
+        // Verifica se há clientes e vendedores
+        if (clientes.length === 0 || vendedores.length === 0) {
+            let mensagem = 'Não há ';
+            mensagem += clientes.length === 0 ? 'clientes' : '';
+            mensagem += clientes.length === 0 && vendedores.length === 0 ? ' nem ' : '';
+            mensagem += vendedores.length === 0 ? 'vendedores' : '';
+            mensagem += ' cadastrados. Você será redirecionado para a página de ';
+            mensagem += clientes.length === 0 ? 'cadastro de clientes.' : 'cadastro de funcionários.';
 
-        alert(mensagem);
-        window.location.href = !temClientes ? 'novo_cliente.html' : 'funcionarios.html';
-        return; // Encerra a função se não houver clientes ou vendedores
-    }
+            alert(mensagem);
+            window.location.href = clientes.length === 0 ? 'novo_cliente.html' : 'funcionarios.html';
+            return;
+        }
 
-    // Popula os selects se houver clientes e vendedores
-    clientes.forEach(cliente => {
-        const option = document.createElement('option');
-        option.value = cliente.nome;
-        option.textContent = cliente.nome;
-        selectCliente.appendChild(option);
-    });
+        // Popula os selects com os dados do banco de dados
+        clientes.forEach(cliente => {
+            const option = document.createElement('option');
+            option.value = cliente.id; // Define o valor da opção como o ID do cliente
+            option.textContent = cliente.nome;
+            selectCliente.appendChild(option);
+        });
 
-    vendedores.forEach(vendedor => {
-        const option = document.createElement('option');
-        option.value = vendedor;
-        option.textContent = vendedor;
-        selectVendedor.appendChild(option);
+        vendedores.forEach(vendedor => {
+            const option = document.createElement('option');
+            option.value = vendedor.id; // Define o valor da opção como o ID do vendedor
+            option.textContent = vendedor.nome;
+            selectVendedor.appendChild(option);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar dados.');
+        console.error(error);
     });
 }
 
 function popularSelectTiposRape() {
     const selectTipoRape = document.getElementById('tipo-rape');
-    tiposDeRape.forEach(tipo => {
-        const option = document.createElement('option');
-        option.value = tipo;
-        option.textContent = tipo;
-        selectTipoRape.appendChild(option);
+    selectTipoRape.innerHTML = '<option value="">Selecione o Tipo</option>'; // Limpa as opções existentes
+
+    // Faz uma requisição à API para obter as variedades de rapé
+    fetch('/api/estoque', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar variedades de rapé.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const variedades = data.variedadesRape;
+        // Itera sobre as variedades e adiciona cada uma ao select
+        variedades.forEach(variedade => {
+            const option = document.createElement('option');
+            option.value = variedade.nome;
+            option.textContent = variedade.nome;
+            selectTipoRape.appendChild(option);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar variedades de rapé.');
+        console.error(error);
     });
 }
 

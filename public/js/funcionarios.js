@@ -36,11 +36,6 @@ let paginaAtualVendasVendedor = 1;
 const vendasPorPagina = 10; // Número de vendas por página
 
 
-function salvarFuncionariosNoLocalStorage() {
-    localStorage.setItem('vendedores', JSON.stringify(vendedores));
-    localStorage.setItem('produtores', JSON.stringify(produtores));
-}
-
 function exibirVendedores() {
     const listaVendedores = document.getElementById('lista-vendedores');
     listaVendedores.innerHTML = ''; // Limpa a lista
