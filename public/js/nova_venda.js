@@ -53,44 +53,56 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         const venda = {
-            id: gerarIdVenda(),
-            cliente: clienteSelecionado,
-            vendedor: document.getElementById('vendedor').value,
-            itens: carrinho,
-            totalRape: calcularTotalRape(),
+            clienteId: parseInt(clienteSelecionado), // Obtém o ID do cliente selecionado
+            vendedorId: parseInt(document.getElementById('vendedor').value), // Obtém o ID do vendedor selecionado
+            descricao: document.getElementById('descricao').value,
             moeda: document.getElementById('moeda').value,
             valorVenda: parseFloat(document.getElementById('valor-venda').value),
             valorPago: parseFloat(document.getElementById('valor-pago').value) || 0,
-            saldoVenda: parseFloat(document.getElementById('valor-pago').value || '0') - parseFloat(document.getElementById('valor-venda').value),
-            descricao: document.getElementById('descricao').value,
-            dataCriacao: new Date(), // Adiciona a data e hora da criação
-            status: 'Em produção', // Adiciona o status inicial
-            dataProducao: null, // Data que o pedido foi produzido
-            dataFinalizacao: null, // Data que o pedido foi finalizado
-            vendaAdministrador: localStorage.getItem('administrador'), // Verifica se a venda foi cadastrada por um adm
-            repasseComissao: false // Define repasseComissao como false
-            
+            administradorId: parseInt(localStorage.getItem('administrador')), // Obtém o ID do administrador do Local Storage
+            itens: carrinho,
+            dataCriacao: new Date().toISOString().slice(0, 19).replace('T', ' '), // Converte para o formato YYYY-MM-DD HH:MM:SS
+            repasseComissao: false,
+            status: 'Em produção',
+            dataProducao: null,
+            dataFinalizacao: null,
+            valorFrete: null,
+            produtor: null,
+            saldoVenda: saldo,
+            vendaAdministrador: localStorage.getItem('administrador') === 'true',
+            administrador: localStorage.getItem('administrador')
         };
-
-        vendas.push(venda);
-        salvarVendasNoLocalStorage();
-
-        // Lógica para atualizar o estoque (deduzir os itens vendidos)
-        atualizarEstoque(venda);
-        // Atualiza o saldo do cliente
-        atualizarSaldoCliente(venda);
-
-        alert('Venda registrada com sucesso:', venda);
-
-        // Limpa o formulário e o carrinho
-        evento.target.reset();
-        carrinho = [];
-        exibirCarrinho();
-        calcularTotalRape();
-        calcularSaldoVenda();
+        console.log(venda);
+    
+        // Envia os dados para a API
+        fetch('/api/pedidos', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify(venda)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao registrar venda.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            evento.target.reset();
+            carrinho = [];
+            exibirCarrinho();
+            calcularTotalRape();
+            calcularSaldoVenda();
+        })
+        .catch(error => {
+            alert('Erro ao registrar venda.');
+            console.error(error);
+        });
     });
 });
-
 function verificarDadosEPopularSelects() {
     const selectCliente = document.getElementById('cliente');
     const selectVendedor = document.getElementById('vendedor');
@@ -251,6 +263,7 @@ function adicionarAoCarrinho() {
     };
 
     carrinho.push(item);
+    console.log(carrinho);
     exibirCarrinho();
     calcularTotalRape();
     fecharModalAdicionarProduto();
@@ -309,11 +322,12 @@ function calcularTotalRape() {
     return totalKg;
 }
 
+let saldo = 0;
 function calcularSaldoVenda() {
     const moeda = document.getElementById('moeda').value;
     const valorVenda = parseFloat(document.getElementById('valor-venda').value) || 0;
     const valorPago = parseFloat(document.getElementById('valor-pago').value) || 0;
-    const saldo = valorPago - valorVenda;
+    saldo = valorPago - valorVenda;
 
     const simboloMoeda = moeda === 'real' ? 'R$' : 'US$';
     document.getElementById('saldo-venda').textContent = `${simboloMoeda} ${saldo.toFixed(2)}`;

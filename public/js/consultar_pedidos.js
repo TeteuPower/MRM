@@ -90,24 +90,36 @@ function finalizarPedido(pedido) {
         pedido.status = 'Finalizado';
         pedido.dataFinalizacao = new Date(); // Define a data de finalização
         pedido.valorFrete = parseFloat(document.getElementById('modal-valor-frete').value) || 0;
-        salvarPedidosNoLocalStorage();
-        exibirPedidos();
-        fecharModalDetalhesPedido();
-        atualizarPedidoNoCliente(pedido); // Atualiza o pedido dentro da array do cliente
+        pedido.produtor = document.getElementById('modal-produtor').value;
+
+        // Atualiza o pedido na API
+        fetch(`/api/pedidos/${pedido.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify(pedido)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao finalizar pedido.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            salvarPedidosNoLocalStorage();
+            exibirPedidos();
+            fecharModalDetalhesPedido();
+        })
+        .catch(error => {
+            alert('Erro ao finalizar pedido.');
+            console.error(error);
+        });
     }
 }
 
-/*function formatarData(data) {
-    if (data === null) {
-        return '-'; // Ou qualquer outro valor padrão que você queira exibir quando a data for nula
-    }
-    const dia = data.getDate().toString().padStart(2, '0');
-    const mes = (data.getMonth() + 1).toString().padStart(2, '0');
-    const ano = data.getFullYear();
-    const horas = data.getHours().toString().padStart(2, '0');
-    const minutos = data.getMinutes().toString().padStart(2, '0');
-    return `${dia}/${mes}/${ano} às ${horas}:${minutos}`;
-}*/
 
 function exibirPedidosAguardandoProducao() {
     const listaPedidos = document.getElementById('lista-pedidos-aguardando-producao');

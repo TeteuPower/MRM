@@ -37,6 +37,8 @@ app.use('/api/clientes', autenticar, require('./routes/clientes'));
 app.use('/api/estoque', autenticar, require('./routes/estoque'));
 // Usa a rota de vendedores
 app.use('/api/funcionarios', autenticar, require('./routes/funcionarios'));
+// Usa a rota de pedidos
+app.use('/api/pedidos', autenticar, require('./routes/pedidos'));
 
 
 // Rota para login do administrador (gera o token)
