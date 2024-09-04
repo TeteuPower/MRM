@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function() {
     carregarVariedadesRape();
     carregarVariedadesCinzas();
     adicionarEventosManipulacao();
+    // Chame a função para popular os selects de tipos de rapé e cinzas
+    popularSelectTiposRape('select-tipo-cinzas');
+    popularSelectTiposRape('select-tipo-rape');
 });
 
 
@@ -950,7 +953,3 @@ function popularSelectTipos(selectId, tipos) {
         select.appendChild(option);
     });
 }
-
-// Chame a função para popular os selects de tipos de rapé e cinzas
-popularSelectTipos('select-tipo-rape', tiposDeRape);
-popularSelectTipos('select-tipo-cinzas', tiposDeCinzas);

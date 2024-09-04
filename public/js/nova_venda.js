@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
     carregarVendasDoLocalStorage();
     carregarFuncionariosDoLocalStorage();
     verificarDadosEPopularSelects();
-    popularSelectTiposRape();
+    popularSelectTiposRape('tipo-rape');
     exibirCarrinho();
     calcularTotalRape();
 
@@ -166,38 +166,6 @@ function verificarDadosEPopularSelects() {
     })
     .catch(error => {
         alert('Erro ao buscar dados.');
-        console.error(error);
-    });
-}
-
-function popularSelectTiposRape() {
-    const selectTipoRape = document.getElementById('tipo-rape');
-    selectTipoRape.innerHTML = '<option value="">Selecione o Tipo</option>'; // Limpa as opções existentes
-
-    // Faz uma requisição à API para obter as variedades de rapé
-    fetch('/api/estoque', {
-        headers: {
-            'Authorization': localStorage.getItem('token')
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro ao buscar variedades de rapé.');
-        }
-        return response.json();
-    })
-    .then(data => {
-        const variedades = data.variedadesRape;
-        // Itera sobre as variedades e adiciona cada uma ao select
-        variedades.forEach(variedade => {
-            const option = document.createElement('option');
-            option.value = variedade.nome;
-            option.textContent = variedade.nome;
-            selectTipoRape.appendChild(option);
-        });
-    })
-    .catch(error => {
-        alert('Erro ao buscar variedades de rapé.');
         console.error(error);
     });
 }

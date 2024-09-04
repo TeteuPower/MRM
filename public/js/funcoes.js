@@ -88,79 +88,6 @@ function salvarEstoqueNoLocalStorage() {
     localStorage.setItem('estoque', JSON.stringify(window.estoque));
 }
 
-/*function carregarEstoqueDoLocalStorage() {
-    const estoqueStorage = localStorage.getItem('estoque');
-    if (estoqueStorage) {
-        window.estoque = JSON.parse(estoqueStorage);
-    } else {
-        // Define o estoque inicial se não houver dados no Local Storage
-        window.estoque = {
-            rape: {
-                total: 0, 
-                variedades: {
-                    CHACRONA: 0,
-                    "JUREMA BRANCA": 0,
-                    SAMSARA: 0,
-                    ANGICO: 0,
-                    JATOBA: 0,
-                    CINNAMON: 0,
-                    NUTMEG: 0,
-                    "NUKINI JAGUAR": 0,
-                    "YAWANAWA FF": 0,
-                    BOBINSANA: 0,
-                    TSUNU: 0,
-                    MURICI: 0,
-                    CACAU: 0,
-                    CUMARU: 0,
-                    JUREMA: 0,
-                    VASHAWÁ: 0,
-                    "PAU PEREIRA(PARICÁ)": 0,
-                    MULATEIRO: 0,
-                    "RED TSUNU": 0,
-                    "CANELA DE VELHO": 0,
-                    "7 HIERBAS": 0,
-                    "PAU BRASIL": 0
-                }
-            },
-            couripes: 0, 
-            sananga: 0,  
-            artesanatos: 0, 
-            materiaisPrimas: {
-                cinzas: {
-                    total: 0, 
-                    variedades: {
-                        CHACRONA: 0,
-                        "JUREMA BRANCA": 0,
-                        SAMSARA: 0,
-                        ANGICO: 0,
-                        JATOBA: 0,
-                        CINNAMON: 0,
-                        NUTMEG: 0,
-                        "NUKINI JAGUAR": 0,
-                        "YAWANAWA FF": 0,
-                        BOBINSANA: 0,
-                        TSUNU: 0,
-                        MURICI: 0,
-                        CACAU: 0,
-                        CUMARU: 0,
-                        JUREMA: 0,
-                        VASHAWÁ: 0,
-                        "PAU PEREIRA(PARICÁ)": 0,
-                        MULATEIRO: 0,
-                        "RED TSUNU": 0,
-                        "CANELA DE VELHO": 0,
-                        "7 HIERBAS": 0,
-                        "PAU BRASIL": 0
-                    }
-                },
-                tabaco: 0,
-                pacotes: 0, 
-                adesivosGrandes: 0
-            }
-        };
-    }
-}*/
-
 function exibirDetalhesPedido(pedido) {
     const solicitadoPor = pedido.vendaAdministrador ? pedido.vendaAdministrador : 'Cliente'; // Obtém o nome do administrador ou "Cliente"
     document.getElementById('modal-numero-pedido').textContent = `Detalhes do Pedido nº ${pedido.id}`;
@@ -520,4 +447,36 @@ function verificarAutenticacao() {
     // Adiciona a classe 'visivel' ao body para exibir o conteúdo
     document.body.classList.add('visivel');
     return Promise.resolve(true);
+}
+
+function popularSelectTiposRape(idInput) {
+    const selectTipoRape = document.getElementById(idInput);
+    selectTipoRape.innerHTML = '<option value="">Selecione o Tipo</option>'; // Limpa as opções existentes
+
+    // Faz uma requisição à API para obter as variedades de rapé
+    fetch('/api/estoque', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar variedades de rapé.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const variedades = data.variedadesRape;
+        // Itera sobre as variedades e adiciona cada uma ao select
+        variedades.forEach(variedade => {
+            const option = document.createElement('option');
+            option.value = variedade.nome;
+            option.textContent = variedade.nome;
+            selectTipoRape.appendChild(option);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar variedades de rapé.');
+        console.error(error);
+    });
 }
