@@ -59,6 +59,7 @@ function exibirPedidosNaoFinalizados() {
 function exibirInputsLote(pedido) {
     const inputsLote = document.getElementById('inputs-lote');
     inputsLote.innerHTML = ''; // Limpa os inputs existentes
+    console.log(pedido)
 
     pedido.itens.forEach(item => {
         if (item.produto === 'rape') {
@@ -127,23 +128,45 @@ function exibirPedidosAguardandoProducao() {
 
     const termoPesquisa = document.getElementById('pesquisa-pedido').value.toLowerCase();
 
-    const pedidosAguardandoProducao = vendas.filter(pedido => {
-        return pedido.status === 'Em produção' &&
-        (pedido.id.toString().includes(termoPesquisa) || 
-        pedido.cliente.toLowerCase().includes(termoPesquisa) ||
-        pedido.vendedor.toLowerCase().includes(termoPesquisa)); // Adiciona pesquisa por vendedor
+    // Faz uma requisição GET para a API para obter os pedidos
+    fetch('/api/pedidos-aguardando-producao', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
     })
-    .sort((a, b) => b.dataCriacao - a.dataCriacao); // Ordena por data (mais recentes primeiro)
-
-    pedidosAguardandoProducao.forEach(pedido => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
-
-        listItem.addEventListener('click', () => {
-            exibirDetalhesPedido(pedido);
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar pedidos.');
+        }
+        return response.json();
+    })
+    .then(pedidos => {
+        // Filtra os pedidos com base no termo de pesquisa
+        const pedidosFiltrados = pedidos.filter(pedido => {
+            return (pedido.status === 'Em produção') &&
+                   (pedido.id.toString().includes(termoPesquisa) || 
+                    pedido.cliente_id.toLowerCase().includes(termoPesquisa) ||
+                    pedido.vendedor_id.toLowerCase().includes(termoPesquisa));
         });
+//console.log(pedidosFiltrados)
+        // Ordena os pedidos por data de criação (mais recentes primeiro)
+        pedidosFiltrados.sort((a, b) => b.dataCriacao - a.dataCriacao);
 
-        listaPedidos.appendChild(listItem);
+        // Itera sobre os pedidos filtrados e adiciona cada um à lista
+        pedidosFiltrados.forEach(pedido => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente_id} - ${pedido.vendedor_id}`;
+
+            listItem.addEventListener('click', () => {
+                exibirDetalhesPedido(pedido.id);
+            });
+
+            listaPedidos.appendChild(listItem);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar pedidos.');
+        console.error(error);
     });
 }
 
@@ -249,7 +272,7 @@ function criarMenuPaginacao(totalPedidos) {
     }
 }
 
-function popularProdutores() {
+/*function popularProdutores() {
     const selectProdutor = document.getElementById('modal-produtor');
 
     selectProdutor.innerHTML = '<option value="">Selecione o Produtor</option>'; // Limpa as opções existentes
@@ -264,6 +287,6 @@ function popularProdutores() {
         });
     } else {
         alert("Não existem produtores cadastrados, por favor cadastre um produtor!");
-        window.location.href = 'funcionarios.html';
+        //window.location.href = 'funcionarios.html';
     }
-}
+}*/

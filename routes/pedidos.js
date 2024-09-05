@@ -3,6 +3,100 @@ const router = express.Router();
 const db = require('../db');
 const autenticar = require('../middleware/auth');
 
+// Rota para obter um pedido por ID (GET /api/pedidos/:id)
+router.get('/:id', autenticar, (req, res) => {
+    const pedidoId = req.params.id;
+    const sql = 'SELECT * FROM pedidos WHERE id = ?';
+    db.query(sql, [pedidoId], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar pedido:', err);
+            res.status(500).json({ error: 'Erro ao buscar pedido.' });
+            return;
+        }
+        if (results.length > 0) {
+            const pedido = results[0];
+
+            // Busca os itens do pedido
+            const sqlItens = 'SELECT * FROM itens_pedido WHERE pedido_id = ?';
+            db.query(sqlItens, [pedidoId], (err, itens) => {
+                if (err) {
+                    console.error('Erro ao buscar itens do pedido:', err);
+                    res.status(500).json({ error: 'Erro ao buscar pedido.' });
+                    return;
+                }
+
+                // Adiciona os itens ao objeto do pedido
+                pedido.itens = itens;
+
+                // Busca o nome do cliente
+                const sqlCliente = 'SELECT nome FROM clientes WHERE id = ?';
+                db.query(sqlCliente, [pedido.cliente_id], (err, cliente) => {
+                    if (err) {
+                        console.error('Erro ao buscar cliente:', err);
+                        res.status(500).json({ error: 'Erro ao buscar pedido.' });
+                        return;
+                    }
+
+                    // Adiciona o nome do cliente ao objeto do pedido
+                    pedido.cliente = cliente[0].nome;
+
+                    // Busca o nome do vendedor
+                    const sqlVendedor = 'SELECT nome FROM vendedores WHERE id = ?';
+                    db.query(sqlVendedor, [pedido.vendedor_id], (err, vendedor) => {
+                        if (err) {
+                            console.error('Erro ao buscar vendedor:', err);
+                            res.status(500).json({ error: 'Erro ao buscar pedido.' });
+                            return;
+                        }
+
+                        // Adiciona o nome do vendedor ao objeto do pedido
+                        pedido.vendedor = vendedor[0].nome;
+
+                        // Busca o nome do produtor
+                        if (pedido.produtor_id) {
+                            const sqlProdutor = 'SELECT nome FROM produtores WHERE id = ?';
+                            db.query(sqlProdutor, [pedido.produtor_id], (err, produtor) => {
+                                if (err) {
+                                    console.error('Erro ao buscar produtor:', err);
+                                    res.status(500).json({ error: 'Erro ao buscar pedido.' });
+                                    return;
+                                }
+
+                                // Adiciona o nome do produtor ao objeto do pedido
+                                pedido.produtor = produtor[0].nome;
+
+                                // Busca o nome do administrador
+                                if (pedido.administrador_id) {
+                                    const sqlAdministrador = 'SELECT nome FROM administradores WHERE id = ?';
+                                    db.query(sqlAdministrador, [pedido.administrador_id], (err, administrador) => {
+                                        if (err) {
+                                            console.error('Erro ao buscar administrador:', err);
+                                            res.status(500).json({ error: 'Erro ao buscar pedido.' });
+                                            return;
+                                        }
+
+                                        // Adiciona o nome do administrador ao objeto do pedido
+                                        pedido.administrador = administrador[0].nome;
+
+                                        res.json(pedido);
+                                    });
+                                } else {
+                                    res.json(pedido);
+                                }
+                            });
+                        } else {
+                            res.json(pedido);
+                        }
+                    });
+                });
+            });
+        } else {
+            res.status(404).json({ error: 'Pedido não encontrado.' });
+        }
+    });
+});
+
+
 // Rota para atualizar um pedido (PUT /api/pedidos/:id)
 router.put('/:id', autenticar, (req, res) => {
     const pedidoId = req.params.id;
@@ -52,8 +146,8 @@ router.post('/', autenticar, (req, res) => {
 
         // Insere os itens do pedido
         itens.forEach(item => {
-            const sqlItem = 'INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, lote) VALUES (?, ?, ?, ?)';
-            db.query(sqlItem, [pedidoId, item.produtoId, item.quantidade, item.lote], (err, result) => {
+            const sqlItem = 'INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, lote, produto, tipo_rape) VALUES (?, ?, ?, ?, ?, ?)';
+            db.query(sqlItem, [pedidoId, item.produtoId, item.quantidade, item.lote, item.produto, item.tipoRape], (err, result) => {
                 if (err) {
                     console.error('Erro ao inserir item do pedido:', err);
                     res.status(500).json({ error: 'Erro ao criar pedido.' });

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     verificarAutenticacao();
     carregarFuncionariosDoLocalStorage();
     //exibirVendedores();
-    exibirProdutores();
+    exibirProdutores('lista-produtores');
     exibirDesempenhoVendedores();
     exibirDesempenhoProdutores();
     carregarPedidosDoLocalStorage();
@@ -65,36 +65,6 @@ const vendasPorPagina = 10; // Número de vendas por página
         console.error(error);
     });
 }*/
-
-function exibirProdutores() {
-    const listaProdutores = document.getElementById('lista-produtores');
-    listaProdutores.innerHTML = ''; // Limpa a lista
-
-    // Faz uma requisição GET para a API para obter os funcionários
-    fetch('/api/funcionarios/produtores', {
-        headers: {
-            'Authorization': localStorage.getItem('token')
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro ao buscar produtores.');
-        }
-        return response.json();
-    })
-    .then(funcionarios => {
-        // Itera sobre os funcionários e adiciona cada um à lista
-        funcionarios.forEach(funcionario => {
-            const listItem = document.createElement('li');
-            listItem.textContent = funcionario.nome;
-            listaProdutores.appendChild(listItem);
-        });
-    })
-    .catch(error => {
-        alert('Erro ao buscar funcionários.');
-        console.error(error);
-    });
-}
 
 function adicionarVendedor() {
     const novoVendedor = document.getElementById('novo-vendedor').value.trim();

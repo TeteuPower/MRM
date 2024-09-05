@@ -231,7 +231,7 @@ function adicionarAoCarrinho() {
     };
 
     carrinho.push(item);
-    //console.log(carrinho);
+    console.log(carrinho);
     exibirCarrinho();
     calcularTotalRape();
     fecharModalAdicionarProduto();

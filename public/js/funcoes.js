@@ -88,19 +88,33 @@ function salvarEstoqueNoLocalStorage() {
     localStorage.setItem('estoque', JSON.stringify(window.estoque));
 }
 
-function exibirDetalhesPedido(pedido) {
+function exibirDetalhesPedido(id) {
+    // Faz uma requisição GET para a API para obter os detalhes do pedido
+    fetch(`/api/pedidos/${id}`, {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar pedido.');
+        }
+        return response.json();
+    })
+    .then(pedido => {
+    //console.log('Fora do then',pedido);
     const solicitadoPor = pedido.vendaAdministrador ? pedido.vendaAdministrador : 'Cliente'; // Obtém o nome do administrador ou "Cliente"
     document.getElementById('modal-numero-pedido').textContent = `Detalhes do Pedido nº ${pedido.id}`;
     document.getElementById('modal-cliente').textContent = pedido.cliente;
     document.getElementById('modal-vendedor').textContent = pedido.vendedor;
     document.getElementById('modal-descricao').textContent = pedido.descricao;
-    document.getElementById('modal-data-criacao').textContent = formatarData(pedido.dataCriacao); //Data que o pedido foi criado
-    document.getElementById('modal-data-producao').textContent = formatarData(pedido.dataProducao); //Data que o pedido foi produzido
-    document.getElementById('modal-data-finalizacao').textContent = formatarData(pedido.dataFinalizacao); //Data que o pedido foi finalizado
-    document.getElementById('modal-valor-venda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorVenda.toFixed(2)}`;
-    document.getElementById('modal-valor-pago').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorPago.toFixed(2)}`;
+    document.getElementById('modal-data-criacao').textContent = formatarData(pedido.data_criacao); //Data que o pedido foi criado
+    document.getElementById('modal-data-producao').textContent = formatarData(pedido.data_producao); //Data que o pedido foi produzido
+    document.getElementById('modal-data-finalizacao').textContent = formatarData(pedido.data_finalizacao); //Data que o pedido foi finalizado
+    document.getElementById('modal-valor-venda').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.valor_venda).toFixed(2)}`;
+    document.getElementById('modal-valor-pago').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.valor_pago).toFixed(2)}`;
     document.getElementById('modal-status').textContent = pedido.status;
-    document.getElementById('modal-saldoVenda').textContent = pedido.saldoVenda === 0 ? 'Pago' : `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.saldoVenda.toFixed(2)}`;
+    document.getElementById('modal-saldoVenda').textContent = pedido.saldo_venda === 0 ? 'Pago' : `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.saldo_venda).toFixed(2)}`;
     document.getElementById('modal-solicitado-por').textContent = solicitadoPor;
     document.getElementById('modal-produtor-span').textContent = pedido.produtor;
 
@@ -109,7 +123,7 @@ function exibirDetalhesPedido(pedido) {
         const areaLote = document.getElementById('area-lote');
         if (pedido.status === 'Em produção') {
             areaLote.style.display = 'block';
-            popularProdutores(); // Chama a função para popular o select de produtores
+            exibirProdutores('modal-produtor'); // Chama a função para popular o select de produtores[
             exibirInputsLote(pedido); // Chama a função para exibir os inputs de lote
     
             // Adiciona evento ao botão "Pronto, aguardando envio"
@@ -231,6 +245,7 @@ function exibirDetalhesPedido(pedido) {
         } else {
             valorFreteExibicao.textContent = 'Não informado'; // Ou qualquer outro valor padrão se o frete não estiver definido
         }
+    })
 
     // Exibe o modal
     document.getElementById('modal-detalhes-pedido').style.display = 'block';
@@ -477,6 +492,36 @@ function popularSelectTiposRape(idInput) {
     })
     .catch(error => {
         alert('Erro ao buscar variedades de rapé.');
+        console.error(error);
+    });
+}
+
+function exibirProdutores(inputId) {
+    const listaProdutores = document.getElementById(inputId);
+    listaProdutores.innerHTML = '<option value="">Selecione o Produtor</option>'; // Limpa as opções existentes
+
+    // Faz uma requisição GET para a API para obter os funcionários
+    fetch('/api/funcionarios/produtores', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar produtores.');
+        }
+        return response.json();
+    })
+    .then(funcionarios => {
+        // Itera sobre os funcionários e adiciona cada um à lista
+        funcionarios.forEach(funcionario => {
+            const listItem = document.createElement('option');
+            listItem.textContent = funcionario.nome;
+            listaProdutores.appendChild(listItem);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar funcionários.');
         console.error(error);
     });
 }
