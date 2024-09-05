@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function () {
             vendaAdministrador: localStorage.getItem('administrador') === 'true',
             administrador: localStorage.getItem('administrador')
         };
-        console.log(venda);
+        //console.log(venda);
     
         // Envia os dados para a API
         fetch('/api/pedidos', {
@@ -231,7 +231,7 @@ function adicionarAoCarrinho() {
     };
 
     carrinho.push(item);
-    console.log(carrinho);
+    //console.log(carrinho);
     exibirCarrinho();
     calcularTotalRape();
     fecharModalAdicionarProduto();

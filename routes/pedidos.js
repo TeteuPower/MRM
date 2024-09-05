@@ -66,4 +66,18 @@ router.post('/', autenticar, (req, res) => {
     });
 });
 
+// Rota para obter os pedidos de um cliente (GET /api/pedidos/cliente/:id)
+router.get('/cliente/:id', autenticar, (req, res) => {
+    const clienteId = req.params.id;
+    const sql = 'SELECT * FROM pedidos WHERE cliente_id = ?';
+    db.query(sql, [clienteId], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar pedidos do cliente:', err);
+            res.status(500).json({ error: 'Erro ao buscar pedidos do cliente.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 module.exports = router;
