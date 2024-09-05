@@ -3,7 +3,7 @@
 document.addEventListener('DOMContentLoaded', function () {
     verificarAutenticacao();
     carregarFuncionariosDoLocalStorage();
-    exibirVendedores();
+    //exibirVendedores();
     exibirProdutores();
     exibirDesempenhoVendedores();
     exibirDesempenhoProdutores();
@@ -36,7 +36,7 @@ let paginaAtualVendasVendedor = 1;
 const vendasPorPagina = 10; // Número de vendas por página
 
 
-function exibirVendedores() {
+/*function exibirVendedores() {
     const listaVendedores = document.getElementById('lista-vendedores');
     listaVendedores.innerHTML = ''; // Limpa a lista
 
@@ -64,7 +64,7 @@ function exibirVendedores() {
         alert('Erro ao buscar funcionários.');
         console.error(error);
     });
-}
+}*/
 
 function exibirProdutores() {
     const listaProdutores = document.getElementById('lista-produtores');
@@ -182,13 +182,32 @@ function exibirDesempenhoVendedores() {
     const listaVendedores = document.getElementById('lista-vendedores-desempenho');
     listaVendedores.innerHTML = ''; // Limpa a lista
 
-    vendedores.forEach(vendedor => {
-        const listItem = document.createElement('li');
-        listItem.textContent = vendedor;
-        listItem.addEventListener('click', () => {
-            exibirVendasVendedor(vendedor);
+    // Faz uma requisição GET para a API para obter os funcionários
+    fetch('/api/funcionarios', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar funcionários.');
+        }
+        return response.json();
+    })
+    .then(funcionarios => {
+        // Itera sobre os funcionários e adiciona cada um à lista
+        funcionarios.forEach(funcionario => {
+            const listItem = document.createElement('li');
+            listItem.textContent = funcionario.nome;
+            listItem.addEventListener('click', () => {
+                exibirVendasVendedor(funcionario); // Passa o ID do funcionário para a função exibirVendasVendedor
+            });
+            listaVendedores.appendChild(listItem);
         });
-        listaVendedores.appendChild(listItem);
+    })
+    .catch(error => {
+        alert('Erro ao buscar funcionários.');
+        console.error(error);
     });
 }
 
@@ -206,12 +225,27 @@ function exibirDesempenhoProdutores() {
     });
 }
 
-function exibirVendasVendedor(vendedor) {
+function exibirVendasVendedor(funcionario) {
     const tabelaVendas = document.getElementById('tabela-vendas-vendedor').getElementsByTagName('tbody')[0];
     tabelaVendas.innerHTML = ''; // Limpa a tabela
+    console.log(funcionario)
 
-    const vendasDoVendedor = vendas.filter(venda => venda.vendedor === vendedor);
+    // Faz uma requisição GET para a API para obter as vendas do vendedor
+    fetch(`/api/pedidos/vendedor/${funcionario.id}`, {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar vendas do vendedor.');
+        }
+        return response.json();
+    })
+    .then(vendasDoVendedor => {
+    console.log(vendasDoVendedor)
 
+    //vendasDoVendedor = vendas;
     const inicio = (paginaAtualVendasVendedor - 1) * vendasPorPagina;
     const fim = inicio + vendasPorPagina;
     const vendasPaginaAtual = vendasDoVendedor.slice(inicio, fim);
@@ -229,10 +263,10 @@ function exibirVendasVendedor(vendedor) {
         const cellStatus = row.insertCell();
 
         cellPedido.textContent = `Pedido nº ${venda.id}`;
-        cellCliente.textContent = venda.cliente;
-        cellData.textContent = formatarData(venda.dataCriacao);
-        cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${venda.valorVenda.toFixed(2)}`;
-        cellFrete.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(venda.valorFrete ?? "Aguardando...")}`;
+        cellCliente.textContent = venda.cliente_id;
+        cellData.textContent = formatarData(venda.data_criacao);
+        cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(venda.valor_venda).toFixed(2)}`;
+        cellFrete.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(venda.valor_frete ?? "Aguardando...")}`;
         cellInsumos.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularValorInsumos(venda) ?? 0).toFixed(2)}`;
         cellProducao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularComissaoProdutor(venda) ?? 0).toFixed(2)}`;
         cellLucro.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularLucroVenda(venda) ?? 0).toFixed(2)}`;
@@ -246,8 +280,8 @@ function exibirVendasVendedor(vendedor) {
     } else {
         btnProximaPagina.style.display = 'none';
     }
-
-    document.getElementById('modal-nome-vendedor').textContent = `Desempenho do Vendedor: ${vendedor}`;
+})
+    document.getElementById('modal-nome-vendedor').textContent = `Desempenho do Vendedor: ${funcionario.nome}`;
     document.getElementById('modal-desempenho-vendedor').style.display = 'block';
 }
 

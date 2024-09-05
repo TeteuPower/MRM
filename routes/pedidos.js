@@ -80,4 +80,18 @@ router.get('/cliente/:id', autenticar, (req, res) => {
     });
 });
 
+// Rota para obter os pedidos de um vendedor (GET /api/pedidos/vendedor/:id)
+router.get('/vendedor/:id', autenticar, (req, res) => {
+    const vendedorId = req.params.id;
+    const sql = 'SELECT * FROM pedidos WHERE vendedor_id = ?';
+    db.query(sql, [vendedorId], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar pedidos do vendedor:', err);
+            res.status(500).json({ error: 'Erro ao buscar pedidos do vendedor.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 module.exports = router;
