@@ -108,7 +108,7 @@ router.put('/:id', autenticar, (req, res) => {
     }
 
     // Atualiza o pedido no banco de dados
-    const sql = 'UPDATE pedidos SET status = ?, dataFinalizacao = ?, valorFrete = ?, produtor_id = ?, repasseComissao = ?, saldoVenda = ? WHERE id = ?';
+    const sql = 'UPDATE pedidos SET status = ?, data_finalizacao = ?, valor_frete = ?, produtor_id = ?, repasse_comissao = ?, saldo_venda = ? WHERE id = ?';
     db.query(sql, [status, dataFinalizacao, valorFrete, produtor, repasseComissao === true ? 1 : 0, saldoVenda, pedidoId], (err, result) => {
         if (err) {
             console.error('Erro ao atualizar pedido:', err);
@@ -117,6 +117,20 @@ router.put('/:id', autenticar, (req, res) => {
         }
 
         if (result.affectedRows > 0) {
+            // Atualiza os itens do pedido
+            itens.forEach(item =>
+            {
+                const sqlItem = 'UPDATE itens_pedido SET lote = ? WHERE pedido_id = ? AND produto_id = ? AND id = ?';
+                db.query(sqlItem, [item.lote, pedidoId, item.produto_id, item.id], (err, result) =>
+                {
+                    if (err)
+                    {
+                        console.error('Erro ao atualizar item do pedido:', err);
+                        res.status(500).json({ error: 'Erro ao atualizar pedido.' });
+                        return;
+                    }
+                })
+            })
             res.json({ message: 'Pedido atualizado com sucesso!' });
         } else {
             res.status(404).json({ error: 'Pedido não encontrado.' });

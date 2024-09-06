@@ -130,11 +130,12 @@ function exibirDetalhesPedido(id) {
             const btnAtualizarStatus = document.getElementById('btn-atualizar-status');
             btnAtualizarStatus.onclick = () => {
                 pedido.produtor = document.getElementById('modal-produtor').value;
+                //console.log(pedido)
                 atualizarStatusPedido(pedido);
-                salvarPedidosNoLocalStorage();
+                //salvarPedidosNoLocalStorage();
                 exibirPedidos();
                 fecharModalDetalhesPedido();
-                atualizarPedidoNoCliente(pedido); // Atualiza o pedido dentro da array do cliente
+                //atualizarPedidoNoCliente(pedido); // Atualiza o pedido dentro da array do cliente
             };
         } else {
             areaLote.style.display = 'none';
@@ -145,19 +146,24 @@ function exibirDetalhesPedido(id) {
             let todosOsLotesPreenchidos = true;
         
             pedido.itens.forEach(item => {
-                if (item.produto === 'rape') {
-                    const inputId = `lote-${item.tipoRape.replace(/\s+/g, '')}`;
+                //console.log(item)
+                if (item.produto_id === 1) { // Verifica se o item é rapé
+                    const inputId = `lote-${item.tipo_rape.replace(/\s+/g, '')}`;
+                    //console.log(inputId)
                     const lote = document.getElementById(inputId).value.trim();
                     if (lote === '') {
                         todosOsLotesPreenchidos = false;
                         return; // Sai do loop se algum lote estiver vazio
                     }
-                    lotes[item.tipoRape] = lote;
+                    lotes[item.tipo_rape] = lote;
                 }
             });
-
+        
             // Verifica se um produtor foi selecionado
             const produtor = document.getElementById('modal-produtor').value;
+            if(produtor === 'Matheus DB') {
+                produtor.id = 1;
+            }
             if (produtor === '') {
                 alert('Por favor, selecione um produtor!');
                 return;
@@ -169,18 +175,43 @@ function exibirDetalhesPedido(id) {
             }
         
             if (confirm(`Confirma a atualização do status do pedido nº ${pedido.id} para "Pronto, aguardando envio"?`)) {
-                pedido.produtor = produtor; // Atribui o produtor ao pedido
-                pedido.status = 'Pronto, aguardando envio';
-                pedido.dataProducao = new Date(); // Define a data de produção
-                pedido.itens.forEach(item => {
-                    if (item.produto === 'rape') {
-                        item.lote = lotes[item.tipoRape];
+                // Atualiza o pedido na API
+                fetch(`/api/pedidos/${pedido.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        status: 'Pronto, aguardando envio',
+                        dataProducao: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                        produtor: produtor.id,
+                        itens: pedido.itens.map(item => {
+                            if (item.produto_id === 1) {
+                                return {
+                                    ...item,
+                                    lote: document.getElementById(`lote-${item.tipo_rape.replace(/\s+/g, '')}`).value.trim()
+                                };
+                            }
+                            return item;
+                        })
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao atualizar pedido.');
                     }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message);
+                    exibirPedidos();
+                    fecharModalDetalhesPedido();
+                })
+                .catch(error => {
+                    alert('Erro ao atualizar pedido.');
+                    console.error(error);
                 });
-                salvarPedidosNoLocalStorage();
-                exibirPedidos();
-                fecharModalDetalhesPedido();
-                atualizarPedidoNoCliente(pedido); // Atualiza o pedido dentro da array do cliente
             }
         }
 
@@ -194,8 +225,8 @@ function exibirDetalhesPedido(id) {
         const cellLote = row.insertCell();
 
         let nomeProduto = item.produto;
-        if (item.produto === 'rape' && item.tipoRape) {
-            nomeProduto += ` (${item.tipoRape})`;
+        if (item.produto === 'Rapé' && item.tipo_rape) {
+            nomeProduto += ` (${item.tipo_rape})`;
         }
 
         cellProduto.textContent = nomeProduto;

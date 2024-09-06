@@ -59,25 +59,26 @@ function exibirPedidosNaoFinalizados() {
 function exibirInputsLote(pedido) {
     const inputsLote = document.getElementById('inputs-lote');
     inputsLote.innerHTML = ''; // Limpa os inputs existentes
-    console.log(pedido)
+    //console.log(pedido)
 
     pedido.itens.forEach(item => {
-        if (item.produto === 'rape') {
+        if (item.produto === 'Rapé') {
             const inputGroup = document.createElement('div');
             inputGroup.classList.add('input-group');
 
             const label = document.createElement('label');
-            label.textContent = `${item.tipoRape} (${item.quantidade / 2}Kg - ${item.quantidade} Pacotes):`;
+            label.textContent = `${item.tipo_rape} (${item.quantidade / 2}Kg - ${item.quantidade} Pacotes):`;
             inputGroup.appendChild(label);
 
             const input = document.createElement('input');
             input.type = 'text';
-            input.id = `lote-${item.tipoRape.replace(/\s+/g, '')}`; // Cria um ID único para o input
+            input.id = `lote-${item.tipo_rape.replace(/\s+/g, '')}`; // Cria um ID único para o input
             input.placeholder = 'Lote';
             input.value = item.lote || ''; // Define o valor do input com o lote existente, se houver
             inputGroup.appendChild(input);
 
             inputsLote.appendChild(inputGroup);
+            //console.log(pedido)
         }
     });
 }
