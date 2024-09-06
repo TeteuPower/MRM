@@ -41,6 +41,8 @@ app.use('/api/funcionarios', autenticar, require('./routes/funcionarios'));
 app.use('/api/pedidos', autenticar, require('./routes/pedidos'));
 // Usa a rota de pedidos aguardando produção
 app.use('/api/pedidos-aguardando-producao', autenticar, require('./routes/pedidos-aguardando-producao'));
+// Usa a rota de pedidos aguardando envio
+app.use('/api/pedidos-finalizados-aguardando-envio', autenticar, require('./routes/pedidos-finalizados-aguardando-envio'));
 
 
 // Rota para login do administrador (gera o token)

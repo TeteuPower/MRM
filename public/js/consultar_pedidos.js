@@ -177,25 +177,48 @@ function exibirPedidosFinalizadosAguardandoEnvio() {
 
     const termoPesquisa = document.getElementById('pesquisa-pedido').value.toLowerCase();
 
-    const pedidosFinalizadosAguardandoEnvio = vendas.filter(pedido => {
-        return pedido.status === 'Pronto, aguardando envio' &&
-        (pedido.id.toString().includes(termoPesquisa) || 
-        pedido.cliente.toLowerCase().includes(termoPesquisa) ||
-        pedido.vendedor.toLowerCase().includes(termoPesquisa)); // Adiciona pesquisa por vendedor
-})
-.sort((a, b) => b.dataCriacao - a.dataCriacao); // Ordena por data (mais recentes primeiro)
-
-    pedidosFinalizadosAguardandoEnvio.forEach(pedido => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
-
-        listItem.addEventListener('click', () => {
-            exibirDetalhesPedido(pedido);
+        // Faz uma requisição GET para a API para obter os pedidos
+        fetch('/api/pedidos-finalizados-aguardando-envio', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar pedidos.');
+            }
+            return response.json();
+        })
+        .then(pedidos => {
+            console.log(pedidos)
+            // Filtra os pedidos com base no termo de pesquisa
+            const pedidosFiltrados = pedidos.filter(pedido => {
+                return pedido.status === 'Pronto, aguardando envio' &&
+                       (pedido.id.toString().includes(termoPesquisa) || 
+                        pedido.cliente.toLowerCase().includes(termoPesquisa) ||
+                        pedido.vendedor.toLowerCase().includes(termoPesquisa));
+            });
+    
+            // Ordena os pedidos por data de criação (mais recentes primeiro)
+            pedidosFiltrados.sort((a, b) => b.dataCriacao - a.dataCriacao);
+    
+            // Itera sobre os pedidos filtrados e adiciona cada um à lista
+            pedidosFiltrados.forEach(pedido => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente_id} - ${pedido.vendedor_id} - ${pedido.status}`;
+    
+                listItem.addEventListener('click', () => {
+                    exibirDetalhesPedido(pedido.id);
+                });
+    
+                listaPedidos.appendChild(listItem);
+            });
+        })
+        .catch(error => {
+            alert('Erro ao buscar pedidos.');
+            console.error(error);
         });
-
-        listaPedidos.appendChild(listItem);
-    });
-}
+    }
 
 function exibirPedidosFinalizados() {
     const listaPedidos = document.getElementById('lista-pedidos-finalizados');
