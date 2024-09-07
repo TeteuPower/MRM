@@ -85,7 +85,7 @@
 #tabela-pagamentos .transacao-item:hover {
     background-color: #444; /* Cor de fundo ao passar o mouse */
 }
-@media (max-width: 895px) {
+@media (max-width: 1096px) {
     #tabela-extrato,#tabela-pagamentos  {
         font-size: 0.8em; /* Diminui o tamanho da fonte */
     }

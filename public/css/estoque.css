@@ -50,7 +50,7 @@ main {
 }
 
 /* Estilos Responsivos - Ajusta o layout para telas menores */
-@media (max-width: 895px) {
+@media (max-width: 1096px) {
     .section-container {
         flex-direction: column; 
     }

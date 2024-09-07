@@ -122,7 +122,7 @@ button:hover {
     border-radius: 10px;
 }
 
-@media (max-width: 895px) {
+@media (max-width: 1096px) {
     .modal-content {
         min-width: 80%; 
         overflow-y: auto; /* Permite rolagem vertical */
@@ -193,7 +193,7 @@ button:hover {
 }
 
 /* Media Query para telas menores */
-@media (max-width: 895px) {
+@media (max-width: 1096px) {
     .hamburger-menu {
         display: block; /* Exibe o botão em telas menores */
     }
