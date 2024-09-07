@@ -159,9 +159,12 @@ function exibirDetalhesPedido(id) {
             });
         
             // Verifica se um produtor foi selecionado
-            const produtor = document.getElementById('modal-produtor').value;
+            let produtor = document.getElementById('modal-produtor').value;
+            console.log(produtor)
             if(produtor === 'Matheus DB') {
-                produtor.id = 1;
+                produtor = {
+                    id: 1,
+                }
             }
             if (produtor === '') {
                 alert('Por favor, selecione um produtor!');
@@ -172,7 +175,7 @@ function exibirDetalhesPedido(id) {
                 alert('Por favor, preencha todos os lotes!');
                 return;
             }
-        
+        console.log(produtor.id)
             if (confirm(`Confirma a atualização do status do pedido nº ${pedido.id} para "Pronto, aguardando envio"?`)) {
                 // Atualiza o pedido na API
                 fetch(`/api/pedidos-aguardando-producao/${pedido.id}`, {
