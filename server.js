@@ -11,7 +11,21 @@ require('dotenv').config(); // Carrega as variáveis do .env
 app.use(bodyParser.json()); 
 
 // Define as pastas 'html', 'css' e 'js' como pastas de arquivos estáticos
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/html', express.static(path.join(__dirname, 'public', 'html'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/html');
+    }
+}));
+app.use('/css', express.static(path.join(__dirname, 'public', 'css'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/css');
+    }
+}));
+app.use('/js', express.static(path.join(__dirname, 'public', 'js'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/javascript');
+    }
+}));
 app.use('/statics', express.static(path.join(__dirname, 'statics')));
 
 // Define a rota para a página de login (index.html)
