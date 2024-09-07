@@ -5,9 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     verificarAutenticacao();
     popularSelectProdutos();
     //carregarEstoqueDoLocalStorage();
-    carregarClientesDoLocalStorage();
-    carregarVendasDoLocalStorage();
-    carregarFuncionariosDoLocalStorage();
+    //carregarClientesDoLocalStorage();
+    //carregarVendasDoLocalStorage();
+    //carregarFuncionariosDoLocalStorage();
     verificarDadosEPopularSelects();
     popularSelectTiposRape('tipo-rape');
     exibirCarrinho();
@@ -69,7 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
             valorFrete: null,
             produtor: null,
             saldoVenda: saldo,
-            vendaAdministrador: localStorage.getItem('administrador') === 'true',
+            //vendaAdministrador: localStorage.getItem('administrador') === 'true',
             administrador: localStorage.getItem('administrador')
         };
         //console.log(venda);

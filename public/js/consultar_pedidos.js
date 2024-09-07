@@ -2,10 +2,10 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     verificarAutenticacao();
-    carregarClientesDoLocalStorage();
-    carregarPedidosDoLocalStorage();
+    //carregarClientesDoLocalStorage();
+    //carregarPedidosDoLocalStorage();
     exibirPedidos();
-    carregarFuncionariosDoLocalStorage();
+    //carregarFuncionariosDoLocalStorage();
 
     const pesquisaInput = document.getElementById('pesquisa-pedido');
     pesquisaInput.addEventListener('input', exibirPedidos);

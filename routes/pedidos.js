@@ -52,6 +52,19 @@ router.get('/:id', autenticar, (req, res) => {
                         // Adiciona o nome do vendedor ao objeto do pedido
                         pedido.vendedor = vendedor[0].nome;
 
+                                // Busca o nome do administrador
+                                const sqlAdministrador = 'SELECT nome FROM administradores WHERE id = ?';
+                                db.query(sqlAdministrador, [pedido.administrador_id], (err, administrador) => {
+                                    if (err) {
+                                        console.error('Erro ao buscar administrador:', err);
+                                        res.status(500).json({ error: 'Erro ao buscar pedido.' });
+                                        return;
+                                    }
+
+                                    // Adiciona o nome do administrador ao objeto do pedido
+                                    pedido.administrador = administrador[0].nome;
+
+
                         // Busca o nome do produtor
                         if (pedido.produtor_id) {
                             const sqlProdutor = 'SELECT nome FROM produtores WHERE id = ?';
@@ -64,31 +77,13 @@ router.get('/:id', autenticar, (req, res) => {
 
                                 // Adiciona o nome do produtor ao objeto do pedido
                                 pedido.produtor = produtor[0].nome;
-
-                                // Busca o nome do administrador
-                                if (pedido.administrador_id) {
-                                    const sqlAdministrador = 'SELECT nome FROM administradores WHERE id = ?';
-                                    db.query(sqlAdministrador, [pedido.administrador_id], (err, administrador) => {
-                                        if (err) {
-                                            console.error('Erro ao buscar administrador:', err);
-                                            res.status(500).json({ error: 'Erro ao buscar pedido.' });
-                                            return;
-                                        }
-
-                                        // Adiciona o nome do administrador ao objeto do pedido
-                                        pedido.administrador = administrador[0].nome;
-
-                                        res.json(pedido);
-                                    });
-                                } else {
-                                    res.json(pedido);
-                                }
                             });
                         } else {
                             res.json(pedido);
                         }
                     });
                 });
+            })
             });
         } else {
             res.status(404).json({ error: 'Pedido não encontrado.' });
@@ -143,7 +138,7 @@ router.post('/', autenticar, (req, res) => {
     const { clienteId, dataCriacao, descricao, moeda, valorVenda, valorPago, status, administradorId, vendedorId, saldoVenda, itens} = req.body;
 
     // Verifica se todos os campos obrigatórios foram fornecidos
-    if (!clienteId || !dataCriacao || !moeda || !valorVenda || !valorPago || !administradorId || !vendedorId || !saldoVenda|| !itens) {
+    if (!clienteId || !dataCriacao || !moeda || !valorVenda || !administradorId || !vendedorId || !saldoVenda|| !itens) {
         return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
     }
 

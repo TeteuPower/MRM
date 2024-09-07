@@ -102,8 +102,7 @@ function exibirDetalhesPedido(id) {
         return response.json();
     })
     .then(pedido => {
-    //console.log('Fora do then',pedido);
-    const solicitadoPor = pedido.vendaAdministrador ? pedido.vendaAdministrador : 'Cliente'; // Obtém o nome do administrador ou "Cliente"
+    console.log(pedido);
     document.getElementById('modal-numero-pedido').textContent = `Detalhes do Pedido nº ${pedido.id}`;
     document.getElementById('modal-cliente').textContent = pedido.cliente;
     document.getElementById('modal-vendedor').textContent = pedido.vendedor;
@@ -115,7 +114,7 @@ function exibirDetalhesPedido(id) {
     document.getElementById('modal-valor-pago').textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.valor_pago).toFixed(2)}`;
     document.getElementById('modal-status').textContent = pedido.status;
     document.getElementById('modal-saldoVenda').textContent = pedido.saldo_venda === 0 ? 'Pago' : `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.saldo_venda).toFixed(2)}`;
-    document.getElementById('modal-solicitado-por').textContent = solicitadoPor;
+    document.getElementById('modal-solicitado-por').textContent = pedido.administrador;
     document.getElementById('modal-produtor-span').textContent = pedido.produtor;
 
 
