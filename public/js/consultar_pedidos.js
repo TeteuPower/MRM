@@ -165,7 +165,7 @@ function exibirPedidosAguardandoProducao() {
         // Itera sobre os pedidos filtrados e adiciona cada um à lista
         pedidosFiltrados.forEach(pedido => {
             const listItem = document.createElement('li');
-            listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente_id} - ${pedido.vendedor_id}`;
+            listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor}`;
 
             listItem.addEventListener('click', () => {
                 exibirDetalhesPedido(pedido.id);
@@ -214,7 +214,7 @@ function exibirPedidosFinalizadosAguardandoEnvio() {
             // Itera sobre os pedidos filtrados e adiciona cada um à lista
             pedidosFiltrados.forEach(pedido => {
                 const listItem = document.createElement('li');
-                listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente_id} - ${pedido.vendedor_id} - ${pedido.status}`;
+                listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
     
                 listItem.addEventListener('click', () => {
                     exibirDetalhesPedido(pedido.id);
@@ -262,7 +262,7 @@ function exibirPedidosFinalizados() {
 
     pedidosPaginaAtual.forEach(pedido => {
         const listItem = document.createElement('li');
-        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente_id} - ${pedido.vendedor_id} - ${pedido.status}`;
+        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
 
         listItem.addEventListener('click', () => {
             exibirDetalhesPedido(pedido.id);
