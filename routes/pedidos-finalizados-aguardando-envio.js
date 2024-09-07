@@ -16,4 +16,25 @@ router.get('/', autenticar, (req, res) => {
     });
 });
 
+// Rota para atualizar um pedido (PUT /api/pedidos/:id)
+router.put('/:id', autenticar, (req, res) => {
+    const pedidoId = req.params.id;
+    const { status, dataFinalizacao, valorFrete} = req.body;
+
+    // Verifica se o status foi fornecido
+    if (!status) {
+        return res.status(400).json({ error: 'O status é obrigatório.' });
+    }
+
+    // Atualiza o pedido no banco de dados
+    const sql = 'UPDATE pedidos SET status = ?, data_finalizacao = ?, valor_frete = ? WHERE id = ?';
+    db.query(sql, [status, dataFinalizacao, valorFrete, pedidoId], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar pedido:', err);
+            res.status(500).json({ error: 'Erro ao atualizar pedido.' });
+            return;
+        }
+    });
+});
+
 module.exports = router;

@@ -377,8 +377,8 @@ function popularSelectVendedoresPagamento() {
         });
     } else {
         alert('Não existem vendedores cadastrados! Cadastre um vendedor para receber pagamentos.');
-        window.location.href = 'funcionarios.html';
-        return; // Encerra a função se não houver vendedores
+        //window.location.href = 'funcionarios.html';
+        //return; // Encerra a função se não houver vendedores
     }
 }
 

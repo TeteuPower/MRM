@@ -70,9 +70,9 @@ router.put('/:id', autenticar, (req, res) => {
     const { nome, email, telefone, endereco, login, senha, saldoReais, saldoDolares } = req.body;
 
     // Verifica se todos os campos obrigatórios foram fornecidos
-    if (!nome || !email || !telefone || !endereco || !login || !senha) {
+    /*if (!nome || !email || !telefone || !endereco || !login || !senha) {
         return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
-    }
+    }*/
 
     const sql = 'UPDATE clientes SET nome = ?, email = ?, telefone = ?, endereco = ?, login = ?, senha = ?, saldoReais = ?, saldoDolares = ? WHERE id = ?';
     db.query(sql, [nome, email, telefone, endereco, login, senha, saldoReais, saldoDolares, clienteId], (err, result) => {

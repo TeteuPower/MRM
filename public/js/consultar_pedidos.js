@@ -90,19 +90,26 @@ function fecharModalDetalhesPedido() {
 function finalizarPedido(pedido) {
     if (confirm(`Confirma a finalização do pedido nº ${pedido.id}?`)) {
         pedido.status = 'Finalizado';
-        pedido.dataFinalizacao = new Date(); // Define a data de finalização
-        pedido.valorFrete = parseFloat(document.getElementById('modal-valor-frete').value) || 0;
-        pedido.produtor = document.getElementById('modal-produtor').value;
+        pedido.data_finalizacao = new Date().toISOString().slice(0, 19).replace('T', ' '), // Converte para o formato YYYY-MM-DD HH:MM:SS
+        pedido.valor_frete = parseFloat(document.getElementById('modal-valor-frete').value) || 0;
+        //pedido.produtor = document.getElementById('modal-produtor').value;
+        //console.log(pedido)
 
         // Atualiza o pedido na API
-        fetch(`/api/pedidos/${pedido.id}`, {
+        fetch(`/api/pedidos-finalizados-aguardando-envio/${pedido.id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': localStorage.getItem('token')
             },
-            body: JSON.stringify(pedido)
-        })
+            body: JSON.stringify(
+                {
+                status: 'Finalizado',
+                dataFinalizacao: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                valorFrete: pedido.valor_frete
+                }
+        )})
+        
         .then(response => {
             if (!response.ok) {
                 throw new Error('Erro ao finalizar pedido.');
@@ -111,7 +118,7 @@ function finalizarPedido(pedido) {
         })
         .then(data => {
             alert(data.message);
-            salvarPedidosNoLocalStorage();
+            //salvarPedidosNoLocalStorage();
             exibirPedidos();
             fecharModalDetalhesPedido();
         })
@@ -119,6 +126,8 @@ function finalizarPedido(pedido) {
             alert('Erro ao finalizar pedido.');
             console.error(error);
         });
+        exibirPedidos();
+        fecharModalDetalhesPedido();
     }
 }
 
@@ -190,7 +199,7 @@ function exibirPedidosFinalizadosAguardandoEnvio() {
             return response.json();
         })
         .then(pedidos => {
-            console.log(pedidos)
+            //console.log(pedidos)
             // Filtra os pedidos com base no termo de pesquisa
             const pedidosFiltrados = pedidos.filter(pedido => {
                 return pedido.status === 'Pronto, aguardando envio' &&
@@ -226,6 +235,19 @@ function exibirPedidosFinalizados() {
 
     const termoPesquisa = document.getElementById('pesquisa-pedido').value.toLowerCase();
 
+            // Faz uma requisição GET para a API para obter os pedidos
+            fetch('/api/pedidos-finalizados', {
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar pedidos.');
+                }
+                return response.json();
+            })
+            .then(vendas => {
     const pedidosFinalizados = vendas.filter(pedido => {
         return pedido.status === 'Finalizado' &&
         (pedido.id.toString().includes(termoPesquisa) || 
@@ -240,10 +262,10 @@ function exibirPedidosFinalizados() {
 
     pedidosPaginaAtual.forEach(pedido => {
         const listItem = document.createElement('li');
-        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
+        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente_id} - ${pedido.vendedor_id} - ${pedido.status}`;
 
         listItem.addEventListener('click', () => {
-            exibirDetalhesPedido(pedido);
+            exibirDetalhesPedido(pedido.id);
         });
 
         listaPedidos.appendChild(listItem);
@@ -265,6 +287,11 @@ function exibirPedidosFinalizados() {
 
  // Criação do menu de paginação
  criarMenuPaginacao(pedidosFinalizados.length);
+})
+ .catch(error => {
+    alert('Erro ao buscar pedidos.');
+    console.error(error);
+});
 }
 
 function criarMenuPaginacao(totalPedidos) {

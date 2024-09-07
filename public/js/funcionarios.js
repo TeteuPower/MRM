@@ -236,7 +236,7 @@ function exibirVendasVendedor(funcionario) {
         cellCliente.textContent = venda.cliente_id;
         cellData.textContent = formatarData(venda.data_criacao);
         cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(venda.valor_venda).toFixed(2)}`;
-        cellFrete.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(venda.valor_frete ?? "Aguardando...")}`;
+        cellFrete.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(venda.valor_frete ?? "Não informado")}`;
         cellInsumos.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularValorInsumos(venda) ?? 0).toFixed(2)}`;
         cellProducao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularComissaoProdutor(venda) ?? 0).toFixed(2)}`;
         cellLucro.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularLucroVenda(venda) ?? 0).toFixed(2)}`;

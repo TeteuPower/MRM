@@ -79,10 +79,16 @@ function exibirDetalhesCliente(cliente) {
 
         // Exibe o modal
         document.getElementById('modal-detalhes-cliente').style.display = 'block';
+        // Adicione um event listener ao botão "Editar Cliente"
+        document.getElementById('btn-editar-cliente').addEventListener('click', () => 
+        {
+            abrirModalEditarCliente(cliente);
+        });
         // Adicione o parâmetro cliente ao event listener do botão "Extrato do Cliente"
         document.getElementById('btn-extrato-cliente').addEventListener('click', () =>
         {
             exibirExtratoCliente(cliente); // Passa o objeto cliente para a função
+
         });
     })
 
@@ -189,13 +195,10 @@ function fecharModalExtratoCliente() {
     document.getElementById('modal-extrato-cliente').style.display = 'none';
 }
 
-// Adicione um event listener ao botão "Editar Cliente"
-document.getElementById('btn-editar-cliente').addEventListener('click', abrirModalEditarCliente);
+/*// Adicione um event listener ao botão "Editar Cliente"
+document.getElementById('btn-editar-cliente').addEventListener('click', abrirModalEditarCliente);*/
 
-function abrirModalEditarCliente() {
-    const clienteNome = document.getElementById('modal-nome-cliente').textContent;
-    const cliente = clientes.find(c => c.nome === clienteNome);
-
+function abrirModalEditarCliente(cliente) {
     if (cliente) {
         document.getElementById('editar-nome').value = cliente.nome;
         document.getElementById('editar-email').value = cliente.email;
@@ -207,18 +210,19 @@ function abrirModalEditarCliente() {
         document.getElementById('editar-nome-cliente').textContent = `Editar Cliente: ${cliente.nome}`;
         document.getElementById('modal-editar-cliente').style.display = 'block';
     }
+    // Adicione um event listener ao botão "Editar Cliente"
+    document.getElementById('modificarCliente').addEventListener('click', () => 
+    {
+        modificarCliente(cliente);
+    });
 }
 
 function fecharModalEditarCliente() {
     document.getElementById('modal-editar-cliente').style.display = 'none';
 }
-
-// Adicione um event listener ao formulário de edição
-document.getElementById('form-editar-cliente').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const clienteNome = document.getElementById('modal-nome-cliente').textContent;
-    const cliente = clientes.find(c => c.nome === clienteNome);
+function modificarCliente(cliente) {
+    //cliente.preventDefault();
+    //console.log("segundo lugar",cliente);
 
     if (cliente) {
         cliente.nome = document.getElementById('editar-nome').value;
@@ -227,10 +231,52 @@ document.getElementById('form-editar-cliente').addEventListener('submit', functi
         cliente.endereco = document.getElementById('editar-endereco').value;
         cliente.login = document.getElementById('editar-login').value;
         cliente.senha = document.getElementById('editar-senha').value;
+    }
+        
+    const clienteAtualizado = {
+        id: cliente.id,
+        nome: cliente.nome,
+        email: cliente.email,
+        telefone: cliente.telefone,
+        endereco: cliente.endereco,
+        login: cliente.login,
+        senha: cliente.senha
+    };
+    cliente = clienteAtualizado
+    // Atualiza o pedido na API
 
-        salvarClientesNoLocalStorage();
+  // Confirmação antes de atualizar
+  if (!confirm(`Deseja realmente alterar os dados do cliente ${cliente.nome}?`)) {
+    return; // Interrompe a função se o usuário cancelar
+  }
+
+    fetch(`/api/clientes/${cliente.id}`,
+    {
+        method: 'PUT',
+        headers:
+        {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify(cliente)
+    })
+    .then(response => {
+        if (!response.ok)
+        {
+            // Extrai o erro da resposta da API
+            return response.json().then(errorData => {
+                throw new Error(errorData.error || 'Erro ao atualizar cliente.');
+            });
+        }
+        return response.json(); 
+    })
+    .catch(error =>
+    {
+        console.error("Erro da API:", error); //Forma correta de receber erro da API
+        alert('Erro ao atualizar cliente. Detalhes no console.');
+    });
+alert('Cliente alterado com sucesso');
         fecharModalEditarCliente();
         fecharModalDetalhesCliente(); // Fecha o modal de detalhes do cliente
         exibirClientes(); // Atualiza a lista de clientes
-    }
-});
+}

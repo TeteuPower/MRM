@@ -176,7 +176,7 @@ function exibirDetalhesPedido(id) {
         
             if (confirm(`Confirma a atualização do status do pedido nº ${pedido.id} para "Pronto, aguardando envio"?`)) {
                 // Atualiza o pedido na API
-                fetch(`/api/pedidos/${pedido.id}`, {
+                fetch(`/api/pedidos-aguardando-producao/${pedido.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -271,8 +271,8 @@ function exibirDetalhesPedido(id) {
 
         // Preenche o valor do frete
         const valorFreteExibicao = document.getElementById('modal-valor-frete-exibicao');
-        if (pedido.valorFrete) {
-            valorFreteExibicao.textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${pedido.valorFrete.toFixed(2)}`;
+        if (pedido.valor_frete) {
+            valorFreteExibicao.textContent = `${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.valor_frete).toFixed(2)}`;
         } else {
             valorFreteExibicao.textContent = 'Não informado'; // Ou qualquer outro valor padrão se o frete não estiver definido
         }
@@ -296,7 +296,7 @@ function carregarPedidosDoLocalStorage() {
     }
 }
 
-function salvarPedidosNoLocalStorage() {
+/*function salvarPedidosNoLocalStorage() {
     // Antes de salvar, converta os objetos Date para strings
     const vendasParaSalvar = vendas.map(venda => {
         return {
@@ -308,7 +308,7 @@ function salvarPedidosNoLocalStorage() {
     });
 
     localStorage.setItem('vendas', JSON.stringify(vendasParaSalvar));
-}
+}*/
 
 function atualizarSaldoCliente(venda) {
     const cliente = clientes.find(c => c.nome === venda.cliente);
