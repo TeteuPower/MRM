@@ -1,14 +1,14 @@
 # MRM - Sistema de Gerenciamento de Vendas e Estoque
 
-**Um sistema web completo para gerenciar clientes, vendas, estoque, funcionários e finanças, desenvolvido com a ajuda da inteligência artificial Gemini 1.5 Pro.**
+**Um sistema web completo para gerenciar clientes, vendas, estoque, funcionários e finanças, desenvolvido integralmente por mim!**
 
 ## Visão Geral
 
 O MRM é um sistema web intuitivo e poderoso projetado para simplificar o gerenciamento de negócios. Ele oferece uma gama completa de funcionalidades, incluindo:
 
 - **Gerenciamento de Clientes:** Cadastro, consulta e atualização de dados de clientes, com extrato de transações e saldo.
-- **Gerenciamento de Vendas:** Criação de novas vendas, adição de produtos ao carrinho, cálculo de valores, atualização de estoque e registro de pagamentos.
-- **Controle de Estoque:** Visualização e atualização de estoque de produtos e matérias-primas, com alertas visuais para níveis baixos.
+- **Gerenciamento de Vendas:** Criação de novas vendas com adição de produtos ao carrinho, cálculo de valores (insumos, comissões etc), atualização de estoque e registro de pagamentos.
+- **Controle de Estoque:** Visualização e atualização de estoque de produtos e matérias-primas, com alertas visuais para níveis baixos, médio e altos!
 - **Gerenciamento de Funcionários:** Cadastro, remoção e visualização do desempenho de vendedores e produtores.
 - **Controle Financeiro:** Registro de repasses de comissão aos produtores, pagamentos de clientes, visualização de clientes com saldo negativo e resumo mensal de ganhos.
 
@@ -21,9 +21,15 @@ O desenvolvimento do MRM foi um processo impulsionado pela inteligência artific
 - **HTML:** Estrutura e conteúdo das páginas web.
 - **CSS:** Estilização e layout das páginas web, com foco em um tema escuro e moderno.
 - **JavaScript:** Lógica do sistema, interação com o usuário, manipulação de dados e comunicação com o servidor.
-- **Node.js:** Ambiente de execução JavaScript no servidor para conectar o sistema ao banco de dados Postgres.
+- **Node.js:** Ambiente de execução JavaScript no servidor para conectar o sistema ao banco de dados MySQL.
 - **MySQL Database:** Banco de dados relacional para armazenar os dados do sistema de forma persistente.
 - **Railway:** Plataforma de implantação e hospedagem para o sistema web e o banco de dados.
+
+### Segurança
+
+- **Autenticação:** As APIs são protegidas por JWT (JSON Web Token). Rotas que geram um token para administradores autenticados, e para CADA acesso o middleware verifica a validade do token em rotas protegidas.
+- **Redundância** As rotas são protegidas na criação do seu caminho e também na chamada. Os tokens de segurança têm validade de 1 hora e após o login precisa ser refeito. A página a cada 10s consulta se existe um token de segurança.
+- **DB** As credenciais do DB são armazenadas em variáveis de ambiente!
 
 ## Estrutura do Código
 
@@ -32,9 +38,8 @@ O código do sistema está organizado da seguinte forma:
 ### Backend (Node.js)
 
 - **`server.js`:** Arquivo principal do servidor Node.js, responsável por:
-    - Configurar o servidor Express.
-    - Conectar ao banco de dados MySQL.
-    - Definir as rotas principais da API.
+    - Configurar o servidor.
+    - Definir as rotas principais das APIs.
     - Iniciar o servidor.
 - **`db.js`:** Contém a lógica para conectar ao banco de dados MySQL e exportar a conexão.
 - **`routes/`:** Pasta que contém os arquivos que definem as rotas da API:
@@ -48,11 +53,10 @@ O código do sistema está organizado da seguinte forma:
     - **`css/`:** 
     - **`js/`:** 
 - **Arquivos JavaScript Específicos:** Cada página HTML possui um arquivo JavaScript correspondente para lidar com a lógica específica daquela página.
-- **`funcoes.js`:** Contém funções JavaScript reutilizáveis, como funções para formatar datas.
+- **`funcoes.js`:** Contém funções JavaScript reutilizáveis, que precisam ser acessadas em mais de uma página como por exemplo popular inputs com informações do DB.
 
 ### Observações
 
-- **Autenticação:** As APIs são protegidas por JWT (JSON Web Token). A rota `/api/login` gera um token para administradores autenticados, e o middleware `auth.js` verifica a validade do token em rotas protegidas.
 - **Organização:** A estrutura do backend segue boas práticas de organização, separando as responsabilidades em rotas.
 - **Escalabilidade:** A estrutura é escalável, permitindo adicionar novas rotas e funcionalidades de forma organizada.
 
@@ -72,7 +76,7 @@ O código do sistema está organizado da seguinte forma:
 
 ## Contribuições
 
-Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests no repositório do GitHub.
+Contribuições são bem-vindas! Desenvolvi esse projeto como o meu "TCC" de programador, é o meu primeiro trabalho na área e espero melhorar muito e continuar desenvolvendo minhas habilidades de programador!
 
 ## Agradecimentos
 
