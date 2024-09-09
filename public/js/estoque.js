@@ -63,9 +63,18 @@ function carregarVariedadesCinzas() {
     })
     .then(data => {
         const variedades = data.variedadesCinzas;
-        //console.log(variedades)
-        // Itera sobre as variedades e adiciona cada uma à lista
-        variedades.forEach(variedade => {
+        console.log(variedades)
+        // Ordena as variedades com quantidade maior que 0 em ordem decrescente
+        const variedadesComQuantidade = variedades.filter(variedade => variedade.quantidade > 0);
+        variedadesComQuantidade.sort((a, b) => b.quantidade - a.quantidade);
+
+        // Ordena as variedades com quantidade 0 em ordem alfabética
+        const variedadesSemQuantidade = variedades.filter(variedade => variedade.quantidade == 0);
+        variedadesSemQuantidade.sort((a, b) => a.nome.localeCompare(b.nome));
+
+        // Concatena as duas listas e adiciona à página
+        const variedadesOrdenadas = [...variedadesComQuantidade, ...variedadesSemQuantidade];
+        variedadesOrdenadas.forEach(variedade => {
             const listItem = document.createElement('li');
             let variedadeQuantidade = parseFloat(variedade.quantidade);
             listItem.textContent = `${variedade.nome}: ${variedadeQuantidade.toFixed(1)} Kg`; // Formata a quantidade com duas casas decimais
