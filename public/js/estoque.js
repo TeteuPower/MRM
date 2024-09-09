@@ -47,7 +47,9 @@ function carregarVariedadesRape() {
 
 function carregarVariedadesCinzas() {
     const listaVariedades = document.getElementById('lista-variedades-cinzas');
+    const listaVariedadesNulas = document.getElementById('lista-variedades-cinzasNulas');
     listaVariedades.innerHTML = ''; // Limpa a lista antes de adicionar itens
+    listaVariedadesNulas.innerHTML = ''; // Limpa a lista antes de adicionar itens
 
     // Faz uma requisição à API para obter as variedades de cinzas
     fetch('/api/estoque', {
@@ -63,7 +65,7 @@ function carregarVariedadesCinzas() {
     })
     .then(data => {
         const variedades = data.variedadesCinzas;
-        console.log(variedades)
+        //console.log(variedades)
         // Ordena as variedades com quantidade maior que 0 em ordem decrescente
         const variedadesComQuantidade = variedades.filter(variedade => variedade.quantidade > 0);
         variedadesComQuantidade.sort((a, b) => b.quantidade - a.quantidade);
@@ -73,12 +75,20 @@ function carregarVariedadesCinzas() {
         variedadesSemQuantidade.sort((a, b) => a.nome.localeCompare(b.nome));
 
         // Concatena as duas listas e adiciona à página
-        const variedadesOrdenadas = [...variedadesComQuantidade, ...variedadesSemQuantidade];
+        const variedadesOrdenadas = [...variedadesComQuantidade];
         variedadesOrdenadas.forEach(variedade => {
             const listItem = document.createElement('li');
             let variedadeQuantidade = parseFloat(variedade.quantidade);
             listItem.textContent = `${variedade.nome}: ${variedadeQuantidade.toFixed(1)} Kg`; // Formata a quantidade com duas casas decimais
             listaVariedades.appendChild(listItem);
+        });
+        // Concatena as duas listas e adiciona à página
+        const variedadesOrdenadasNulas = [...variedadesSemQuantidade];
+        variedadesOrdenadasNulas.forEach(variedade => {
+            const listItem = document.createElement('li');
+            let variedadeQuantidade = parseFloat(variedade.quantidade);
+            listItem.textContent = `${variedade.nome}: ${variedadeQuantidade.toFixed(1)} Kg`; // Formata a quantidade com duas casas decimais
+            listaVariedadesNulas.appendChild(listItem);
         });
     })
     .catch(error => {
@@ -101,6 +111,14 @@ function exibirModal() {
         .addEventListener('click', function() {
             document
                 .getElementById('modal-variedades-cinzas')
+                .style.display = 'block';
+        });
+
+    document
+        .getElementById('exibir-variedades-cinzasNulas')
+        .addEventListener('click', function() {
+            document
+                .getElementById('modal-variedades-cinzasNulas')
                 .style.display = 'block';
         });
 }
