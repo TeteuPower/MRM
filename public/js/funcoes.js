@@ -117,6 +117,17 @@ function exibirDetalhesPedido(id) {
     document.getElementById('modal-solicitado-por').textContent = pedido.administrador;
     document.getElementById('modal-produtor-span').textContent = pedido.produtor;
 
+    // Calcula a quantidade total de rapé no pedido
+    let totalKg = 0;
+    pedido.itens.forEach(item => {
+        if (item.produto_id === 1) {
+            totalKg += item.quantidade / 2;
+        }
+    });
+
+    // Atualiza o texto do elemento total-rape-pedido
+    document.getElementById('total-rape-pedido').textContent = `Quantidade total de rapé: ${totalKg.toFixed(1)}Kg (${totalKg.toFixed(0)*2} Pacotes)`;
+
 
         // Controle de exibição da área de lote
         const areaLote = document.getElementById('area-lote');
@@ -175,7 +186,7 @@ function exibirDetalhesPedido(id) {
                 alert('Por favor, preencha todos os lotes!');
                 return;
             }
-        console.log(produtor.id)
+        //console.log(produtor.id)
             if (confirm(`Confirma a atualização do status do pedido nº ${pedido.id} para "Pronto, aguardando envio"?`)) {
                 // Atualiza o pedido na API
                 fetch(`/api/pedidos-aguardando-producao/${pedido.id}`, {
@@ -229,10 +240,11 @@ function exibirDetalhesPedido(id) {
         let nomeProduto = item.produto;
         if (item.produto === 'Rapé' && item.tipo_rape) {
             nomeProduto += ` (${item.tipo_rape})`;
+            cellQuantidade.textContent = parseFloat(item.quantidade).toFixed(0) + ` Pacotes (${parseFloat(item.quantidade).toFixed(1) / 2}Kg)`;
         }
 
         cellProduto.textContent = nomeProduto;
-        cellQuantidade.textContent = item.quantidade;
+        //cellQuantidade.textContent = parseFloat(item.quantidade).toFixed(1);
         cellLote.textContent = item.lote || 'Não informado'; // Exibe o lote se existir, caso contrário, exibe "-"
     });
 
