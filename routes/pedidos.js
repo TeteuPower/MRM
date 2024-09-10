@@ -129,7 +129,7 @@ router.post('/', autenticar, (req, res) => {
     const { clienteId, dataCriacao, descricao, moeda, valorVenda, valorPago, status, administradorId, vendedorId, saldoVenda, itens} = req.body;
 
     // Verifica se todos os campos obrigatórios foram fornecidos
-    if (!clienteId || !dataCriacao || !moeda || !valorVenda || !administradorId || !vendedorId || !saldoVenda|| !itens) {
+    if (!clienteId || !dataCriacao || !moeda || !valorVenda || !administradorId || !vendedorId || !itens) {
         return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
     }
 
