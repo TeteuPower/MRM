@@ -76,3 +76,7 @@
 .tipo-rape {
     font-size: 0.8em; /* Diminui o tamanho da fonte para 80% do tamanho original */
 }
+
+#descricao {
+    height: 150px; /* Define a altura padrão como 150px */
+}

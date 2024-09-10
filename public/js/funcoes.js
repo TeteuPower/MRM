@@ -102,7 +102,7 @@ function exibirDetalhesPedido(id) {
         return response.json();
     })
     .then(pedido => {
-    console.log(pedido);
+    //console.log(pedido);
     document.getElementById('modal-numero-pedido').textContent = `Detalhes do Pedido nº ${pedido.id}`;
     document.getElementById('modal-cliente').textContent = pedido.cliente;
     document.getElementById('modal-vendedor').textContent = pedido.vendedor;

@@ -21,7 +21,8 @@
     margin-bottom: 5px;
 }
 
-#form-cadastro-cliente input {
+#form-cadastro-cliente input,
+#form-cadastro-cliente textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #555;
@@ -36,4 +37,9 @@
     justify-content: center;
     gap: 10px;
     margin-top: 20px;
+}
+
+#endereco {
+    /* ... (seus estilos existentes) ... */
+    height: 100px; /* Define a altura padrão como 150px */
 }

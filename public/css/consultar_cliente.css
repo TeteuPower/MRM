@@ -90,3 +90,14 @@
         font-size: 0.8em; /* Diminui o tamanho da fonte */
     }
 }
+
+#editar-endereco {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 3px;
+    background-color: #111;
+    color: #eee;
+    box-sizing: border-box; /* Inclui padding e border na largura total */
+    height: 100px; /* Define a altura padrão como 150px */
+}
