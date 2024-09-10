@@ -290,6 +290,11 @@ function exibirDetalhesPedido(id) {
         } else {
             valorFreteExibicao.textContent = 'Não informado'; // Ou qualquer outro valor padrão se o frete não estiver definido
         }
+            // Adicione um event listener ao botão "Editar Pedido"
+        document.getElementById('btn-editar-pedido').addEventListener('click', () =>
+        {
+            abrirModalEditarPedido(pedido);
+        });
     })
 
     // Exibe o modal
@@ -527,6 +532,8 @@ function popularSelectTiposRape(idInput) {
     })
     .then(data => {
         const variedades = data.variedadesRape;
+        // Ordena as variedades em ordem alfabética
+        variedades.sort((a, b) => a.nome.localeCompare(b.nome));
         // Itera sobre as variedades e adiciona cada uma ao select
         variedades.forEach(variedade => {
             const option = document.createElement('option');

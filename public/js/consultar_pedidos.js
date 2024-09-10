@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', function () {
     exibirPedidos();
     //carregarFuncionariosDoLocalStorage();
 
+    //document.getElementById('moeda').addEventListener('change', calcularSaldoVenda);
+    document.getElementById('editar-valor-venda').addEventListener('input', calcularSaldoVenda);
+    document.getElementById('editar-valor-pago').addEventListener('input', calcularSaldoVenda);
+
     const pesquisaInput = document.getElementById('pesquisa-pedido');
     pesquisaInput.addEventListener('input', exibirPedidos);
 
@@ -323,21 +327,215 @@ function criarMenuPaginacao(totalPedidos) {
     }
 }
 
-/*function popularProdutores() {
-    const selectProdutor = document.getElementById('modal-produtor');
+function abrirModalEditarPedido(pedido) {
+    alert('AINDA ESTÁ SENDO DESENVOLVIDO')
+    //console.log(pedido)
+    // Faz uma requisição GET para a API para obter os detalhes do pedido
+    fetch(`/api/pedidos/${pedido.id}`, {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar pedido.');
+        }
+        return response.json();
+    })
+    .then(pedido => {
+        //console.log(pedido)
+        // Preenche o modal com os detalhes do pedido
+        document.getElementById('editar-cliente').textContent = `Cliente: ${pedido.cliente}`;
+        document.getElementById('editar-vendedor').textContent = pedido.vendedor;
+        document.getElementById('editar-descricao').value = pedido.descricao;
+        document.getElementById('editar-moeda').innerHTML = `<option value="${pedido.moeda}">${pedido.moeda}</option>`;
+        document.getElementById('editar-valor-venda').value = pedido.valor_venda;
+        document.getElementById('editar-valor-pago').value = pedido.valor_pago;
+        document.getElementById('editar-status').value = pedido.status;
+        document.getElementById('editar-valor-frete').value = pedido.valor_frete;
+        document.getElementById('editar-produtor').value = pedido.produtor;
+        document.getElementById('editar-saldo-venda').value = calcularSaldoVenda();
 
-    selectProdutor.innerHTML = '<option value="">Selecione o Produtor</option>'; // Limpa as opções existentes
+        // Preenche os inputs de lote
+        const inputsLote = document.getElementById('inputs-lote');
+        inputsLote.innerHTML = '';
+        pedido.itens.forEach(item => {
+            if (item.produtoId === '1') {
+                const inputGroup = document.createElement('div');
+                inputGroup.classList.add('input-group');
 
-    // Verifica se produtores está definido e se o array não está vazio
-    if (typeof produtores !== 'undefined' && produtores.length > 0) { 
+                const label = document.createElement('label');
+                label.textContent = `${item.tipoRape} (${item.quantidade / 2}Kg - ${item.quantidade} Pacotes):`;
+                inputGroup.appendChild(label);
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = `lote-${item.tipoRape.replace(/\s+/g, '')}`;
+                input.placeholder = 'Lote';
+                input.value = item.lote || '';
+                inputGroup.appendChild(input);
+
+                inputsLote.appendChild(inputGroup);
+            }
+        });
+                // Popula os selects de clientes, vendedores e produtores
+                //popularSelectClientesEditar();
+                popularSelectVendedoresEditar(pedido);
+                //popularProdutoresEditar();
+
+        // Exibe o modal
+        document.getElementById('modal-editar-pedido').style.display = 'block';
+        // Adicione um event listener ao botão "Editar Cliente"
+        document.getElementById('salvar-alteracoes').addEventListener('click', () => 
+        {
+            editarPedido(pedido);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar pedido.');
+        console.error(error);
+    });
+}
+
+function calcularSaldoVenda() {
+    const valorVenda = parseFloat(document.getElementById('editar-valor-venda').value) || 0;
+    const valorPago = parseFloat(document.getElementById('editar-valor-pago').value) || 0;
+    saldo = valorPago - valorVenda;
+
+    document.getElementById('editar-saldo-venda').textContent = `${saldo.toFixed(2)}`;
+}
+
+function fecharModalEditarPedido() {
+    document.getElementById('modal-editar-pedido').style.display = 'none';
+}
+
+function editarPedido(pedido) {
+console.log(pedido)
+    // Atualiza o pedido na API
+    fetch(`/api/pedidos/${pedido.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            //cliente: document.getElementById('editar-cliente').value,
+            //vendedor: document.getElementById('editar-vendedor').value,
+            //descricao: document.getElementById('editar-descricao').value,
+            //moeda: document.getElementById('editar-moeda').value,
+            //valorVenda: parseFloat(document.getElementById('editar-valor-venda').value),
+            //valorPago: parseFloat(document.getElementById('editar-valor-pago').value),
+            //status: document.getElementById('editar-status').value,
+            //valorFrete: parseFloat(document.getElementById('editar-valor-frete').value),
+            //produtor: document.getElementById('editar-produtor').value,
+            //saldoVenda: parseFloat(document.getElementById('editar-saldo-venda').value),
+            /*itens: [
+                // ... (lógica para obter os lotes dos itens) ...
+            ]*/
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao atualizar pedido.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        fecharModalEditarPedido();
+        fecharModalDetalhesPedido();
+        exibirPedidos();
+    })
+    .catch(error => {
+        alert('Erro ao atualizar pedido.');
+        console.error(error);
+    });
+};
+
+// Funções para popular os selects no modal de edição
+function popularSelectClientesEditar() {
+    const selectCliente = document.getElementById('editar-cliente');
+    selectCliente.innerHTML = '<option value="">Selecione o Cliente</option>';
+
+    fetch('/api/clientes', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar clientes.');
+        }
+        return response.json();
+    })
+    .then(clientes => {
+        clientes.forEach(cliente => {
+            const option = document.createElement('option');
+            option.value = cliente.id;
+            option.textContent = cliente.nome;
+            selectCliente.appendChild(option);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar clientes.');
+        console.error(error);
+    });
+}
+
+function popularSelectVendedoresEditar(pedido) {
+    const selectVendedor = document.getElementById('editar-vendedor');
+    selectVendedor.innerHTML = `<option value="${pedido.vendedor_id}">${pedido.vendedor}</option>`;
+
+    fetch('/api/funcionarios', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar vendedores.');
+        }
+        return response.json();
+    })
+    .then(vendedores => {
+        vendedores.forEach(vendedor => {
+            const option = document.createElement('option');
+            option.value = vendedor.id;
+            option.textContent = vendedor.nome;
+            selectVendedor.appendChild(option);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar vendedores.');
+        console.error(error);
+    });
+}
+
+function popularProdutoresEditar() {
+    const selectProdutor = document.getElementById('editar-produtor');
+    selectProdutor.innerHTML = '<option value="">Selecione o Produtor</option>';
+
+    fetch('/api/produtores', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar produtores.');
+        }
+        return response.json();
+    })
+    .then(produtores => {
         produtores.forEach(produtor => {
             const option = document.createElement('option');
-            option.value = produtor; // Define o valor da opção como o nome do produtor
-            option.textContent = produtor; // Define o texto da opção como o nome do produtor
+            option.value = produtor.id;
+            option.textContent = produtor.nome;
             selectProdutor.appendChild(option);
         });
-    } else {
-        alert("Não existem produtores cadastrados, por favor cadastre um produtor!");
-        //window.location.href = 'funcionarios.html';
-    }
-}*/
+    })
+    .catch(error => {
+        alert('Erro ao buscar produtores.');
+        console.error(error);
+    });
+}

@@ -122,3 +122,17 @@
 .paginacao li.ativo { /* Estilo para a página atual */
     background-color: #555; /* Cor de fundo mais escura */
 }
+
+#modal-editar-pedido input,
+#modal-editar-pedido select,
+#modal-editar-pedido textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 3px;
+    background-color: #111;
+    color: #eee;
+}
+#editar-descricao {
+    height: 100px; /* Define a altura padrão como 150px */
+}
