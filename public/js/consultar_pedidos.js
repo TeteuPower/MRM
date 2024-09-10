@@ -71,7 +71,8 @@ function exibirInputsLote(pedido) {
             inputGroup.classList.add('input-group');
 
             const label = document.createElement('label');
-            label.textContent = `${item.tipo_rape} (${item.quantidade / 2}Kg - ${item.quantidade} Pacotes):`;
+            //label.textContent = `${item.tipo_rape} (${item.quantidade / 2}Kg - ${item.quantidade} Pacotes):`;
+            label.textContent = `${item.tipo_rape} (${item.quantidade / 2}Kg - ${parseInt(item.quantidade).toFixed(0)} ${parseInt(item.quantidade) === 1 ? 'Pacote' : 'Pacotes'})`;
             inputGroup.appendChild(label);
 
             const input = document.createElement('input');
@@ -365,7 +366,7 @@ function abrirModalEditarPedido(pedido) {
                 inputGroup.classList.add('input-group');
 
                 const label = document.createElement('label');
-                label.textContent = `${item.tipoRape} (${item.quantidade / 2}Kg - ${item.quantidade} Pacotes):`;
+                label.textContent = `${item.tipo_rape} (${item.quantidade / 2}Kg - ${parseInt(item.quantidade).toFixed(0)} ${parseInt(item.quantidade) === 1 ? 'Pacote' : 'Pacotes'})`;
                 inputGroup.appendChild(label);
 
                 const input = document.createElement('input');

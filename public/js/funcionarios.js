@@ -198,7 +198,7 @@ function exibirDesempenhoProdutores() {
 function exibirVendasVendedor(funcionario) {
     const tabelaVendas = document.getElementById('tabela-vendas-vendedor').getElementsByTagName('tbody')[0];
     tabelaVendas.innerHTML = ''; // Limpa a tabela
-    console.log(funcionario)
+    //console.log(funcionario)
 
     // Faz uma requisição GET para a API para obter as vendas do vendedor
     fetch(`/api/pedidos/vendedor/${funcionario.id}`, {
@@ -213,7 +213,7 @@ function exibirVendasVendedor(funcionario) {
         return response.json();
     })
     .then(vendasDoVendedor => {
-    console.log(vendasDoVendedor)
+    //console.log(vendasDoVendedor)
 
     //vendasDoVendedor = vendas;
     const inicio = (paginaAtualVendasVendedor - 1) * vendasPorPagina;
@@ -221,6 +221,7 @@ function exibirVendasVendedor(funcionario) {
     const vendasPaginaAtual = vendasDoVendedor.slice(inicio, fim);
 
     vendasPaginaAtual.forEach(venda => {
+        //console.log(venda)
         const row = tabelaVendas.insertRow();
         const cellPedido = row.insertCell();
         const cellCliente = row.insertCell();
@@ -233,7 +234,7 @@ function exibirVendasVendedor(funcionario) {
         const cellStatus = row.insertCell();
 
         cellPedido.textContent = `Pedido nº ${venda.id}`;
-        cellCliente.textContent = venda.cliente_id;
+        cellCliente.textContent = venda.cliente_nome;
         cellData.textContent = formatarData(venda.data_criacao);
         cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(venda.valor_venda).toFixed(2)}`;
         cellFrete.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(venda.valor_frete ?? "Não informado")}`;

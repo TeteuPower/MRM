@@ -176,16 +176,38 @@ router.get('/cliente/:id', autenticar, (req, res) => {
 
 // Rota para obter os pedidos de um vendedor (GET /api/pedidos/vendedor/:id)
 router.get('/vendedor/:id', autenticar, (req, res) => {
-    const vendedorId = req.params.id;
-    const sql = 'SELECT * FROM pedidos WHERE vendedor_id = ?';
-    db.query(sql, [vendedorId], (err, results) => {
-        if (err) {
-            console.error('Erro ao buscar pedidos do vendedor:', err);
-            res.status(500).json({ error: 'Erro ao buscar pedidos do vendedor.' });
-            return;
-        }
-        res.json(results);
+  const vendedorId = req.params.id;
+
+  const sql = 'SELECT * FROM pedidos WHERE vendedor_id = ?';
+  db.query(sql, [vendedorId], (err, pedidos) => {
+    if (err) {
+      console.error('Erro ao buscar pedidos do vendedor:', err);
+      return res.status(500).json({ error: 'Erro ao buscar pedidos do vendedor.' });
+    }
+
+    // Para cada pedido, buscar o nome do cliente
+    Promise.all(pedidos.map(pedido => {
+      return new Promise((resolve, reject) => {
+        const sqlNome = 'SELECT nome FROM clientes WHERE id = ?';
+        db.query(sqlNome, [pedido.cliente_id], (err, result) => {
+          if (err) {
+            console.error('Erro ao buscar nome do cliente:', err);
+            return reject(err); // Rejeita a promise se houver erro
+          }
+          // Adiciona o nome do cliente ao objeto do pedido
+          pedido.cliente_nome = result[0].nome; 
+          resolve(pedido); 
+        });
+      });
+    }))
+    .then(pedidosComNome => { 
+      res.json(pedidosComNome);
+    })
+    .catch(err => {
+      console.error('Erro ao processar pedidos:', err);
+      res.status(500).json({ error: 'Erro ao processar pedidos.' });
     });
+  });
 });
 
 module.exports = router;

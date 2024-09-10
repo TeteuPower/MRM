@@ -171,22 +171,15 @@ function exibirDetalhesPedido(id) {
         
             // Verifica se um produtor foi selecionado
             let produtor = document.getElementById('modal-produtor').value;
-            console.log(produtor)
-            if(produtor === 'Matheus DB') {
-                produtor = {
-                    id: 1,
-                }
-            }
             if (produtor === '') {
                 alert('Por favor, selecione um produtor!');
                 return;
             }
-        
+            //console.log(produtor)
             if (!todosOsLotesPreenchidos) {
                 alert('Por favor, preencha todos os lotes!');
                 return;
             }
-        //console.log(produtor.id)
             if (confirm(`Confirma a atualização do status do pedido nº ${pedido.id} para "Pronto, aguardando envio"?`)) {
                 // Atualiza o pedido na API
                 fetch(`/api/pedidos-aguardando-producao/${pedido.id}`, {
@@ -198,7 +191,7 @@ function exibirDetalhesPedido(id) {
                     body: JSON.stringify({
                         status: 'Pronto, aguardando envio',
                         dataProducao: new Date().toISOString().slice(0, 19).replace('T', ' '),
-                        produtor: produtor.id,
+                        produtor: produtor,
                         itens: pedido.itens.map(item => {
                             if (item.produto_id === 1) {
                                 return {
@@ -240,7 +233,8 @@ function exibirDetalhesPedido(id) {
         let nomeProduto = item.produto;
         if (item.produto === 'Rapé' && item.tipo_rape) {
             nomeProduto += ` (${item.tipo_rape})`;
-            cellQuantidade.textContent = parseFloat(item.quantidade).toFixed(0) + ` Pacotes (${parseFloat(item.quantidade).toFixed(1) / 2}Kg)`;
+            
+            cellQuantidade.textContent = `${parseInt(item.quantidade).toFixed(0)} ${parseInt(item.quantidade) === 1 ? 'Pacote' : 'Pacotes'} - (${item.quantidade / 2}Kg)`;
         }
 
         cellProduto.textContent = nomeProduto;
@@ -569,6 +563,7 @@ function exibirProdutores(inputId) {
         funcionarios.forEach(funcionario => {
             const listItem = document.createElement('option');
             listItem.textContent = funcionario.nome;
+            listItem.value = funcionario.id;
             listaProdutores.appendChild(listItem);
         });
     })
