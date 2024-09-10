@@ -67,15 +67,15 @@ router.get('/:id', autenticar, (req, res) => {
 // Rota para atualizar um cliente (PUT /api/clientes/:id)
 router.put('/:id', autenticar, (req, res) => {
     const clienteId = req.params.id;
-    const { nome, email, telefone, endereco, login, senha, saldoReais, saldoDolares } = req.body;
+    const { nome, email, telefone, endereco, login, senha } = req.body;
 
     // Verifica se todos os campos obrigatórios foram fornecidos
     /*if (!nome || !email || !telefone || !endereco || !login || !senha) {
         return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
     }*/
 
-    const sql = 'UPDATE clientes SET nome = ?, email = ?, telefone = ?, endereco = ?, login = ?, senha = ?, saldoReais = ?, saldoDolares = ? WHERE id = ?';
-    db.query(sql, [nome, email, telefone, endereco, login, senha, saldoReais, saldoDolares, clienteId], (err, result) => {
+    const sql = 'UPDATE clientes SET nome = ?, email = ?, telefone = ?, endereco = ?, login = ?, senha = ? WHERE id = ?';
+    db.query(sql, [nome, email, telefone, endereco, login, senha, clienteId], (err, result) => {
         if (err) {
             console.error('Erro ao atualizar cliente:', err);
             res.status(500).json({ error: 'Erro ao atualizar cliente.' });

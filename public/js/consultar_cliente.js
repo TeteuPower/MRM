@@ -279,4 +279,5 @@ alert('Cliente alterado com sucesso');
         fecharModalEditarCliente();
         fecharModalDetalhesCliente(); // Fecha o modal de detalhes do cliente
         exibirClientes(); // Atualiza a lista de clientes
+        return;
 }
