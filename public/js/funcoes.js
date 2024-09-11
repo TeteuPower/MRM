@@ -289,6 +289,11 @@ function exibirDetalhesPedido(id) {
         {
             abrirModalEditarPedido(pedido);
         });
+        // Adicione um event listener ao botão "Cancelar Pedido"
+        document.getElementById('btn-cancelar-pedido').addEventListener('click', () =>
+        {
+            cancelarPedido(pedido.id);
+        });
     })
 
     // Exibe o modal

@@ -230,4 +230,24 @@ router.delete('/itens/:itemId', autenticar, (req, res) => {
   });
 });
 
+// Rota para cancelar um pedido (DELETE /api/pedidos/:id)
+router.delete('/:id', autenticar, (req, res) => {
+  const pedidoId = req.params.id;
+
+  const sql = 'DELETE FROM pedidos WHERE id = ?';
+  db.query(sql, [pedidoId], (err, result) => {
+      if (err) {
+          console.error('Erro ao cancelar pedido:', err);
+          res.status(500).json({ error: 'Erro ao cancelar pedido.' });
+          return;
+      }
+
+      if (result.affectedRows > 0) {
+          res.json({ message: 'Pedido cancelado com sucesso!' });
+      } else {
+          res.status(404).json({ error: 'Pedido não encontrado.' });
+      }
+  });
+});
+
 module.exports = router;

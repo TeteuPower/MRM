@@ -633,3 +633,34 @@ function popularProdutoresEditar() {
         console.error(error);
     });
 }
+
+function cancelarPedido(pedidoId) {
+    if (confirm(`Tem certeza que deseja DELETAR o pedido nº ${pedidoId}?`)) {
+        const confirmacao = prompt("Digite 'deletar' para confirmar a exclusão do pedido");
+        if (confirmacao === 'deletar') {
+        // Faz uma requisição DELETE para a API para cancelar o pedido
+        fetch(`/api/pedidos/${pedidoId}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao cancelar pedido.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            fecharModalDetalhesPedido();
+            exibirPedidos(); // Atualiza a lista de pedidos
+        })
+        .catch(error => {
+            alert('Erro ao cancelar pedido.');
+            console.error(error);
+        });
+    } else{
+        alert('Exclusão cancelada');
+    }}
+}
