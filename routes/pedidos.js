@@ -124,6 +124,45 @@ router.put('/:id', autenticar, (req, res) => {
     });
 });
 
+// Rota para EDITAR um pedido
+router.put('/editar/:id', autenticar, (req, res) => {
+  const pedidoId = req.params.id;
+  const { cliente_id, vendedor_id, descricao, moeda, valor_venda, valor_pago, status, valor_frete, produtor_id, saldo_venda, itens } = req.body;
+
+  // Verifica se o status foi fornecido
+  if (!status) {
+      return res.status(400).json({ error: 'O status é obrigatório.' });
+  }
+
+  // Atualiza o pedido no banco de dados
+  const sql = 'UPDATE pedidos SET cliente_id = ?, vendedor_id = ?, descricao = ?, moeda = ?, valor_venda = ?, valor_pago = ?, status = ?, valor_frete = ?, produtor_id = ?, saldo_venda = ? WHERE id = ?';
+  db.query(sql, [cliente_id, vendedor_id, descricao, moeda, valor_venda, valor_pago, status, valor_frete, produtor_id, saldo_venda, pedidoId], (err, result) => {
+      if (err) {
+          console.error('Erro ao atualizar pedido:', err);
+          res.status(500).json({ error: 'Erro ao atualizar pedido.' });
+          return;
+      }
+
+      if (result.affectedRows > 0) {
+          // Atualiza os itens do pedido
+          itens.forEach(item => {
+              const sqlItem = 'UPDATE itens_pedido SET lote = ? WHERE pedido_id = ? AND produto_id = ?';
+              db.query(sqlItem, [item.lote, pedidoId, item.produto_id], (err, result) => {
+                  if (err) {
+                      console.error('Erro ao atualizar item do pedido:', err);
+                      res.status(500).json({ error: 'Erro ao atualizar pedido.' });
+                      return;
+                  }
+              });
+          });
+
+          res.json({ message: 'Pedido atualizado com sucesso!' });
+      } else {
+          res.status(404).json({ error: 'Pedido não encontrado.' });
+      }
+  });
+});
+
 // Rota para criar um novo pedido (POST /api/pedidos)
 router.post('/', autenticar, (req, res) => {
     const { clienteId, dataCriacao, descricao, moeda, valorVenda, valorPago, status, administradorId, vendedorId, saldoVenda, itens} = req.body;

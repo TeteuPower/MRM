@@ -344,18 +344,28 @@ function abrirModalEditarPedido(pedido) {
         preencherModalEditarPedido(pedido); 
   
         document.getElementById('modal-editar-pedido').style.display = 'block';
-        /*document.getElementById('salvar-alteracoes').addEventListener('click', () => {
-          editarPedido(pedido); 
-        });*/
       })
       .catch((error) => {
         alert('Erro ao buscar pedido. Detalhes no console.');
         console.error(error);
       });
-  }
+      document.getElementById('salvar-alteracoes').addEventListener('click', () => {
+        editarPedido(pedido); 
+      });
+}
 
 // Função para preencher o modal de edição de pedido
 function preencherModalEditarPedido(pedido) {
+    const dolar = `<option value="dolar">Dólar (US$)</option>`;
+    const real = `<option value="real">Real (R$)</option>`;
+    let moeda = '';
+    if(pedido.moeda === 'dolar') {
+        moeda = dolar
+    }
+    if(pedido.moeda === 'real'){
+        moeda = real;
+    }
+
     const clienteElement = document.getElementById('editar-cliente');
     const vendedorElement = document.getElementById('editar-vendedor');
     const descricaoElement = document.getElementById('editar-descricao');
@@ -372,7 +382,7 @@ function preencherModalEditarPedido(pedido) {
     clienteElement.textContent = `Cliente: ${pedido.cliente}`;
     vendedorElement.textContent = pedido.vendedor;
     descricaoElement.value = pedido.descricao;
-    moedaElement.innerHTML = `<option value="${pedido.moeda}">${pedido.moeda}</option>`;
+    moedaElement.innerHTML = moeda + dolar + real;
     valorVendaElement.value = pedido.valor_venda;
     valorPagoElement.value = pedido.valor_pago;
     statusElement.value = pedido.status;
@@ -440,7 +450,7 @@ function preencherModalEditarPedido(pedido) {
     // Popular selects de clientes, vendedores e produtores (se necessário)
     // popularSelectClientesEditar();
     popularSelectVendedoresEditar(pedido);
-    // popularProdutoresEditar();
+    popularProdutoresEditar();
   }
 
 function removerItemDoCarrinho(pedido, index) {
@@ -490,8 +500,8 @@ function calcularSaldoVenda() {
     const valorVenda = parseFloat(document.getElementById('editar-valor-venda').value) || 0;
     const valorPago = parseFloat(document.getElementById('editar-valor-pago').value) || 0;
     saldo = valorPago - valorVenda;
-
-    document.getElementById('editar-saldo-venda').textContent = `${saldo.toFixed(2)}`;
+    document.getElementById('editar-saldo-venda').innerHTML = saldo === 0 ? '<span class="span-verde">Pago</span>' : `<span class="span-vermelho">${parseFloat(saldo).toFixed(2)}</span>`;
+    //document.getElementById('editar-saldo-venda').textContent = `${saldo.toFixed(2)}`;
 }
 
 function fecharModalEditarPedido() {
@@ -499,34 +509,58 @@ function fecharModalEditarPedido() {
 }
 
 function editarPedido(pedido) {
-console.log(pedido)
+//console.log(pedido)
+
+const vendedorElement = document.getElementById('editar-vendedor');
+const descricaoElement = document.getElementById('editar-descricao');
+const moedaElement = document.getElementById('editar-moeda');
+const valorVendaElement = document.getElementById('editar-valor-venda');
+const valorPagoElement = document.getElementById('editar-valor-pago');
+const statusElement = document.getElementById('editar-status');
+const valorFreteElement = document.getElementById('editar-valor-frete');
+const produtorElement = document.getElementById('editar-produtor');
+const saldoVendaElement = document.getElementById('editar-saldo-venda');
+//const tbodyItens = document.getElementById('modal-tabela-editar-itens').getElementsByTagName('tbody')[0];
+//const inputsLote = document.getElementById('inputs-lote');
+
+
+pedido.vendedor_id = vendedorElement.value;
+pedido.descricao = descricaoElement.value;
+pedido.moeda = moedaElement.value;
+pedido.valor_venda = valorVendaElement.value;
+pedido.valor_pago = valorPagoElement.value;
+pedido.status = statusElement.value;
+pedido.valor_frete = valorFreteElement.value;
+pedido.produtor_id = produtorElement.value;
+pedido.saldo_venda = saldoVendaElement.textContent === 'Pago' ? 0 : parseInt(saldoVendaElement.textContent);
+
+console.log(pedido);
+
+    // Atualiza os lotes dos itens do pedido
+    /*const inputsLote = document.querySelectorAll('#inputs-lote div.input-group');
+    pedido.itens = pedido.itens.map(item => {
+        if (item.produtoId === '1') {
+            const inputLote = inputsLote.find(input => input.querySelector('label').textContent.includes(item.tipo_rape));
+            if (inputLote) {
+                item.lote = inputLote.querySelector('input').value;
+            }
+        }
+        return item;
+    });*/
+
   // Confirmação antes de atualizar
   if (!confirm(`Deseja realmente alterar os dados do pedido ?`)) {
     return; // Interrompe a função se o usuário cancelar
   }
 
     // Atualiza o pedido na API
-    fetch(`/api/pedidos/${pedido.id}`, {
+    fetch(`/api/pedidos/editar/${pedido.id}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': localStorage.getItem('token')
         },
-        body: JSON.stringify({
-            //cliente: document.getElementById('editar-cliente').value,
-            //vendedor: document.getElementById('editar-vendedor').value,
-            //descricao: document.getElementById('editar-descricao').value,
-            //moeda: document.getElementById('editar-moeda').value,
-            //valorVenda: parseFloat(document.getElementById('editar-valor-venda').value),
-            //valorPago: parseFloat(document.getElementById('editar-valor-pago').value),
-            //status: document.getElementById('editar-status').value,
-            //valorFrete: parseFloat(document.getElementById('editar-valor-frete').value),
-            //produtor: document.getElementById('editar-produtor').value,
-            //saldoVenda: parseFloat(document.getElementById('editar-saldo-venda').value),
-            /*itens: [
-                // ... (lógica para obter os lotes dos itens) ...
-            ]*/
-        })
+        body: JSON.stringify(pedido)
     })
     .then(response => {
         if (!response.ok) {
@@ -609,7 +643,7 @@ function popularProdutoresEditar() {
     const selectProdutor = document.getElementById('editar-produtor');
     selectProdutor.innerHTML = '<option value="">Selecione o Produtor</option>';
 
-    fetch('/api/produtores', {
+    fetch('/api/funcionarios/produtores', {
         headers: {
             'Authorization': localStorage.getItem('token')
         }
