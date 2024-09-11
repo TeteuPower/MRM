@@ -168,6 +168,7 @@
                     </div>
                     <div class="input-group">
                         <h4>Itens do Pedido:</h4>
+                        <button type="button" id="btn-adicionar-produto" class="btn-acao verde">Adicionar Itens</button>
                         <table id="modal-tabela-editar-itens">
                             <thead>
                                 <tr>
@@ -195,6 +196,37 @@
                     </div>
                 </form>
             </div>
+        
+            <div id="modal-adicionar-produto" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="fecharModalAdicionarProduto()">×</span>
+                    <h2>Adicionar Produto</h2>
+    
+                    <div class="input-group">
+                        <label for="produto">Produto:</label>
+                        <select id="produto">
+                            <!-- Opções de produtos serão adicionadas aqui -->
+                        </select>
+                    </div>
+    
+                    <div id="opcoes-tipo-rape" class="input-group" style="display: none;">
+                        <label for="tipo-rape">Tipo de Rapé:(Pacotes 500gr)</label>
+                        <select id="tipo-rape">
+                            <option value="">Selecione o Tipo</option>
+                            <!-- Opções de tipos de rapé serão adicionadas aqui -->
+                        </select>
+                    </div>
+    
+                    <div class="input-group">
+                        <label for="quantidade">Quantidade:</label>
+                        <input type="number" id="quantidade" min="1" value="1">
+                    </div>
+    
+                    <button type="button" onclick="adicionarAoCarrinhoEditar()">Adicionar</button>
+                </div>
+            </div>
+
+
         </div>
     </main>
 

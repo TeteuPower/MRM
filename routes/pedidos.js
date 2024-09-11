@@ -199,6 +199,21 @@ router.post('/', autenticar, (req, res) => {
     });
 });
 
+// Adicionar item pedido já existente
+router.post('/adicionar-itens', autenticar, (req, res) => {
+  const {pedido_id, produto_id, quantidade, lote, produto, tipo_rape} = req.body;
+
+          const sqlItem = 'INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, lote, produto, tipo_rape) VALUES (?, ?, ?, ?, ?, ?)';
+          db.query(sqlItem, [pedido_id, produto_id, quantidade, lote, produto, tipo_rape], (err, result) => {
+              if (err) {
+                  console.error('Erro ao inserir item do pedido:', err);
+                  res.status(500).json({ error: 'Erro ao criar pedido.' });
+                  return;
+              }
+          });
+      res.json({ message: 'Pedido alterado com sucesso!', id: pedido_id });
+});
+
 // Rota para obter os pedidos de um cliente (GET /api/pedidos/cliente/:id)
 router.get('/cliente/:id', autenticar, (req, res) => {
     const clienteId = req.params.id;

@@ -5,11 +5,24 @@ document.addEventListener('DOMContentLoaded', function () {
     //carregarClientesDoLocalStorage();
     //carregarPedidosDoLocalStorage();
     exibirPedidos();
+    popularSelectProdutos();
+    popularSelectTiposRape('tipo-rape');
     //carregarFuncionariosDoLocalStorage();
 
     //document.getElementById('moeda').addEventListener('change', calcularSaldoVenda);
     document.getElementById('editar-valor-venda').addEventListener('input', calcularSaldoVenda);
     document.getElementById('editar-valor-pago').addEventListener('input', calcularSaldoVenda);
+    document.getElementById('produto').addEventListener('change', function () {
+        const produtoSelecionado = this.value;
+        if (produtoSelecionado === '1') {
+            document.getElementById('opcoes-tipo-rape').style.display = 'block';
+        } else {
+            document.getElementById('opcoes-tipo-rape').style.display = 'none';
+        }
+    });
+    document.getElementById('btn-adicionar-produto').addEventListener('click', function () {
+        document.getElementById('modal-adicionar-produto').style.display = 'block';
+    });
 
     const pesquisaInput = document.getElementById('pesquisa-pedido');
     pesquisaInput.addEventListener('input', exibirPedidos);
@@ -366,6 +379,7 @@ function preencherModalEditarPedido(pedido) {
         moeda = real;
     }
 
+    const pedidoElement = document.getElementById('editar-nome-pedido');
     const clienteElement = document.getElementById('editar-cliente');
     const vendedorElement = document.getElementById('editar-vendedor');
     const descricaoElement = document.getElementById('editar-descricao');
@@ -378,7 +392,9 @@ function preencherModalEditarPedido(pedido) {
     const saldoVendaElement = document.getElementById('editar-saldo-venda');
     const tbodyItens = document.getElementById('modal-tabela-editar-itens').getElementsByTagName('tbody')[0];
     const inputsLote = document.getElementById('inputs-lote');
-  
+
+    pedidoElement.textContent = `Editar Pedido Nº${pedido.id}`;
+    pedidoElement.value = pedido.id;
     clienteElement.textContent = `Cliente: ${pedido.cliente}`;
     vendedorElement.textContent = pedido.vendedor;
     descricaoElement.value = pedido.descricao;
@@ -520,21 +536,19 @@ const statusElement = document.getElementById('editar-status');
 const valorFreteElement = document.getElementById('editar-valor-frete');
 const produtorElement = document.getElementById('editar-produtor');
 const saldoVendaElement = document.getElementById('editar-saldo-venda');
-//const tbodyItens = document.getElementById('modal-tabela-editar-itens').getElementsByTagName('tbody')[0];
-//const inputsLote = document.getElementById('inputs-lote');
 
 
-pedido.vendedor_id = vendedorElement.value;
+pedido.vendedor_id = parseFloat(vendedorElement.value);
 pedido.descricao = descricaoElement.value;
 pedido.moeda = moedaElement.value;
-pedido.valor_venda = valorVendaElement.value;
-pedido.valor_pago = valorPagoElement.value;
+pedido.valor_venda = parseFloat(valorVendaElement.value);
+pedido.valor_pago = parseFloat(valorPagoElement.value);
 pedido.status = statusElement.value;
-pedido.valor_frete = valorFreteElement.value;
-pedido.produtor_id = produtorElement.value;
+pedido.valor_frete = parseFloat(valorFreteElement.value);
+pedido.produtor_id = parseFloat(produtorElement.value);
 pedido.saldo_venda = saldoVendaElement.textContent === 'Pago' ? 0 : parseInt(saldoVendaElement.textContent);
 
-console.log(pedido);
+//console.log(pedido);
 
     // Atualiza os lotes dos itens do pedido
     /*const inputsLote = document.querySelectorAll('#inputs-lote div.input-group');
@@ -549,10 +563,7 @@ console.log(pedido);
     });*/
 
   // Confirmação antes de atualizar
-  if (!confirm(`Deseja realmente alterar os dados do pedido ?`)) {
-    return; // Interrompe a função se o usuário cancelar
-  }
-
+  if (confirm(`Deseja realmente alterar os dados do pedido ?`)) {
     // Atualiza o pedido na API
     fetch(`/api/pedidos/editar/${pedido.id}`, {
         method: 'PUT',
@@ -578,6 +589,7 @@ console.log(pedido);
         alert('Erro ao atualizar pedido.');
         console.error(error);
     });
+}
 };
 
 // Funções para popular os selects no modal de edição
@@ -697,4 +709,99 @@ function cancelarPedido(pedidoId) {
     } else{
         alert('Exclusão cancelada');
     }}
+}
+
+function adicionarAoCarrinhoEditar() {
+    const produtoSelect = document.getElementById('produto');
+    const pedidoElement = document.getElementById('editar-nome-pedido');
+    const produto_id = parseFloat(produtoSelect.value); // Obtém o valor do select (ID do produto)
+    const produto = produtoSelect.options[produtoSelect.selectedIndex].text;
+    const quantidade = parseInt(document.getElementById('quantidade').value);
+    let tipo_rape = null;
+    let lote = '';
+
+    if (produto_id === 1) {
+        tipo_rape = document.getElementById('tipo-rape').value;
+        if (produto_id === '') {
+            alert('Selecione um tipo de rapé!');
+            return;
+        }
+    }
+
+    const item = {
+        pedido_id: pedidoElement.value,
+        produto: produto,
+        quantidade: quantidade,
+        produto_id: produto_id,
+        tipo_rape: tipo_rape,
+        lote: lote
+    };
+    if(confirm(`Deseja adicionar ${quantidade} ${produto_id === 1 || produto_id === 3 ? 'Pacote(s)' : 'Un'} de ${produto_id === 1 ? tipo_rape : produto}`))
+        // Envia os dados para a API
+        fetch('/api/pedidos/adicionar-itens', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify(item)
+        })        
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao registrar venda.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert('Produto adicionado com Sucesso!')
+            // Obter o ID do pedido da resposta da API ou do item
+            const pedidoId = item.pedido_id;
+            const pedido = {
+                id:pedidoId
+            } 
+            // Abrir o modal de edição com o ID do pedido correto
+            console.log(pedidoId)
+            abrirModalEditarPedido(pedido);
+        })
+        .catch(error => {
+            alert('Erro ao registrar venda.');
+            console.error(error);
+        });
+    //console.log(item);
+    fecharModalAdicionarProduto();
+}
+
+function popularSelectProdutos() {
+    const selectProduto = document.getElementById('produto');
+    selectProduto.innerHTML = '<option value="">Selecione o Produto</option>'; // Limpa as opções existentes
+
+    // Faz uma requisição à API para obter os produtos
+    fetch('/api/estoque', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar produtos.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        const produtos = data.produtos;
+        // Itera sobre os produtos e adiciona cada um ao select
+        produtos.forEach(produto => {
+            const option = document.createElement('option');
+            option.value = produto.id; // Define o valor da opção como o ID do produto
+            option.textContent = produto.nome;
+            selectProduto.appendChild(option);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar produtos.');
+        console.error(error);
+    });
+}
+function fecharModalAdicionarProduto() {
+    document.getElementById('modal-adicionar-produto').style.display = 'none';
 }
