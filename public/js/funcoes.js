@@ -244,6 +244,7 @@ function exibirDetalhesPedido(id) {
 
     // Controle de exibição das áreas de frete e nota fiscal
     const areaFrete = document.getElementById('area-frete');
+    const areaFinalizado = document.getElementById('area-finalizado');
     const areaNotaFiscal = document.getElementById('area-nota-fiscal');
     const btnFinalizarPedido = document.getElementById('btn-finalizar-pedido');
     const btnAdicionarNotaFiscal = document.getElementById('btn-adicionar-nota-fiscal');
@@ -276,6 +277,13 @@ function exibirDetalhesPedido(id) {
         areaFrete.style.display = 'none';
         areaNotaFiscal.style.display = 'none';
     }
+    if (pedido.status === 'Finalizado') {
+        areaFinalizado.style.display = 'block';
+        //areaNotaFiscal.style.display = 'block';
+        /*btnFinalizarPedido.onclick = () => {
+            finalizarPedido(pedido);
+        };*/
+    };
 
         // Preenche o valor do frete
         const valorFreteExibicao = document.getElementById('modal-valor-frete-exibicao');
@@ -291,6 +299,28 @@ function exibirDetalhesPedido(id) {
         });
         // Adicione um event listener ao botão "Cancelar Pedido"
         document.getElementById('btn-cancelar-pedido').addEventListener('click', () =>
+        {
+            cancelarPedido(pedido.id);
+        });
+
+        // Adicione um event listener ao botão "Editar Pedido"
+        document.getElementById('btn-editar-pedido2').addEventListener('click', () =>
+        {
+            abrirModalEditarPedido(pedido);
+        });
+        // Adicione um event listener ao botão "Cancelar Pedido"
+        document.getElementById('btn-cancelar-pedido2').addEventListener('click', () =>
+        {
+            cancelarPedido(pedido.id);
+        });
+
+        // Adicione um event listener ao botão "Editar Pedido"
+        document.getElementById('btn-editar-pedido3').addEventListener('click', () =>
+        {
+            abrirModalEditarPedido(pedido);
+        });
+        // Adicione um event listener ao botão "Cancelar Pedido"
+        document.getElementById('btn-cancelar-pedido3').addEventListener('click', () =>
         {
             cancelarPedido(pedido.id);
         });
