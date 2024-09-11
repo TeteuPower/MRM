@@ -210,4 +210,24 @@ router.get('/vendedor/:id', autenticar, (req, res) => {
   });
 });
 
+// Rota para remover um item do pedido (DELETE /api/pedidos/:id/itens/:itemId)
+router.delete('/itens/:itemId', autenticar, (req, res) => {
+  //const pedidoId = req.params.id;
+  const itemId = req.params.itemId;
+
+  const sql = 'DELETE FROM itens_pedido WHERE id = ?';
+  db.query(sql, [itemId], (err, result) => {
+    if (err) {
+      console.error('Erro ao remover item do pedido:', err);
+      return res.status(500).json({ error: 'Erro ao remover item do pedido.' });
+    }
+
+    if (result.affectedRows > 0) {
+      return res.json({ message: 'Item do pedido removido com sucesso!' });
+    } else {
+      return res.status(404).json({ error: 'Item do pedido não encontrado.' }); 
+    }
+  });
+});
+
 module.exports = router;

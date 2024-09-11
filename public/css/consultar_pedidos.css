@@ -61,13 +61,16 @@
     background-color: #444;
 }
 
-#modal-tabela-itens {
+#modal-tabela-itens,
+#modal-tabela-editar-itens {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
 }
 
 #modal-tabela-itens th,
+#modal-tabela-editar-itens th,
+#modal-tabela-editar-itens td,
 #modal-tabela-itens td {
     text-align: left;
     padding: 8px;
@@ -85,6 +88,10 @@
 
 .laranja {
     background-color: orange; 
+}
+
+.vermelho {
+    background-color: rgb(255, 0, 0); 
 }
 
 .paginacao {

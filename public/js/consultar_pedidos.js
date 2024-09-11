@@ -329,74 +329,162 @@ function criarMenuPaginacao(totalPedidos) {
 }
 
 function abrirModalEditarPedido(pedido) {
-    alert('AINDA ESTÁ SENDO DESENVOLVIDO')
-    //console.log(pedido)
-    // Faz uma requisição GET para a API para obter os detalhes do pedido
     fetch(`/api/pedidos/${pedido.id}`, {
-        headers: {
-            'Authorization': localStorage.getItem('token')
-        }
+      headers: {
+        'Authorization': localStorage.getItem('token'),
+      },
     })
-    .then(response => {
+      .then((response) => {
         if (!response.ok) {
-            throw new Error('Erro ao buscar pedido.');
+          throw new Error('Erro ao buscar pedido. Verifique a conexão.');
         }
         return response.json();
-    })
-    .then(pedido => {
-        //console.log(pedido)
-        // Preenche o modal com os detalhes do pedido
-        document.getElementById('editar-cliente').textContent = `Cliente: ${pedido.cliente}`;
-        document.getElementById('editar-vendedor').textContent = pedido.vendedor;
-        document.getElementById('editar-descricao').value = pedido.descricao;
-        document.getElementById('editar-moeda').innerHTML = `<option value="${pedido.moeda}">${pedido.moeda}</option>`;
-        document.getElementById('editar-valor-venda').value = pedido.valor_venda;
-        document.getElementById('editar-valor-pago').value = pedido.valor_pago;
-        document.getElementById('editar-status').value = pedido.status;
-        document.getElementById('editar-valor-frete').value = pedido.valor_frete;
-        document.getElementById('editar-produtor').value = pedido.produtor;
-        document.getElementById('editar-saldo-venda').value = calcularSaldoVenda();
-
-        // Preenche os inputs de lote
-        const inputsLote = document.getElementById('inputs-lote');
-        inputsLote.innerHTML = '';
-        pedido.itens.forEach(item => {
-            if (item.produtoId === '1') {
-                const inputGroup = document.createElement('div');
-                inputGroup.classList.add('input-group');
-
-                const label = document.createElement('label');
-                label.textContent = `${item.tipo_rape} (${item.quantidade / 2}Kg - ${parseInt(item.quantidade).toFixed(0)} ${parseInt(item.quantidade) === 1 ? 'Pacote' : 'Pacotes'})`;
-                inputGroup.appendChild(label);
-
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.id = `lote-${item.tipoRape.replace(/\s+/g, '')}`;
-                input.placeholder = 'Lote';
-                input.value = item.lote || '';
-                inputGroup.appendChild(input);
-
-                inputsLote.appendChild(inputGroup);
-            }
-        });
-                // Popula os selects de clientes, vendedores e produtores
-                //popularSelectClientesEditar();
-                popularSelectVendedoresEditar(pedido);
-                //popularProdutoresEditar();
-
-        // Exibe o modal
+      })
+      .then((pedido) => {
+        preencherModalEditarPedido(pedido); 
+  
         document.getElementById('modal-editar-pedido').style.display = 'block';
-        // Adicione um event listener ao botão "Editar Cliente"
-        document.getElementById('salvar-alteracoes').addEventListener('click', () => 
-        {
-            editarPedido(pedido);
-        });
-    })
-    .catch(error => {
-        alert('Erro ao buscar pedido.');
+        /*document.getElementById('salvar-alteracoes').addEventListener('click', () => {
+          editarPedido(pedido); 
+        });*/
+      })
+      .catch((error) => {
+        alert('Erro ao buscar pedido. Detalhes no console.');
         console.error(error);
+      });
+  }
+
+// Função para preencher o modal de edição de pedido
+function preencherModalEditarPedido(pedido) {
+    const clienteElement = document.getElementById('editar-cliente');
+    const vendedorElement = document.getElementById('editar-vendedor');
+    const descricaoElement = document.getElementById('editar-descricao');
+    const moedaElement = document.getElementById('editar-moeda');
+    const valorVendaElement = document.getElementById('editar-valor-venda');
+    const valorPagoElement = document.getElementById('editar-valor-pago');
+    const statusElement = document.getElementById('editar-status');
+    const valorFreteElement = document.getElementById('editar-valor-frete');
+    const produtorElement = document.getElementById('editar-produtor');
+    const saldoVendaElement = document.getElementById('editar-saldo-venda');
+    const tbodyItens = document.getElementById('modal-tabela-editar-itens').getElementsByTagName('tbody')[0];
+    const inputsLote = document.getElementById('inputs-lote');
+  
+    clienteElement.textContent = `Cliente: ${pedido.cliente}`;
+    vendedorElement.textContent = pedido.vendedor;
+    descricaoElement.value = pedido.descricao;
+    moedaElement.innerHTML = `<option value="${pedido.moeda}">${pedido.moeda}</option>`;
+    valorVendaElement.value = pedido.valor_venda;
+    valorPagoElement.value = pedido.valor_pago;
+    statusElement.value = pedido.status;
+    valorFreteElement.value = pedido.valor_frete;
+    produtorElement.value = pedido.produtor;
+    saldoVendaElement.value = calcularSaldoVenda(); 
+  
+    // Função auxiliar para formatar a quantidade do item
+    const formatarQuantidadeItem = (item) => {
+      const quantidade = parseFloat(item.quantidade);
+      const unidade = quantidade === 1 ? 'Pacote' : 'Pacotes';
+      return `${quantidade.toFixed(0)} ${unidade} - (${(quantidade / 2).toFixed(1)}Kg)`;
+    };
+  
+    // Popular tabela de itens
+    tbodyItens.innerHTML = ''; // Limpar tabela
+  
+    pedido.itens.forEach((item, index) => {
+      const row = tbodyItens.insertRow();
+      const cellProduto = row.insertCell();
+      const cellQuantidade = row.insertCell();
+      const cellLote = row.insertCell();
+      const cellAcoes = row.insertCell();
+  
+      cellProduto.textContent = item.produto === 'Rapé' && item.tipo_rape
+        ? `Rapé (${item.tipo_rape})`
+        : item.produto;
+  
+      cellQuantidade.textContent = formatarQuantidadeItem(item);
+      cellLote.textContent = item.lote || 'Não informado';
+  
+      // Adicionar botão "Remover" à célula de ações
+      const btnRemover = document.createElement('button');
+      btnRemover.textContent = 'Remover';
+      btnRemover.classList.add('btn-acao', 'vermelho');
+      btnRemover.type = 'button';
+      cellAcoes.appendChild(btnRemover);
+      btnRemover.onclick = () => {
+        removerItemDoCarrinho(pedido, index);
+      };
     });
-}
+  
+    // Preencher inputs de lote
+    inputsLote.innerHTML = '';
+    pedido.itens.forEach(item => {
+      if (item.produtoId === '1') { 
+        const inputGroup = document.createElement('div');
+        inputGroup.classList.add('input-group');
+  
+        const label = document.createElement('label');
+        label.textContent = `${item.tipo_rape} (${(item.quantidade / 2).toFixed(1)}Kg - ${parseInt(item.quantidade).toFixed(0)} ${parseInt(item.quantidade) === 1 ? 'Pacote' : 'Pacotes'})`;
+        inputGroup.appendChild(label);
+  
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = `lote-${item.tipoRape.replace(/\s+/g, '')}`;
+        input.placeholder = 'Lote';
+        input.value = item.lote || '';
+        inputGroup.appendChild(input);
+  
+        inputsLote.appendChild(inputGroup);
+      }
+    });
+  
+    // Popular selects de clientes, vendedores e produtores (se necessário)
+    // popularSelectClientesEditar();
+    popularSelectVendedoresEditar(pedido);
+    // popularProdutoresEditar();
+  }
+
+function removerItemDoCarrinho(pedido, index) {
+    //console.log(pedido);
+  
+    if (pedido && pedido.itens[index]) {
+      const itemId = pedido.itens[index]; 
+      //console.log(itemId);
+  
+      if (confirm(`Deseja excluir ${parseInt(itemId.quantidade).toFixed(0)} pacote(s) de ${itemId.tipo_rape === null ? itemId.produto : itemId.tipo_rape} do pedido?`)) {
+        fetch(`/api/pedidos/itens/${itemId.id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': localStorage.getItem('token'),
+            'Content-Type': 'application/json' 
+          }
+        })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Erro ao comunicar com o servidor.');
+          }
+          return response.json();
+        })
+        .then(data => {
+        alert('Item removido com sucesso!');
+        //console.log(data.message); // Exibe mensagem da API no console
+        //preencherModalEditarPedido(pedido);
+        // Remover a linha da tabela no front-end
+        const tabelaItens = document.getElementById('modal-tabela-editar-itens').getElementsByTagName('tbody')[0];
+        tabelaItens.deleteRow(index); 
+
+        // Atualizar o objeto pedido no front-end (opcional, mas recomendado)
+        pedido.itens.splice(index, 1); 
+        exibirDetalhesPedido(pedido.id);
+        })
+        .catch(error => {
+          alert('Erro ao remover item do pedido. Detalhes no console.');
+          console.error(error);
+        });
+      }
+    } else {
+      console.error("Índice de item inválido ou pedido não encontrado.");
+    }
+  }
 
 function calcularSaldoVenda() {
     const valorVenda = parseFloat(document.getElementById('editar-valor-venda').value) || 0;
@@ -412,6 +500,11 @@ function fecharModalEditarPedido() {
 
 function editarPedido(pedido) {
 console.log(pedido)
+  // Confirmação antes de atualizar
+  if (!confirm(`Deseja realmente alterar os dados do pedido ?`)) {
+    return; // Interrompe a função se o usuário cancelar
+  }
+
     // Atualiza o pedido na API
     fetch(`/api/pedidos/${pedido.id}`, {
         method: 'PUT',

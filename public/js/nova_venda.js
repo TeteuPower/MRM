@@ -242,6 +242,7 @@ function exibirCarrinho() {
     tbodyCarrinho.innerHTML = '';
 
     carrinho.forEach((item, index) => {
+        //console.log(index)
         const row = tbodyCarrinho.insertRow();
         const cellProduto = row.insertCell();
         const cellQuantidade = row.insertCell();
@@ -264,6 +265,7 @@ function exibirCarrinho() {
         btnRemover.classList.add('btn-acao', 'vermelho');
         btnRemover.onclick = () => {
             removerDoCarrinho(index);
+            //console.log(index)
         };
         cellAcoes.appendChild(btnRemover);
     });

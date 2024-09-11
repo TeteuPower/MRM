@@ -75,7 +75,7 @@ function adicionarVendedor() {
     }
 
     // Verifica se o administrador logado é "Matheus"
-    if (localStorage.getItem('administrador') !== 'Matheus')
+    if (localStorage.getItem('administrador') !== '1')
     {
         alert('Apenas o administrador Matheus pode adicionar novos produtores.');
         return;
@@ -139,7 +139,7 @@ function adicionarProdutor() {
     })
     .then(data => {
         alert(data.message);
-        exibirVendedores();
+        //exibirVendedores();
         document.getElementById('novo-produtor').value = ''; // Limpa o campo de input
     })
     .catch(error => {
