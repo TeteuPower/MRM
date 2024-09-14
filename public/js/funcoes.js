@@ -324,6 +324,16 @@ function exibirDetalhesPedido(id) {
         {
             cancelarPedido(pedido.id);
         });
+            // Adicione um event listener ao botão "Formatar Texto"
+            document.getElementById('btn-formatar-texto').addEventListener('click', () => {
+                if (pedido) {
+                    const textoFormatado = formatarTextoPedido(pedido);
+                    //console.log(textoFormatado)
+                    // Copia o texto para a área de transferência
+                    copiarParaAreaDeTransferencia(textoFormatado); // Chama a função auxiliar para copiar o texto
+                    alert('Texto formatado copiado para a área de transferência!');
+                }
+            });
     })
 
     // Exibe o modal

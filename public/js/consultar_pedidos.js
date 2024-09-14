@@ -49,7 +49,7 @@ function exibirPedidos() {
     exibirPedidosFinalizados();
 }
 
-function exibirPedidosNaoFinalizados() {
+/*function exibirPedidosNaoFinalizados() {
     const listaPedidos = document.getElementById('lista-pedidos-nao-finalizados');
     listaPedidos.innerHTML = ''; // Limpa a lista
 
@@ -70,7 +70,7 @@ function exibirPedidosNaoFinalizados() {
 
         listaPedidos.appendChild(listItem);
     });
-}
+}*/
 
 
 function exibirInputsLote(pedido) {
@@ -804,4 +804,40 @@ function popularSelectProdutos() {
 }
 function fecharModalAdicionarProduto() {
     document.getElementById('modal-adicionar-produto').style.display = 'none';
+}
+
+function formatarTextoPedido(pedido) {
+    //console.log(pedido)
+    let texto = `(${pedido.vendedor}) - (${pedido.cliente})\n`;
+    texto += `Pedido: ${pedido.id}\n\n`;
+
+    pedido.itens.forEach(item => {
+        let nomeProduto = item.produto;
+        if (item.produto === 'Rapé' && item.tipo_rape) {
+            nomeProduto  = ` (${item.tipo_rape})`;
+        }
+
+        texto += `* ${item.lote || '-'} - ${nomeProduto}: (${item.quantidade / 2}Kg)\n`;
+    });
+
+    // Calcula o total de Kg de rapé
+    const totalRapeKg = pedido.itens.reduce((total, item) => {
+        if (item.produto === 'Rapé') {
+            return total + (item.quantidade / 2);
+        }
+        return total;
+    }, 0);
+
+    texto += `\nTotal: ${totalRapeKg.toFixed(2)}Kg\n`;
+
+    return texto;
+}
+
+function copiarParaAreaDeTransferencia(texto) {
+    const textarea = document.createElement('textarea');
+    textarea.value = texto;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
 }
