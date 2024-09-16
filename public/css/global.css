@@ -177,6 +177,34 @@ button:hover {
     overflow-y: auto; /* Permite rolagem se o menu for muito longo */
 }
 
+.mobile-menu ul li ul {
+    display: none; /* Oculta o submenu por padrão */
+    position: relative; /* Posiciona o submenu em relação ao item pai */
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 1; /* Garante que o submenu fique acima do menu principal */
+}
+
+.mobile-menu ul li:hover ul {
+    display: block; /* Exibe o submenu ao passar o mouse sobre o item */
+}
+
+.mobile-menu ul li ul li {
+    padding: 5px 10px;
+    border-bottom: 1px solid #555;
+}
+
+.mobile-menu ul li ul li:last-child {
+    border-bottom: none;
+}
+
+.mobile-menu ul li ul li a {
+    text-decoration: none;
+    color: #eee;
+}
+
 .mobile-menu ul {
     list-style: none;
     padding: 0;
@@ -203,6 +231,38 @@ button:hover {
     .admin-menu {
         display: none; /* Oculta o menu original em telas menores */
     }
+}
+
+/* global.css */
+
+/* ... (seus estilos existentes) ... */
+
+.admin-menu ul li ul {
+    display: none; /* Oculta o submenu por padrão */
+    position: absolute;
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    z-index: 1; /* Garante que o submenu fique acima do menu principal */
+}
+
+.admin-menu ul li:hover ul {
+    display: block; /* Exibe o submenu ao passar o mouse sobre o item */
+}
+
+.admin-menu ul li ul li {
+    padding: 5px 10px;
+    border-bottom: 1px solid #555;
+}
+
+.admin-menu ul li ul li:last-child {
+    border-bottom: none;
+}
+
+.admin-menu ul li ul li a {
+    text-decoration: none;
+    color: #eee;
 }
 
 /* Estilos para o botão hambúrguer ativo */

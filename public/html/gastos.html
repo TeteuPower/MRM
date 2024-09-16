@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Novo Gasto da Empresa</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/gastos.css">
+</head>
+<body>
+    <div id="nome-administrador" class="usuario-logado"></div>
+    <div id="cabecalho"></div>
+
+    <main>
+        <section id="gastos">
+            <h2>Cadastrar Novo Gasto da Empresa</h2>
+
+            <form id="form-gasto-empresa">
+                <div class="input-group">
+                    <label for="materia-prima-gasto">Matéria-Prima:</label>
+                    <select id="materia-prima-gasto">
+                        <option value="">Selecione a Matéria-Prima</option>
+                        <!-- Opções de matérias-primas serão adicionadas aqui -->
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="quantidade-gasto">Quantidade:</label>
+                    <input type="number" id="quantidade-gasto" placeholder="Quantidade (Kg)">
+                </div>
+
+                <div class="input-group">
+                    <label for="valor-gasto">Valor:</label>
+                    <input type="number" id="valor-gasto" placeholder="Valor do Gasto">
+                </div>
+
+                <div class="input-group">
+                    <label for="administrador-gasto">Administrador Responsável:</label>
+                    <select id="administrador-gasto">
+                        <option value="">Selecione o Administrador</option>
+                        <!-- Opções de administradores serão adicionadas aqui -->
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-acao verde">Registrar Gasto</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="../js/funcoes.js"></script>
+    <!--<script src="../js/gastos.js"></script>-->
+</body>
+</html>

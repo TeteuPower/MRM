@@ -1,0 +1,50 @@
+/* divisao_lucros.css */
+#divisao-lucros {
+    text-align: center;
+}
+
+.repasses-producao,
+.repasses-administradores,
+.repasses-feitos,
+.adicionar-repasse {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.repasses-producao h3,
+.repasses-administradores h3,
+.repasses-feitos h3,
+.adicionar-repasse h3 {
+    margin-bottom: 15px;
+}
+
+#lista-repasses-producao,
+#lista-repasses-administradores,
+#lista-repasses-feitos {
+    list-style: none;
+    padding: 0;
+}
+
+#lista-repasses-producao li,
+#lista-repasses-administradores li,
+#lista-repasses-feitos li {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#lista-repasses-producao li:hover,
+#lista-repasses-administradores li:hover,
+#lista-repasses-feitos li:hover {
+    background-color: #444;
+}
+
+.adicionar-repasse .input-group {
+    margin-bottom: 10px;
+}

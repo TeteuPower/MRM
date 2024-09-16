@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saúde Financeira</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/financeiro.css">
+</head>
+<body>
+    <div id="nome-administrador" class="usuario-logado"></div>
+    <div id="cabecalho"></div>
+
+    <main>
+        <section id="financeiro">
+            <h2>Saúde Financeira</h2>
+
+            <div id="resumo-financeiro">
+                <h3 id="saudacoes-financeiro">Olá, <span id="nome-administrador-financeiro"></span>!</h3>
+
+                <div class="dados-financeiros">
+                    <p>Nos últimos 30 dias você vendeu: <span id="vendas-totais-reais">R$ 0.00</span> Reais e <span id="vendas-totais-dolares">US$ 0.00</span> Dólares</p>
+                    <p>Foi repassado para você: <span id="repasses-reais">R$ 0.00</span> Reais e <span id="repasses-dolares">US$ 0.00</span> Dólares do Rafael</p>
+                    <p>Gastos na empresa atravéz de você: <span id="gastos-reais">R$ 0.00</span> Reais</p>
+                    <p>Sua média salarial nos últimos 30 dias foi de: <span id="media-salarial-reais">R$ 0.00</span> Reais e <span id="media-salarial-dolares">US$ 0.00</span> Dólares</p>
+                </div>
+
+                <h3>Seus Pedidos:</h3>
+                <ul id="lista-pedidos-financeiro">
+                    <!-- Pedidos serão adicionados aqui -->
+                </ul>
+                <div class="paginacao">
+                    <button id="btn-pagina-anterior-financeiro" style="display: none;">Página Anterior</button>
+                    <ul id="menu-paginacao-financeiro"></ul>
+                    <button id="btn-proxima-pagina-financeiro" style="display: none;">Próxima Página</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/funcoes.js"></script>
+    <!--<script src="../js/financeiro.js"></script>-->
+</body>
+</html>
