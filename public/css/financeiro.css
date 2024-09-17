@@ -11,20 +11,36 @@
     margin-bottom: 20px;
 }
 
-#saudacoes-financeiro {
+#resumo-financeiro h3 {
+    margin-bottom: 15px;
+}
+
+#resumo-financeiro .dados-financeiros {
     margin-bottom: 20px;
 }
 
-.dados-financeiros p {
-    margin-bottom: 10px;
+#resumo-financeiro .dados-financeiros p {
+    margin-bottom: 5px;
 }
 
-#lista-pedidos-financeiro {
+#pedidos-administrador {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+#pedidos-administrador h3 {
+    margin-bottom: 15px;
+}
+
+#lista-pedidos-administrador {
     list-style: none;
     padding: 0;
 }
 
-#lista-pedidos-financeiro li {
+#lista-pedidos-administrador li {
     background-color: #222;
     padding: 10px;
     border-radius: 5px;
@@ -33,6 +49,42 @@
     transition: background-color 0.3s ease;
 }
 
-#lista-pedidos-financeiro li:hover {
+#lista-pedidos-administrador li:hover {
     background-color: #444;
+}
+
+.paginacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/*.paginacao button {
+    ... (seus estilos para botões) ... 
+}*/
+
+.paginacao ul {
+    display: flex;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+}
+
+.paginacao li {
+    background-color: #222;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #555;
+}
+
+.paginacao li a {
+    text-decoration: none;
+    color: #eee;
+    font-weight: bold;
+}
+
+.paginacao li.ativo {
+    background-color: #555;
 }

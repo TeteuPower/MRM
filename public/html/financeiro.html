@@ -16,29 +16,31 @@
             <h2>Saúde Financeira</h2>
 
             <div id="resumo-financeiro">
-                <h3 id="saudacoes-financeiro">Olá, <span id="nome-administrador-financeiro"></span>!</h3>
+                <h3 id="saudacoes">Olá, <span id="nome-administrador-resumo"></span>!</h3>
 
                 <div class="dados-financeiros">
-                    <p>Nos últimos 30 dias você vendeu: <span id="vendas-totais-reais">R$ 0.00</span> Reais e <span id="vendas-totais-dolares">US$ 0.00</span> Dólares</p>
-                    <p>Foi repassado para você: <span id="repasses-reais">R$ 0.00</span> Reais e <span id="repasses-dolares">US$ 0.00</span> Dólares do Rafael</p>
-                    <p>Gastos na empresa atravéz de você: <span id="gastos-reais">R$ 0.00</span> Reais</p>
-                    <p>Sua média salarial nos últimos 30 dias foi de: <span id="media-salarial-reais">R$ 0.00</span> Reais e <span id="media-salarial-dolares">US$ 0.00</span> Dólares</p>
+                    <p>Nos últimos 30 dias você vendeu: <span id="vendas-totais">R$ 0.00</span> e <span id="vendas-totais-dolares">US$ 0.00</span></p>
+                    <p>Foi repassado para você: <span id="repasses-recebidos">R$ 0.00</span> e <span id="repasses-recebidos-dolares">US$ 0.00</span> do <span id="vendedor-repasse"></span></p>
+                    <p>Gastos na empresa através de você: <span id="gastos-administrador">R$ 0.00</span></p>
+                    <p>Sua média salarial nos últimos 30 dias foi de: <span id="media-salarial">R$ 0.00</span> e <span id="media-salarial-dolares">US$ 0.00</span></p>
                 </div>
+            </div>
 
+            <div id="pedidos-administrador">
                 <h3>Seus Pedidos:</h3>
-                <ul id="lista-pedidos-financeiro">
-                    <!-- Pedidos serão adicionados aqui -->
+                <ul id="lista-pedidos-administrador">
+                    <!-- Pedidos do administrador serão adicionados aqui -->
                 </ul>
                 <div class="paginacao">
-                    <button id="btn-pagina-anterior-financeiro" style="display: none;">Página Anterior</button>
-                    <ul id="menu-paginacao-financeiro"></ul>
-                    <button id="btn-proxima-pagina-financeiro" style="display: none;">Próxima Página</button>
+                    <button id="btn-pagina-anterior-pedidos-administrador" style="display: none;">Página Anterior</button>
+                    <ul id="menu-paginacao-pedidos-administrador"></ul>
+                    <button id="btn-proxima-pagina-pedidos-administrador" style="display: none;">Próxima Página</button>
                 </div>
             </div>
         </section>
     </main>
 
     <script src="../js/funcoes.js"></script>
-    <!--<script src="../js/financeiro.js"></script>-->
+    <script src="../js/financeiro.js"></script>
 </body>
 </html>
