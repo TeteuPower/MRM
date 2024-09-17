@@ -233,10 +233,6 @@ button:hover {
     }
 }
 
-/* global.css */
-
-/* ... (seus estilos existentes) ... */
-
 .admin-menu ul li ul {
     display: none; /* Oculta o submenu por padrão */
     position: absolute;

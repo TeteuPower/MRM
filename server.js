@@ -65,6 +65,8 @@ app.use('/api/pagamentos', autenticar, require('./routes/pagamentos'));
 app.use('/api/gastos', autenticar, require('./routes/gastos'));
 // Usa a rota de financeiro
 app.use('/api/financeiro', autenticar, require('./routes/financeiro'));
+// Usa a rota de divisão de lucros
+app.use('/api/divisao-lucros', autenticar, require('./routes/divisao_lucros'));
 
 
 // Rota para login do administrador (gera o token)
