@@ -285,3 +285,15 @@ button:hover {
     color: #eee;
     font-weight: bold;
 }
+
+.span-verde {
+    color: rgb(0, 255, 0); /* Define a cor verde para "Pago" */
+}
+
+.span-laranja {
+    color:rgb(253, 215, 0);
+}
+
+.span-vermelho {
+    color: red; /* Define a cor vermelha para o saldo negativo */
+}

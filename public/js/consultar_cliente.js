@@ -1,7 +1,7 @@
 // consultar_cliente.js - lógica da página consultar_cliente.html
 
 
-carregarClientesDoLocalStorage();
+//carregarClientesDoLocalStorage();
 document.addEventListener('DOMContentLoaded', function () {
     verificarAutenticacao();
     exibirClientes();
