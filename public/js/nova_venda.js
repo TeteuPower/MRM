@@ -70,7 +70,9 @@ document.addEventListener('DOMContentLoaded', function () {
             produtor: null,
             saldoVenda: saldo,
             //vendaAdministrador: localStorage.getItem('administrador') === 'true',
-            administrador: localStorage.getItem('administrador')
+            administrador: localStorage.getItem('administrador'),
+            repasseInsumos: false,
+            lucroVenda: calcularLucroVenda(carrinho, document.getElementById('moeda').value) // Calcula o lucro da venda
         };
         //console.log(venda);
     
@@ -103,6 +105,20 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+function calcularLucroVenda(carrinho, moeda) {
+    let lucro = parseFloat(document.getElementById('valor-venda').value);
+    let custoRape = 0;
+
+    carrinho.forEach(item => {
+        if (item.produtoId === 1) {
+            custoRape += item.quantidade * (moeda === 'real' ? 100 : 18);
+        }
+    });
+    lucro -= custoRape;
+    return lucro;
+}
+
 function verificarDadosEPopularSelects() {
     const selectCliente = document.getElementById('cliente');
     const selectVendedor = document.getElementById('vendedor');

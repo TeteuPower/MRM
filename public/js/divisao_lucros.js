@@ -8,15 +8,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 exibirRepassesPendentesAdministradores();
                 exibirUltimosRepassesFeitos();
                 popularSelectVendedoresRepasse();
-
-                document.getElementById('btn-registrar-repasse').addEventListener('click', registrarRepasse);
+                popularSelectDestinatariosRepasse();
             }
         });
+
+    document.getElementById('btn-registrar-repasse').addEventListener('click', registrarRepasse);
 });
 
 function exibirRepassesPendentesProducao() {
     const listaRepasses = document.getElementById('lista-repasses-producao');
-    listaRepasses.innerHTML = ''; // Limpa a lista
+    listaRepasses.innerHTML = '';
 
     fetch('/api/divisao-lucros/repasses-producao', {
         headers: {
@@ -31,8 +32,9 @@ function exibirRepassesPendentesProducao() {
     })
     .then(repasses => {
         repasses.forEach(repasse => {
+            console.log(repasse)
             const listItem = document.createElement('li');
-            listItem.textContent = `Pedido nº ${repasse.pedido_id} - Produtor: ${repasse.produtor_nome} - Valor: ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${parseInt(repasse.valor_venda).toFixed(2)}`;
+            listItem.textContent = `Pedido nº ${repasse.id} - Produtor: ${repasse.produtor_nome} - Valor: ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${parseInt(repasse.valor_venda).toFixed(2)}`;
             listaRepasses.appendChild(listItem);
         });
     })
@@ -44,7 +46,7 @@ function exibirRepassesPendentesProducao() {
 
 function exibirRepassesPendentesAdministradores() {
     const listaRepasses = document.getElementById('lista-repasses-administradores');
-    listaRepasses.innerHTML = ''; // Limpa a lista
+    listaRepasses.innerHTML = '';
 
     fetch('/api/divisao-lucros/repasses-administradores', {
         headers: {
@@ -59,9 +61,8 @@ function exibirRepassesPendentesAdministradores() {
     })
     .then(repasses => {
         repasses.forEach(repasse => {
-            console.log(repasse)
             const listItem = document.createElement('li');
-            listItem.textContent = `Pedido nº ${repasse.pedido_id} - Administrador: ${repasse.administrador_nome} - Valor: ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${parseInt(repasse.valor_venda).toFixed(2)}`;
+            listItem.textContent = `Pedido nº ${repasse.id} - Administrador: ${repasse.administrador} - Valor: ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${parseInt(repasse.valor_venda).toFixed(2)}`;
             listaRepasses.appendChild(listItem);
         });
     })
@@ -73,7 +74,7 @@ function exibirRepassesPendentesAdministradores() {
 
 function exibirUltimosRepassesFeitos() {
     const listaRepasses = document.getElementById('lista-repasses-feitos');
-    listaRepasses.innerHTML = ''; // Limpa a lista
+    listaRepasses.innerHTML = '';
 
     fetch('/api/divisao-lucros/repasses-feitos', {
         headers: {
@@ -89,7 +90,7 @@ function exibirUltimosRepassesFeitos() {
     .then(repasses => {
         repasses.forEach(repasse => {
             const listItem = document.createElement('li');
-            listItem.textContent = `Repasse nº ${repasse.repasse_id} - Pedido nº ${repasse.pedido_id} - Destinatário: ${repasse.destinatario_nome} - Valor: ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${repasse.valor.toFixed(2)} - Vendedor: ${repasse.vendedor_nome} - Data: ${formatarData(repasse.data)}`;
+            listItem.textContent = `Pedido nº ${repasse.pedido_id} - Destinatário: ${repasse.destinatario} - Valor: ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${repasse.valor.toFixed(2)} - Vendedor: ${repasse.vendedor}`;
             listaRepasses.appendChild(listItem);
         });
     })
@@ -103,7 +104,7 @@ function popularSelectVendedoresRepasse() {
     const selectVendedor = document.getElementById('vendedor-repasse');
     selectVendedor.innerHTML = '<option value="">Selecione o Vendedor</option>';
 
-    fetch('/api/funcionarios', {
+    fetch('/api/divisao-lucros/vendedores', {
         headers: {
             'Authorization': localStorage.getItem('token')
         }
@@ -128,12 +129,67 @@ function popularSelectVendedoresRepasse() {
     });
 }
 
+function popularSelectDestinatariosRepasse() {
+    const selectDestinatario = document.getElementById('repasse-para');
+    selectDestinatario.innerHTML = '<option value="">Selecione o Destinatário</option>';
+
+    // Busca produtores
+    fetch('/api/divisao-lucros/produtores', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar produtores.');
+        }
+        return response.json();
+    })
+    .then(produtores => {
+        produtores.forEach(produtor => {
+            const option = document.createElement('option');
+            option.value = produtor.id;
+            option.textContent = `${produtor.nome} (Produtor)`;
+            selectDestinatario.appendChild(option);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar produtores.');
+        console.error(error);
+    });
+
+    // Busca administradores
+    fetch('/api/divisao-lucros/administradores', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar administradores.');
+        }
+        return response.json();
+    })
+    .then(administradores => {
+        administradores.forEach(administrador => {
+            const option = document.createElement('option');
+            option.value = administrador.id;
+            option.textContent = `${administrador.nome} (Administrador)`;
+            selectDestinatario.appendChild(option);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar administradores.');
+        console.error(error);
+    });
+}
+
 function registrarRepasse(event) {
     event.preventDefault();
 
     const pedidoId = parseInt(document.getElementById('repasse-para').value);
     const destinatarioId = parseInt(document.getElementById('repasse-para').value);
-    const vendedorId = document.getElementById('vendedor-repasse').value;
+    const vendedorId = parseInt(document.getElementById('vendedor-repasse').value);
     const valor = parseFloat(document.getElementById('valor-repasse').value);
     const moeda = document.getElementById('moeda-repasse').value;
 
@@ -168,5 +224,3 @@ function registrarRepasse(event) {
         console.error(error);
     });
 }
-
-// ... (seu código existente) ...
