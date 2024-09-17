@@ -23,11 +23,16 @@
 }
 
 #form-gasto-empresa input,
-#form-gasto-empresa select {
+#form-gasto-empresa select,
+#form-gasto-empresa textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #555;
     border-radius: 3px;
     background-color: #111;
     color: #eee;
+}
+
+#gastos .input-group {
+    margin-bottom: 10px;
 }

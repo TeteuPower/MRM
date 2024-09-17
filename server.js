@@ -61,6 +61,8 @@ app.use('/api/pedidos-finalizados-aguardando-envio', autenticar, require('./rout
 app.use('/api/pedidos-finalizados', autenticar, require('./routes/pedidos-finalizados'));
 // Usa a rota de pagamentos
 app.use('/api/pagamentos', autenticar, require('./routes/pagamentos'));
+// Usa a rota de gastos
+app.use('/api/gastos', autenticar, require('./routes/gastos'));
 
 
 // Rota para login do administrador (gera o token)
