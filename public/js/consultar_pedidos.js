@@ -529,26 +529,26 @@ function fecharModalEditarPedido() {
 function editarPedido(pedido) {
 //console.log(pedido)
 
-const vendedorElement = document.getElementById('editar-vendedor');
-const descricaoElement = document.getElementById('editar-descricao');
-const moedaElement = document.getElementById('editar-moeda');
-const valorVendaElement = document.getElementById('editar-valor-venda');
-const valorPagoElement = document.getElementById('editar-valor-pago');
-const statusElement = document.getElementById('editar-status');
-const valorFreteElement = document.getElementById('editar-valor-frete');
-const produtorElement = document.getElementById('editar-produtor');
-const saldoVendaElement = document.getElementById('editar-saldo-venda');
+    const vendedorElement = document.getElementById('editar-vendedor');
+    const descricaoElement = document.getElementById('editar-descricao');
+    const moedaElement = document.getElementById('editar-moeda');
+    const valorVendaElement = document.getElementById('editar-valor-venda');
+    const valorPagoElement = document.getElementById('editar-valor-pago');
+    const statusElement = document.getElementById('editar-status');
+    const valorFreteElement = document.getElementById('editar-valor-frete');
+    const produtorElement = document.getElementById('editar-produtor');
+    const saldoVendaElement = document.getElementById('editar-saldo-venda');
 
 
-pedido.vendedor_id = parseFloat(vendedorElement.value);
-pedido.descricao = descricaoElement.value;
-pedido.moeda = moedaElement.value;
-pedido.valor_venda = parseFloat(valorVendaElement.value);
-pedido.valor_pago = parseFloat(valorPagoElement.value);
-pedido.status = statusElement.value;
-pedido.valor_frete = parseFloat(valorFreteElement.value);
-pedido.produtor_id = parseFloat(produtorElement.value);
-pedido.saldo_venda = saldoVendaElement.textContent === 'Pago' ? 0 : parseInt(saldoVendaElement.textContent);
+    pedido.vendedor_id = parseFloat(vendedorElement.value);
+    pedido.descricao = descricaoElement.value;
+    pedido.moeda = moedaElement.value;
+    pedido.valor_venda = parseFloat(valorVendaElement.value);
+    pedido.valor_pago = parseFloat(valorPagoElement.value);
+    pedido.status = statusElement.value;
+    pedido.valor_frete = parseFloat(valorFreteElement.value);
+    pedido.produtor_id = parseFloat(produtorElement.value);
+    pedido.saldo_venda = saldoVendaElement.textContent === 'Pago' ? 0 : parseInt(saldoVendaElement.textContent);
 
 //console.log(pedido);
 
@@ -586,12 +586,14 @@ pedido.saldo_venda = saldoVendaElement.textContent === 'Pago' ? 0 : parseInt(sal
         fecharModalEditarPedido();
         fecharModalDetalhesPedido();
         exibirPedidos();
+        return;
     })
     .catch(error => {
         alert('Erro ao atualizar pedido.');
         console.error(error);
+        return;
     });
-}
+} return;
 };
 
 // Funções para popular os selects no modal de edição
@@ -683,7 +685,7 @@ function popularProdutoresEditar() {
 }
 
 function cancelarPedido(pedidoId) {
-    if (confirm(`Tem certeza que deseja DELETAR o pedido nº ${pedidoId}?`)) {
+    if (confirm(`Tem certeza que deseja DELETAR o pedido nº ${pedidoId}? Todos os pagamentos relacionados a esse pedido também serão excluídos!`)) {
         const confirmacao = prompt("Digite 'deletar' para confirmar a exclusão do pedido");
         if (confirmacao === 'deletar') {
         // Faz uma requisição DELETE para a API para cancelar o pedido
@@ -703,13 +705,16 @@ function cancelarPedido(pedidoId) {
             alert(data.message);
             fecharModalDetalhesPedido();
             exibirPedidos(); // Atualiza a lista de pedidos
+            return;
         })
         .catch(error => {
             alert('Erro ao cancelar pedido.');
             console.error(error);
+            return;
         });
     } else{
         alert('Exclusão cancelada');
+        return;
     }}
 }
 
@@ -762,8 +767,8 @@ function adicionarAoCarrinhoEditar() {
                 id:pedidoId
             } 
             // Abrir o modal de edição com o ID do pedido correto
-            console.log(pedidoId)
-            abrirModalEditarPedido(pedido);
+            //console.log(pedidoId)
+            //abrirModalEditarPedido(pedido);
         })
         .catch(error => {
             alert('Erro ao registrar venda.');

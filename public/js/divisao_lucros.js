@@ -59,14 +59,14 @@ function exibirRepassesPendentesProducao() {
             
 
             const label = document.createElement('label');
-            label.textContent = `${repasse.vendedor_id === 2 ? 'Da Maithê' : 'Do Rafael'} para o ${repasse.produtor} o valor de ${repasse.lucro_producao} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
+            label.textContent = `Do ${repasse.vendedor} para o ${repasse.produtor} o valor de ${repasse.lucro_producao} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
             listItem.appendChild(label);
             listaRepasses.appendChild(listItem);
         });
         // Exibe o botão "Fazer Repasses" se houver repasses pendentes
         const btnFazerRepasses = document.getElementById('btn-fazer-repasses-producao');
-        const totalSelecionadoReais = document.getElementById('total-selecionado-producao-real');
-        const totalSelecionadoDolar = document.getElementById('total-selecionado-producao-dolar');
+        //const totalSelecionadoReais = document.getElementById('total-selecionado-producao-real');
+        //const totalSelecionadoDolar = document.getElementById('total-selecionado-producao-dolar');
         const totalSelecionadoConvertido = document.getElementById('total-selecionado-producao-convertido');
         if (repasses.length > 0) {
             btnFazerRepasses.style.display = 'block';
@@ -115,14 +115,14 @@ function exibirRepassesPendentesAdministradores() {
             listItem.appendChild(checkbox);
 
             const label = document.createElement('label');
-            label.textContent = `${repasse.vendedor_id === 2 ? 'Da Maithê' : 'Do Rafael'} ${repasse.vendedor_id === 2 ? 'Para o Rafael' : 'Para a Maithê'} o valor de ${repasse.lucro_vendedor} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
+            label.textContent = `Do ${repasse.vendedor} ${repasse.vendedor_id === 2 ? 'Para o Rafael' : 'Para a Maithê'} o valor de ${repasse.lucro_vendedor} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
             listItem.appendChild(label);
             listaRepasses.appendChild(listItem);
         });
         // Exibe o botão "Fazer Repasses" se houver repasses pendentes
         const btnFazerRepasses = document.getElementById('btn-fazer-repasses-administradores');
-        const totalSelecionadoReais = document.getElementById('total-selecionado-administradores-real');
-        const totalSelecionadoDolar = document.getElementById('total-selecionado-administradores-dolar');
+        //const totalSelecionadoReais = document.getElementById('total-selecionado-administradores-real');
+        //const totalSelecionadoDolar = document.getElementById('total-selecionado-administradores-dolar');
         const totalSelecionadoConvertido = document.getElementById('total-selecionado-administradores-convertido');
         if (repasses.length > 0) {
             btnFazerRepasses.style.display = 'block';

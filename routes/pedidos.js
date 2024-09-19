@@ -165,16 +165,15 @@ router.put('/editar/:id', autenticar, (req, res) => {
 
 // Rota para criar um novo pedido (POST /api/pedidos)
 router.post('/', autenticar, (req, res) => {
-    const { clienteId, dataCriacao, descricao, moeda, valorVenda, valorPago, status, administradorId, vendedorId, saldoVenda, itens, lucroVenda} = req.body;
-
+    const { clienteId, dataCriacao, descricao, moeda, valorVenda, valorPago, status, administradorId, vendedorId, saldoVenda, itens, lucroVenda, valorInsumos} = req.body;
     // Verifica se todos os campos obrigatórios foram fornecidos
     if (!clienteId || !dataCriacao || !moeda || !valorVenda || !administradorId || !vendedorId || !itens) {
         return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
     }
 
     // Insere o pedido no banco de dados
-    const sql = 'INSERT INTO pedidos (cliente_id, data_criacao, descricao, moeda, status, valor_venda, valor_pago, administrador_id, vendedor_id, saldo_venda, lucro_venda) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
-    db.query(sql, [clienteId, dataCriacao, descricao, moeda, status, valorVenda, valorPago, administradorId, vendedorId, saldoVenda, lucroVenda], (err, result) => {
+    const sql = 'INSERT INTO pedidos (cliente_id, data_criacao, descricao, moeda, status, valor_venda, valor_pago, administrador_id, vendedor_id, saldo_venda, lucro_venda, valor_insumos) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(sql, [clienteId, dataCriacao, descricao, moeda, status, valorVenda, valorPago, administradorId, vendedorId, saldoVenda, lucroVenda, valorInsumos], (err, result) => {
         if (err) {
             console.error('Erro ao criar pedido:', err);
             res.status(500).json({ error: 'Erro ao criar pedido.' });

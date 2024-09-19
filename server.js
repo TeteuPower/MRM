@@ -120,7 +120,7 @@ app.get('/api/verificar-token', autenticar, (req, res) => {
 });
 
 // API para converter dólar para real
-app.get('/api/converter-moeda', (req, res) => {
+app.get('/api/converter-dolar-real', (req, res) => {
     const options = {
         url: 'https://economia.awesomeapi.com.br/last/USD-BRL',
         method: 'GET',
@@ -140,6 +140,35 @@ app.get('/api/converter-moeda', (req, res) => {
         try {
             const json = JSON.parse(body);
             const cotacao = parseFloat(json.USDBRL.bid); // Obtém a cotação de compra do dólar
+            res.json({ cotacao });
+        } catch (error) {
+            console.error('Erro ao analisar resposta da API:', error);
+            res.status(500).json({ error: 'Erro ao consultar API de conversão.' });
+        }
+    });
+});
+
+// API para converter real para dolar
+app.get('/api/converter-real-dolar', (req, res) => {
+    const options = {
+        url: 'https://economia.awesomeapi.com.br/last/BRL-USD',
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Accept-Charset': 'utf-8'
+        }
+    };
+
+    request(options, (err, response, body) => {
+        if (err) {
+            console.error('Erro ao consultar API de conversão:', err);
+            res.status(500).json({ error: 'Erro ao consultar API de conversão.' });
+            return;
+        }
+
+        try {
+            const json = JSON.parse(body);
+            const cotacao = parseFloat(json.BRLUSD.bid); // Obtém a cotação de compra do dólar
             res.json({ cotacao });
         } catch (error) {
             console.error('Erro ao analisar resposta da API:', error);

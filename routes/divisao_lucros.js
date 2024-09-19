@@ -34,7 +34,38 @@ router.get('/repasses-producao', autenticar, (req, res) => {
     });
 });
 
-// Rota para obter os repasses pendentes entre administradores (GET /api/divisao-lucros/repasses-administradores)
+// Rota para obter os repasses pendentes para produção (GET /api/divisao-lucros/repasses-producao)
+router.get('/repasses-administradores', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            p.id,
+            p.data_criacao,
+            p.descricao,
+            p.moeda,
+            p.lucro_venda,
+            p.valor_venda,
+            pr.nome AS produtor,
+            v.nome AS vendedor
+        FROM 
+            pedidos p
+        JOIN 
+            produtores pr ON p.produtor_id = pr.id
+        JOIN 
+            vendedores v ON p.vendedor_id = v.id
+        WHERE 
+            p.status = "Finalizado" AND p.repasse_sociedade = 0;
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar repasses pendentes para produção:', err);
+            res.status(500).json({ error: 'Erro ao buscar repasses pendentes para produção.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+/*// Rota para obter os repasses pendentes entre administradores (GET /api/divisao-lucros/repasses-administradores)
 router.get('/repasses-administradores', autenticar, (req, res) => {
     const sql = 'SELECT * FROM pedidos WHERE status = "Finalizado" AND repasse_sociedade = 0';
     db.query(sql, (err, results) => {
@@ -46,7 +77,7 @@ router.get('/repasses-administradores', autenticar, (req, res) => {
         res.json(results);
     });
 });
-
+*/
 // Rota para obter os últimos repasses feitos (GET /api/divisao-lucros/repasses-feitos)
 router.get('/repasses-feitos', autenticar, (req, res) => {
     const sql = 'SELECT * FROM repasses ORDER BY data DESC';

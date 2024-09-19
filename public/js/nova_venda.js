@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('valor-pago').addEventListener('input', calcularSaldoVenda);
 
     document.getElementById('form-nova-venda').addEventListener('submit',
-    function (evento)
+    async function (evento)
     {
         evento.preventDefault();
 
@@ -51,7 +51,10 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('Selecione um vendedor!');
             return;
         }
-
+        let lucroVenda = await calcularLucroVenda(carrinho, document.getElementById('moeda').value); // Calcula o lucro da venda
+        let valorInsumos = await calcularInsumosVenda(carrinho, document.getElementById('moeda').value);
+    const clienteNome = document.getElementById('cliente').options[document.getElementById('cliente').selectedIndex].text;
+    if (confirm(`Deseja finalizar a venda do ${clienteNome}?`)){
         const venda = {
             clienteId: parseInt(clienteSelecionado), // Obtém o ID do cliente selecionado
             vendedorId: parseInt(document.getElementById('vendedor').value), // Obtém o ID do vendedor selecionado
@@ -72,9 +75,10 @@ document.addEventListener('DOMContentLoaded', function () {
             //vendaAdministrador: localStorage.getItem('administrador') === 'true',
             administrador: localStorage.getItem('administrador'),
             repasseInsumos: false,
-            lucroVenda: calcularLucroVenda(carrinho, document.getElementById('moeda').value) // Calcula o lucro da venda
+            lucroVenda: lucroVenda.toFixed(1),
+            valorInsumos: valorInsumos.toFixed(1),
         };
-        //console.log(venda);
+        console.log(venda);
     
         // Envia os dados para a API
         fetch('/api/pedidos', {
@@ -98,25 +102,41 @@ document.addEventListener('DOMContentLoaded', function () {
             exibirCarrinho();
             calcularTotalRape();
             calcularSaldoVenda();
+            return;
         })
         .catch(error => {
             alert('Erro ao registrar venda.');
             console.error(error);
+            return;
         });
-    });
+    }return;
+});
 });
 
-function calcularLucroVenda(carrinho, moeda) {
+const custoPacoteRapeReais = 100;
+
+async function calcularLucroVenda(carrinho, moeda) {
     let lucro = parseFloat(document.getElementById('valor-venda').value);
     let custoRape = 0;
-
+    let custoPacoteRapeDolar = await converterRealParaDolar(custoPacoteRapeReais);
     carrinho.forEach(item => {
         if (item.produtoId === 1) {
-            custoRape += item.quantidade * (moeda === 'real' ? 100 : 18);
+            custoRape += item.quantidade * (moeda === 'real' ? custoPacoteRapeReais : custoPacoteRapeDolar.toFixed(1));
         }
     });
     lucro -= custoRape;
     return lucro;
+}
+
+async function calcularInsumosVenda(carrinho, moeda) {
+    let custoRape = 0;
+    let custoPacoteRapeDolar = await converterRealParaDolar(custoPacoteRapeReais);
+    carrinho.forEach(item => {
+        if (item.produtoId === 1) {
+            custoRape += item.quantidade * (moeda === 'real' ? custoPacoteRapeReais : custoPacoteRapeDolar.toFixed(1));
+        }
+    });
+    return custoRape;
 }
 
 function verificarDadosEPopularSelects() {

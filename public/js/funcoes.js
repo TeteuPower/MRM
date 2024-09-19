@@ -618,8 +618,8 @@ function exibirProdutores(inputId) {
     });
 }
 
-function converterDolarParaReal(valorDolar) {
-    return fetch('/api/converter-moeda')
+async function converterDolarParaReal(valorDolar) {
+    return fetch('/api/converter-dolar-real')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Erro ao consultar API de conversão.');
@@ -631,6 +631,26 @@ function converterDolarParaReal(valorDolar) {
             const valorReal = valorDolar * cotacao;
             //console.log(valorReal)
             return valorReal;
+        })
+        .catch(error => {
+            alert('Erro ao converter dólar para real.');
+            console.error(error);
+        });
+}
+
+async function converterRealParaDolar(valorReal) {
+    return fetch('/api/converter-real-dolar')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao consultar API de conversão.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const cotacao = data.cotacao;
+            const valorDolar = valorReal * cotacao;
+            //console.log(valorDolar)
+            return valorDolar;
         })
         .catch(error => {
             alert('Erro ao converter dólar para real.');
