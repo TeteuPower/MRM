@@ -617,3 +617,23 @@ function exibirProdutores(inputId) {
         console.error(error);
     });
 }
+
+function converterDolarParaReal(valorDolar) {
+    return fetch('/api/converter-moeda')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao consultar API de conversão.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const cotacao = data.cotacao;
+            const valorReal = valorDolar * cotacao;
+            //console.log(valorReal)
+            return valorReal;
+        })
+        .catch(error => {
+            alert('Erro ao converter dólar para real.');
+            console.error(error);
+        });
+}

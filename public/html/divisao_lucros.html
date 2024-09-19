@@ -16,18 +16,33 @@
         <section id="divisao-lucros">
             <h2>Divisão dos Lucros</h2>
 
-            <div class="repasses-producao">
-                <h3>Repasses Pendentes para Produção</h3>
-                <ul id="lista-repasses-producao">
-                    <!-- Repasses pendentes para produção serão adicionados aqui -->
-                </ul>
-            </div>
+            <div class="repasses-container">
+                <div class="repasses-producao">
+                    <h3>Repasses Pendentes para Produção</h3>
+                    <ul id="lista-repasses-producao">
+                        <!-- Repasses pendentes para produção serão adicionados aqui -->
+                    </ul>
+                    <span id="total-selecionado-producao-convertido" style="display: none;">Soma total convertida para REAIS: R$ 0.00</span>
+                    <button id="btn-fazer-repasses-producao" class="btn-acao verde" style="display: none;">Fazer Repasses</button>
+                </div>
 
-            <div class="repasses-administradores">
-                <h3>Repasses Pendentes entre Administradores</h3>
-                <ul id="lista-repasses-administradores">
-                    <!-- Repasses pendentes entre administradores serão adicionados aqui -->
-                </ul>
+                <div class="repasses-administradores">
+                    <h3>Repasses Pendentes entre Administradores</h3>
+                    <ul id="lista-repasses-administradores">
+                        <!-- Repasses pendentes entre administradores serão adicionados aqui -->
+                    </ul>
+                    <span id="total-selecionado-administradores-convertido" style="display: none;">Soma total convertida para REAIS: R$ 0.00</span>
+                    <button id="btn-fazer-repasses-administradores" class="btn-acao verde" style="display: none;">Fazer Repasses</button>
+                </div>
+
+                <div class="repasses-empresa">
+                    <h3>Repasses Pendentes para Empresa</h3>
+                    <ul id="lista-repasses-empresa">
+                        <!-- Repasses pendentes para empresa serão adicionados aqui -->
+                    </ul>
+                    <span id="total-selecionado-empresa-convertido" style="display: none;">Soma total convertida para REAIS: R$ 0.00</span>
+                    <button id="btn-fazer-repasses-empresa" class="btn-acao verde" style="display: none;">Fazer Repasses</button>
+                </div>
             </div>
 
             <div class="repasses-feitos">
@@ -37,40 +52,29 @@
                 </ul>
             </div>
 
-            <div class="adicionar-repasse">
-                <h3>Adicionar Repasse</h3>
-                <div class="input-group">
-                    <label for="repasse-para">Repasse para:</label>
-                    <select id="repasse-para">
-                        <option value="">Selecione o Destinatário</option>
-                        <option value="Matheus">Matheus (Produtor)</option>
-                        <option value="Maithê">Maithê (Administrador)</option>
-                        <option value="Rafael">Rafael (Administrador)</option>
-                    </select>
+            <div class="resumo-distribuicoes">
+                <h3>Resumo das Distribuições</h3>
+
+                <div class="distribuicao-vendedor">
+                    <h4>Rafael/Matheus</h4>
+                    <p>Saldo TOTAL do RAFAEL c/ Matheus: <span id="saldo-total-rafael-matheus">R$ 0.00</span></p>
+                    <p>Vendas totais do Rafael produzidas pelo Matheus: <span id="vendas-totais-rafael-matheus">R$ 0.00</span></p>
+                    <p>Lucro real do Rafael: <span id="lucro-real-rafael">R$ 0.00</span></p>
+                    <p>Comissões para o Matheus: <span id="comissoes-matheus">R$ 0.00</span></p>
                 </div>
 
-                <div class="input-group">
-                    <label for="valor-repasse">Valor:</label>
-                    <input type="number" id="valor-repasse" placeholder="Valor do Repasse">
+                <div class="distribuicao-vendedor">
+                    <h4>Maithê/Matheus</h4>
+                    <p>Saldo TOTAL da MAITHÊ c/ Matheus: <span id="saldo-total-maithe-matheus">R$ 0.00</span></p>
+                    <p>Vendas totais da Maithê produzidas pelo Matheus: <span id="vendas-totais-maithe-matheus">R$ 0.00</span></p>
+                    <p>Lucro real da Maithê: <span id="lucro-real-maithe">R$ 0.00</span></p>
+                    <p>Comissões para o Matheus: <span id="comissoes-matheus">R$ 0.00</span></p>
                 </div>
 
-                <div class="input-group">
-                    <label for="moeda-repasse">Moeda:</label>
-                    <select id="moeda-repasse">
-                        <option value="real">Real (R$)</option>
-                        <option value="dolar">Dólar (US$)</option>
-                    </select>
+                <div class="distribuicao-vendedores">
+                    <h4>Rafael/Maithê</h4>
+                    <p>Saldo TOTAL do RAFAEL c/ MAITHÊ: <span id="saldo-total-rafael-maithe">R$ 0.00</span></p>
                 </div>
-
-                <div class="input-group">
-                    <label for="vendedor-repasse">Vendedor Responsável:</label>
-                    <select id="vendedor-repasse">
-                        <option value="">Selecione o Vendedor</option>
-                        <!-- Opções de vendedores serão adicionadas aqui -->
-                    </select>
-                </div>
-
-                <button id="btn-registrar-repasse" class="btn-acao verde">Registrar Repasse</button>
             </div>
         </section>
     </main>

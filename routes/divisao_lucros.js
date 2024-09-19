@@ -11,6 +11,7 @@ router.get('/repasses-producao', autenticar, (req, res) => {
             p.data_criacao,
             p.descricao,
             p.moeda,
+            p.lucro_venda,
             p.valor_venda,
             pr.nome AS produtor,
             v.nome AS vendedor

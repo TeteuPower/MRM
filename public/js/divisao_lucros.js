@@ -7,12 +7,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 exibirRepassesPendentesProducao();
                 exibirRepassesPendentesAdministradores();
                 exibirUltimosRepassesFeitos();
-                popularSelectVendedoresRepasse();
-                popularSelectDestinatariosRepasse();
+                //popularSelectVendedoresRepasse();
+                //popularSelectDestinatariosRepasse();
+                // Adiciona event listeners aos botões "Fazer Repasses"
+                document.getElementById('btn-fazer-repasses-producao').addEventListener('click', () => {
+                    confirmarRepasses('producao');
+                });
+                document.getElementById('btn-fazer-repasses-administradores').addEventListener('click', () => {
+                    confirmarRepasses('administradores');
+                });
+                document.getElementById('btn-fazer-repasses-empresa').addEventListener('click', () => {
+                    confirmarRepasses('empresa');
+                });
+
+                // Atualiza o resumo das distribuições
+                atualizarResumoDistribuicoes();
             }
         });
 
-    document.getElementById('btn-registrar-repasse').addEventListener('click', registrarRepasse);
+    //document.getElementById('btn-registrar-repasse').addEventListener('click', registrarRepasse);
 });
 
 function exibirRepassesPendentesProducao() {
@@ -32,11 +45,40 @@ function exibirRepassesPendentesProducao() {
     })
     .then(repasses => {
         repasses.forEach(repasse => {
-            console.log(repasse)
+            //console.log(repasse)
+            //const lucroProducao = (parseInt(repasse.lucro_venda).toFixed(2) / 10);
             const listItem = document.createElement('li');
-            listItem.textContent = `Pedido nº ${repasse.id} - Produtor: ${repasse.produtor_nome} - Valor: ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${parseInt(repasse.valor_venda).toFixed(2)}`;
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = repasse.id;
+            repasse.lucro_producao = (parseInt(repasse.lucro_venda).toFixed(2) / 10);
+            checkbox.addEventListener('change', () => {
+                atualizarTotalSelecionado('producao', repasses);
+            });
+            listItem.appendChild(checkbox);
+            
+
+            const label = document.createElement('label');
+            label.textContent = `${repasse.vendedor_id === 2 ? 'Da Maithê' : 'Do Rafael'} para o ${repasse.produtor} o valor de ${repasse.lucro_producao} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
+            listItem.appendChild(label);
             listaRepasses.appendChild(listItem);
         });
+        // Exibe o botão "Fazer Repasses" se houver repasses pendentes
+        const btnFazerRepasses = document.getElementById('btn-fazer-repasses-producao');
+        const totalSelecionadoReais = document.getElementById('total-selecionado-producao-real');
+        const totalSelecionadoDolar = document.getElementById('total-selecionado-producao-dolar');
+        const totalSelecionadoConvertido = document.getElementById('total-selecionado-producao-convertido');
+        if (repasses.length > 0) {
+            btnFazerRepasses.style.display = 'block';
+            //totalSelecionadoReais.style.display = 'block';
+            //totalSelecionadoDolar.style.display = 'block';
+            totalSelecionadoConvertido.style.display = 'block';
+        } else {
+            btnFazerRepasses.style.display = 'none';
+            //totalSelecionadoReais.style.display = 'none';
+            //totalSelecionadoDolar.style.display = 'none';
+            totalSelecionadoConvertido.style.display = 'none';
+        }
     })
     .catch(error => {
         alert('Erro ao buscar repasses pendentes para produção.');
@@ -61,10 +103,38 @@ function exibirRepassesPendentesAdministradores() {
     })
     .then(repasses => {
         repasses.forEach(repasse => {
+            //console.log(repasse)
             const listItem = document.createElement('li');
-            listItem.textContent = `Pedido nº ${repasse.id} - Administrador: ${repasse.administrador} - Valor: ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${parseInt(repasse.valor_venda).toFixed(2)}`;
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = repasse.id;
+            repasse.lucro_vendedor = (parseInt(repasse.lucro_venda).toFixed(2) * 45/100)
+            checkbox.addEventListener('change', () => {
+                atualizarTotalSelecionado('administradores', repasses);
+            });
+            listItem.appendChild(checkbox);
+
+            const label = document.createElement('label');
+            label.textContent = `${repasse.vendedor_id === 2 ? 'Da Maithê' : 'Do Rafael'} ${repasse.vendedor_id === 2 ? 'Para o Rafael' : 'Para a Maithê'} o valor de ${repasse.lucro_vendedor} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
+            listItem.appendChild(label);
             listaRepasses.appendChild(listItem);
         });
+        // Exibe o botão "Fazer Repasses" se houver repasses pendentes
+        const btnFazerRepasses = document.getElementById('btn-fazer-repasses-administradores');
+        const totalSelecionadoReais = document.getElementById('total-selecionado-administradores-real');
+        const totalSelecionadoDolar = document.getElementById('total-selecionado-administradores-dolar');
+        const totalSelecionadoConvertido = document.getElementById('total-selecionado-administradores-convertido');
+        if (repasses.length > 0) {
+            btnFazerRepasses.style.display = 'block';
+            //totalSelecionadoReais.style.display = 'block';
+            //totalSelecionadoDolar.style.display = 'block';
+            totalSelecionadoConvertido.style.display = 'block';
+        } else {
+            btnFazerRepasses.style.display = 'none';
+            //totalSelecionadoReais.style.display = 'none';
+            //totalSelecionadoDolar.style.display = 'none';
+            totalSelecionadoConvertido.style.display = 'none';
+        }
     })
     .catch(error => {
         alert('Erro ao buscar repasses pendentes entre administradores.');
@@ -180,6 +250,167 @@ function popularSelectDestinatariosRepasse() {
     })
     .catch(error => {
         alert('Erro ao buscar administradores.');
+        console.error(error);
+    });
+}
+
+let totalRepassesProducaoReais = 0;
+let totalRepassesProducaoDolar = 0;
+let totalRepassesProducaoConvertido = 0;
+let totalRepassesVendedoresReais = 0;
+let totalRepassesVendedoresDolar = 0;
+let totalRepassesVendedoresConvertido = 0;
+async function atualizarTotalSelecionado(area, vendas) { // Adiciona vendas como argumento
+    const checkboxes = document.querySelectorAll(`#lista-repasses-${area} input[type="checkbox"]:checked`);
+    let totalRepassesReais = 0; // Variável local para armazenar o total selecionado
+    let totalRepassesDolar = 0;
+        if (area === "producao") {
+            checkboxes.forEach(checkbox => {
+                //console.log(vendas)
+                const pedidoId = parseInt(checkbox.value);
+                const pedido = vendas.find(v => v.id === pedidoId); // Usa vendas como argumento
+                if (pedido.moeda === "dolar") {
+                    totalRepassesDolar += parseFloat(pedido.lucro_producao);
+                }
+                if (pedido.moeda === "real") {
+                    totalRepassesReais += parseFloat(pedido.lucro_producao);
+                }
+            });
+            totalRepassesProducaoReais = totalRepassesReais; // Atualiza a variável global com o total calculado
+            totalRepassesProducaoDolar = totalRepassesDolar; // Atualiza a variável global com o total calculado
+            totalRepassesProducaoConvertido = totalRepassesProducaoReais + await converterDolarParaReal(totalRepassesProducaoDolar);
+            //console.log(totalRepassesProducaoConvertido);
+
+            //document.getElementById(`total-selecionado-${area}-real`).textContent = `Total Selecionado: REAIS R$ ${totalRepassesProducaoReais.toFixed(2)}`;
+            //document.getElementById(`total-selecionado-${area}-dolar`).textContent = `Total Selecionado: DÓLAR U$ ${totalRepassesProducaoDolar.toFixed(2)}`;
+            document.getElementById(`total-selecionado-${area}-convertido`).textContent = `Soma total convertida para REAIS: R$ ${totalRepassesProducaoConvertido.toFixed(2)}`;
+        }
+        if (area === "administradores") {
+            checkboxes.forEach(checkbox => {
+                //console.log(vendas)
+                const pedidoId = parseInt(checkbox.value);
+                const pedido = vendas.find(v => v.id === pedidoId); // Usa vendas como argumento
+                if (pedido.moeda === "dolar") {
+                    totalRepassesDolar += parseFloat(pedido.lucro_vendedor);
+                }
+                if (pedido.moeda === "real") {
+                    totalRepassesReais += parseFloat(pedido.lucro_vendedor);
+                }
+            });
+            totalRepassesVendedoresReais = totalRepassesReais; // Atualiza a variável global com o total calculado
+            totalRepassesVendedoresDolar = totalRepassesDolar; // Atualiza a variável global com o total calculado
+            totalRepassesVendedoresConvertido = totalRepassesVendedoresReais + await converterDolarParaReal(totalRepassesVendedoresDolar);
+
+            //document.getElementById(`total-selecionado-${area}-real`).textContent = `Total Selecionado: REAIS R$ ${totalRepassesVendedoresReais.toFixed(2)}`;
+            //document.getElementById(`total-selecionado-${area}-dolar`).textContent = `Total Selecionado: DÓLAR U$ ${totalRepassesVendedoresDolar.toFixed(2)}`;
+            document.getElementById(`total-selecionado-${area}-convertido`).textContent = `Soma total convertida para REAIS: R$ ${totalRepassesVendedoresConvertido.toFixed(2)}`;
+        }
+}
+
+function confirmarRepasses(area) {
+    const checkboxes = document.querySelectorAll(`#lista-repasses-${area} input[type="checkbox"]:checked`);
+    const vendedorResponsavel = document.getElementById('vendedor-repasse').value;
+
+    if (checkboxes.length === 0) {
+        alert('Selecione pelo menos um repasse para confirmar.');
+        return;
+    }
+
+    if (vendedorResponsavel === '') {
+        alert('Selecione o vendedor responsável pelos repasses.');
+        return;
+    }
+
+    let totalRepasses = 0;
+    checkboxes.forEach(checkbox => {
+        const pedidoId = parseInt(checkbox.value);
+        const pedido = vendas.find(v => v.id === pedidoId);
+        if (pedido) {
+            totalRepasses += parseFloat(pedido.valor_venda);
+        }
+    });
+
+    const nomeVendedor = vendedores.find(v => v.id === parseInt(vendedorResponsavel)).nome;
+    const destinatario = area === 'producao' ? 'o Produtor' : 'o Administrador';
+
+    if (confirm(`Confirma que ${nomeVendedor} está fazendo um repasse de R$ ${totalRepasses.toFixed(2)} para ${destinatario}?`)) {
+        checkboxes.forEach(checkbox => {
+            const pedidoId = parseInt(checkbox.value);
+            const pedido = vendas.find(v => v.id === pedidoId);
+            if (pedido) {
+                if (area === 'producao') {
+                    pedido.repasseComissao = true;
+                } else if (area === 'administradores') {
+                    pedido.repasseSociedade = true;
+                }
+
+                // Registra o repasse na API
+                fetch('/api/divisao-lucros/repasses', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        pedidoId,
+                        destinatarioId: parseInt(document.getElementById('repasse-para').value),
+                        vendedorId: parseInt(vendedorResponsavel),
+                        valor: parseFloat(pedido.valor_venda),
+                        moeda: pedido.moeda
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao registrar repasse.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message);
+                    exibirRepassesPendentesProducao();
+                    exibirRepassesPendentesAdministradores();
+                    exibirUltimosRepassesFeitos();
+                })
+                .catch(error => {
+                    alert('Erro ao registrar repasse.');
+                    console.error(error);
+                });
+            }
+        });
+    }
+}
+
+function atualizarResumoDistribuicoes() {
+    const administradorId = parseInt(localStorage.getItem('administrador'));
+
+    // Busca o resumo das distribuições
+    fetch(`/api/financeiro/${administradorId}`, {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar resumo financeiro.');
+        }
+        return response.json();
+    })
+    .then(resumo => {
+        // Atualiza os valores no HTML
+        document.getElementById('saldo-total-rafael-matheus').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('vendas-totais-rafael-matheus').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('lucro-real-rafael').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('comissoes-matheus').textContent = `R$ ${parseInt(resumo.repasses_recebidos_reais).toFixed(2)}`;
+
+        document.getElementById('saldo-total-maithe-matheus').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('vendas-totais-maithe-matheus').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('lucro-real-maithe').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('comissoes-matheus').textContent = `R$ ${parseInt(resumo.repasses_recebidos_reais).toFixed(2)}`;
+
+        document.getElementById('saldo-total-rafael-maithe').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
+    })
+    .catch(error => {
+        alert('Erro ao buscar resumo financeiro.');
         console.error(error);
     });
 }
