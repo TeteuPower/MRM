@@ -11,9 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 //popularSelectVendedoresRepasse();
                 //popularSelectDestinatariosRepasse();
                 // Adiciona event listeners aos botões "Fazer Repasses"
-                document.getElementById('btn-fazer-repasses-administradores').addEventListener('click', () => {
+                /*document.getElementById('btn-fazer-repasses-administradores').addEventListener('click', () => {
                     confirmarRepasses('administradores');
-                });
+                });*/
                 document.getElementById('btn-fazer-repasses-empresa').addEventListener('click', () => {
                     confirmarRepasses('empresa');
                 });
@@ -120,20 +120,23 @@ function exibirRepassesPendentesAdministradores() {
             listItem.appendChild(label);
             listaRepasses.appendChild(listItem);
         });
+            // Adiciona evento ao botão para enviar apenas os repasses selecionados
+            document.getElementById('btn-fazer-repasses-administradores').addEventListener('click', () => {
+                const checkboxes = listaRepasses.querySelectorAll('input[type="checkbox"]:checked');
+                const repassesSelecionados = Array.from(checkboxes).map(checkbox => {
+                    const repasseId = parseInt(checkbox.value);
+                    return repasses.find(repasse => repasse.id === repasseId);
+                });
+                confirmarRepassesVendedores('administradores', repassesSelecionados);
+            });
         // Exibe o botão "Fazer Repasses" se houver repasses pendentes
         const btnFazerRepasses = document.getElementById('btn-fazer-repasses-administradores');
-        //const totalSelecionadoReais = document.getElementById('total-selecionado-administradores-real');
-        //const totalSelecionadoDolar = document.getElementById('total-selecionado-administradores-dolar');
         const totalSelecionadoConvertido = document.getElementById('total-selecionado-administradores-convertido');
         if (repasses.length > 0) {
             btnFazerRepasses.style.display = 'block';
-            //totalSelecionadoReais.style.display = 'block';
-            //totalSelecionadoDolar.style.display = 'block';
             totalSelecionadoConvertido.style.display = 'block';
         } else {
             btnFazerRepasses.style.display = 'none';
-            //totalSelecionadoReais.style.display = 'none';
-            //totalSelecionadoDolar.style.display = 'none';
             totalSelecionadoConvertido.style.display = 'none';
         }
     })
@@ -334,10 +337,7 @@ async function atualizarTotalSelecionado(area, vendas) { // Adiciona vendas como
             totalRepassesProducaoReais = totalRepassesReais; // Atualiza a variável global com o total calculado
             totalRepassesProducaoDolar = totalRepassesDolar; // Atualiza a variável global com o total calculado
             totalRepassesProducaoConvertido = totalRepassesProducaoReais + await converterDolarParaReal(totalRepassesProducaoDolar);
-            //console.log(totalRepassesProducaoConvertido);
 
-            //document.getElementById(`total-selecionado-${area}-real`).textContent = `Total Selecionado: REAIS R$ ${totalRepassesProducaoReais.toFixed(2)}`;
-            //document.getElementById(`total-selecionado-${area}-dolar`).textContent = `Total Selecionado: DÓLAR U$ ${totalRepassesProducaoDolar.toFixed(2)}`;
             document.getElementById(`total-selecionado-${area}-convertido`).textContent = `Soma total convertida para REAIS: R$ ${totalRepassesProducaoConvertido.toFixed(2)}`;
         }
         if (area === "administradores") {
@@ -374,8 +374,6 @@ async function atualizarTotalSelecionado(area, vendas) { // Adiciona vendas como
             totalRepassesEmpresaDolar = totalRepassesDolar; // Atualiza a variável global com o total calculado
             totalRepassesEmpresaConvertido = totalRepassesEmpresaReais + await converterDolarParaReal(totalRepassesEmpresaDolar);
 
-            //document.getElementById(`total-selecionado-${area}-real`).textContent = `Total Selecionado: REAIS R$ ${totalRepassesVendedoresReais.toFixed(2)}`;
-            //document.getElementById(`total-selecionado-${area}-dolar`).textContent = `Total Selecionado: DÓLAR U$ ${totalRepassesVendedoresDolar.toFixed(2)}`;
             document.getElementById(`total-selecionado-${area}-convertido`).textContent = `Soma total convertida para REAIS: R$ ${totalRepassesEmpresaConvertido.toFixed(2)}`;
         }
 }
@@ -387,8 +385,6 @@ async function confirmarRepasses(area, repasses) {
         alert('Selecione pelo menos um repasse para confirmar.');
         return;
     }
-    //const nomeVendedor = vendedorResponsavel
-    //const destinatario = area === 'producao' ? 'o Produtor' : 'o Administrador';
 
     if (confirm(`Confirma que está fazendo um repasse de R$ ${totalRepassesProducaoConvertido.toFixed(2)} REAIS para o MATHEUS?`)) {
         try {
@@ -434,6 +430,66 @@ async function confirmarRepasses(area, repasses) {
             exibirRepassesPendentesProducao();
             exibirRepassesPendentesAdministradores();
             //exibirUltimosRepassesFeitos();
+        } catch (error) {
+            alert('Erro ao registrar repasses.');
+            console.error(error);
+        }
+    }
+}
+
+async function confirmarRepassesVendedores(area, repasses) {
+    const checkboxes = document.querySelectorAll(`#lista-repasses-${area} input[type="checkbox"]:checked`);
+
+    if (checkboxes.length === 0) {
+        alert('Selecione pelo menos um repasse para confirmar.');
+        return;
+    }
+
+    if (confirm(`Confirma que está fazendo um repasse de R$ ${totalRepassesVendedoresConvertido.toFixed(2)}?`)) {
+        try {
+            // Mapeia os repasses para um array de promises
+            const promises = repasses.map(async (repasse) => {
+                //console.log(repasse);
+                let comissaoConvertida = await converterDolarParaReal(repasse.lucro_vendedor);
+                const pedidoId = parseInt(repasse.id);
+                const vendedorId = parseInt(repasse.vendedor_id);
+                const vendedor_destinatario_id = (repasse.vendedor_id === 3 ? 2 : 3);
+                const moeda = 'real';
+                const administradorId = parseInt(localStorage.getItem('administrador'));
+                //console.log(pedidoId, vendedorId, vendedor_destinatario_id, comissaoConvertida.toFixed(2), administradorId, moeda);
+
+                // Registra o repasse na API
+                const response = await fetch('/api/divisao-lucros/repasses-vendedores', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        pedidoId: pedidoId,
+                        vendedorId: vendedorId,
+                        vendedorDestinatarioId: vendedor_destinatario_id,
+                        valor: comissaoConvertida.toFixed(2),
+                        administradorId: administradorId,
+                        moeda: moeda,
+                        finalizaComissao: true
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao registrar repasse.');
+                }
+                return response.json();
+            });
+
+            // Aguarda todas as promises serem resolvidas
+            await Promise.all(promises);
+
+            alert('Repasses registrados com sucesso!');
+            //exibirRepassesPendentesProducao();
+            exibirRepassesPendentesAdministradores();
+            //exibirUltimosRepassesFeitos();
+            return;
         } catch (error) {
             alert('Erro ao registrar repasses.');
             console.error(error);

@@ -46,6 +46,7 @@ router.get('/repasses-administradores', autenticar, (req, res) => {
             p.moeda,
             p.lucro_venda,
             p.valor_venda,
+            p.vendedor_id,
             pr.nome AS produtor,
             v.nome AS vendedor
         FROM 
@@ -166,6 +167,36 @@ router.post('/repasses-producao', autenticar, (req, res) => {
 
         const sql = 'INSERT INTO repasses_producao (pedido_id, vendedor_id, produtor_id, valor, moeda, data, administrador_id) VALUES (?, ?, ?, ?, ?, ?, ?)';
         db.query(sql, [pedidoId, vendedorId, produtorId, valor, moeda, new Date(), administradorId], (err, result) => {
+            if (err) {
+                console.error('Erro ao registrar repasse:', err);
+                res.status(500).json({ error: 'Erro ao registrar repasse.' });
+                return;
+            }
+            res.json({ message: 'Repasse registrado com sucesso!', id: result.insertId });
+        });
+    });
+});
+
+// Rota para registrar um novo repasse (POST /api/divisao-lucros/repasses)
+router.post('/repasses-vendedores', autenticar, (req, res) => {
+    const { pedidoId, vendedorId, vendedorDestinatarioId, valor, administradorId, moeda, finalizaComissao } = req.body;
+
+    // Verifica se todos os campos obrigatórios foram fornecidos
+    if (!pedidoId || !vendedorId || !administradorId || !moeda) {
+        return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
+    }
+
+        // Atualiza o campo repasse_comissao do pedido
+        const sqlUpdatePedido = 'UPDATE pedidos SET repasse_sociedade = ? WHERE id = ?';
+        db.query(sqlUpdatePedido, [finalizaComissao, pedidoId], (err, result) => {
+            if (err) {
+                console.error('Erro ao atualizar pedido:', err);
+                res.status(500).json({ error: 'Erro ao registrar repasse.' });
+                return;
+            }
+            
+        const sql = 'INSERT INTO repasses_vendedores (pedido_id, vendedor_id, vendedor_destinatario_id, valor, administrador_id, moeda, data) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        db.query(sql, [pedidoId, vendedorId, vendedorDestinatarioId, valor, administradorId, moeda, new Date()], (err, result) => {
             if (err) {
                 console.error('Erro ao registrar repasse:', err);
                 res.status(500).json({ error: 'Erro ao registrar repasse.' });
