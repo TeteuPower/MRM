@@ -112,10 +112,12 @@ function exibirDetalhesPedido(id) {
     document.getElementById('modal-data-finalizacao').innerHTML = pedido.data_finalizacao === null ? '<span class="span-vermelho">Não efetivada</span>' : formatarData(pedido.data_finalizacao);
     document.getElementById('modal-valor-venda').innerHTML = `<span class="span-laranja">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.valor_venda).toFixed(2)}</span>`;
     document.getElementById('modal-valor-pago').innerHTML = `<span class="span-verde">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.valor_pago).toFixed(2)}</span>`;
+    document.getElementById('modal-valor-insumos').innerHTML = `<span class="span-vermelho">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.valor_insumos).toFixed(2)}</span>`;
+    document.getElementById('modal-lucro-venda').innerHTML = `<span class="span-verde">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.lucro_venda).toFixed(2)}</span>`;
     document.getElementById('modal-status').textContent = pedido.status;
     document.getElementById('modal-saldoVenda').innerHTML = pedido.saldo_venda === "0.00" ? '<span class="span-verde">Pago</span>' : `<span class="span-vermelho">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.saldo_venda).toFixed(2)}</span>`;
     document.getElementById('modal-solicitado-por').textContent = pedido.administrador;
-    document.getElementById('modal-produtor-span').textContent = pedido.produtor;
+    document.getElementById('modal-produtor-span').textContent = `${pedido.produtor === undefined ? 'Ainda não produzido' : pedido.produtor}`;
 
     // Calcula a quantidade total de rapé no pedido
     let totalKg = 0;

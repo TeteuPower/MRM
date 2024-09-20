@@ -13,6 +13,8 @@ router.get('/repasses-producao', autenticar, (req, res) => {
             p.moeda,
             p.lucro_venda,
             p.valor_venda,
+            p.vendedor_id,
+            p.produtor_id,
             pr.nome AS produtor,
             v.nome AS vendedor
         FROM 
@@ -34,7 +36,7 @@ router.get('/repasses-producao', autenticar, (req, res) => {
     });
 });
 
-// Rota para obter os repasses pendentes para produção (GET /api/divisao-lucros/repasses-producao)
+// Rota para obter os repasses pendentes para administradores (GET /api/divisao-lucros/repasses-producao)
 router.get('/repasses-administradores', autenticar, (req, res) => {
     const sql = `
         SELECT 
@@ -57,14 +59,41 @@ router.get('/repasses-administradores', autenticar, (req, res) => {
     `;
     db.query(sql, (err, results) => {
         if (err) {
-            console.error('Erro ao buscar repasses pendentes para produção:', err);
-            res.status(500).json({ error: 'Erro ao buscar repasses pendentes para produção.' });
+            console.error('Erro ao buscar repasses pendentes para administradores:', err);
+            res.status(500).json({ error: 'Erro ao buscar repasses pendentes para administradores.' });
             return;
         }
         res.json(results);
     });
 });
 
+// Rota para obter os repasses pendentes para Empresa (GET /api/divisao-lucros/repasses-producao)
+router.get('/repasses-empresa', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            p.id,
+            p.moeda,
+            p.valor_insumos,
+            p.valor_frete,
+            v.nome AS vendedor
+        FROM 
+            pedidos p
+        JOIN 
+            produtores pr ON p.produtor_id = pr.id
+        JOIN 
+            vendedores v ON p.vendedor_id = v.id
+        WHERE 
+            p.status = "Finalizado" AND p.repasse_insumos = 0;
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar repasses pendentes para empresa:', err);
+            res.status(500).json({ error: 'Erro ao buscar repasses pendentes para empresa.' });
+            return;
+        }
+        res.json(results);
+    });
+});
 /*// Rota para obter os repasses pendentes entre administradores (GET /api/divisao-lucros/repasses-administradores)
 router.get('/repasses-administradores', autenticar, (req, res) => {
     const sql = 'SELECT * FROM pedidos WHERE status = "Finalizado" AND repasse_sociedade = 0';
@@ -118,22 +147,32 @@ router.get('/produtores', autenticar, (req, res) => {
 });
 
 // Rota para registrar um novo repasse (POST /api/divisao-lucros/repasses)
-router.post('/repasses', autenticar, (req, res) => {
-    const { pedidoId, destinatarioId, vendedorId, valor, moeda } = req.body;
+router.post('/repasses-producao', autenticar, (req, res) => {
+    const { pedidoId, produtorId, vendedorId, valor, administradorId, moeda, finalizaComissao } = req.body;
 
     // Verifica se todos os campos obrigatórios foram fornecidos
-    if (!pedidoId || !destinatarioId || !vendedorId || !valor || !moeda) {
+    if (!pedidoId || !produtorId || !vendedorId || !administradorId || !moeda) {
         return res.status(400).json({ error: 'Todos os campos são obrigatórios.' });
     }
 
-    const sql = 'INSERT INTO repasses (pedido_id, destinatario_id, vendedor_id, data, valor, moeda) VALUES (?, ?, ?, ?, ?, ?)';
-    db.query(sql, [pedidoId, destinatarioId, vendedorId, new Date(), valor, moeda], (err, result) => {
-        if (err) {
-            console.error('Erro ao registrar repasse:', err);
-            res.status(500).json({ error: 'Erro ao registrar repasse.' });
-            return;
-        }
-        res.json({ message: 'Repasse registrado com sucesso!', id: result.insertId });
+        // Atualiza o campo repasse_comissao do pedido
+        const sqlUpdatePedido = 'UPDATE pedidos SET repasse_comissao = ? WHERE id = ?';
+        db.query(sqlUpdatePedido, [finalizaComissao, pedidoId], (err, result) => {
+            if (err) {
+                console.error('Erro ao atualizar pedido:', err);
+                res.status(500).json({ error: 'Erro ao registrar repasse.' });
+                return;
+            }
+
+        const sql = 'INSERT INTO repasses_producao (pedido_id, vendedor_id, produtor_id, valor, moeda, data, administrador_id) VALUES (?, ?, ?, ?, ?, ?, ?)';
+        db.query(sql, [pedidoId, vendedorId, produtorId, valor, moeda, new Date(), administradorId], (err, result) => {
+            if (err) {
+                console.error('Erro ao registrar repasse:', err);
+                res.status(500).json({ error: 'Erro ao registrar repasse.' });
+                return;
+            }
+            res.json({ message: 'Repasse registrado com sucesso!', id: result.insertId });
+        });
     });
 });
 

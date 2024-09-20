@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
             lucroVenda: lucroVenda.toFixed(1),
             valorInsumos: valorInsumos.toFixed(1),
         };
-        console.log(venda);
+        //console.log(venda);
     
         // Envia os dados para a API
         fetch('/api/pedidos', {
