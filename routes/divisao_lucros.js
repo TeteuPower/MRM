@@ -76,6 +76,7 @@ router.get('/repasses-empresa', autenticar, (req, res) => {
             p.moeda,
             p.valor_insumos,
             p.valor_frete,
+            p.vendedor_id,
             v.nome AS vendedor
         FROM 
             pedidos p
@@ -194,9 +195,34 @@ router.post('/repasses-vendedores', autenticar, (req, res) => {
                 res.status(500).json({ error: 'Erro ao registrar repasse.' });
                 return;
             }
-            
+
         const sql = 'INSERT INTO repasses_vendedores (pedido_id, vendedor_id, vendedor_destinatario_id, valor, administrador_id, moeda, data) VALUES (?, ?, ?, ?, ?, ?, ?)';
         db.query(sql, [pedidoId, vendedorId, vendedorDestinatarioId, valor, administradorId, moeda, new Date()], (err, result) => {
+            if (err) {
+                console.error('Erro ao registrar repasse:', err);
+                res.status(500).json({ error: 'Erro ao registrar repasse.' });
+                return;
+            }
+            res.json({ message: 'Repasse registrado com sucesso!', id: result.insertId });
+        });
+    });
+});
+
+// Rota para registrar um novo repasse (POST /api/divisao-lucros/repasses)
+router.post('/repasses-empresa', autenticar, (req, res) => {
+    const { pedidoId, vendedorId, valor, moeda, administradorId, finalizaComissao } = req.body;
+
+        // Atualiza o campo repasse_comissao do pedido
+        const sqlUpdatePedido = 'UPDATE pedidos SET repasse_insumos = ? WHERE id = ?';
+        db.query(sqlUpdatePedido, [finalizaComissao, pedidoId], (err, result) => {
+            if (err) {
+                console.error('Erro ao atualizar pedido:', err);
+                res.status(500).json({ error: 'Erro ao registrar repasse.' });
+                return;
+            }
+            
+        const sql = 'INSERT INTO repasses_empresa (pedido_id, vendedor_id, valor, moeda, data, administrador_id) VALUES (?, ?, ?, ?, ?, ?)';
+        db.query(sql, [pedidoId, vendedorId, valor, moeda, new Date(), administradorId], (err, result) => {
             if (err) {
                 console.error('Erro ao registrar repasse:', err);
                 res.status(500).json({ error: 'Erro ao registrar repasse.' });

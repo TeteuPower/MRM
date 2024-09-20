@@ -14,9 +14,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 /*document.getElementById('btn-fazer-repasses-administradores').addEventListener('click', () => {
                     confirmarRepasses('administradores');
                 });*/
-                document.getElementById('btn-fazer-repasses-empresa').addEventListener('click', () => {
-                    confirmarRepasses('empresa');
-                });
+                /*document.getElementById('btn-fazer-repasses-empresa').addEventListener('click', () => {
+                    confirmarRepassesEmpresa('empresa');
+                });*/
 
                 // Atualiza o resumo das distribuições
                 atualizarResumoDistribuicoes();
@@ -165,6 +165,8 @@ function exibirRepassesPendentesEmpresa() {
     .then(repasses => {
         repasses.forEach(repasse => {
             //console.log(repasse)
+            let custoTotal = parseInt(repasse.valor_insumos) + parseInt(repasse.valor_frete);
+            repasse.custoTotal = custoTotal.toFixed(2);
             const listItem = document.createElement('li');
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
@@ -175,10 +177,19 @@ function exibirRepassesPendentesEmpresa() {
             listItem.appendChild(checkbox);
 
             const label = document.createElement('label');
-            label.textContent = `Do ${repasse.vendedor} para a empresa o valor de ${parseInt(repasse.valor_insumos) + parseInt(repasse.valor_frete)} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
+            label.textContent = `Do ${repasse.vendedor} para a empresa o valor de ${custoTotal.toFixed(2)} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
             listItem.appendChild(label);
             listaRepasses.appendChild(listItem);
         });
+            // Adiciona evento ao botão para enviar apenas os repasses selecionados
+            document.getElementById('btn-fazer-repasses-empresa').addEventListener('click', () => {
+                const checkboxes = listaRepasses.querySelectorAll('input[type="checkbox"]:checked');
+                const repassesSelecionados = Array.from(checkboxes).map(checkbox => {
+                    const repasseId = parseInt(checkbox.value);
+                    return repasses.find(repasse => repasse.id === repasseId);
+                });
+                confirmarRepassesEmpresa('empresa', repassesSelecionados);
+            });
         // Exibe o botão "Fazer Repasses" se houver repasses pendentes
         const btnFazerRepasses = document.getElementById('btn-fazer-repasses-empresa');
         const totalSelecionadoConvertido = document.getElementById('total-selecionado-empresa-convertido');
@@ -493,6 +504,66 @@ async function confirmarRepassesVendedores(area, repasses) {
         } catch (error) {
             alert('Erro ao registrar repasses.');
             console.error(error);
+        }
+    }
+}
+
+async function confirmarRepassesEmpresa(area, repasses) {
+    const checkboxes = document.querySelectorAll(`#lista-repasses-${area} input[type="checkbox"]:checked`);
+
+    if (checkboxes.length === 0) {
+        alert('Selecione pelo menos um repasse para confirmar.');
+        return;
+    }
+
+    if (confirm(`Confirma que está fazendo um repasse de R$ ${totalRepassesEmpresaConvertido.toFixed(2)}?`)) {
+        try {
+            // Mapeia os repasses para um array de promises
+            const promises = repasses.map(async (repasse) => {
+            //console.log(repasse);
+                let comissaoConvertida = await converterDolarParaReal(repasse.custoTotal);
+                const pedidoId = parseInt(repasse.id);
+                const vendedorId = parseInt(repasse.vendedor_id);
+                const moeda = 'real';
+                const administradorId = parseInt(localStorage.getItem('administrador'));
+                //console.log(pedidoId, vendedorId, vendedor_destinatario_id, comissaoConvertida.toFixed(2), administradorId, moeda);
+
+                // Registra o repasse na API
+                const response = await fetch('/api/divisao-lucros/repasses-empresa', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        pedidoId: pedidoId,
+                        vendedorId: vendedorId,
+                        valor: comissaoConvertida.toFixed(2),
+                        moeda: moeda,
+                        administradorId: administradorId,
+                        finalizaComissao: true
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao registrar repasse.');
+                }
+                return response.json();
+            });
+
+            // Aguarda todas as promises serem resolvidas
+            await Promise.all(promises);
+
+            alert('Repasses registrados com sucesso!');
+            //exibirRepassesPendentesProducao();
+            //exibirRepassesPendentesAdministradores();
+            exibirRepassesPendentesEmpresa();
+            //exibirUltimosRepassesFeitos();
+            return;
+        } catch (error) {
+            alert('Erro ao registrar repasses.');
+            console.error(error);
+            return;
         }
     }
 }
