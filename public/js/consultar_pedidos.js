@@ -684,12 +684,13 @@ function popularProdutoresEditar() {
     });
 }
 
-function cancelarPedido(pedidoId) {
-    if (confirm(`Tem certeza que deseja DELETAR o pedido nº ${pedidoId}? Todos os pagamentos relacionados a esse pedido também serão excluídos!`)) {
-        const confirmacao = prompt("Digite 'deletar' para confirmar a exclusão do pedido");
+function cancelarPedido(pedido) {
+    //console.log(pedido)
+    if (confirm(`Tem certeza que deseja DELETAR o pedido nº ${pedido.id} do cliente ${pedido.cliente}? Todos os pagamentos que o ${pedido.cliente} fez relacionados a esse pedido também serão excluídos!`)) {
+        const confirmacao = prompt(`Digite 'deletar' para confirmar a exclusão do pedido nº ${pedido.id} do cliente ${pedido.cliente}, se não está seguro disso contacte o Matheus!`);
         if (confirmacao === 'deletar') {
         // Faz uma requisição DELETE para a API para cancelar o pedido
-        fetch(`/api/pedidos/${pedidoId}`, {
+        fetch(`/api/pedidos/${pedido.id}`, {
             method: 'DELETE',
             headers: {
                 'Authorization': localStorage.getItem('token')

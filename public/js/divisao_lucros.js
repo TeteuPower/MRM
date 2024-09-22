@@ -7,16 +7,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 exibirRepassesPendentesProducao();
                 exibirRepassesPendentesAdministradores();
                 exibirRepassesPendentesEmpresa();
-                //exibirUltimosRepassesFeitos();
+                exibirUltimosRepassesFeitos('producao');
+                exibirUltimosRepassesFeitos('vendedores');
+                exibirUltimosRepassesFeitos('empresa');
                 //popularSelectVendedoresRepasse();
                 //popularSelectDestinatariosRepasse();
-                // Adiciona event listeners aos botões "Fazer Repasses"
-                /*document.getElementById('btn-fazer-repasses-administradores').addEventListener('click', () => {
-                    confirmarRepasses('administradores');
-                });*/
-                /*document.getElementById('btn-fazer-repasses-empresa').addEventListener('click', () => {
-                    confirmarRepassesEmpresa('empresa');
-                });*/
 
                 // Atualiza o resumo das distribuições
                 atualizarResumoDistribuicoes();
@@ -208,11 +203,11 @@ function exibirRepassesPendentesEmpresa() {
     
 }
 
-function exibirUltimosRepassesFeitos() {
-    const listaRepasses = document.getElementById('lista-repasses-feitos');
+function exibirUltimosRepassesFeitos(area) {
+    const listaRepasses = document.getElementById(`lista-repasses-feitos-${area}`);
     listaRepasses.innerHTML = '';
 
-    fetch('/api/divisao-lucros/repasses-feitos', {
+    fetch(`/api/divisao-lucros/repasses-feitos-${area}`, {
         headers: {
             'Authorization': localStorage.getItem('token')
         }
@@ -224,11 +219,19 @@ function exibirUltimosRepassesFeitos() {
         return response.json();
     })
     .then(repasses => {
-        repasses.forEach(repasse => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `Pedido nº ${repasse.pedido_id} - Destinatário: ${repasse.destinatario} - Valor: ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${repasse.valor.toFixed(2)} - Vendedor: ${repasse.vendedor}`;
-            listaRepasses.appendChild(listItem);
-        });
+        //console.log(repasses)
+        if (area === 'empresa') {
+            repasses.forEach(repasse => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Do ${repasse.vendedor} para a empresa o valor de ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${repasse.valor} do Pedido nº ${repasse.pedido_id}, cadastrado pelo ${repasse.administrador} no dia ${formatarData(repasse.data)}.`;
+                listaRepasses.appendChild(listItem);
+            })
+        } else {
+            repasses.forEach(repasse => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Do ${repasse.vendedor} para ${area === 'producao' ? repasse.produtor : repasse.vendedor_destinatario} o valor de ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${repasse.valor} do Pedido nº ${repasse.pedido_id}, cadastrado pelo ${repasse.administrador} no dia ${formatarData(repasse.data)}.`;
+                listaRepasses.appendChild(listItem);
+        })};
     })
     .catch(error => {
         alert('Erro ao buscar últimos repasses feitos.');

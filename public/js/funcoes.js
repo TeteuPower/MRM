@@ -302,7 +302,7 @@ function exibirDetalhesPedido(id) {
         // Adicione um event listener ao botão "Cancelar Pedido"
         document.getElementById('btn-cancelar-pedido').addEventListener('click', () =>
         {
-            cancelarPedido(pedido.id);
+            cancelarPedido(pedido);
         });
 
         // Adicione um event listener ao botão "Editar Pedido"
@@ -313,7 +313,7 @@ function exibirDetalhesPedido(id) {
         // Adicione um event listener ao botão "Cancelar Pedido"
         document.getElementById('btn-cancelar-pedido2').addEventListener('click', () =>
         {
-            cancelarPedido(pedido.id);
+            cancelarPedido(pedido);
         });
 
         // Adicione um event listener ao botão "Editar Pedido"
@@ -324,7 +324,7 @@ function exibirDetalhesPedido(id) {
         // Adicione um event listener ao botão "Cancelar Pedido"
         document.getElementById('btn-cancelar-pedido3').addEventListener('click', () =>
         {
-            cancelarPedido(pedido.id);
+            cancelarPedido(pedido);
         });
             // Adicione um event listener ao botão "Formatar Texto"
             document.getElementById('btn-formatar-texto').addEventListener('click', () => {

@@ -96,22 +96,95 @@ router.get('/repasses-empresa', autenticar, (req, res) => {
         res.json(results);
     });
 });
-/*// Rota para obter os repasses pendentes entre administradores (GET /api/divisao-lucros/repasses-administradores)
-router.get('/repasses-administradores', autenticar, (req, res) => {
-    const sql = 'SELECT * FROM pedidos WHERE status = "Finalizado" AND repasse_sociedade = 0';
+// Rota para obter os últimos repasses feitos
+// Rota para obter os últimos repasses feitos para produção (GET /api/divisao-lucros/repasses-feitos-producao)
+router.get('/repasses-feitos-producao', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            rp.id,
+            rp.pedido_id,
+            rp.vendedor_id,
+            rp.produtor_id,
+            rp.valor,
+            rp.moeda,
+            rp.data,
+            a.nome AS administrador,
+            v.nome AS vendedor,
+            pr.nome AS produtor
+        FROM 
+            repasses_producao rp
+        JOIN 
+            administradores a ON rp.administrador_id = a.id
+        JOIN 
+            vendedores v ON rp.vendedor_id = v.id
+        JOIN 
+            produtores pr ON rp.produtor_id = pr.id
+        ORDER BY rp.data DESC;
+    `;
     db.query(sql, (err, results) => {
         if (err) {
-            console.error('Erro ao buscar repasses pendentes entre administradores:', err);
-            res.status(500).json({ error: 'Erro ao buscar repasses pendentes entre administradores.' });
+            console.error('Erro ao buscar últimos repasses feitos:', err);
+            res.status(500).json({ error: 'Erro ao buscar últimos repasses feitos.' });
             return;
         }
         res.json(results);
     });
 });
-*/
-// Rota para obter os últimos repasses feitos (GET /api/divisao-lucros/repasses-feitos)
-router.get('/repasses-feitos', autenticar, (req, res) => {
-    const sql = 'SELECT * FROM repasses ORDER BY data DESC';
+
+// Rota para obter os repasses feitos para vendedores (GET /api/divisao-lucros/repasses-feitos-vendedores)
+router.get('/repasses-feitos-vendedores', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            rp.id,
+            rp.pedido_id,
+            rp.vendedor_id,
+            rp.vendedor_destinatario_id,
+            rp.valor,
+            rp.moeda,
+            rp.data,
+            rp.administrador_id,
+            a.nome AS administrador,
+            v.nome AS vendedor,
+            vd.nome AS vendedor_destinatario
+        FROM 
+            repasses_vendedores rp
+        JOIN 
+            administradores a ON rp.administrador_id = a.id
+        JOIN 
+            vendedores v ON rp.vendedor_id = v.id
+        LEFT JOIN 
+            vendedores vd ON rp.vendedor_destinatario_id = vd.id
+        ORDER BY rp.data DESC;
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar últimos repasses feitos:', err);
+            res.status(500).json({ error: 'Erro ao buscar últimos repasses feitos.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+// Rota para obter os repasses feitos para empresa (GET /api/divisao-lucros/repasses-feitos-empresa)
+router.get('/repasses-feitos-empresa', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            rp.id,
+            rp.pedido_id,
+            rp.valor,
+            rp.moeda,
+            rp.data,
+            a.nome AS administrador,
+            v.nome AS vendedor
+        FROM 
+            repasses_empresa rp
+        JOIN 
+            administradores a ON rp.administrador_id = a.id
+        JOIN 
+            vendedores v ON rp.vendedor_id = v.id
+        ORDER BY rp.data DESC;
+    `;
     db.query(sql, (err, results) => {
         if (err) {
             console.error('Erro ao buscar últimos repasses feitos:', err);
