@@ -1,0 +1,43 @@
+/* divisao_lucros_simples.css */
+#divisao-lucros-simples {
+    text-align: center;
+}
+
+.repasses-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite que as divs quebrem para a próxima linha se necessário */
+}
+
+.vendedor-rafael,
+.vendedor-maithe {
+    flex: 1 1 300px; /* Cada div ocupa pelo menos 300px e pode crescer */
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.vendedor-rafael h3,
+.vendedor-maithe h3 {
+    margin-bottom: 15px;
+}
+
+.vendedor-rafael p,
+.vendedor-maithe p {
+    margin-bottom: 5px;
+}
+
+/* Estilos para telas menores */
+@media (max-width: 768px) {
+    .repasses-container {
+        flex-direction: column;
+    }
+
+    .vendedor-rafael,
+    .vendedor-maithe {
+        flex: 1 1 100%;
+    }
+}
