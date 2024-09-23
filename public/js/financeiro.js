@@ -1,140 +1,292 @@
-// financeiro.js (frontend)
+// funcionarios.js - lógica da página funcionarios.html
 
-document.addEventListener('DOMContentLoaded', function() {
-    verificarAutenticacao()
-        .then(autenticado => {
-            if (autenticado) {
-                exibirResumoFinanceiro();
-                exibirPedidosAdministrador();
-            }
-        });
+document.addEventListener('DOMContentLoaded', function () {
+    verificarAutenticacao();
+    carregarFuncionariosDoLocalStorage();
+    //exibirVendedores();
+    exibirProdutores('lista-produtores');
+    exibirDesempenhoVendedores();
+    exibirDesempenhoProdutores();
+    carregarPedidosDoLocalStorage();
+
+    document.getElementById('btn-adicionar-vendedor').addEventListener('click', adicionarVendedor);
+    document.getElementById('btn-adicionar-produtor').addEventListener('click', adicionarProdutor);
+
+    document.getElementById('lista-vendedores').addEventListener('click', function (event) {
+        if (event.target.tagName === 'LI') {
+            const vendedorNome = event.target.textContent;
+            exibirVendasVendedor(vendedorNome);
+        }
+    });
+
+    document.getElementById('lista-produtores').addEventListener('click', function (event) {
+        if (event.target.tagName === 'LI') {
+            const produtorNome = event.target.textContent;
+            exibirProducoesProdutor(produtorNome);
+        }
+    });
+
+    document.getElementById('btn-proxima-pagina-vendedor').addEventListener('click', () => {
+        paginaAtualVendasVendedor++;
+        exibirVendasVendedor(document.getElementById('modal-nome-vendedor').textContent);
+    });
 });
 
-function exibirResumoFinanceiro() {
-    const administradorId = parseInt(localStorage.getItem('administrador'));
+let paginaAtualVendasVendedor = 1;
+const vendasPorPagina = 10; // Número de vendas por página
 
-    fetch(`/api/financeiro/${administradorId}`, {
+
+/*function exibirVendedores() {
+    const listaVendedores = document.getElementById('lista-vendedores');
+    listaVendedores.innerHTML = ''; // Limpa a lista
+
+    // Faz uma requisição GET para a API para obter os funcionários
+    fetch('/api/funcionarios', {
         headers: {
             'Authorization': localStorage.getItem('token')
         }
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Erro ao buscar resumo financeiro.');
+            throw new Error('Erro ao buscar funcionários.');
         }
         return response.json();
     })
-    .then(resumo => {
-        console.log(resumo)
-        document.getElementById('vendas-totais').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
-        document.getElementById('vendas-totais-dolares').textContent = `US$ ${parseInt(resumo.vendas_totais_dolares).toFixed(2)}`;
-        document.getElementById('repasses-recebidos').textContent = `R$ ${parseInt(resumo.repasses_recebidos_reais).toFixed(2)}`;
-        document.getElementById('repasses-recebidos-dolares').textContent = `US$ ${parseInt(resumo.repasses_recebidos_dolares).toFixed(2)}`;
-        document.getElementById('gastos-administrador').textContent = `R$ ${parseInt(resumo.gastos_vendedor_reais).toFixed(2)}`;
-        //document.getElementById('media-salarial').textContent = `R$ ${((resumo.vendas_totais_reais - resumo.gastos_administrador_reais) / 30).toFixed(2)}`;
-        //document.getElementById('media-salarial-dolares').textContent = `US$ ${((resumo.vendas_totais_dolares - resumo.gastos_administrador_dolares) / 30).toFixed(2)}`;
-        document.getElementById('vendedor-repasse').textContent = 'Rafael'; // Substitua por uma lógica para obter o vendedor do repasse
-    })
-    .catch(error => {
-        alert('Erro ao buscar resumo financeiro.');
-        console.error(error);
-    });
-}
-
-let paginaAtualPedidosAdministrador = 1;
-const pedidosPorPagina = 5;
-
-function exibirPedidosAdministrador() {
-    const administradorId = parseInt(localStorage.getItem('administrador'));
-
-    fetch(`/api/financeiro/pedidos/${administradorId}`, {
-        headers: {
-            'Authorization': localStorage.getItem('token')
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro ao buscar pedidos do administrador.');
-        }
-        return response.json();
-    })
-    .then(pedidos => {
-        const listaPedidos = document.getElementById('lista-pedidos-administrador');
-        listaPedidos.innerHTML = ''; // Limpa a lista
-
-        const inicio = (paginaAtualPedidosAdministrador - 1) * pedidosPorPagina;
-        const fim = inicio + pedidosPorPagina;
-        const pedidosPaginaAtual = pedidos.slice(inicio, fim);
-
-        pedidosPaginaAtual.forEach(pedido => {
+    .then(funcionarios => {
+        // Itera sobre os funcionários e adiciona cada um à lista
+        funcionarios.forEach(funcionario => {
             const listItem = document.createElement('li');
-            listItem.textContent = `Pedido nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
-
-            listItem.addEventListener('click', () => {
-                exibirDetalhesPedido(pedido);
-            });
-
-            listaPedidos.appendChild(listItem);
+            listItem.textContent = funcionario.nome;
+            listaVendedores.appendChild(listItem);
         });
-
-        // Controle de exibição dos botões de paginação
-        const btnProximaPagina = document.getElementById('btn-proxima-pagina-pedidos-administrador');
-        const btnPaginaAnterior = document.getElementById('btn-pagina-anterior-pedidos-administrador');
-        if (fim < pedidos.length) {
-            btnProximaPagina.style.display = 'block';
-        } else {
-            btnProximaPagina.style.display = 'none';
-        }
-        if (paginaAtualPedidosAdministrador > 1) {
-            btnPaginaAnterior.style.display = 'block';
-        } else {
-            btnPaginaAnterior.style.display = 'none';
-        }
-
-        // Criação do menu de paginação
-        criarMenuPaginacaoPedidosAdministrador(pedidos.length);
     })
     .catch(error => {
-        alert('Erro ao buscar pedidos do administrador.');
+        alert('Erro ao buscar funcionários.');
+        console.error(error);
+    });
+}*/
+
+function adicionarVendedor() {
+    const novoVendedor = document.getElementById('novo-vendedor').value.trim();
+
+    if (novoVendedor === '') {
+        alert('Por favor, insira o nome do vendedor!');
+        return;
+    }
+
+    // Verifica se o administrador logado é "Matheus"
+    if (localStorage.getItem('administrador') !== '1')
+    {
+        alert('Apenas o administrador Matheus pode adicionar novos produtores.');
+        return;
+    }
+
+    // Faz uma requisição POST para a API para adicionar o vendedor
+    fetch('/api/funcionarios', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify({ nome: novoVendedor })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao adicionar vendedor.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        exibirVendedores();
+        document.getElementById('novo-vendedor').value = ''; // Limpa o campo de input
+    })
+    .catch(error => {
+        alert('Erro ao adicionar vendedor.');
         console.error(error);
     });
 }
 
-function criarMenuPaginacaoPedidosAdministrador(totalPedidos) {
-    const menuPaginacao = document.getElementById('menu-paginacao-pedidos-administrador');
-    menuPaginacao.innerHTML = ''; // Limpa o menu
+function adicionarProdutor() {
+    const novoProdutor = document.getElementById('novo-produtor').value.trim();
 
-    const totalPaginas = Math.ceil(totalPedidos / pedidosPorPagina);
-    const paginaInicial = Math.max(1, paginaAtualPedidosAdministrador - 3);
-    const paginaFinal = Math.min(totalPaginas, paginaInicial + 7);
-
-    for (let i = paginaInicial; i <= paginaFinal; i++) {
-        const listItem = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = '#';
-        link.textContent = i;
-        link.onclick = () => {
-            paginaAtualPedidosAdministrador = i;
-            exibirPedidosAdministrador();
-        };
-        listItem.appendChild(link);
-        menuPaginacao.appendChild(listItem);
-
-        if (i === paginaAtualPedidosAdministrador) {
-            listItem.classList.add('ativo');
-        }
+    if (novoProdutor === '') {
+        alert('Por favor, insira o nome do produtor!');
+        return;
     }
+
+    // Verifica se o administrador logado é "Matheus"
+    if (localStorage.getItem('administrador') !== 'Matheus')
+    {
+        alert('Apenas o administrador Matheus pode adicionar novos produtores.');
+        return;
+    }
+
+    // Faz uma requisição POST para a API para adicionar o vendedor
+    fetch('/api/funcionarios/produtores', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify({ nome: novoProdutor })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao adicionar produtor.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        //exibirVendedores();
+        document.getElementById('novo-produtor').value = ''; // Limpa o campo de input
+    })
+    .catch(error => {
+        alert('Erro ao adicionar vendedor.');
+        console.error(error);
+    });
 }
 
-// Adicione event listeners aos botões de paginação
-document.getElementById('btn-proxima-pagina-pedidos-administrador').addEventListener('click', () => {
-    paginaAtualPedidosAdministrador++;
-    exibirPedidosAdministrador();
-});
+function exibirDesempenhoVendedores() {
+    const listaVendedores = document.getElementById('lista-vendedores-desempenho');
+    listaVendedores.innerHTML = ''; // Limpa a lista
 
-document.getElementById('btn-pagina-anterior-pedidos-administrador').addEventListener('click', () => {
-    paginaAtualPedidosAdministrador--;
-    exibirPedidosAdministrador();
-});
+    // Faz uma requisição GET para a API para obter os funcionários
+    fetch('/api/funcionarios', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar funcionários.');
+        }
+        return response.json();
+    })
+    .then(funcionarios => {
+        // Itera sobre os funcionários e adiciona cada um à lista
+        funcionarios.forEach(funcionario => {
+            const listItem = document.createElement('li');
+            listItem.textContent = funcionario.nome;
+            listItem.addEventListener('click', () => {
+                exibirVendasVendedor(funcionario); // Passa o ID do funcionário para a função exibirVendasVendedor
+            });
+            listaVendedores.appendChild(listItem);
+        });
+    })
+    .catch(error => {
+        alert('Erro ao buscar funcionários.');
+        console.error(error);
+    });
+}
 
-// ... (seu código existente) ...
+function exibirDesempenhoProdutores() {
+    const listaProdutores = document.getElementById('lista-produtores-desempenho');
+    listaProdutores.innerHTML = ''; // Limpa a lista
+
+    produtores.forEach(produtor => {
+        const listItem = document.createElement('li');
+        listItem.textContent = produtor;
+        listItem.addEventListener('click', () => {
+            exibirProducoesProdutor(produtor);
+        });
+        listaProdutores.appendChild(listItem);
+    });
+}
+
+function exibirVendasVendedor(funcionario) {
+    const tabelaVendas = document.getElementById('tabela-vendas-vendedor').getElementsByTagName('tbody')[0];
+    tabelaVendas.innerHTML = ''; // Limpa a tabela
+    //console.log(funcionario)
+
+    // Faz uma requisição GET para a API para obter as vendas do vendedor
+    fetch(`/api/pedidos/vendedor/${funcionario.id}`, {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar vendas do vendedor.');
+        }
+        return response.json();
+    })
+    .then(vendasDoVendedor => {
+    //console.log(vendasDoVendedor)
+
+    //vendasDoVendedor = vendas;
+    const inicio = (paginaAtualVendasVendedor - 1) * vendasPorPagina;
+    const fim = inicio + vendasPorPagina;
+    const vendasPaginaAtual = vendasDoVendedor.slice(inicio, fim);
+
+    vendasPaginaAtual.forEach(venda => {
+        //console.log(venda)
+        const row = tabelaVendas.insertRow();
+        const cellPedido = row.insertCell();
+        const cellCliente = row.insertCell();
+        const cellData = row.insertCell();
+        const cellValor = row.insertCell();
+        const cellFrete = row.insertCell();
+        const cellInsumos = row.insertCell();
+        const cellProducao = row.insertCell();
+        const cellLucro = row.insertCell();
+        const cellStatus = row.insertCell();
+
+        cellPedido.textContent = `Pedido nº ${venda.id}`;
+        cellCliente.textContent = venda.cliente_nome;
+        cellData.textContent = formatarData(venda.data_criacao);
+        cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(venda.valor_venda).toFixed(2)}`;
+        cellFrete.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(venda.valor_frete ?? "Não informado")}`;
+        cellInsumos.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularValorInsumos(venda) ?? 0).toFixed(2)}`;
+        cellProducao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularComissaoProdutor(venda) ?? 0).toFixed(2)}`;
+        cellLucro.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularLucroVenda(venda) ?? 0).toFixed(2)}`;
+        cellStatus.textContent = venda.status;
+    });
+
+    // Controle de exibição do botão "Próxima Página"
+    const btnProximaPagina = document.getElementById('btn-proxima-pagina-vendedor');
+    if (fim < vendasDoVendedor.length) {
+        btnProximaPagina.style.display = 'block';
+    } else {
+        btnProximaPagina.style.display = 'none';
+    }
+})
+    document.getElementById('modal-nome-vendedor').textContent = `Desempenho do Vendedor: ${funcionario.nome}`;
+    document.getElementById('modal-desempenho-vendedor').style.display = 'block';
+}
+
+function exibirProducoesProdutor(produtor) {
+    const tabelaProducoes = document.getElementById('tabela-producoes-produtor').getElementsByTagName('tbody')[0];
+    tabelaProducoes.innerHTML = ''; // Limpa a tabela
+
+    const producoesDoProdutor = vendas.filter(venda => venda.produtor === produtor);
+
+    producoesDoProdutor.forEach(venda => {
+        const row = tabelaProducoes.insertRow();
+        const cellPedido = row.insertCell();
+        const cellVendedor = row.insertCell();
+        const cellDataSolicitada = row.insertCell();
+        const cellFinalizado = row.insertCell();
+        const cellComissao = row.insertCell();
+        const cellStatusRepasse = row.insertCell();
+
+        cellPedido.textContent = `Pedido nº ${venda.id}`;
+        cellVendedor.textContent = venda.vendedor;
+        cellDataSolicitada.textContent = formatarData(venda.dataCriacao);
+        cellFinalizado.textContent = venda.status === 'Finalizado' ? formatarData(venda.dataFinalizacao) : 'Aguardando Envio!';
+        cellComissao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularComissaoProdutor(venda) ?? 0).toFixed(2)}`;
+        cellStatusRepasse.textContent = venda.repasseComissao ? 'Feito!' : 'Não feito';
+    });
+
+    document.getElementById('modal-nome-produtor').textContent = `Desempenho do Produtor: ${produtor}`;
+    document.getElementById('modal-desempenho-produtor').style.display = 'block';
+}
+
+function fecharModalDesempenhoVendedor() {
+    document.getElementById('modal-desempenho-vendedor').style.display = 'none';
+}
+
+function fecharModalDesempenhoProdutor() {
+    document.getElementById('modal-desempenho-produtor').style.display = 'none';
+}

@@ -32,7 +32,7 @@ async function exibirResumoRafaelMatheus() {
         //console.log(resumo);
         //Saldo Total
         let totalDolar = parseFloat(resumo.saldo_total_rafael_matheus_dolares)/10;
-        let totalReal = parseFloat(resumo.saldo_total_rafael_matheus_reais);
+        let totalReal = parseFloat(resumo.saldo_total_rafael_matheus_reais)/10;
         let totalConvertido = parseFloat((await converterDolarParaReal(totalDolar) + totalReal).toFixed(2));
         //Vendas Totais
         let totalDolarVendasTotais = parseFloat(resumo.vendas_totais_rafael_matheus_dolares);
@@ -73,10 +73,10 @@ async function exibirResumoMaitheMatheus() {
             throw new Error('Erro ao buscar resumo da Maithê.');
         }
         const resumo = await response.json();
-        console.log(resumo);
+        //console.log(resumo);
         //Saldo Total
         let totalDolar = parseFloat(resumo.saldo_total_maithe_matheus_dolares)/10;
-        let totalReal = parseFloat(resumo.saldo_total_maithe_matheus_reais);
+        let totalReal = parseFloat(resumo.saldo_total_maithe_matheus_reais)/10;
         let totalConvertido = parseFloat((await converterDolarParaReal(totalDolar) + totalReal).toFixed(2));
         //console.log(totalConvertido, totalDolar, totalReal);
         //Vendas Totais
@@ -170,7 +170,7 @@ function confirmarRepasse(vendedor) {
         return;
     }
 
-    if (confirm(`Confirma o repasse de R$ ${valorRepasse.toFixed(2)} para o produtor Matheus?`)) {
+    if (confirm(`Confirma o repasse de R$ ${valorRepasse.toFixed(2)} do ${vendedor} para o produtor Matheus?`)) {
         // Faz uma requisição POST para a API para registrar o repasse
         fetch('/api/divisao-lucros-simples/repasses-producao-parcial/', {
             method: 'POST',
