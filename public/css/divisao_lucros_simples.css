@@ -41,3 +41,13 @@
         flex: 1 1 100%;
     }
 }
+
+.vendedor-rafael .input-group,
+.vendedor-maithe .input-group {
+    margin-bottom: 10px;
+}
+
+.vendedor-rafael button,
+.vendedor-maithe button {
+    margin-top: 10px;
+}

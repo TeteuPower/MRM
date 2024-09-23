@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Divisão dos Lucros Simplificada</title>
     <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estoque.css">
     <link rel="stylesheet" href="../css/divisao_lucros_simples.css">
 </head>
 <body>
@@ -22,6 +23,12 @@
                     <p>Vendas totais do Rafael produzidas pelo Matheus: <span id="vendas-totais-rafael-matheus">R$ 0.00</span></p>
                     <p>Lucro real do Rafael (- todos os gastos): <span id="lucro-real-rafael">R$ 0.00</span></p>
                     <p>Comissões p/ Teteu: <span id="comissoes-matheus-rafael">R$ 0.00</span></p>
+                    <div class="input-group">
+                        <label for="valor-repasse-rafael">Fazer Repasse:</label>
+                        <input type="number" id="valor-repasse-rafael" placeholder="Valor do Repasse">
+                    </div>
+            
+                    <button id="btn-confirmar-repasse-rafael" class="btn-acao verde">Confirmar Repasse</button>
                 </div>
 
                 <div class="vendedor-maithe">
@@ -30,6 +37,12 @@
                     <p>Vendas totais da Maithê produzidas pelo Matheus: <span id="vendas-totais-maithe-matheus">R$ 0.00</span></p>
                     <p>Lucro real da Maithê (- todos os gastos): <span id="lucro-real-maithe">R$ 0.00</span></p>
                     <p>Comissões p/ Teteu: <span id="comissoes-matheus-maithe">R$ 0.00</span></p>
+                    <div class="input-group">
+                        <label for="valor-repasse-maithe">Fazer Repasse:</label>
+                        <input type="number" id="valor-repasse-maithe" placeholder="Valor do Repasse">
+                    </div>
+            
+                    <button id="btn-confirmar-repasse-maithe" class="btn-acao verde">Confirmar Repasse</button>
                 </div>
             </div>
         </section>

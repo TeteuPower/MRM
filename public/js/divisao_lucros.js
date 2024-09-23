@@ -44,7 +44,7 @@ async function exibirRepassesPendentesProducao() {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = repasse.id;
-            repasse.lucro_producao = (parseInt(repasse.lucro_venda).toFixed(2) / 10);
+            repasse.lucro_producao = (parseFloat(repasse.lucro_venda).toFixed(2) / 10);
             //repasse.lucro_producao_convertido = converterDolarParaReal(repasse.lucro_producao);
             checkbox.addEventListener('change', () => {
                 atualizarTotalSelecionado('producao', repasses);
@@ -104,7 +104,7 @@ function exibirRepassesPendentesAdministradores() {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = repasse.id;
-            repasse.lucro_vendedor = (parseInt(repasse.lucro_venda).toFixed(2) * 45/100)
+            repasse.lucro_vendedor = (parseFloat(repasse.lucro_venda).toFixed(2) * 45/100)
             checkbox.addEventListener('change', () => {
                 atualizarTotalSelecionado('administradores', repasses);
             });
@@ -160,7 +160,7 @@ function exibirRepassesPendentesEmpresa() {
     .then(repasses => {
         repasses.forEach(repasse => {
             //console.log(repasse)
-            let custoTotal = parseInt(repasse.valor_insumos) + parseInt(repasse.valor_frete);
+            let custoTotal = parseFloat(repasse.valor_insumos) + parseFloat(repasse.valor_frete);
             repasse.custoTotal = custoTotal.toFixed(2);
             const listItem = document.createElement('li');
             const checkbox = document.createElement('input');
@@ -378,10 +378,10 @@ async function atualizarTotalSelecionado(area, vendas) { // Adiciona vendas como
                 const pedidoId = parseInt(checkbox.value);
                 const pedido = vendas.find(v => v.id === pedidoId); // Usa vendas como argumento
                 if (pedido.moeda === "dolar") {
-                    totalRepassesDolar += parseFloat(parseInt(pedido.valor_insumos) + parseInt(pedido.valor_frete));
+                    totalRepassesDolar += parseFloat(parseFloat(pedido.valor_insumos) + parseFloat(pedido.valor_frete));
                 }
                 if (pedido.moeda === "real") {
-                    totalRepassesReais += parseFloat(parseInt(pedido.valor_insumos) + parseInt(pedido.valor_frete));
+                    totalRepassesReais += parseFloat(parseFloat(pedido.valor_insumos) + parseFloat(pedido.valor_frete));
                 }
             });
             totalRepassesEmpresaReais = totalRepassesReais; // Atualiza a variável global com o total calculado
@@ -588,17 +588,17 @@ function atualizarResumoDistribuicoes() {
     })
     .then(resumo => {
         // Atualiza os valores no HTML
-        document.getElementById('saldo-total-rafael-matheus').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
-        document.getElementById('vendas-totais-rafael-matheus').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
-        document.getElementById('lucro-real-rafael').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
-        document.getElementById('comissoes-matheus').textContent = `R$ ${parseInt(resumo.repasses_recebidos_reais).toFixed(2)}`;
+        document.getElementById('saldo-total-rafael-matheus').textContent = `R$ ${parseFloat(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('vendas-totais-rafael-matheus').textContent = `R$ ${parseFloat(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('lucro-real-rafael').textContent = `R$ ${parseFloat(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('comissoes-matheus').textContent = `R$ ${parseFloat(resumo.repasses_recebidos_reais).toFixed(2)}`;
 
-        document.getElementById('saldo-total-maithe-matheus').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
-        document.getElementById('vendas-totais-maithe-matheus').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
-        document.getElementById('lucro-real-maithe').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
-        document.getElementById('comissoes-matheus').textContent = `R$ ${parseInt(resumo.repasses_recebidos_reais).toFixed(2)}`;
+        document.getElementById('saldo-total-maithe-matheus').textContent = `R$ ${parseFloat(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('vendas-totais-maithe-matheus').textContent = `R$ ${parseFloat(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('lucro-real-maithe').textContent = `R$ ${parseFloat(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('comissoes-matheus').textContent = `R$ ${parseFloat(resumo.repasses_recebidos_reais).toFixed(2)}`;
 
-        document.getElementById('saldo-total-rafael-maithe').textContent = `R$ ${parseInt(resumo.vendas_totais_reais).toFixed(2)}`;
+        document.getElementById('saldo-total-rafael-maithe').textContent = `R$ ${parseFloat(resumo.vendas_totais_reais).toFixed(2)}`;
     })
     .catch(error => {
         alert('Erro ao buscar resumo financeiro.');
