@@ -127,7 +127,7 @@ router.put('/:id', autenticar, (req, res) => {
 // Rota para EDITAR um pedido
 router.put('/editar/:id', autenticar, (req, res) => {
   const pedidoId = req.params.id;
-  const { cliente_id, vendedor_id, descricao, moeda, valor_venda, valor_pago, status, valor_frete, produtor_id, saldo_venda, itens } = req.body;
+  const { cliente_id, vendedor_id, descricao, moeda, valor_venda, valor_pago, status, valor_frete, produtor_id, saldo_venda, itens, lucro_venda } = req.body;
 
   // Verifica se o status foi fornecido
   if (!status) {
@@ -135,8 +135,8 @@ router.put('/editar/:id', autenticar, (req, res) => {
   }
 
   // Atualiza o pedido no banco de dados
-  const sql = 'UPDATE pedidos SET cliente_id = ?, vendedor_id = ?, descricao = ?, moeda = ?, valor_venda = ?, valor_pago = ?, status = ?, valor_frete = ?, produtor_id = ?, saldo_venda = ? WHERE id = ?';
-  db.query(sql, [cliente_id, vendedor_id, descricao, moeda, valor_venda, valor_pago, status, valor_frete, produtor_id, saldo_venda, pedidoId], (err, result) => {
+  const sql = 'UPDATE pedidos SET cliente_id = ?, vendedor_id = ?, descricao = ?, moeda = ?, valor_venda = ?, valor_pago = ?, status = ?, valor_frete = ?, produtor_id = ?, saldo_venda = ?, lucro_venda = ? WHERE id = ?';
+  db.query(sql, [cliente_id, vendedor_id, descricao, moeda, valor_venda, valor_pago, status, valor_frete, produtor_id, saldo_venda, lucro_venda, pedidoId], (err, result) => {
       if (err) {
           console.error('Erro ao atualizar pedido:', err);
           res.status(500).json({ error: 'Erro ao atualizar pedido.' });

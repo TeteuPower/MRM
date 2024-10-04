@@ -550,6 +550,7 @@ function editarPedido(pedido) {
     pedido.valor_frete = parseFloat(valorFreteElement.value);
     pedido.produtor_id = parseFloat(produtorElement.value);
     pedido.saldo_venda = saldoVendaElement.textContent === 'Pago' ? 0 : parseInt(saldoVendaElement.textContent);
+    pedido.lucro_venda = parseFloat(parseFloat(pedido.valor_venda) - parseFloat(pedido.valor_insumos));
 
 //console.log(pedido);
 
