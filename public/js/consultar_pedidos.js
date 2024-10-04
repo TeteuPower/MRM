@@ -105,11 +105,11 @@ function fecharModalDetalhesPedido() {
     document.getElementById('modal-detalhes-pedido').style.display = 'none';
 }
 
-function finalizarPedido(pedido) {
+async function finalizarPedido(pedido) {
     if (confirm(`Confirma a finalização do pedido nº ${pedido.id}?`)) {
         pedido.status = 'Finalizado';
         pedido.data_finalizacao = new Date().toISOString().slice(0, 19).replace('T', ' '), // Converte para o formato YYYY-MM-DD HH:MM:SS
-        pedido.valor_frete = parseFloat(document.getElementById('modal-valor-frete').value) || 0;
+        pedido.valor_frete = (pedido.moeda === 'dolar' ? await converterRealParaDolar(parseFloat(document.getElementById('modal-valor-frete').value)) || 0 : parseFloat(document.getElementById('modal-valor-frete').value) || 0);
         pedido.lucro_venda = pedido.lucro_venda - pedido.valor_frete;
         //pedido.produtor = document.getElementById('modal-produtor').value;
         //console.log(pedido)
