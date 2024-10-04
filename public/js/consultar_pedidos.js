@@ -372,6 +372,7 @@ function abrirModalEditarPedido(pedido) {
 
 // Função para preencher o modal de edição de pedido
 function preencherModalEditarPedido(pedido) {
+    popularProdutoresEditar();
     const dolar = `<option value="dolar">Dólar (US$)</option>`;
     const real = `<option value="real">Real (R$)</option>`;
     let moeda = '';
@@ -406,8 +407,10 @@ function preencherModalEditarPedido(pedido) {
     valorPagoElement.value = pedido.valor_pago;
     statusElement.value = pedido.status;
     valorFreteElement.value = pedido.valor_frete;
-    produtorElement.value = pedido.produtor;
+    produtorElement.innerHTML = `<option value="${pedido.produtor_id}">${pedido.produtor}</option>`;
+    //produtorElement.value = pedido.produtor;
     saldoVendaElement.value = calcularSaldoVenda(); 
+    //console.log(pedido)
   
     // Função auxiliar para formatar a quantidade do item
     const formatarQuantidadeItem = (item) => {
@@ -469,7 +472,6 @@ function preencherModalEditarPedido(pedido) {
     // Popular selects de clientes, vendedores e produtores (se necessário)
     // popularSelectClientesEditar();
     popularSelectVendedoresEditar(pedido);
-    popularProdutoresEditar();
   }
 
 function removerItemDoCarrinho(pedido, index) {
