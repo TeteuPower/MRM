@@ -5,7 +5,19 @@ const autenticar = require('../middleware/auth');
 
 // Rota para obter os pedidos aguardando produção (GET /api/pedidos/aguardando-producao)
 router.get('/', autenticar, (req, res) => {
-    const sql = 'SELECT * FROM pedidos WHERE status IN ("Em produção")';
+      const sql = `
+      SELECT 
+          p.*,
+          (
+              SELECT SUM(ip.quantidade) 
+              FROM itens_pedido ip 
+              WHERE ip.pedido_id = p.id AND ip.produto_id = 1
+          ) AS quantidade_rape_pacotes
+      FROM 
+          pedidos p
+      WHERE 
+          p.status IN ("Em produção");
+    `;
     db.query(sql, (err, results) => {
         if (err) {
         console.error('Erro ao buscar pedidos aguardando produção:', err);

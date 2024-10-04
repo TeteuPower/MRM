@@ -184,8 +184,9 @@ function exibirPedidosAguardandoProducao() {
 
         // Itera sobre os pedidos filtrados e adiciona cada um à lista
         pedidosFiltrados.forEach(pedido => {
+            //console.log(pedido)
             const listItem = document.createElement('li');
-            listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor}`;
+            listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)}Kg`;
 
             listItem.addEventListener('click', () => {
                 exibirDetalhesPedido(pedido.id);
@@ -234,7 +235,7 @@ function exibirPedidosFinalizadosAguardandoEnvio() {
             // Itera sobre os pedidos filtrados e adiciona cada um à lista
             pedidosFiltrados.forEach(pedido => {
                 const listItem = document.createElement('li');
-                listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
+                listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)}Kg`;
     
                 listItem.addEventListener('click', () => {
                     exibirDetalhesPedido(pedido.id);
@@ -282,7 +283,7 @@ function exibirPedidosFinalizados() {
 
     pedidosPaginaAtual.forEach(pedido => {
         const listItem = document.createElement('li');
-        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.status}`;
+        listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)}Kg`;
 
         listItem.addEventListener('click', () => {
             exibirDetalhesPedido(pedido.id);
