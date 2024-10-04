@@ -52,7 +52,7 @@ async function exibirRepassesPendentesProducao() {
             listItem.appendChild(checkbox);
             
             const label = document.createElement('label');
-            label.textContent = `Do ${repasse.vendedor} para o ${repasse.produtor} o valor de ${repasse.lucro_producao} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
+            label.textContent = `Do ${repasse.vendedor} para o ${repasse.produtor} o valor de ${parseFloat(repasse.lucro_producao).toFixed(2)} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
             listItem.appendChild(label);
             listaRepasses.appendChild(listItem);
         });
@@ -111,7 +111,7 @@ function exibirRepassesPendentesAdministradores() {
             listItem.appendChild(checkbox);
 
             const label = document.createElement('label');
-            label.textContent = `Do ${repasse.vendedor} ${repasse.vendedor_id === 2 ? 'Para o Rafael' : 'Para a Maithê'} o valor de ${repasse.lucro_vendedor} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
+            label.textContent = `Do ${repasse.vendedor} ${repasse.vendedor_id === 2 ? 'Para o Rafael' : 'Para a Maithê'} o valor de ${parseFloat(repasse.lucro_vendedor).toFixed(2)} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
             listItem.appendChild(label);
             listaRepasses.appendChild(listItem);
         });
