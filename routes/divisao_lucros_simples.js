@@ -31,25 +31,25 @@ router.get('/rafael', autenticar, (req, res) => {
                 SELECT SUM(CASE WHEN moeda = 'real' THEN p.valor_venda ELSE 0 END) 
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
-                WHERE p.vendedor_id = 3 AND pr.id = 1
+                WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS vendas_totais_rafael_matheus_reais,
             (
                 SELECT SUM(CASE WHEN moeda = 'dolar' THEN p.valor_venda ELSE 0 END) 
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
-                WHERE p.vendedor_id = 3 AND pr.id = 1
+                WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS vendas_totais_rafael_matheus_dolares,
             (
                 SELECT SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END) 
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
-                WHERE p.vendedor_id = 3 AND pr.id = 1
+                WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS lucro_real_rafael_reais,
             (
                 SELECT SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END) 
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
-                WHERE p.vendedor_id = 3 AND pr.id = 1
+                WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS lucro_real_rafael_dolares,
             (
                 SELECT SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END) 
