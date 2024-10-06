@@ -9,6 +9,9 @@ const autenticar = require('./middleware/auth'); // Importa o middleware de aute
 const bcrypt = require('bcrypt'); // Importa o módulo bcrypt
 require('dotenv').config(); // Carrega as variáveis do .env
 
+// Definir o fuso horário
+process.env.TZ = 'America/Sao_Paulo';
+
 // Middleware para processar o corpo das requisições POST
 app.use(bodyParser.json()); 
 

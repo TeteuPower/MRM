@@ -33,7 +33,7 @@ async function exibirResumoRafaelMatheus() {
         //Saldo Total
         let totalDolar = parseFloat(resumo.saldo_total_rafael_matheus_dolares)/10;
         let totalReal = parseFloat(resumo.saldo_total_rafael_matheus_reais)/10;
-        let totalConvertido = parseFloat((await converterDolarParaReal(totalDolar) + totalReal).toFixed(2));
+        let totalConvertido = parseFloat((await converterDolarParaReal(totalDolar) + totalReal) - parseFloat(resumo.repasses_parciais_rafael_matheus)).toFixed(2);
         //Vendas Totais
         let totalDolarVendasTotais = parseFloat(resumo.vendas_totais_rafael_matheus_dolares);
         let totalRealVendasTotais = parseFloat(resumo.vendas_totais_rafael_matheus_reais);
@@ -52,10 +52,10 @@ async function exibirResumoRafaelMatheus() {
         let totalConvertidoComissoesParciais = parseFloat((await converterDolarParaReal(totalDolarComissoesParciais) + totalRealComissoesParciais).toFixed(2));
         let comissaoTotal = totalConvertidoComissoes + totalConvertidoComissoesParciais;
         //console.log(totalConvertido);
-        document.getElementById('saldo-total-rafael-matheus').textContent = `R$ ${totalConvertido.toLocaleString('pt-BR')}`;
-        document.getElementById('vendas-totais-rafael-matheus').textContent = `R$ ${totalConvertidoVendasTotais.toLocaleString('pt-BR')}`;
-        document.getElementById('lucro-real-rafael').textContent = `R$ ${totalConvertidoLucroReal.toLocaleString('pt-BR')}`;
-        document.getElementById('comissoes-matheus-rafael').textContent = `R$ ${parseFloat(comissaoTotal).toLocaleString('pt-BR')}`;
+        document.getElementById('saldo-total-rafael-matheus').textContent = `R$ ${formatarValor(totalConvertido)}`;
+        document.getElementById('vendas-totais-rafael-matheus').textContent = `R$ ${formatarValor(totalConvertidoVendasTotais)}`;
+        document.getElementById('lucro-real-rafael').textContent = `R$ ${formatarValor(totalConvertidoLucroReal)}`;
+        document.getElementById('comissoes-matheus-rafael').textContent = `R$ ${formatarValor(parseFloat(resumo.repasses_parciais_rafael_matheus))}`;
     } catch (error) {
         console.error(error); 
         alert('Erro ao buscar resumo do Rafael.');
@@ -73,11 +73,11 @@ async function exibirResumoMaitheMatheus() {
             throw new Error('Erro ao buscar resumo da Maithê.');
         }
         const resumo = await response.json();
-        //console.log(resumo);
+        //console.log(resumo.repasses_parciais_maithe_matheus);
         //Saldo Total
         let totalDolar = parseFloat(resumo.saldo_total_maithe_matheus_dolares)/10;
         let totalReal = parseFloat(resumo.saldo_total_maithe_matheus_reais)/10;
-        let totalConvertido = parseFloat((await converterDolarParaReal(totalDolar) + totalReal).toFixed(2));
+        let totalConvertido = parseFloat((await converterDolarParaReal(totalDolar) + totalReal) - parseFloat(resumo.repasses_parciais_maithe_matheus)).toFixed(2)
         //console.log(totalConvertido, totalDolar, totalReal);
         //Vendas Totais
         let totalDolarVendasTotais = parseFloat(resumo.vendas_totais_maithe_matheus_dolares);
@@ -98,16 +98,16 @@ async function exibirResumoMaitheMatheus() {
         let comissaoTotal = totalConvertidoComissoes + totalConvertidoComissoesParciais;
         
         document.getElementById('saldo-total-maithe-matheus').textContent = 
-        `R$ ${totalConvertido.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        `R$ ${formatarValor(totalConvertido)}`;
       
       document.getElementById('vendas-totais-maithe-matheus').textContent = 
-        `R$ ${totalConvertidoVendasTotais.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        `R$ ${formatarValor(totalConvertidoVendasTotais)}`;
       
       document.getElementById('lucro-real-maithe').textContent = 
-        `R$ ${totalConvertidoLucroReal.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        `R$ ${formatarValor(totalConvertidoLucroReal)}`;
       
       document.getElementById('comissoes-matheus-maithe').textContent = 
-        `R$ ${parseFloat(comissaoTotal).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        `R$ ${formatarValor(parseFloat(resumo.repasses_parciais_maithe_matheus))}`;
     } catch (error) {
         console.error(error); 
         alert('Erro ao buscar resumo da Maithe.');
@@ -202,4 +202,9 @@ function confirmarRepasse(vendedor) {
             console.error(error);
         });
     }
+}
+
+function exibirRepassesPendentesProducao() {
+    exibirResumoRafaelMatheus();
+    exibirResumoMaitheMatheus();
 }

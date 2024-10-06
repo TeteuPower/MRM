@@ -34,6 +34,12 @@ router.get('/rafael', autenticar, (req, res) => {
                 WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS vendas_totais_rafael_matheus_reais,
             (
+                SELECT SUM(CASE WHEN moeda = 'real' THEN p.valor ELSE 0 END) 
+                FROM repasses_parciais_producao p 
+                JOIN produtores pr ON p.produtor_id = pr.id 
+                WHERE p.vendedor_id = 3 AND pr.id = 1
+            ) AS repasses_parciais_rafael_matheus,
+            (
                 SELECT SUM(CASE WHEN moeda = 'dolar' THEN p.valor_venda ELSE 0 END) 
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
@@ -110,6 +116,12 @@ router.get('/maithe', autenticar, (req, res) => {
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 2 AND rp.produtor_id = 1
             ) AS saldo_total_maithe_matheus_dolares,
+            (
+                SELECT SUM(CASE WHEN moeda = 'real' THEN p.valor ELSE 0 END) 
+                FROM repasses_parciais_producao p 
+                JOIN produtores pr ON p.produtor_id = pr.id 
+                WHERE p.vendedor_id = 2 AND pr.id = 1
+            ) AS repasses_parciais_maithe_matheus,
             (
                 SELECT SUM(CASE WHEN moeda = 'real' THEN p.valor_venda ELSE 0 END) 
                 FROM pedidos p 
