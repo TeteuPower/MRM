@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function checkAdminPassword() {
     const adminPassword = document.getElementById('adminPassword').value;
+    const adminUsuario = document.getElementById('adminUsuario').value;
+
 
     // Faz uma requisição POST para a rota de login para obter o token
     fetch('/api/login', {
@@ -19,7 +21,10 @@ function checkAdminPassword() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ senha: adminPassword })
+        body: JSON.stringify({ 
+            senha: adminPassword,
+            usuario: adminUsuario
+         })
     })
     .then(response => {
         if (!response.ok) {
