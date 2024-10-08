@@ -68,6 +68,7 @@ function checkAdminPassword() {
             .then(administrador => {
                 // Define a chave "administrador" no Local Storage
                 localStorage.setItem('administrador', administrador.id);
+                localStorage.setItem('administradorNome', administrador.nome);
 
                 // Redireciona para a página de consultar pedidos
                 window.location.href = 'html/consultar_pedidos.html';

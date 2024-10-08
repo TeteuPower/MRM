@@ -293,3 +293,11 @@ button:hover {
 .span-vermelho {
     color: red; /* Define a cor vermelha para o saldo negativo */
 }
+
+.hora-servidor {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    color: #eee;
+    font-weight: bold;
+}
