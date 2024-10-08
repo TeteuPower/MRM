@@ -487,6 +487,9 @@ function carregarHeader() {
         // Remove o token do Local Storage
         localStorage.removeItem('token');
 
+        // Remove o nome do administrador do Local Storage
+        localStorage.removeItem('administradorNome');
+
         // Redireciona para a página de login
         window.location.href = '/'; // Ajuste o caminho para a página de login, se necessário
 
@@ -498,6 +501,9 @@ function carregarHeader() {
 
         // Remove o token do Local Storage
         localStorage.removeItem('token');
+
+        // Remove o nome do administrador do Local Storage
+        localStorage.removeItem('administradorNome');
 
         // Redireciona para a página de login
         window.location.href = '/'; // Ajuste o caminho para a página de login, se necessário
