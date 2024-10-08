@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 //popularSelectDestinatariosRepasse();
 
                 // Atualiza o resumo das distribuições
-                atualizarResumoDistribuicoes();
+                //atualizarResumoDistribuicoes();
             }
         });
 

@@ -611,6 +611,9 @@ function exibirProdutores(inputId) {
             const listItem = document.createElement('option');
             listItem.textContent = funcionario.nome;
             listItem.value = funcionario.id;
+            listItem.addEventListener('click', () => {
+                exibirProducoesProdutor(funcionario);
+            });
             listaProdutores.appendChild(listItem);
         });
     })

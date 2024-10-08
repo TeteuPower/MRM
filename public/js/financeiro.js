@@ -2,29 +2,29 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     verificarAutenticacao();
-    carregarFuncionariosDoLocalStorage();
+    //carregarFuncionariosDoLocalStorage();
     //exibirVendedores();
-    exibirProdutores('lista-produtores');
+    exibirProdutores('lista-produtores-desempenho');
     exibirDesempenhoVendedores();
-    exibirDesempenhoProdutores();
-    carregarPedidosDoLocalStorage();
+    //exibirDesempenhoProdutores();
+    //carregarPedidosDoLocalStorage();
 
-    document.getElementById('btn-adicionar-vendedor').addEventListener('click', adicionarVendedor);
-    document.getElementById('btn-adicionar-produtor').addEventListener('click', adicionarProdutor);
+    //document.getElementById('btn-adicionar-vendedor').addEventListener('click', adicionarVendedor);
+    //document.getElementById('btn-adicionar-produtor').addEventListener('click', adicionarProdutor);
 
-    document.getElementById('lista-vendedores').addEventListener('click', function (event) {
+    /*document.getElementById('lista-vendedores').addEventListener('click', function (event) {
         if (event.target.tagName === 'LI') {
             const vendedorNome = event.target.textContent;
             exibirVendasVendedor(vendedorNome);
         }
-    });
+    });*/
 
-    document.getElementById('lista-produtores').addEventListener('click', function (event) {
+    /*document.getElementById('lista-produtores').addEventListener('click', function (event) {
         if (event.target.tagName === 'LI') {
             const produtorNome = event.target.textContent;
             exibirProducoesProdutor(produtorNome);
         }
-    });
+    });*/
 
     document.getElementById('btn-proxima-pagina-vendedor').addEventListener('click', () => {
         paginaAtualVendasVendedor++;
@@ -238,9 +238,9 @@ function exibirVendasVendedor(funcionario) {
         cellData.textContent = formatarData(venda.data_criacao);
         cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(venda.valor_venda).toFixed(2)}`;
         cellFrete.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(venda.valor_frete ?? "Não informado")}`;
-        cellInsumos.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularValorInsumos(venda) ?? 0).toFixed(2)}`;
-        cellProducao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularComissaoProdutor(venda) ?? 0).toFixed(2)}`;
-        cellLucro.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(calcularLucroVenda(venda) ?? 0).toFixed(2)}`;
+        cellInsumos.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(venda.valor_insumos).toFixed(2)}`;
+        cellProducao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(venda.lucro_venda * 1/10).toFixed(2)}`;
+        cellLucro.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${((parseFloat(venda.valor_venda).toFixed(2) - parseFloat(venda.valor_frete || 0) - parseFloat(venda.valor_insumos).toFixed(2) - parseFloat(venda.lucro_venda * 1/10).toFixed(2)) / 2).toFixed(2)}`;
         cellStatus.textContent = venda.status;
     });
 
