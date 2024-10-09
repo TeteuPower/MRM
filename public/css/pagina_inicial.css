@@ -189,14 +189,14 @@
     margin-bottom: 15px;
 }
 
-#tabela-vendas-vendedor {
+#tabela-vendas-vendedor-simples {
     width: 100%; /* Define a largura da tabela como 100% do container */
     border-collapse: collapse;
     /*font-size: 0.8em;  Diminui o tamanho da fonte */
 }
 
-#tabela-vendas-vendedor th,
-#tabela-vendas-vendedor td {
+#tabela-vendas-vendedor-simples th,
+#tabela-vendas-vendedor-simples td {
     text-align: left;
     padding: 8px;
     border-bottom: 1px solid #555;
@@ -222,7 +222,7 @@
         color: #aaa;
         margin-bottom: 10px;
     }
-    #tabela-vendas-vendedor {
+    #tabela-vendas-vendedor-simples {
         font-size: 0.6em; /* Diminui o tamanho da fonte ainda mais */
     }
 
@@ -235,25 +235,25 @@
         max-width: 100%; /* Define a largura máxima do container */
     }
 
-    #tabela-vendas-vendedor th,
-    #tabela-vendas-vendedor td {
+    #tabela-vendas-vendedor-simples th,
+    #tabela-vendas-vendedor-simples td {
         padding: 3px; /* Diminui o espaçamento interno */
     }
 
-    #tabela-vendas-vendedor td:nth-child(1), /* Oculta a coluna */
-    #tabela-vendas-vendedor th:nth-child(1) {
+    #tabela-vendas-vendedor-simples td:nth-child(1), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples th:nth-child(1) {
         display: none;
     }
-    #tabela-vendas-vendedor td:nth-child(3), /* Oculta a coluna */
-    #tabela-vendas-vendedor th:nth-child(3) {
+    #tabela-vendas-vendedor-simples td:nth-child(3), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples th:nth-child(3) {
         display: none;
     }
-    #tabela-vendas-vendedor td:nth-child(4), /* Oculta a coluna */
-    #tabela-vendas-vendedor th:nth-child(4) {
+    #tabela-vendas-vendedor-simples td:nth-child(4), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples th:nth-child(4) {
         display: none;
     }
-    #tabela-vendas-vendedor td:nth-child(9), /* Oculta a coluna */
-    #tabela-vendas-vendedor th:nth-child(9) {
+    #tabela-vendas-vendedor-simples td:nth-child(9), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples th:nth-child(9) {
         display: none;
     }
 
@@ -272,4 +272,13 @@
 
 .button-detalhes:hover {
     background-color: #4cae4c;
+}
+
+#tabela-vendas-vendedor th,
+#tabela-vendas-vendedor td,
+#tabela-producoes-produtor th,
+#tabela-producoes-produtor td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
 }
