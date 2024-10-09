@@ -87,4 +87,6 @@ main {
     border: 1px solid #888;
     width: 30%;
     /* Largura do modal */
+    min-width: 80%; 
+    overflow-y: auto; /* Permite rolagem vertical */
 }

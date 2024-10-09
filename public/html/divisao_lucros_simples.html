@@ -29,6 +29,7 @@
                     </div>
             
                     <button id="btn-confirmar-repasse-rafael" class="btn-acao verde">Confirmar Repasse</button>
+                    <button id="btn-detalhes-rafael" class="btn-acao verde">Detalhes dos valores</button>
                 </div>
 
                 <div class="vendedor-maithe">
@@ -43,9 +44,33 @@
                     </div>
             
                     <button id="btn-confirmar-repasse-maithe" class="btn-acao verde">Confirmar Repasse</button>
+                    <button id="btn-detalhes-maithe" class="btn-acao verde">Detalhes dos valores</button>
                 </div>
             </div>
         </section>
+        <div id="modal-desempenho-vendedor" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalDesempenhoVendedor()">×</span>
+                <h3 id="modal-nome-vendedor">Detalhamento das comissões</h3>
+
+                <table id="tabela-vendas-vendedor">
+                    <thead>
+                        <tr>
+                            <th>Pedido</th>
+                            <th>Cliente</th>
+                            <th>Data</th>
+                            <th>Valor Venda</th>
+                            <th>Comissão</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Vendas do vendedor serão adicionadas aqui -->
+                    </tbody>
+                </table>
+
+                <button id="btn-proxima-pagina-vendedor" style="display: none;">Próxima Página</button>
+            </div>
+        </div>
     </main>
 
     <script src="../js/funcoes.js"></script>

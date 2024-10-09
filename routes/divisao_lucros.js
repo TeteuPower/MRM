@@ -15,16 +15,92 @@ router.get('/repasses-producao', autenticar, (req, res) => {
             p.valor_venda,
             p.vendedor_id,
             p.produtor_id,
+            p.cliente_id,
             pr.nome AS produtor,
-            v.nome AS vendedor
+            v.nome AS vendedor,
+            a.nome AS cliente
         FROM 
             pedidos p
         JOIN 
             produtores pr ON p.produtor_id = pr.id
         JOIN 
             vendedores v ON p.vendedor_id = v.id
+        JOIN 
+            clientes a ON p.cliente_id = a.id
         WHERE 
             p.status = "Finalizado" AND p.repasse_comissao = 0;
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar repasses pendentes para produção:', err);
+            res.status(500).json({ error: 'Erro ao buscar repasses pendentes para produção.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+router.get('/repasses-producao-rafael', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            p.id,
+            p.data_criacao,
+            p.descricao,
+            p.moeda,
+            p.lucro_venda,
+            p.valor_venda,
+            p.vendedor_id,
+            p.produtor_id,
+            p.cliente_id,
+            pr.nome AS produtor,
+            v.nome AS vendedor,
+            a.nome AS cliente
+        FROM 
+            pedidos p
+        JOIN 
+            produtores pr ON p.produtor_id = pr.id
+        JOIN 
+            vendedores v ON p.vendedor_id = v.id
+        JOIN 
+            clientes a ON p.cliente_id = a.id
+        WHERE 
+            p.status = "Finalizado" AND p.repasse_comissao = 0 AND p.vendedor_id = 3;
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar repasses pendentes para produção:', err);
+            res.status(500).json({ error: 'Erro ao buscar repasses pendentes para produção.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
+router.get('/repasses-producao-maithe', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            p.id,
+            p.data_criacao,
+            p.descricao,
+            p.moeda,
+            p.lucro_venda,
+            p.valor_venda,
+            p.vendedor_id,
+            p.produtor_id,
+            p.cliente_id,
+            pr.nome AS produtor,
+            v.nome AS vendedor,
+            a.nome AS cliente
+        FROM 
+            pedidos p
+        JOIN 
+            produtores pr ON p.produtor_id = pr.id
+        JOIN 
+            vendedores v ON p.vendedor_id = v.id
+        JOIN 
+            clientes a ON p.cliente_id = a.id
+        WHERE 
+            p.status = "Finalizado" AND p.repasse_comissao = 0 AND p.vendedor_id = 2;
     `;
     db.query(sql, (err, results) => {
         if (err) {

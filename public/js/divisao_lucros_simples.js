@@ -16,7 +16,20 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('btn-confirmar-repasse-maithe').addEventListener('click', () => {
             confirmarRepasse('maithe');
         });
+        document.getElementById('btn-detalhes-rafael').addEventListener('click', () => {
+            detalhesComissao('rafael');
+        });
+        document.getElementById('btn-detalhes-maithe').addEventListener('click', () => {
+            detalhesComissao('maithe');
+        });
+        document.getElementById('btn-proxima-pagina-vendedor').addEventListener('click', () => {
+        paginaAtualVendasVendedor++;
+        detalhesComissao();
+        });
 });
+
+let paginaAtualVendasVendedor = 1;
+const vendasPorPagina = 10; // Número de vendas por página
 
 async function exibirResumoRafaelMatheus() {
     try {
@@ -207,4 +220,57 @@ function confirmarRepasse(vendedor) {
 function exibirRepassesPendentesProducao() {
     exibirResumoRafaelMatheus();
     exibirResumoMaitheMatheus();
+}
+
+function detalhesComissao(vendedor) {
+    const listaRepasses = document.getElementById('tabela-vendas-vendedor').getElementsByTagName('tbody')[0];
+    listaRepasses.innerHTML = ''; // Limpa a tabela
+    //console.log(funcionario)
+
+    fetch(`/api/divisao-lucros/repasses-producao-${vendedor}`, {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar repasses pendentes para produção.');
+        }
+        return response.json();
+    })
+    .then(repasses => {
+    const inicio = (paginaAtualVendasVendedor - 1) * vendasPorPagina;
+    const fim = inicio + vendasPorPagina;
+    const vendasPaginaAtual = repasses.slice(inicio, fim);
+
+    vendasPaginaAtual.forEach(venda => {
+        venda.lucro_producao = (parseFloat(venda.lucro_venda).toFixed(2) / 10);
+        const row = listaRepasses.insertRow();
+        const cellPedido = row.insertCell();
+        const cellCliente = row.insertCell();
+        const cellData = row.insertCell();
+        const cellValor = row.insertCell();
+        const cellComissao = row.insertCell();
+
+        cellPedido.textContent = `Pedido nº ${venda.id}`;
+        cellCliente.textContent = venda.cliente;
+        cellData.textContent = formatarData(venda.data_criacao);
+        cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${formatarValor(parseFloat(venda.valor_venda).toFixed(2))}`;
+        cellComissao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(venda.lucro_producao).toFixed(2)}`;
+    });
+
+    // Controle de exibição do botão "Próxima Página"
+    const btnProximaPagina = document.getElementById('btn-proxima-pagina-vendedor');
+    if (fim < repasses.length) {
+        btnProximaPagina.style.display = 'block';
+    } else {
+        btnProximaPagina.style.display = 'none';
+    }
+})
+    //document.getElementById('modal-nome-vendedor').textContent = `Desempenho do Vendedor: ${funcionario.nome}`;
+    document.getElementById('modal-desempenho-vendedor').style.display = 'block';
+}
+
+function fecharModalDesempenhoVendedor() {
+    document.getElementById('modal-desempenho-vendedor').style.display = 'none';
 }
