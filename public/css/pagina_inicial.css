@@ -189,14 +189,17 @@
     margin-bottom: 15px;
 }
 
-#tabela-vendas-vendedor-simples {
+#tabela-vendas-vendedor-simples,
+#tabela-vendas-vendedor-simples-socio {
     width: 100%; /* Define a largura da tabela como 100% do container */
     border-collapse: collapse;
     /*font-size: 0.8em;  Diminui o tamanho da fonte */
 }
 
 #tabela-vendas-vendedor-simples th,
-#tabela-vendas-vendedor-simples td {
+#tabela-vendas-vendedor-simples td,
+#tabela-vendas-vendedor-simples-socio th,
+#tabela-vendas-vendedor-simples-socio td {
     text-align: left;
     padding: 8px;
     border-bottom: 1px solid #555;
@@ -214,15 +217,28 @@
     margin-bottom: 10px;
 }
 
+.texto-socio{
+    display: block;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
 /* Estilos para telas menores */
 @media (max-width: 768px) {
+    .texto-socio{
+        display: block;
+        font-size: 0.8em;
+        color: #aaa;
+        margin-bottom: 10px;
+    }
     #extrato-pedidos .extrato-content h3 + p { /* Seleciona o parágrafo que está imediatamente após o h3 */
         display: block; /* Exibe o parágrafo em telas menores */
         font-size: 0.8em;
         color: #aaa;
         margin-bottom: 10px;
     }
-    #tabela-vendas-vendedor-simples {
+    #tabela-vendas-vendedor-simples,
+    #tabela-vendas-vendedor-simples-socio {
         font-size: 0.6em; /* Diminui o tamanho da fonte ainda mais */
     }
 
@@ -236,7 +252,9 @@
     }
 
     #tabela-vendas-vendedor-simples th,
-    #tabela-vendas-vendedor-simples td {
+    #tabela-vendas-vendedor-simples td,
+    #tabela-vendas-vendedor-simples-socio th,
+    #tabela-vendas-vendedor-simples-socio td {
         padding: 3px; /* Diminui o espaçamento interno */
     }
 
@@ -254,6 +272,23 @@
     }
     #tabela-vendas-vendedor-simples td:nth-child(9), /* Oculta a coluna */
     #tabela-vendas-vendedor-simples th:nth-child(9) {
+        display: none;
+    }
+
+    #tabela-vendas-vendedor-simples-socio td:nth-child(1), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples-socio th:nth-child(1) {
+        display: none;
+    }
+    #tabela-vendas-vendedor-simples-socio td:nth-child(3), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples-socio th:nth-child(3) {
+        display: none;
+    }
+    #tabela-vendas-vendedor-simples-socio td:nth-child(6), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples-socio th:nth-child(6) {
+        display: none;
+    }
+    #tabela-vendas-vendedor-simples-socio td:nth-child(9), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples-socio th:nth-child(9) {
         display: none;
     }
 

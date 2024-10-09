@@ -204,6 +204,33 @@
                         <button id="btn-proxima-pagina-vendedor" style="display: none;">Próxima Página</button>
                     </div>
             </section>
+            <section id="extrato-pedidos">
+                <div class="extrato-content">
+                    <h3 id="modal-nome-vendedor-socio"></h3>
+                    <p1 class="texto-socio">São exibidas apenas as informações mais relevantes nessa tabela. 
+                    Se quiser ter mais detalhes desses pedidos consulte na página de <strong>todos</strong> pedidos.</p1>
+                    <table id="tabela-vendas-vendedor-simples-socio">
+                        <thead>
+                            <tr>
+                                <th>Pedido</th>
+                                <th>Cliente</th>
+                                <th>Data</th>
+                                <th>Valor</th>
+                                <th>Frete</th>
+                                <th>Insumos</th>
+                                <th>Produção</th>
+                                <th>Lucro(METADE)</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Vendas do vendedor serão adicionadas aqui -->
+                        </tbody>
+                    </table>
+    
+                    <button id="btn-proxima-pagina-vendedor" style="display: none;">Próxima Página</button>
+                </div>
+            </section>
             <div id="modal-desempenho-vendedor" class="modal">
                 <div class="modal-content">
                     <span class="close-btn" onclick="fecharModalDesempenhoVendedor()">×</span>
