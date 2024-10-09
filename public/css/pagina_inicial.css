@@ -171,3 +171,105 @@
 .span-vermelho {
     color: red; /* Define a cor vermelha para o saldo negativo */
 }
+
+#extrato-pedidos {
+    text-align: center;
+}
+
+#extrato-pedidos .extrato-content {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow-x: auto; /* Permite rolagem horizontal apenas no container */
+    max-width: 100%; /* Define a largura máxima do container */
+}
+
+#extrato-pedidos .extrato-content h3 {
+    margin-bottom: 15px;
+}
+
+#tabela-vendas-vendedor {
+    width: 100%; /* Define a largura da tabela como 100% do container */
+    border-collapse: collapse;
+    /*font-size: 0.8em;  Diminui o tamanho da fonte */
+}
+
+#tabela-vendas-vendedor th,
+#tabela-vendas-vendedor td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+    white-space: nowrap; /* Evita que o texto quebre em várias linhas */
+}
+
+/*#btn-proxima-pagina-vendedor {
+    /* ... (seus estilos para botões) ... 
+}*/
+
+#extrato-pedidos .extrato-content h3 + p { /* Seleciona o parágrafo que está imediatamente após o h3 */
+    display: none; /* Oculta o parágrafo em telas maiores */
+    font-size: 0.8em;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+/* Estilos para telas menores */
+@media (max-width: 768px) {
+    #extrato-pedidos .extrato-content h3 + p { /* Seleciona o parágrafo que está imediatamente após o h3 */
+        display: block; /* Exibe o parágrafo em telas menores */
+        font-size: 0.8em;
+        color: #aaa;
+        margin-bottom: 10px;
+    }
+    #tabela-vendas-vendedor {
+        font-size: 0.6em; /* Diminui o tamanho da fonte ainda mais */
+    }
+
+    #extrato-pedidos .extrato-content {
+        background-color: #333;
+        padding: 0px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        overflow-x: auto; /* Permite rolagem horizontal apenas no container */
+        max-width: 100%; /* Define a largura máxima do container */
+    }
+
+    #tabela-vendas-vendedor th,
+    #tabela-vendas-vendedor td {
+        padding: 3px; /* Diminui o espaçamento interno */
+    }
+
+    #tabela-vendas-vendedor td:nth-child(1), /* Oculta a coluna */
+    #tabela-vendas-vendedor th:nth-child(1) {
+        display: none;
+    }
+    #tabela-vendas-vendedor td:nth-child(3), /* Oculta a coluna */
+    #tabela-vendas-vendedor th:nth-child(3) {
+        display: none;
+    }
+    #tabela-vendas-vendedor td:nth-child(4), /* Oculta a coluna */
+    #tabela-vendas-vendedor th:nth-child(4) {
+        display: none;
+    }
+    #tabela-vendas-vendedor td:nth-child(9), /* Oculta a coluna */
+    #tabela-vendas-vendedor th:nth-child(9) {
+        display: none;
+    }
+
+}
+
+.button-detalhes {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5cb85c;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: background-color 0.3s ease;
+}
+
+.button-detalhes:hover {
+    background-color: #4cae4c;
+}

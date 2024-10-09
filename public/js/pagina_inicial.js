@@ -4,6 +4,10 @@ document.addEventListener('DOMContentLoaded', function () {
     exibirPedidos();
     //atualizarHoraServidor();
     //setInterval(atualizarHoraServidor, 1000);
+    exibirVendasVendedor();
+    let paginaAtualVendasVendedor = 1;
+    const vendasPorPagina = 10; // Número de vendas por página
+    
     const admId = parseInt(localStorage.getItem('administrador'));
     let paginaAtualPedidosFinalizados = 1;
     const pedidosPorPagina = 5; // Número de pedidos finalizados por página
@@ -34,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (18 <= horaDia.getHours() <= 23) {
                 document.getElementById('saudacao-texto').textContent = `Boa noite ${admNome}!`;
             }
+            document.getElementById('modal-nome-vendedor').textContent = `Todas as suas vendas ${admNome}`;
         });
     }
 
@@ -71,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
             pedidosFiltrados.forEach(pedido => {
                 //console.log(pedido)
                 const listItem = document.createElement('li');
-                listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)}Kg`;
+                listItem.innerHTML = `Nº ${pedido.id} - ${pedido.cliente} - ${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)}Kg - Saldo: ${pedido.saldo_venda === "0.00" ? '<span class="span-verde">Pago</span>' : `<span class="span-vermelho">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.saldo_venda).toFixed(2)}</span>`}`;
     
                 listItem.addEventListener('click', () => {
                     exibirDetalhesPedidoPaginaInicial(pedido.id);
@@ -120,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Itera sobre os pedidos filtrados e adiciona cada um à lista
                 pedidosFiltrados.forEach(pedido => {
                     const listItem = document.createElement('li');
-                    listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)}Kg`;
+                    listItem.innerHTML = `Nº ${pedido.id} - ${pedido.cliente} - ${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)}Kg - Saldo: ${pedido.saldo_venda === "0.00" ? '<span class="span-verde">Pago</span>' : `<span class="span-vermelho">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.saldo_venda).toFixed(2)}</span>`}`;
         
                     listItem.addEventListener('click', () => {
                         exibirDetalhesPedidoPaginaInicial(pedido.id);
@@ -168,7 +173,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         pedidosPaginaAtual.forEach(pedido => {
             const listItem = document.createElement('li');
-            listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)}Kg`;
+            listItem.innerHTML = `Nº ${pedido.id} - ${pedido.cliente} - ${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)}Kg - Saldo: ${pedido.saldo_venda === "0.00" ? '<span class="span-verde">Pago</span>' : `<span class="span-vermelho">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.saldo_venda).toFixed(2)}</span>`}`;
 
             listItem.addEventListener('click', () => {
                 exibirDetalhesPedidoPaginaInicial(pedido.id);
@@ -520,7 +525,66 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error(error);
         });
     }
+    function exibirVendasVendedor() {
+        const tabelaVendas = document.getElementById('tabela-vendas-vendedor').getElementsByTagName('tbody')[0];
+        tabelaVendas.innerHTML = ''; // Limpa a tabela
+        //console.log(funcionario)
     
+        // Faz uma requisição GET para a API para obter as vendas do vendedor
+        fetch(`/api/pedidos/vendedor/${admId}`, {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar vendas do vendedor.');
+            }
+            return response.json();
+        })
+        .then(vendasDoVendedor => {
+        //console.log(vendasDoVendedor)
+    
+        //vendasDoVendedor = vendas;
+        const inicio = (paginaAtualVendasVendedor - 1) * vendasPorPagina;
+        const fim = inicio + vendasPorPagina;
+        const vendasPaginaAtual = vendasDoVendedor.slice(inicio, fim);
+    
+        vendasPaginaAtual.forEach(venda => {
+            //console.log(venda)
+            const row = tabelaVendas.insertRow();
+            const cellPedido = row.insertCell();
+            const cellCliente = row.insertCell();
+            const cellData = row.insertCell();
+            const cellValor = row.insertCell();
+            const cellFrete = row.insertCell();
+            const cellInsumos = row.insertCell();
+            const cellProducao = row.insertCell();
+            const cellLucro = row.insertCell();
+            const cellStatus = row.insertCell();
+    
+            cellPedido.textContent = `Pedido nº ${venda.id}`;
+            cellCliente.textContent = venda.cliente_nome;
+            cellData.textContent = formatarData(venda.data_criacao);
+            cellValor.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${formatarValor(parseFloat(venda.valor_venda).toFixed(2))}`;
+            cellFrete.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${(venda.valor_frete ?? "NF")}`;
+            cellInsumos.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${formatarValor(parseFloat(venda.valor_insumos).toFixed(2))}`;
+            cellProducao.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${formatarValor(parseFloat(venda.lucro_venda * 1/10).toFixed(2))}`;
+            cellLucro.textContent = `${venda.moeda === 'real' ? 'R$' : 'US$' } ${formatarValor(((parseFloat(venda.valor_venda).toFixed(2) - parseFloat(venda.valor_frete || 0) - parseFloat(venda.valor_insumos).toFixed(2) - parseFloat(venda.lucro_venda * 1/10).toFixed(2)) / 2).toFixed(2))}`;
+            cellStatus.textContent = venda.status;
+        });
+    
+        // Controle de exibição do botão "Próxima Página"
+        const btnProximaPagina = document.getElementById('btn-proxima-pagina-vendedor');
+        if (fim < vendasDoVendedor.length) {
+            btnProximaPagina.style.display = 'block';
+        } else {
+            btnProximaPagina.style.display = 'none';
+        }
+        })
+        //document.getElementById('modal-nome-vendedor').textContent = `Desempenho do Vendedor: ${funcionario.nome}`;
+        //document.getElementById('modal-desempenho-vendedor').style.display = 'block';
+    }
 
     
 

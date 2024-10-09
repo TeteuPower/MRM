@@ -23,21 +23,21 @@
                 <input type="text" id="pesquisa-pedido" placeholder="Pesquisar por pedido...">
                 <div class="pedidos-container">
                     <div class="pedidos-aguardando-producao">
-                        <h3>Pedidos Aguardando Produção</h3>
+                        <h3>Seus pedidos aguardando produção</h3>
                         <ul id="lista-pedidos-aguardando-producao">
                             <!-- Pedidos aguardando produção serão adicionados aqui -->
                         </ul>
                     </div>
             
                     <div class="pedidos-finalizados-aguardando-envio">
-                        <h3>Pedidos Finalizados Aguardando Envio</h3>
+                        <h3>Seus pedidos prontos mas aguardando o envio</h3>
                         <ul id="lista-pedidos-finalizados-aguardando-envio">
                             <!-- Pedidos finalizados aguardando envio serão adicionados aqui -->
                         </ul>
                     </div>
             
                     <div class="pedidos-finalizados">
-                        <h3>Pedidos Finalizados</h3>
+                        <h3>Seus pedidos finalizados</h3>
                         <ul id="lista-pedidos-finalizados">
                             <!-- Pedidos finalizados serão adicionados aqui -->
                         </ul>
@@ -174,6 +174,35 @@
                                 <button type="button" onclick="fecharModalEditarPedido()" class="btn-acao vermelho">Cancelar</button>
                             </div>
                         </form>
+                    </div>
+            </section>
+            <section id="extrato-pedidos">
+                    <div class="extrato-content">
+                        <h3 id="modal-nome-vendedor"></h3>
+                        <p>Algumas colunas da tabela foram ocultadas para melhor visualização na tela do celular. 
+                        Para visualizar <strong>todas</strong> as colunas, clique no botão "Detalhes"</p>
+                        <button class="button-detalhes" id="btn-aaa">Detalhes</button>
+        
+                        <table id="tabela-vendas-vendedor">
+                            <thead>
+                                <tr>
+                                    <th>Pedido</th>
+                                    <th>Cliente</th>
+                                    <th>Data</th>
+                                    <th>Valor</th>
+                                    <th>Frete</th>
+                                    <th>Insumos</th>
+                                    <th>Produção</th>
+                                    <th>Lucro(METADE)</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Vendas do vendedor serão adicionadas aqui -->
+                            </tbody>
+                        </table>
+        
+                        <button id="btn-proxima-pagina-vendedor" style="display: none;">Próxima Página</button>
                     </div>
             </section>
     </main>
