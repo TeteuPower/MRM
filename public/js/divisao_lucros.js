@@ -4,11 +4,11 @@ document.addEventListener('DOMContentLoaded', function() {
     verificarAutenticacao()
         .then(autenticado => {
             if (autenticado) {
-                exibirRepassesPendentesProducao();
-                exibirRepassesPendentesAdministradores();
+                //exibirRepassesPendentesProducao();
+                //exibirRepassesPendentesAdministradores();
                 exibirRepassesPendentesEmpresa();
-                exibirUltimosRepassesFeitos('producao');
-                exibirUltimosRepassesFeitos('vendedores');
+                //exibirUltimosRepassesFeitos('producao');
+                //exibirUltimosRepassesFeitos('vendedores');
                 exibirUltimosRepassesFeitos('empresa');
                 //popularSelectVendedoresRepasse();
                 //popularSelectDestinatariosRepasse();
@@ -143,8 +143,10 @@ function exibirRepassesPendentesAdministradores() {
 
 //Função que exibe os repasses pendentes para a empresa
 function exibirRepassesPendentesEmpresa() {
-    const listaRepasses = document.getElementById('lista-repasses-empresa');
-    listaRepasses.innerHTML = '';
+    const listaRepassesRafael = document.getElementById('lista-repasses-empresa-rafael');
+    listaRepassesRafael.innerHTML = '';
+    const listaRepassesMaithe = document.getElementById('lista-repasses-empresa-maithe');
+    listaRepassesMaithe.innerHTML = '';
 
     fetch('/api/divisao-lucros/repasses-empresa', {
         headers: {
@@ -160,40 +162,82 @@ function exibirRepassesPendentesEmpresa() {
     .then(repasses => {
         repasses.forEach(repasse => {
             //console.log(repasse)
-            let custoTotal = parseFloat(repasse.valor_insumos) + parseFloat(repasse.valor_frete);
-            repasse.custoTotal = custoTotal.toFixed(2);
-            const listItem = document.createElement('li');
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = repasse.id;
-            checkbox.addEventListener('change', () => {
-                atualizarTotalSelecionado('empresa', repasses);
-            });
-            listItem.appendChild(checkbox);
+            if (repasse.vendedor === 'Rafael') {
+                //console.log(repasse)
+                let custoTotal = parseFloat(repasse.valor_insumos) + parseFloat(repasse.valor_frete);
+                repasse.custoTotal = custoTotal.toFixed(2);
+                const listItem = document.createElement('li');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = repasse.id;
+                checkbox.addEventListener('change', () => {
+                    atualizarTotalSelecionado('empresa', repasses, 'rafael');
+                });
+                listItem.appendChild(checkbox);
 
-            const label = document.createElement('label');
-            label.textContent = `Do ${repasse.vendedor} para a empresa o valor de ${custoTotal.toFixed(2)} ${repasse.moeda === 'real' ? 'REAIS' : 'DÓLARES'}, referente ao pedido nº ${repasse.id}`;
-            listItem.appendChild(label);
-            listaRepasses.appendChild(listItem);
+                const label = document.createElement('label');
+                label.innerHTML = `${repasse.moeda === 'real' ? 'R$:' : 'U$:'} ${formatarValor(custoTotal.toFixed(2))}
+                 <p class="texto-pendencias">Pedido nº ${repasse.id}</p>`;
+                listItem.appendChild(label);
+                listaRepassesRafael.appendChild(listItem);
+            }
+            if (repasse.vendedor === 'Maithê') {
+                //console.log(repasse)
+                let custoTotal = parseFloat(repasse.valor_insumos) + parseFloat(repasse.valor_frete);
+                repasse.custoTotal = custoTotal.toFixed(2);
+                const listItem = document.createElement('li');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = repasse.id;
+                checkbox.addEventListener('change', () => {
+                    atualizarTotalSelecionado('empresa', repasses, 'maithe');
+                });
+                listItem.appendChild(checkbox);
+
+                const label = document.createElement('label');
+                label.innerHTML = `${repasse.moeda === 'real' ? 'R$:' : 'U$:'} ${formatarValor(custoTotal.toFixed(2))}
+                 <p class="texto-pendencias">Pedido nº ${repasse.id}</p>`;
+                listItem.appendChild(label);
+                listaRepassesMaithe.appendChild(listItem);
+            }
         });
             // Adiciona evento ao botão para enviar apenas os repasses selecionados
-            document.getElementById('btn-fazer-repasses-empresa').addEventListener('click', () => {
-                const checkboxes = listaRepasses.querySelectorAll('input[type="checkbox"]:checked');
+            document.getElementById('btn-fazer-repasses-empresa-rafael').addEventListener('click', () => {
+                const checkboxes = listaRepassesRafael.querySelectorAll('input[type="checkbox"]:checked');
                 const repassesSelecionados = Array.from(checkboxes).map(checkbox => {
                     const repasseId = parseInt(checkbox.value);
                     return repasses.find(repasse => repasse.id === repasseId);
                 });
-                confirmarRepassesEmpresa('empresa', repassesSelecionados);
+                confirmarRepassesEmpresa('empresa', repassesSelecionados, 'rafael');
             });
-        // Exibe o botão "Fazer Repasses" se houver repasses pendentes
-        const btnFazerRepasses = document.getElementById('btn-fazer-repasses-empresa');
-        const totalSelecionadoConvertido = document.getElementById('total-selecionado-empresa-convertido');
+            // Adiciona evento ao botão para enviar apenas os repasses selecionados
+            document.getElementById('btn-fazer-repasses-empresa-maithe').addEventListener('click', () => {
+                const checkboxes = listaRepassesMaithe.querySelectorAll('input[type="checkbox"]:checked');
+                const repassesSelecionados = Array.from(checkboxes).map(checkbox => {
+                    const repasseId = parseInt(checkbox.value);
+                    return repasses.find(repasse => repasse.id === repasseId);
+                });
+                confirmarRepassesEmpresa('empresa', repassesSelecionados, 'maithe');
+            });
+        // Exibe o botão "Fazer Repasses" se houver repasses pendentes Rafael
+        const btnFazerRepasses = document.getElementById('btn-fazer-repasses-empresa-rafael');
+        const totalSelecionadoConvertido = document.getElementById('total-selecionado-empresa-convertido-rafael');
         if (repasses.length > 0) {
             btnFazerRepasses.style.display = 'block';
             totalSelecionadoConvertido.style.display = 'block';
         } else {
             btnFazerRepasses.style.display = 'none';
             totalSelecionadoConvertido.style.display = 'none';
+        }
+        // Exibe o botão "Fazer Repasses" se houver repasses pendentes Rafael
+        const btnFazerRepassesMaithe = document.getElementById('btn-fazer-repasses-empresa-maithe');
+        const totalSelecionadoConvertidoMaithe = document.getElementById('total-selecionado-empresa-convertido-maithe');
+        if (repasses.length > 0) {
+            btnFazerRepassesMaithe.style.display = 'block';
+            totalSelecionadoConvertidoMaithe.style.display = 'block';
+        } else {
+            btnFazerRepassesMaithe.style.display = 'none';
+            totalSelecionadoConvertidoMaithe.style.display = 'none';
         }
     })
     .catch(error => {
@@ -332,8 +376,8 @@ let totalRepassesVendedoresConvertido = 0;
 let totalRepassesEmpresaReais = 0;
 let totalRepassesEmpresaDolar = 0;
 let totalRepassesEmpresaConvertido = 0;
-async function atualizarTotalSelecionado(area, vendas) { // Adiciona vendas como argumento
-    const checkboxes = document.querySelectorAll(`#lista-repasses-${area} input[type="checkbox"]:checked`);
+async function atualizarTotalSelecionado(area, vendas, vendedor) { // Adiciona vendas como argumento
+    const checkboxes = document.querySelectorAll(`#lista-repasses-${area}-${vendedor} input[type="checkbox"]:checked`);
     let totalRepassesReais = 0; // Variável local para armazenar o total selecionado
     let totalRepassesDolar = 0;
         if (area === "producao") {
@@ -388,7 +432,7 @@ async function atualizarTotalSelecionado(area, vendas) { // Adiciona vendas como
             totalRepassesEmpresaDolar = totalRepassesDolar; // Atualiza a variável global com o total calculado
             totalRepassesEmpresaConvertido = totalRepassesEmpresaReais + await converterDolarParaReal(totalRepassesEmpresaDolar);
 
-            document.getElementById(`total-selecionado-${area}-convertido`).textContent = `Soma total convertida para REAIS: R$ ${totalRepassesEmpresaConvertido.toFixed(2)}`;
+            document.getElementById(`total-selecionado-${area}-convertido-${vendedor}`).textContent = `Total convertido para REAIS: R$ ${formatarValor(totalRepassesEmpresaConvertido.toFixed(2))}`;
         }
 }
 
@@ -400,7 +444,7 @@ async function confirmarRepasses(area, repasses) {
         return;
     }
 
-    if (confirm(`Confirma que está fazendo um repasse de R$ ${totalRepassesProducaoConvertido.toFixed(2)} REAIS para o MATHEUS?`)) {
+    if (confirm(`Confirma que está fazendo um repasse de R$ ${formatarValor(totalRepassesProducaoConvertido.toFixed(2))} REAIS para o MATHEUS?`)) {
         try {
             // Mapeia os repasses para um array de promises
             const promises = repasses.map(async (repasse) => {
@@ -511,15 +555,15 @@ async function confirmarRepassesVendedores(area, repasses) {
     }
 }
 
-async function confirmarRepassesEmpresa(area, repasses) {
-    const checkboxes = document.querySelectorAll(`#lista-repasses-${area} input[type="checkbox"]:checked`);
+async function confirmarRepassesEmpresa(area, repasses, vendedor) {
+    const checkboxes = document.querySelectorAll(`#lista-repasses-${area}-${vendedor} input[type="checkbox"]:checked`);
 
     if (checkboxes.length === 0) {
         alert('Selecione pelo menos um repasse para confirmar.');
         return;
     }
 
-    if (confirm(`Confirma que está fazendo um repasse de R$ ${totalRepassesEmpresaConvertido.toFixed(2)}?`)) {
+    if (confirm(`Confirma que o ${vendedor} está fazendo um repasse de R$:${formatarValor(totalRepassesEmpresaConvertido.toFixed(2))} para o caixa da empresa?`)) {
         try {
             // Mapeia os repasses para um array de promises
             const promises = repasses.map(async (repasse) => {

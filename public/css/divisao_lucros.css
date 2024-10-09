@@ -14,11 +14,28 @@
 .repasses-producao,
 .repasses-administradores,
 .repasses-empresa {
+    display: flex;
     flex: 1 1 300px; /* Cada div ocupa pelo menos 300px e pode crescer */
     background-color: #333;
     padding: 20px;
     border-radius: 5px;
     text-align: left;
+    flex-direction: column;
+}
+
+.repasses-empresa h3 {
+    text-align: center;
+}
+
+.lista-container {
+    display: flex;
+    flex-direction: row;
+}
+
+#lista-repasses-empresa-rafael,
+#lista-repasses-empresa-maithe {
+    flex-direction: row;
+    padding: 0;
 }
 
 .repasses-producao h3,
@@ -43,6 +60,24 @@
     padding: 10px;
     border-radius: 5px;
     margin-bottom: 10px;
+}
+
+#lista-repasses-empresa-rafael li,
+#lista-repasses-empresa-maithe li {
+    display: flex;
+    list-style-type: none;
+    flex-direction: row;
+    padding: 5px;
+}
+
+.texto-pendencias {
+    margin: 0%;
+}
+
+#btn-fazer-repasses-empresa-maithe,
+#btn-fazer-repasses-empresa-rafael {
+    margin-right: 0px;
+    padding: 5px 5px;
 }
 
 #lista-repasses-producao input[type="checkbox"],
