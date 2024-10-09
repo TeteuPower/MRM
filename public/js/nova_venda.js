@@ -144,7 +144,9 @@ function verificarDadosEPopularSelects() {
     const selectVendedor = document.getElementById('vendedor');
 
     selectCliente.innerHTML = '<option value="">Selecione o Cliente</option>';
-    selectVendedor.innerHTML = '<option value="">Selecione o Vendedor</option>';
+    const vendedorId = parseInt(localStorage.getItem('administrador'));
+    const vendedorNome = localStorage.getItem('administradorNome');
+    selectVendedor.innerHTML = `<option value="${vendedorId}">${vendedorNome}</option>`;
 
     // Faz requisições para as APIs para obter clientes e vendedores
     Promise.all([
@@ -186,6 +188,7 @@ function verificarDadosEPopularSelects() {
         }
 
         // Popula os selects com os dados do banco de dados
+        clientes.sort((a, b) => a.nome.localeCompare(b.nome)); // Ordena os clientes em ordem alfabética
         clientes.forEach(cliente => {
             const option = document.createElement('option');
             option.value = cliente.id; // Define o valor da opção como o ID do cliente
