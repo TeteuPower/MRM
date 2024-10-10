@@ -716,6 +716,76 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('modal-desempenho-vendedor').style.display = 'block';
     }
 
+    function cancelarPedido(pedido) {
+        //console.log(pedido)
+        if (confirm(`Tem certeza que deseja DELETAR o pedido nº ${pedido.id} do cliente ${pedido.cliente}? Todos os pagamentos que o ${pedido.cliente} fez relacionados a esse pedido também serão excluídos!`)) {
+            const confirmacao = prompt(`Digite 'deletar' para confirmar a exclusão do pedido nº ${pedido.id} do cliente ${pedido.cliente}, se não está seguro disso contacte o Matheus!`);
+            if (confirmacao === 'deletar') {
+            // Faz uma requisição DELETE para a API para cancelar o pedido
+            fetch(`/api/pedidos/${pedido.id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao cancelar pedido.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(data.message);
+                location.reload();
+                return;
+            })
+            .catch(error => {
+                alert('Erro ao cancelar pedido.');
+                console.error(error);
+                return;
+            });
+        } else{
+            alert('Exclusão cancelada');
+            return;
+        }}
+    }
+
+    function formatarTextoPedido(pedido) {
+        //console.log(pedido)
+        let texto = `(${pedido.vendedor}) - (${pedido.cliente})\n`;
+        texto += `Pedido: ${pedido.id}\n\n`;
+    
+        pedido.itens.forEach(item => {
+            let nomeProduto = item.produto;
+            if (item.produto === 'Rapé' && item.tipo_rape) {
+                nomeProduto  = ` (${item.tipo_rape})`;
+            }
+    
+            texto += `* ${item.lote || '-'} - ${nomeProduto}: (${item.quantidade / 2}Kg)\n`;
+        });
+    
+        // Calcula o total de Kg de rapé
+        const totalRapeKg = pedido.itens.reduce((total, item) => {
+            if (item.produto === 'Rapé') {
+                return total + (item.quantidade / 2);
+            }
+            return total;
+        }, 0);
+    
+        texto += `\nTotal: ${totalRapeKg.toFixed(2)}Kg\n`;
+    
+        return texto;
+    }
+
+    function copiarParaAreaDeTransferencia(texto) {
+        const textarea = document.createElement('textarea');
+        textarea.value = texto;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    }
+
     
 
 

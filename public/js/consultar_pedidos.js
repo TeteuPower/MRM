@@ -139,8 +139,7 @@ async function finalizarPedido(pedido) {
         .then(data => {
             alert(data.message);
             //salvarPedidosNoLocalStorage();
-            exibirPedidos();
-            fecharModalDetalhesPedido();
+            location.reload();
         })
         .catch(error => {
             alert('Erro ao finalizar pedido.');
@@ -708,8 +707,7 @@ function cancelarPedido(pedido) {
         })
         .then(data => {
             alert(data.message);
-            fecharModalDetalhesPedido();
-            exibirPedidos(); // Atualiza a lista de pedidos
+            location.reload();
             return;
         })
         .catch(error => {
