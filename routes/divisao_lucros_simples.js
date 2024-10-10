@@ -92,6 +92,60 @@ router.get('/rafael', autenticar, (req, res) => {
     });
 });
 
+router.get('/rafael-maithe', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END), 0) 
+                FROM pedidos p 
+                WHERE p.vendedor_id = 3 AND p.status = 'Finalizado'
+            ) - (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0) 
+                FROM repasses_vendedores rp 
+                WHERE rp.vendedor_id = 3 AND rp.vendedor_destinatario_id = 2
+            ) AS saldo_total_rafael_maithe_reais,
+            (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END), 0)
+                FROM pedidos p 
+                WHERE p.vendedor_id = 3 AND p.status = 'Finalizado'
+            ) - (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0)
+                FROM repasses_vendedores rp 
+                WHERE rp.vendedor_id = 3 AND rp.vendedor_destinatario_id = 2
+            ) AS saldo_total_rafael_maithe_dolar,
+            (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END), 0)
+                FROM pedidos p 
+                WHERE p.vendedor_id = 2 AND p.status = 'Finalizado'
+            ) - (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0) 
+                FROM repasses_vendedores rp 
+                WHERE rp.vendedor_id = 2 AND rp.vendedor_destinatario_id = 3
+            ) AS saldo_total_maithe_rafael_reais,
+            (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END), 0)
+                FROM pedidos p 
+                WHERE p.vendedor_id = 2 AND p.status = 'Finalizado'
+            ) - (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0)
+                FROM repasses_vendedores rp 
+                WHERE rp.vendedor_id = 2 AND rp.vendedor_destinatario_id = 3
+            ) AS saldo_total_maithe_rafael_dolar
+        FROM 
+            vendedores v
+        WHERE 
+            v.id = 3;
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar resumo do Rafael:', err);
+            res.status(500).json({ error: 'Erro ao buscar resumo do Rafael.' });
+            return;
+        }
+        res.json(results[0]);
+    });
+});
+
 // Rota para obter o resumo da divisão de lucros para a Maithê (GET /api/divisao-lucros-simples/maithe)
 router.get('/maithe', autenticar, (req, res) => {
     const sql = `
@@ -175,30 +229,6 @@ router.get('/maithe', autenticar, (req, res) => {
         if (err) {
             console.error('Erro ao buscar resumo da Maithê:', err);
             res.status(500).json({ error: 'Erro ao buscar resumo da Maithê.' });
-            return;
-        }
-        res.json(results[0]);
-    });
-});
-
-// Rota para obter o resumo da divisão de lucros entre Rafael e Maithê (GET /api/divisao-lucros-simples/rafael-maithe)
-router.get('/rafael-maithe', autenticar, (req, res) => {
-    const sql = `
-        SELECT 
-            (
-                SELECT SUM(p.lucro_venda) 
-                FROM pedidos p 
-                WHERE p.vendedor_id = 3 AND p.repasse_sociedade = 0 AND p.produtor_id = 2
-            ) AS saldo_total_rafael_maithe
-        FROM 
-            vendedores v
-        WHERE 
-            v.id = 3;
-    `;
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error('Erro ao buscar resumo do Rafael e Maithê:', err);
-            res.status(500).json({ error: 'Erro ao buscar resumo do Rafael e Maithê.' });
             return;
         }
         res.json(results[0]);
