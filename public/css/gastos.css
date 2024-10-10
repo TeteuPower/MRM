@@ -86,3 +86,27 @@
     }
 
 }
+
+.paginacao ul {
+    display: flex;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+}
+
+.paginacao li {
+    background-color: #222;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #555;
+}
+
+.paginacao li a {
+    text-decoration: none;
+    color: #eee;
+    font-weight: bold;
+}
+
+.paginacao li.ativo {
+    background-color: #555;
+}
