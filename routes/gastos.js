@@ -23,4 +23,37 @@ router.post('/', autenticar, (req, res) => {
     });
 });
 
+// Rota para obter o saldo total da empresa (GET /api/divisao-lucros-simples/saldo-empresa)
+router.get('/saldo-empresa', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN re.valor ELSE 0 END), 0) 
+                FROM repasses_empresa re
+            ) - (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN g.valor ELSE 0 END), 0) 
+                FROM gastos g
+            ) AS saldo_empresa_reais,
+            (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN re.valor ELSE 0 END), 0) 
+                FROM repasses_empresa re
+            ) - (
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN g.valor ELSE 0 END), 0) 
+                FROM gastos g
+            ) AS saldo_empresa_dolares
+        FROM 
+            administradores a
+        WHERE 
+            a.id = 1;
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar saldo da empresa:', err);
+            res.status(500).json({ error: 'Erro ao buscar saldo da empresa.' });
+            return;
+        }
+        res.json(results[0]);
+    });
+});
+
 module.exports = router;

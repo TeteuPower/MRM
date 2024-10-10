@@ -17,7 +17,7 @@
             <h2>Cadastrar Novo Gasto da Empresa</h2>
 
             <form id="form-gasto-empresa">
-                <h1>Saldo no caixa da empresa: R$ 0,00</h1>
+                <h1 id="saldo-empresa">Saldo no caixa da empresa: R$ 0,00</h1>
                 <div class="input-group">
                     <label for="descricao-gasto">Descrição do Gasto:</label>
                     <textarea id="descricao-gasto" placeholder="Detalhes do Gasto"></textarea>
@@ -30,7 +30,7 @@
 
                 <div class="input-group"></div>
                     <label for="moeda-gasto">Moeda:</label>
-                    <select id="moeda-gasto">
+                    <select id="moeda-gasto" disabled>
                         <option value="real">Real (R$)</option>
                         <option value="dolar">Dólar (US$)</option>
                     </select>

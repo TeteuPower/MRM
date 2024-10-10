@@ -4,25 +4,49 @@ document.addEventListener('DOMContentLoaded', function() {
     verificarAutenticacao()
         .then(autenticado => {
             if (autenticado) {
-                popularSelectVendedores();
-
+                popularSelectAdministradores();
+                exibirSaldoEmpresa();
                 document.getElementById('form-gasto-empresa').addEventListener('submit', registrarGasto);
             }
         });
 });
 
-function popularSelectVendedores() {
-    const selectVendedor = document.getElementById('administrador-gasto');
-    selectVendedor.innerHTML = '<option value="">Quem comprou?</option>';
+function exibirSaldoEmpresa() {
+    const textoSaldoEmpresa = document.getElementById('saldo-empresa');
 
-    fetch('/api/pagamentos/vendedores', {
+    fetch('/api/gastos/saldo-empresa', {
         headers: {
             'Authorization': localStorage.getItem('token')
         }
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Erro ao buscar vendedores.');
+            throw new Error('Erro ao buscar saldo da empresa.');
+        }
+        return response.json();
+    })
+    .then(async saldo => {
+        const saldoTotal = (parseFloat(saldo.saldo_empresa_reais).toFixed(2) + await converterDolarParaReal(parseFloat(saldo.saldo_empresa_dolares).toFixed(2)));
+        textoSaldoEmpresa.textContent = `Saldo no caixa da empresa: R$ ${formatarValor(parseFloat(saldoTotal).toFixed(2))}`;
+    })
+    .catch(error => {
+        alert('Erro ao buscar saldo da empresa.');
+        console.error(error);
+    });
+}
+
+function popularSelectAdministradores() {
+    const selectVendedor = document.getElementById('administrador-gasto');
+    selectVendedor.innerHTML = '<option value="">Quem comprou?</option>';
+
+    fetch('/api/pagamentos/administradores', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar os administradores.');
         }
         return response.json();
     })
@@ -35,7 +59,7 @@ function popularSelectVendedores() {
         });
     })
     .catch(error => {
-        alert('Erro ao buscar vendedores.');
+        alert('Erro ao buscar os administradores.');
         console.error(error);
     });
 }
@@ -71,6 +95,7 @@ function registrarGasto(event) {
     .then(data => {
         alert(data.message);
         event.target.reset();
+        location.reload();
     })
     .catch(error => {
         alert('Erro ao registrar gasto.');

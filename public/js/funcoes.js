@@ -717,7 +717,7 @@ function exibirUltimosRepassesFeitos(area) {
         return response.json();
     })
     .then(repasses => {
-        console.log(repasses)
+        //console.log(repasses)
         if (area === 'empresa') {
             repasses.forEach(repasse => {
                 const listItem = document.createElement('li');

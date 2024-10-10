@@ -29,6 +29,19 @@ router.get('/vendedores', autenticar, (req, res) => {
     });
 });
 
+// Rota para obter todos os Administradores (GET /api/pagamentos/vendedores)
+router.get('/administradores', autenticar, (req, res) => {
+    const sql = 'SELECT id, nome FROM administradores';
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar vendedores:', err);
+            res.status(500).json({ error: 'Erro ao buscar vendedores.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 // Rota para obter os pedidos de um cliente (GET /api/pagamentos/pedidos/:clienteId)
 router.get('/pedidos/:clienteId', autenticar, (req, res) => {
     const clienteId = req.params.clienteId;

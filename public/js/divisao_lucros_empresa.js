@@ -163,7 +163,7 @@ function exibirRepassesPendentesEmpresa() {
         repasses.forEach(repasse => {
             //console.log(repasse)
             if (repasse.vendedor === 'Rafael') {
-                //console.log(repasse)
+                console.log(repasse)
                 let custoTotal = parseFloat(repasse.valor_insumos) + parseFloat(repasse.valor_frete);
                 repasse.custoTotal = custoTotal.toFixed(2);
                 const listItem = document.createElement('li');
@@ -176,8 +176,12 @@ function exibirRepassesPendentesEmpresa() {
                 listItem.appendChild(checkbox);
 
                 const label = document.createElement('label');
-                label.innerHTML = `${repasse.moeda === 'real' ? 'R$:' : 'U$:'} ${formatarValor(custoTotal.toFixed(2))}
-                 <p class="texto-pendencias">Pedido nº ${repasse.id}</p>`;
+                label.innerHTML = `
+                <p class="texto-pendencias">Pedido nº ${repasse.id}</p>
+                <p class="texto-pendencias">Frete: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(repasse.valor_frete)}</p>
+                <p class="texto-pendencias">Insumos: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(repasse.valor_insumos)}</p>
+                <p class="texto-pendencias">Total: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(custoTotal.toFixed(2))}</p>
+                `;
                 listItem.appendChild(label);
                 listaRepassesRafael.appendChild(listItem);
             }
@@ -195,8 +199,12 @@ function exibirRepassesPendentesEmpresa() {
                 listItem.appendChild(checkbox);
 
                 const label = document.createElement('label');
-                label.innerHTML = `${repasse.moeda === 'real' ? 'R$:' : 'U$:'} ${formatarValor(custoTotal.toFixed(2))}
-                 <p class="texto-pendencias">Pedido nº ${repasse.id}</p>`;
+                label.innerHTML = `
+                <p class="texto-pendencias">Pedido nº ${repasse.id}</p>
+                <p class="texto-pendencias">Frete: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(repasse.valor_frete)}</p>
+                <p class="texto-pendencias">Insumos: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(repasse.valor_insumos)}</p>
+                <p class="texto-pendencias">Total: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(custoTotal.toFixed(2))}</p>
+                `;
                 listItem.appendChild(label);
                 listaRepassesMaithe.appendChild(listItem);
             }
@@ -568,8 +576,9 @@ async function confirmarRepassesEmpresa(area, repasses, vendedor) {
             alert('Repasses registrados com sucesso!');
             //exibirRepassesPendentesProducao();
             //exibirRepassesPendentesAdministradores();
-            exibirRepassesPendentesEmpresa();
+            //exibirRepassesPendentesEmpresa();
             //exibirUltimosRepassesFeitos();
+            location.reload();
             return;
         } catch (error) {
             alert('Erro ao registrar repasses.');
