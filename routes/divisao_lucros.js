@@ -270,6 +270,35 @@ router.get('/repasses-feitos-empresa', autenticar, (req, res) => {
     });
 });
 
+// Rota para obter os repasses para a empresa/administrador (GET /api/divisao-lucros-simples/repasses-empresa-administrador)
+router.get('/repasses-empresa-administrador', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            re.id,
+            re.pedido_id,
+            re.valor,
+            re.moeda,
+            re.data,
+            v.nome AS vendedor,
+            a.nome AS administrador
+        FROM 
+            repasses_empresa re
+        JOIN 
+            vendedores v ON re.vendedor_id = v.id
+        JOIN 
+            administradores a ON re.administrador_id = a.id
+        ORDER BY re.data DESC;
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar repasses para a empresa:', err);
+            res.status(500).json({ error: 'Erro ao buscar repasses para a empresa.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 // Rota para obter todos os vendedores (GET /api/divisao-lucros/vendedores)
 router.get('/vendedores', autenticar, (req, res) => {
     const sql = 'SELECT * FROM vendedores';

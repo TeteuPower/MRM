@@ -56,4 +56,30 @@ router.get('/saldo-empresa', autenticar, (req, res) => {
     });
 });
 
+// Rota para obter todos os gastos (GET /api/gastos)
+router.get('/', autenticar, (req, res) => {
+    const sql = `
+        SELECT 
+            g.id,
+            g.descricao,
+            g.valor,
+            g.moeda,
+            g.data,
+            a.nome AS administrador
+        FROM 
+            gastos g
+        JOIN 
+            administradores a ON g.administrador_id = a.id
+        ORDER BY g.data DESC;
+    `;
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar gastos:', err);
+            res.status(500).json({ error: 'Erro ao buscar gastos.' });
+            return;
+        }
+        res.json(results);
+    });
+});
+
 module.exports = router;

@@ -46,6 +46,32 @@
 
                 <button type="submit" class="btn-acao verde">Registrar Gasto</button>
             </form>
+            <div class="extrato-caixa">
+                <h3>Extrato do Caixa</h3>
+        
+                <table id="tabela-extrato-caixa">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <!--<th>Moeda</th>-->
+                            <th>Adm</th>
+                            <!--<th>Vendedor</th>
+                            <th>Pedido</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itens do extrato serão adicionados aqui -->
+                    </tbody>
+                </table>
+        
+                <div class="paginacao">
+                    <button id="btn-pagina-anterior-extrato" style="display: none;">Página Anterior</button>
+                    <ul id="menu-paginacao-extrato"></ul>
+                    <button id="btn-proxima-pagina-extrato" style="display: none;">Próxima Página</button>
+                </div>
+            </div>
         </section>
     </main>
 

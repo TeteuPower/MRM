@@ -36,3 +36,53 @@
 #gastos .input-group {
     margin-bottom: 10px;
 }
+
+.extrato-caixa {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.extrato-caixa h3 {
+    margin-bottom: 15px;
+}
+
+#tabela-extrato-caixa {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto; /* Permite rolagem horizontal */
+    
+}
+
+#tabela-extrato-caixa th,
+#tabela-extrato-caixa td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+    white-space: nowrap; /* Evita que o texto quebre em várias linhas */
+}
+
+/* Estilos para telas menores */
+@media (max-width: 768px) {
+    #tabela-extrato-caixa {
+        font-size: 0.7em; /* Diminui o tamanho da fonte ainda mais */
+    }
+
+    #tabela-extrato-caixa th,
+    #tabela-extrato-caixa td {
+        padding: 5px; /* Diminui o espaçamento interno */
+    }
+
+    #tabela-extrato-caixa td:nth-child(7), /* Oculta a coluna "Pedido" */
+    #tabela-extrato-caixa th:nth-child(7) {
+        display: none;
+    }
+    #tabela-extrato-caixa td:nth-child(2), /* Seleciona a segunda coluna (descrição) */
+    #tabela-extrato-caixa th:nth-child(2) {
+    white-space: normal; /* Permite que o texto quebre a linha */
+    height: auto; /* Permite que a célula se ajuste à altura do texto */
+    }
+
+}
