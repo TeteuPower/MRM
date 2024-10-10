@@ -8,72 +8,72 @@ router.get('/rafael', autenticar, (req, res) => {
     const sql = `
         SELECT 
             (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Finalizado'
             ) * 0.1 - (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0) 
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 3 AND rp.produtor_id = 1
             ) AS saldo_total_rafael_matheus_reais,
             (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Finalizado'
             ) * 0.1 - (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 3 AND rp.produtor_id = 1
             ) AS saldo_total_rafael_matheus_dolares,
             (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN p.valor_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.valor_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS vendas_totais_rafael_matheus_reais,
             (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN p.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.valor ELSE 0 END), 0)
                 FROM repasses_parciais_producao p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 3 AND pr.id = 1
             ) AS repasses_parciais_rafael_matheus,
             (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN p.valor_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.valor_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS vendas_totais_rafael_matheus_dolares,
             (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS lucro_real_rafael_reais,
             (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS lucro_real_rafael_dolares,
             (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0) 
                 FROM repasses_producao rp 
                 WHERE rp.vendedor_id = 3 AND rp.produtor_id = 1
             ) AS comissoes_matheus_reais,
             (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_producao rp 
                 WHERE rp.vendedor_id = 3 AND rp.produtor_id = 1
             ) AS comissoes_matheus_dolares,
                          (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 3 AND rp.produtor_id = 1
             ) AS comissoes_matheus_reais_parcial,
             (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0) 
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 3 AND rp.produtor_id = 1
             ) AS comissoes_matheus_dolares_parcial
@@ -151,72 +151,72 @@ router.get('/maithe', autenticar, (req, res) => {
     const sql = `
         SELECT 
             (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Finalizado'
             ) * 0.1 - (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 2 AND rp.produtor_id = 1
             ) AS saldo_total_maithe_matheus_reais,
             (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Finalizado'
             ) * 0.1 - (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 2 AND rp.produtor_id = 1
             ) AS saldo_total_maithe_matheus_dolares,
             (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN p.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.valor ELSE 0 END), 0)
                 FROM repasses_parciais_producao p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1
             ) AS repasses_parciais_maithe_matheus,
             (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN p.valor_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.valor_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS vendas_totais_maithe_matheus_reais,
             (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN p.valor_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.valor_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS vendas_totais_maithe_matheus_dolares,
             (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS lucro_real_maithe_reais,
             (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Finalizado'
             ) AS lucro_real_maithe_dolares,
             (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_producao rp 
                 WHERE rp.vendedor_id = 2 AND rp.produtor_id = 1
             ) AS comissoes_matheus_reais,
             (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_producao rp 
                 WHERE rp.vendedor_id = 2 AND rp.produtor_id = 1
             ) AS comissoes_matheus_dolares,
                          (
-                SELECT SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 2 AND rp.produtor_id = 1
             ) AS comissoes_matheus_reais_parcial,
             (
-                SELECT SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END) 
+                SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 2 AND rp.produtor_id = 1
             ) AS comissoes_matheus_dolares_parcial
