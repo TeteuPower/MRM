@@ -701,3 +701,39 @@ function atualizarHoraServidor() {
             document.getElementById('hora-servidor').textContent = `Hora do Servidor: ${hora}`;
         });
 }
+
+function exibirUltimosRepassesFeitos(area) {
+    const listaRepasses = document.getElementById(`lista-repasses-feitos-${area}`);
+    listaRepasses.innerHTML = '';
+
+    fetch(`/api/divisao-lucros/repasses-feitos-${area}`, {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar últimos repasses feitos.');
+        }
+        return response.json();
+    })
+    .then(repasses => {
+        console.log(repasses)
+        if (area === 'empresa') {
+            repasses.forEach(repasse => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Do ${repasse.vendedor} para a empresa o valor de ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${repasse.valor} do Pedido nº ${repasse.pedido_id}, cadastrado pelo ${repasse.administrador} no dia ${formatarData(repasse.data)}.`;
+                listaRepasses.appendChild(listItem);
+            })
+        } else {
+            repasses.forEach(repasse => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `Do ${repasse.vendedor} para ${area === 'producao' ? repasse.produtor : repasse.vendedor_destinatario} o valor de ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${repasse.valor}, cadastrado pelo ${repasse.administrador} no dia ${formatarData(repasse.data)}.`;
+                listaRepasses.appendChild(listItem);
+        })};
+    })
+    .catch(error => {
+        alert('Erro ao buscar últimos repasses feitos.');
+        console.error(error);
+    });
+}

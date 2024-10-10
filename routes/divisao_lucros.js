@@ -178,7 +178,6 @@ router.get('/repasses-feitos-producao', autenticar, (req, res) => {
     const sql = `
         SELECT 
             rp.id,
-            rp.pedido_id,
             rp.vendedor_id,
             rp.produtor_id,
             rp.valor,
@@ -188,7 +187,7 @@ router.get('/repasses-feitos-producao', autenticar, (req, res) => {
             v.nome AS vendedor,
             pr.nome AS produtor
         FROM 
-            repasses_producao rp
+            repasses_parciais_producao rp
         JOIN 
             administradores a ON rp.administrador_id = a.id
         JOIN 

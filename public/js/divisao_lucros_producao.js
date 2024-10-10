@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (autenticado) {
                 exibirResumoRafaelMatheus();
                 exibirResumoMaitheMatheus();
-                exibirResumoRafaelMaithe();
+                exibirUltimosRepassesFeitos('producao');
             }
         });
         // Adiciona event listeners aos botões "Confirmar Repasse"
@@ -151,27 +151,6 @@ async function exibirResumoMaitheMatheus() {
         console.error(error);
     });
 }*/
-
-function exibirResumoRafaelMaithe() {
-    fetch('/api/divisao-lucros-simples/rafael-maithe', {
-        headers: {
-            'Authorization': localStorage.getItem('token')
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erro ao buscar resumo do Rafael e Maithê.');
-        }
-        return response.json();
-    })
-    .then(resumo => {
-        //document.getElementById('saldo-total-rafael-maithe').textContent = `R$ ${resumo.saldo_total_rafael_maithe}`;
-    })
-    .catch(error => {
-        alert('Erro ao buscar resumo do Rafael e Maithê.');
-        console.error(error);
-    });
-}
 
 function confirmarRepasse(vendedor) {
     const valorRepasse = parseFloat(document.getElementById(`valor-repasse-${vendedor}`).value);

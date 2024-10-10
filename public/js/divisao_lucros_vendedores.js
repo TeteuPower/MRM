@@ -3,6 +3,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     verificarAutenticacao()
     calcularSaldoVendedores();
+    exibirUltimosRepassesFeitos('vendedores');
 
     document.getElementById('btn-fazer-repasses-administradores').addEventListener('click', function() {
         const valorRepasse = document.getElementById('input-repasse-adm').value;
