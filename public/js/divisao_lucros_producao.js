@@ -44,9 +44,9 @@ async function exibirResumoRafaelMatheus() {
         const resumo = await response.json();
         //console.log(resumo);
         //Saldo Total
-        let totalDolar = parseFloat(resumo.saldo_total_rafael_matheus_dolares)/10;
-        let totalReal = parseFloat(resumo.saldo_total_rafael_matheus_reais)/10;
-        let totalConvertido = parseFloat((await converterDolarParaReal(totalDolar) + totalReal) - parseFloat(resumo.repasses_parciais_rafael_matheus)).toFixed(2);
+        let totalDolar = parseFloat(resumo.saldo_total_rafael_matheus_dolares);
+        let totalReal = parseFloat(resumo.saldo_total_rafael_matheus_reais);
+        let totalConvertido = parseFloat((await converterDolarParaReal(totalDolar) + totalReal));
         //Vendas Totais
         let totalDolarVendasTotais = parseFloat(resumo.vendas_totais_rafael_matheus_dolares);
         let totalRealVendasTotais = parseFloat(resumo.vendas_totais_rafael_matheus_reais);
@@ -88,9 +88,9 @@ async function exibirResumoMaitheMatheus() {
         const resumo = await response.json();
         //console.log(resumo.repasses_parciais_maithe_matheus);
         //Saldo Total
-        let totalDolar = parseFloat(resumo.saldo_total_maithe_matheus_dolares)/10;
-        let totalReal = parseFloat(resumo.saldo_total_maithe_matheus_reais)/10;
-        let totalConvertido = parseFloat((await converterDolarParaReal(totalDolar) + totalReal) - parseFloat(resumo.repasses_parciais_maithe_matheus)).toFixed(2)
+        let totalDolar = parseFloat(resumo.saldo_total_maithe_matheus_dolares);
+        let totalReal = parseFloat(resumo.saldo_total_maithe_matheus_reais);
+        let totalConvertido = parseFloat((await converterDolarParaReal(totalDolar) + totalReal));
         //console.log(totalConvertido, totalDolar, totalReal);
         //Vendas Totais
         let totalDolarVendasTotais = parseFloat(resumo.vendas_totais_maithe_matheus_dolares);

@@ -358,6 +358,21 @@ router.post('/repasses-vendedores', autenticar, (req, res) => {
 });
 
 // Rota para registrar um novo repasse (POST /api/divisao-lucros/repasses)
+router.post('/repasses-vendedores-parcial', autenticar, (req, res) => {
+    const { vendedorId, vendedorDestinatarioId, valor, administradorId, moeda } = req.body;
+
+    const sql = 'INSERT INTO repasses_vendedores (vendedor_id, vendedor_destinatario_id, valor, administrador_id, moeda, data) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(sql, [vendedorId, vendedorDestinatarioId, valor, administradorId, moeda, new Date()], (err, result) => {
+        if (err) {
+            console.error('Erro ao registrar repasse:', err);
+            res.status(500).json({ error: 'Erro ao registrar repasse.' });
+            return;
+        }
+        res.json({ message: 'Repasse registrado com sucesso!', id: result.insertId });
+    });
+});
+
+// Rota para registrar um novo repasse (POST /api/divisao-lucros/repasses)
 router.post('/repasses-empresa', autenticar, (req, res) => {
     const { pedidoId, vendedorId, valor, moeda, administradorId, finalizaComissao } = req.body;
 

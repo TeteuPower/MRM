@@ -12,7 +12,7 @@ router.get('/rafael', autenticar, (req, res) => {
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Finalizado'
-            ) - (
+            ) * 0.1 - (
                 SELECT SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END) 
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 3 AND rp.produtor_id = 1
@@ -22,7 +22,7 @@ router.get('/rafael', autenticar, (req, res) => {
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 3 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Finalizado'
-            ) - (
+            ) * 0.1 - (
                 SELECT SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END) 
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 3 AND rp.produtor_id = 1
@@ -99,7 +99,7 @@ router.get('/rafael-maithe', autenticar, (req, res) => {
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END), 0) 
                 FROM pedidos p 
                 WHERE p.vendedor_id = 3 AND p.status = 'Finalizado'
-            ) - (
+            ) * 0.45 - (
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0) 
                 FROM repasses_vendedores rp 
                 WHERE rp.vendedor_id = 3 AND rp.vendedor_destinatario_id = 2
@@ -108,7 +108,7 @@ router.get('/rafael-maithe', autenticar, (req, res) => {
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 WHERE p.vendedor_id = 3 AND p.status = 'Finalizado'
-            ) - (
+            ) * 0.45 - (
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_vendedores rp 
                 WHERE rp.vendedor_id = 3 AND rp.vendedor_destinatario_id = 2
@@ -117,7 +117,7 @@ router.get('/rafael-maithe', autenticar, (req, res) => {
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 WHERE p.vendedor_id = 2 AND p.status = 'Finalizado'
-            ) - (
+            ) * 0.45 - (
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0) 
                 FROM repasses_vendedores rp 
                 WHERE rp.vendedor_id = 2 AND rp.vendedor_destinatario_id = 3
@@ -126,7 +126,7 @@ router.get('/rafael-maithe', autenticar, (req, res) => {
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 WHERE p.vendedor_id = 2 AND p.status = 'Finalizado'
-            ) - (
+            ) * 0.45 - (
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_vendedores rp 
                 WHERE rp.vendedor_id = 2 AND rp.vendedor_destinatario_id = 3
@@ -155,7 +155,7 @@ router.get('/maithe', autenticar, (req, res) => {
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Finalizado'
-            ) - (
+            ) * 0.1 - (
                 SELECT SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END) 
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 2 AND rp.produtor_id = 1
@@ -165,7 +165,7 @@ router.get('/maithe', autenticar, (req, res) => {
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Finalizado'
-            ) - (
+            ) * 0.1 - (
                 SELECT SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END) 
                 FROM repasses_parciais_producao rp 
                 WHERE rp.vendedor_id = 2 AND rp.produtor_id = 1

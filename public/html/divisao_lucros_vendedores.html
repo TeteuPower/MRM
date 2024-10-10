@@ -13,6 +13,7 @@
     <div id="cabecalho"></div>
     <main>
         <div class="container">
+            <h2>Saldo dos Vendedores</h2>
             <div class="nomes">
                 <div class="nome">Rafael</div>
                 <div class="nome">Maithê</div>
@@ -28,8 +29,15 @@
             <div class="barra-status">Barra de status da repartição dos Lucros</div>
         </div>
         <div class="resumo">
-            <h3>Resumo Financeiro</h3>
+            <h3>Registrar Repasse</h3>
             <p id="resumo"></p>
+            <input type="text" id="input-repasse-adm" placeholder="Digite o valor do repasse">
+            <label for="select-repasse-adm">Selecione quem está RECEBENDO:</label>
+            <select id="select-repasse-adm">
+                <option value="2">Maithê</option>
+                <option value="3">Rafael</option>
+            </select>
+            <button id="btn-fazer-repasses-administradores" class="btn-acao verde">Fazer Repasse</button>
         </div>
     </main>
 

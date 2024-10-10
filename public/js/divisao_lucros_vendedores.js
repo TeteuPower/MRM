@@ -2,11 +2,14 @@
 
 document.addEventListener('DOMContentLoaded', function() {
     verificarAutenticacao()
-        .then(autenticado => {
-            if (autenticado) {
-                calcularSaldoVendedores();
-            }
-        });
+    calcularSaldoVendedores();
+
+    document.getElementById('btn-fazer-repasses-administradores').addEventListener('click', function() {
+        const valorRepasse = document.getElementById('input-repasse-adm').value;
+        const admId = document.getElementById('select-repasse-adm').value;
+        confirmarRepassesVendedores(valorRepasse, admId);
+        //console.log(valorRepasse, admId);
+    });
 });
 
 async function calcularSaldoVendedores() {
@@ -27,8 +30,8 @@ async function calcularSaldoVendedores() {
         const saldoReaisMaithe = parseFloat(resumo.saldo_total_maithe_rafael_reais);
         const saldoDolaresMaithe = parseFloat(resumo.saldo_total_maithe_rafael_dolar);
 
-        let saldoTotalRafael = (saldoReaisRafael + await converterDolarParaReal(saldoDolaresRafael)) * 0.45;
-        let saldoTotalMaithe = (saldoReaisMaithe + await converterDolarParaReal(saldoDolaresMaithe)) * 0.45;
+        let saldoTotalRafael = (saldoReaisRafael + await converterDolarParaReal(saldoDolaresRafael));
+        let saldoTotalMaithe = (saldoReaisMaithe + await converterDolarParaReal(saldoDolaresMaithe));
 
         //console.log('Rafael:', saldoReaisRafael, saldoDolaresRafael, saldoTotalRafael);
         //console.log('Maithê:', saldoReaisMaithe, saldoDolaresMaithe, saldoTotalMaithe);
@@ -81,27 +84,51 @@ function atualizarBarras(vendedorMaiorSaldo, saldo) {
         valorBarra2.textContent = `Saldo: R$${formatarValor(saldo)}`; // Atualiza o texto da barra 2
         textoResumo.textContent = `Para igualar o saldo, a Maithê deve fazer um repasse de R$ ${formatarValor(saldo)} para o Rafael`;
     }
+}
 
+async function confirmarRepassesVendedores(repasse, idVendedorRecebedor) {
+    //console.log(repasse);
+    if (repasse === '') {
+        alert('Informe o valor do repasse.');
+        return;
+    }
 
-    return;
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // Define a cor da barra com base no saldo
-    if (saldoTotal > 0) {
-        barraRepasse.style.backgroundColor = '#5cb85c'; // Verde
-    } else if (saldoTotal < 0) {
-        barraRepasse.style.backgroundColor = '#d9534f'; // Vermelho
-    } else {
-        barraRepasse.style.backgroundColor = '#222'; // Cinza
+    if (confirm(`Confirma que ${idVendedorRecebedor === "3" ? 'a Maithê' : 'o Rafael'} está fazendo um repasse de R$ ${parseFloat(repasse).toFixed(2)} para ${idVendedorRecebedor === "3" ? 'o Rafael' : 'a Maithê'}?`)) {
+        try {
+                const vendedorId = parseInt(idVendedorRecebedor === "3" ? 2 : 3);
+                const vendedor_destinatario_id = parseFloat(idVendedorRecebedor);
+                const moeda = 'real';
+                const administradorId = parseInt(localStorage.getItem('administrador'));
+                const valor = parseFloat(repasse);
+                //console.log(vendedorId, vendedor_destinatario_id, valor, administradorId, moeda);
+
+                // Registra o repasse na API
+                const response = await fetch('/api/divisao-lucros/repasses-vendedores-parcial', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        vendedorId: vendedorId,
+                        vendedorDestinatarioId: vendedor_destinatario_id,
+                        valor: valor,
+                        administradorId: administradorId,
+                        moeda: moeda,
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Erro ao registrar repasse.');
+                }
+                response.json();
+
+            alert('Repasses registrados com sucesso!');
+            calcularSaldoVendedores();
+            return;
+        } catch (error) {
+            alert('Erro ao registrar repasses.');
+            console.error(error);
+        }
     }
 }
-  // Exemplo de uso:
-  //atualizarBarras(50, 50); // Define 30% para barra1 e 70% para barra2
