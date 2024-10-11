@@ -163,7 +163,7 @@ function exibirRepassesPendentesEmpresa() {
         repasses.forEach(repasse => {
             //console.log(repasse)
             if (repasse.vendedor === 'Rafael') {
-                console.log(repasse)
+                //console.log(repasse)
                 let custoTotal = parseFloat(repasse.valor_insumos) + parseFloat(repasse.valor_frete);
                 repasse.custoTotal = custoTotal.toFixed(2);
                 const listItem = document.createElement('li');
@@ -180,7 +180,8 @@ function exibirRepassesPendentesEmpresa() {
                 <p class="texto-pendencias">Pedido nº ${repasse.id}</p>
                 <p class="texto-pendencias">Frete: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(repasse.valor_frete)}</p>
                 <p class="texto-pendencias">Insumos: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(repasse.valor_insumos)}</p>
-                <p class="texto-pendencias">Total: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(custoTotal.toFixed(2))}</p>
+                <p class="texto-pendencias">Reinvestimento:Em breve!</p>
+                <p class="texto-pendencias"><strong>Total: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(custoTotal.toFixed(2))}</strong></p>
                 `;
                 listItem.appendChild(label);
                 listaRepassesRafael.appendChild(listItem);
@@ -203,7 +204,8 @@ function exibirRepassesPendentesEmpresa() {
                 <p class="texto-pendencias">Pedido nº ${repasse.id}</p>
                 <p class="texto-pendencias">Frete: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(repasse.valor_frete)}</p>
                 <p class="texto-pendencias">Insumos: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(repasse.valor_insumos)}</p>
-                <p class="texto-pendencias">Total: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(custoTotal.toFixed(2))}</p>
+                <p class="texto-pendencias">Reinvestimento:Em breve!</p>
+                <p class="texto-pendencias"><strong>Total: ${repasse.moeda === 'real' ? 'R$:' : 'U$:'}${formatarValor(custoTotal.toFixed(2))}</strong></p>
                 `;
                 listItem.appendChild(label);
                 listaRepassesMaithe.appendChild(listItem);

@@ -3,6 +3,10 @@
     margin-top: 60px;
     text-align: center;
 }
+strong {
+    font-weight: bold;
+    color: rgb(238, 255, 0);
+}
 
 .repasses-container {
     display: flex;
@@ -69,6 +73,10 @@
     list-style-type: none;
     flex-direction: row;
     padding: 5px;
+    background-color: #222;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
 }
 
 .texto-pendencias {
