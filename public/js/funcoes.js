@@ -135,6 +135,7 @@ function exibirDetalhesPedido(id) {
         const areaLote = document.getElementById('area-lote');
         if (pedido.status === 'Em produção') {
             areaLote.style.display = 'block';
+
             exibirProdutores('modal-produtor'); // Chama a função para popular o select de produtores[
             exibirInputsLote(pedido); // Chama a função para exibir os inputs de lote
     
@@ -252,6 +253,7 @@ function exibirDetalhesPedido(id) {
     const btnConsultarNotaFiscal = document.getElementById('btn-consultar-nota-fiscal');
 
     if (pedido.status === 'Pronto, aguardando envio') {
+        areaFinalizado.style.display = 'none';
         areaFrete.style.display = 'block';
         areaNotaFiscal.style.display = 'block';
         btnFinalizarPedido.onclick = () => {
@@ -284,7 +286,9 @@ function exibirDetalhesPedido(id) {
         /*btnFinalizarPedido.onclick = () => {
             finalizarPedido(pedido);
         };*/
-    };
+    } else {
+        areaFinalizado.style.display = 'none';
+    }
 
         // Preenche o valor do frete
         const valorFreteExibicao = document.getElementById('modal-valor-frete-exibicao');
@@ -335,13 +339,23 @@ function exibirDetalhesPedido(id) {
                     alert('Texto formatado copiado para a área de transferência!');
                 }
             });
+            // Adicione um event listener ao botão "Formatar Texto"
+            document.getElementById('btn-formatar-texto2').addEventListener('click', () => {
+                if (pedido) {
+                    const textoFormatado = formatarTextoPedido(pedido);
+                    //console.log(textoFormatado)
+                    // Copia o texto para a área de transferência
+                    copiarParaAreaDeTransferencia(textoFormatado); // Chama a função auxiliar para copiar o texto
+                    alert('Texto formatado copiado para a área de transferência!');
+                }
+            });
     })
 
     // Exibe o modal
     document.getElementById('modal-detalhes-pedido').style.display = 'block';
 }
 
-function carregarPedidosDoLocalStorage() {
+/*function carregarPedidosDoLocalStorage() {
     const pedidosStorage = localStorage.getItem('vendas');
     if (pedidosStorage) {
         vendas = JSON.parse(pedidosStorage, (key, value) => {
@@ -355,7 +369,7 @@ function carregarPedidosDoLocalStorage() {
     }
 }
 
-/*function salvarPedidosNoLocalStorage() {
+function salvarPedidosNoLocalStorage() {
     // Antes de salvar, converta os objetos Date para strings
     const vendasParaSalvar = vendas.map(venda => {
         return {
