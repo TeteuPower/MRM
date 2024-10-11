@@ -100,6 +100,11 @@ function exibirPedidosCliente() {
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = pedido.id;
+            checkbox.moeda = pedido.moeda;
+            checkbox.addEventListener('change', function() {
+                const moedaSelect = document.getElementById('moeda-pagamento');
+                moedaSelect.innerHTML = `<option value="${checkbox.moeda}">${checkbox.moeda === 'real' ? 'Real (R$)' : 'Dólar (US$)'}</option>`
+            });
             listItem.appendChild(checkbox);
 
             const label = document.createElement('label');
