@@ -101,6 +101,7 @@
                         <option value="">Selecione o Tipo</option>
                         <!-- Opções de tipos de rapé serão adicionadas aqui -->
                     </select>
+                    <button type="button" id="btn-criar-variedade-rape">Criar Variedade de rapé</button>
                 </div>
 
                 <div class="input-group">
@@ -109,6 +110,19 @@
                 </div>
 
                 <button type="button" onclick="adicionarAoCarrinho()">Adicionar</button>
+            </div>
+        </div>
+        <div id="modal-criar-variedade-rape" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalCriarVariedadeRape()">×</span>
+                <h2>Criar Variedade de Rapé</h2>
+        
+                <div class="input-group">
+                    <label for="nome-nova-variedade">Nome da Variedade:</label>
+                    <input type="text" id="nome-nova-variedade" placeholder="Nome da Variedade">
+                </div>
+        
+                <button type="button" onclick="adicionarNovaVariedadeRape()">Adicionar</button>
             </div>
         </div>
     </main>

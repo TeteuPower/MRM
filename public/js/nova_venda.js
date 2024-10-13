@@ -29,6 +29,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('moeda').addEventListener('change', calcularSaldoVenda);
     document.getElementById('valor-venda').addEventListener('input', calcularSaldoVenda);
     document.getElementById('valor-pago').addEventListener('input', calcularSaldoVenda);
+    document.getElementById('btn-criar-variedade-rape').addEventListener('click', function() {
+        document.getElementById('modal-criar-variedade-rape').style.display = 'block';
+    });
 
     document.getElementById('form-nova-venda').addEventListener('submit',
     async function (evento)
@@ -213,6 +216,10 @@ function fecharModalAdicionarProduto() {
     document.getElementById('modal-adicionar-produto').style.display = 'none';
 }
 
+function fecharModalCriarVariedadeRape() {
+    document.getElementById('modal-criar-variedade-rape').style.display = 'none';
+}
+
 
 function popularSelectProdutos() {
     const selectProduto = document.getElementById('produto');
@@ -362,4 +369,42 @@ function atualizarEstoque(venda) {
     });
 
     salvarEstoqueNoLocalStorage(); // Função para salvar o estoque no Local Storage (você precisa criá-la)
+}
+
+function adicionarNovaVariedadeRape() {
+    const nomeVariedade = document.getElementById('nome-nova-variedade').value.trim();
+
+    if (nomeVariedade === '') {
+        alert('Por favor, insira o nome da variedade!');
+        return;
+    }
+
+    // Faz uma requisição POST para a API para adicionar a nova variedade
+    fetch('/api/estoque/adicionar-variedade-rape', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('token')
+        },
+        body: JSON.stringify({
+            nome: nomeVariedade,
+            quantidade: 0
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao adicionar variedade.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+        fecharModalCriarVariedadeRape();
+        popularSelectTiposRape('tipo-rape');
+        document.getElementById('nome-nova-variedade').value = ''; // Limpa o campo de input
+    })
+    .catch(error => {
+        alert('Erro ao adicionar variedade.');
+        console.error(error);
+    });
 }

@@ -282,5 +282,20 @@ router.put('/adesivos-grandes', autenticar, (req, res) => {
     });
 });
 
+// Rota para criar uma nova variedade de rapé (POST /api/estoque/variedades-rape)
+router.post('/adicionar-variedade-rape', autenticar, (req, res) => {
+    const { nome, quantidade } = req.body;
+
+    const sql = 'INSERT INTO variedades_rape (produto_id, nome, quantidade) VALUES (?, ?, ?)';
+    db.query(sql, [1, nome, quantidade], (err, result) => {
+        if (err) {
+            console.error('Erro ao criar variedade:', err);
+            res.status(500).json({ error: 'Erro ao criar variedade.' });
+            return;
+        }
+        res.json({ message: 'Variedade criada com sucesso!', id: result.insertId });
+    });
+});
+
 
 module.exports = router;
