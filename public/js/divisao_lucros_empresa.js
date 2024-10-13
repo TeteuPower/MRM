@@ -559,7 +559,7 @@ async function confirmarRepassesEmpresa(area, repasses, vendedor) {
                     body: JSON.stringify({
                         pedidoId: pedidoId,
                         vendedorId: vendedorId,
-                        valor: comissaoConvertida.toFixed(2),
+                        valor: totalRepassesEmpresaConvertido.toFixed(2),
                         moeda: moeda,
                         administradorId: administradorId,
                         finalizaComissao: true

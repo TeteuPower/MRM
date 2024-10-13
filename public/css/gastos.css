@@ -110,3 +110,23 @@
 .paginacao li.ativo {
     background-color: #555;
 }
+
+.filtro-extrato {
+    margin-bottom: 15px;
+}
+
+.filtro-extrato label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.filtro-extrato select {
+    background-color: #222;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    color: #eee;
+    font-weight: bold;
+}
