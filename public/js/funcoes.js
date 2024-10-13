@@ -566,8 +566,8 @@ function verificarAutenticacao() {
     // Verifica a validade do token imediatamente
     verificarToken();
 
-    // Verifica a validade do token a cada 10 segundos (10000 milissegundos)
-    setInterval(verificarToken, 300000);
+    // Verifica a validade do token a cada 100 segundos (100000 milissegundos)
+    setInterval(verificarToken, 100000);
 
     // Adiciona a classe 'visivel' ao body para exibir o conteúdo
     document.body.classList.add('visivel');
