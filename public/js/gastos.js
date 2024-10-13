@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function exibirSaldoEmpresa() {
     const textoSaldoEmpresa = document.getElementById('saldo-empresa');
+    const textoSaldoEmpresa2 = document.getElementById('saldo-empresa2');
 
     fetch('/api/gastos/saldo-empresa', {
         headers: {
@@ -29,6 +30,7 @@ function exibirSaldoEmpresa() {
     .then(async saldo => {
         const saldoTotal = (parseFloat(saldo.saldo_empresa_reais).toFixed(2) + await converterDolarParaReal(parseFloat(saldo.saldo_empresa_dolares).toFixed(2)));
         textoSaldoEmpresa.textContent = `Saldo no caixa da empresa: R$ ${formatarValor(parseFloat(saldoTotal).toFixed(2))}`;
+        textoSaldoEmpresa2.textContent = `Saldo R$ ${formatarValor(parseFloat(saldoTotal).toFixed(2))}`;
     })
     .catch(error => {
         alert('Erro ao buscar saldo da empresa.');
@@ -161,13 +163,19 @@ function exibirExtratoCaixa() {
 
                 if (item.pedido_id) {
                     cellDescricao.textContent = `Repasse para a Empresa - Pedido nº ${item.pedido_id}`;
+                    //Troca a cor do testo cellDescricao para verde
+                    cellValor.textContent = `${item.moeda === 'real' ? 'R$' : 'US$'} +${item.valor}`;
+                    cellValor.style.color = 'green';
+                    
                     //cellVendedor.textContent = item.vendedor;
                     //cellPedido.textContent = item.pedido_id;
                 } else {
                     cellDescricao.textContent = item.descricao;
+                    cellValor.textContent = `${item.moeda === 'real' ? 'R$' : 'US$'} -${item.valor}`;
+                    cellValor.style.color = 'red';
                 }
 
-                cellValor.textContent = `${item.moeda === 'real' ? 'R$' : 'US$'} ${item.valor}`;
+
                 //cellMoeda.textContent = item.moeda;
                 cellAdministrador.textContent = item.administrador;
 
