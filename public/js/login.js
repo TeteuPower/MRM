@@ -71,7 +71,7 @@ function checkAdminPassword() {
                 localStorage.setItem('administradorNome', administrador.nome);
 
                 // Redireciona para a página de consultar pedidos
-                window.location.href = 'html/pagina_inicial.html';
+                window.location.href = '/pagina_inicial';
 
                 // Exibe o alerta de boas-vindas
                 alert(`Seja bem vindo, ${administrador.nome}!`);

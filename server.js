@@ -50,6 +50,98 @@ app.get('/pagina_inicial', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'pagina_inicial.html'));
 });
 
+// Define a rota para o header (header.html)
+app.get('/header.html', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'header.html'));
+});
+
+// Define a rota para nova_venda (nova_venda.html)
+app.get('/nova_venda', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'nova_venda.html'));
+});
+
+// Defina a rota para consultar_clientes (consultar_clientes.html)
+app.get('/consultar_cliente', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'consultar_cliente.html'));
+});
+
+// Define a rota para novo_cliente (novo_cliente.html)
+app.get('/novo_cliente', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'novo_cliente.html'));
+});
+
+// Define a rota para pagamentos (pagamentos.html)
+app.get('/pagamentos', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'pagamentos.html'));
+});
+
+// Define a rota para gastos (gastos.html)
+app.get('/gastos', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'gastos.html'));
+});
+
+//Define a rota para pagamentos (financeiro.html)
+app.get('/financeiro', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'financeiro.html'));
+});
+
+//Define a rota para divisao_lucros_producao (divisao_lucros_producao.html)
+app.get('/divisao_lucros_producao', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'divisao_lucros_producao.html'));
+});
+
+// Define a rota para divisao_lucros_empresa (divisao_lucros_empresa.html)
+app.get('/divisao_lucros_empresa', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'divisao_lucros_empresa.html'));
+});
+
+//Define a rota para divisao_lucros_vendedores (divisao_lucros_vendedores.html)
+app.get('/divisao_lucros_vendedores', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'divisao_lucros_vendedores.html'));
+});
+
+//Define a rota para financeiro (financeiro.html)
+app.get('/financeiro', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'financeiro.html'));
+});
+
+//Define a rota para financas (financas.html)
+app.get('/financas', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'financas.html'));
+});
+
+//Define a rota para consultar_pedidos (consultar_pedidos.html)
+app.get('/consultar_pedidos', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'consultar_pedidos.html'));
+});
+
+// Define a rota para alterar_senha (alterar_senha.html)
+app.get('/alterar_senha', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'alterar_senha.html'));
+});
+
+//Define a rota para alterar_usuario (alterar_usuario.html)
+app.get('/alterar_usuario', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'alterar_usuario.html'));
+});
+
+//Define a rota para funcionarios (funcionarios.html)
+app.get('/funcionarios', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'funcionarios.html'));
+});
+
+//Define a rota para redefinir_senha (redefinir_senha.html)
+app.get('/redefinir_senha', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'redefinir_senha.html'));
+});
+
+//Define a rota para estoque (estoque.html)
+app.get('/estoque', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'estoque.html'));
+});
+
+
+
 module.exports = {
     app: app // Exporta também o app do express
 };
