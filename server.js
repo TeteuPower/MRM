@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 
 // Define a rota para a página inicial (pagina_inicial.html)
 app.get('/pagina_inicial', (req, res) => {
-    res.sendFile(path.join(__dirname, 'html', 'pagina_inicial.html'));
+    res.sendFile(path.join(__dirname, 'public', 'html', 'pagina_inicial.html'));
 });
 
 module.exports = {
