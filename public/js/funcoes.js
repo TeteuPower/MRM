@@ -750,3 +750,14 @@ function exibirUltimosRepassesFeitos(area) {
         console.error(error);
     });
 }
+
+// Validação usando expressão regular
+function validarValor(valor) {
+    const regex = /^[0-9]+(?:\.[0-9]+)?$/;
+    return regex.test(valor);
+}
+//Como usar a função validarValor:
+/*if (!validarValor(valorRepasse)) {
+    alert('Por favor, insira um valor numérico válido.');
+    return;
+}*/

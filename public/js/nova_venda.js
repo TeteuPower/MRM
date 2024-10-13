@@ -183,7 +183,7 @@ function verificarDadosEPopularSelects() {
             mensagem += clientes.length === 0 ? 'cadastro de clientes.' : 'cadastro de funcionários.';
 
             alert(mensagem);
-            window.location.href = clientes.length === 0 ? 'novo_cliente.html' : 'funcionarios.html';
+            window.location.href = clientes.length === 0 ? 'novo_cliente' : 'funcionarios';
             return;
         }
 

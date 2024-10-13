@@ -6,7 +6,11 @@ document.addEventListener('DOMContentLoaded', function() {
     exibirUltimosRepassesFeitos('vendedores');
 
     document.getElementById('btn-fazer-repasses-administradores').addEventListener('click', function() {
-        const valorRepasse = document.getElementById('input-repasse-adm').value;
+        const valorRepasse = document.getElementById('input-repasse-adm').value.replace(',', '.');
+        if (!validarValor(valorRepasse)) {
+            alert('Por favor, insira um valor numérico válido.');
+            return;
+        }
         const admId = document.getElementById('select-repasse-adm').value;
         confirmarRepassesVendedores(valorRepasse, admId);
         //console.log(valorRepasse, admId);

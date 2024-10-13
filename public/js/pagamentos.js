@@ -30,6 +30,7 @@ function popularSelectClientes() {
         return response.json();
     })
     .then(clientes => {
+        clientes.sort((a, b) => a.nome.localeCompare(b.nome)); // Ordena os clientes em ordem alfabética
         clientes.forEach(cliente => {
             const option = document.createElement('option');
             option.value = cliente.id;
