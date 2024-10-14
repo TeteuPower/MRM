@@ -239,7 +239,8 @@ function exibirPedidosFinalizadosAguardandoEnvio() {
             });
     
             // Ordena os pedidos por data de criação (mais recentes primeiro)
-            pedidosFiltrados.sort((a, b) => b.dataCriacao - a.dataCriacao);
+            //pedidosFiltrados.sort((a, b) => b.dataCriacao - a.dataCriacao);
+            pedidosFiltrados.sort((a, b) => new Date(b.data_producao) - new Date(a.data_producao)); // Ordena por data (mais recentes primeiro
     
             // Itera sobre os pedidos filtrados e adiciona cada um à lista
             pedidosFiltrados.forEach(pedido => {
