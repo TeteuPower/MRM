@@ -79,6 +79,10 @@
     #tabela-extrato-caixa th:nth-child(7) {
         display: none;
     }
+    #tabela-extrato-caixa td:nth-child(4), /* Oculta a coluna "Pedido" */
+    #tabela-extrato-caixa th:nth-child(4) {
+        display: none;
+    }
     #tabela-extrato-caixa td:nth-child(2), /* Seleciona a segunda coluna (descrição) */
     #tabela-extrato-caixa th:nth-child(2) {
     white-space: normal; /* Permite que o texto quebre a linha */

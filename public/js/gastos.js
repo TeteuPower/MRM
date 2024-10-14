@@ -71,7 +71,11 @@ function registrarGasto(event) {
     event.preventDefault();
 
     const descricao = document.getElementById('descricao-gasto').value;
-    const valor = parseFloat(document.getElementById('valor-gasto').value);
+    const valor = parseFloat(document.getElementById('valor-gasto').value.replace(',', '.'));
+    if (!validarValor(valor)) {
+        alert('Por favor, insira um valor numérico válido.');
+        return;
+    }
     const moeda = document.getElementById('moeda-gasto').value;
     const administradorId = parseFloat(document.getElementById('administrador-gasto').value);
     //console.log(descricao,valor,moeda,administradorId)
@@ -156,7 +160,7 @@ function exibirExtratoCaixa() {
                 const cellValor = row.insertCell();
                 //const cellMoeda = row.insertCell();
                 const cellAdministrador = row.insertCell();
-                //const cellVendedor = row.insertCell();
+                const cellVendedor = row.insertCell();
                 //const cellPedido = row.insertCell();
 
                 cellData.textContent = formatarData(item.data);
@@ -164,14 +168,14 @@ function exibirExtratoCaixa() {
                 if (item.pedido_id) {
                     cellDescricao.textContent = `Repasse para a Empresa - Pedido nº ${item.pedido_id}`;
                     //Troca a cor do testo cellDescricao para verde
-                    cellValor.textContent = `${item.moeda === 'real' ? 'R$' : 'US$'} +${item.valor}`;
+                    cellValor.textContent = `${item.moeda === 'real' ? 'R$' : 'US$'} +${formatarValor(parseFloat(item.valor))}`;
                     cellValor.style.color = 'green';
                     
-                    //cellVendedor.textContent = item.vendedor;
+                    cellVendedor.textContent = item.vendedor;
                     //cellPedido.textContent = item.pedido_id;
                 } else {
                     cellDescricao.textContent = item.descricao;
-                    cellValor.textContent = `${item.moeda === 'real' ? 'R$' : 'US$'} -${item.valor}`;
+                    cellValor.textContent = `${item.moeda === 'real' ? 'R$' : 'US$'} -${formatarValor(parseFloat(item.valor))}`;
                     cellValor.style.color = 'red';
                 }
 
@@ -181,7 +185,7 @@ function exibirExtratoCaixa() {
 
                 // Oculta a coluna "Vendedor" se for um gasto
                 if (!item.vendedor) {
-                    //cellVendedor.style.display = 'none';
+                    cellVendedor.style.display = 'none';
                     //cellPedido.style.display = 'none';
                 }
             });
