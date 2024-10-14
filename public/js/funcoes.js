@@ -735,13 +735,13 @@ function exibirUltimosRepassesFeitos(area) {
         if (area === 'empresa') {
             repasses.forEach(repasse => {
                 const listItem = document.createElement('li');
-                listItem.textContent = `Do ${repasse.vendedor} para a empresa o valor de ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${repasse.valor} do Pedido nº ${repasse.pedido_id}, cadastrado pelo ${repasse.administrador} no dia ${formatarData(repasse.data)}.`;
+                listItem.textContent = `Do ${repasse.vendedor} para a empresa o valor de ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${formatarValor(parseFloat(repasse.valor))} do Pedido nº ${repasse.pedido_id}, cadastrado pelo ${repasse.administrador} no dia ${formatarData(repasse.data)}.`;
                 listaRepasses.appendChild(listItem);
             })
         } else {
             repasses.forEach(repasse => {
                 const listItem = document.createElement('li');
-                listItem.textContent = `Do ${repasse.vendedor} para ${area === 'producao' ? repasse.produtor : repasse.vendedor_destinatario} o valor de ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${repasse.valor}, cadastrado pelo ${repasse.administrador} no dia ${formatarData(repasse.data)}.`;
+                listItem.textContent = `Do ${repasse.vendedor} para ${area === 'producao' ? repasse.produtor : repasse.vendedor_destinatario} o valor de ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${formatarValor(parseFloat(repasse.valor))}, cadastrado pelo ${repasse.administrador} no dia ${formatarData(repasse.data)}.`;
                 listaRepasses.appendChild(listItem);
         })};
     })

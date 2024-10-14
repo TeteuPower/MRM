@@ -188,6 +188,7 @@ function confirmarRepasse(vendedor) {
             alert(data.message);
             exibirRepassesPendentesProducao();
             document.getElementById(`valor-repasse-${vendedor}`).value = ''; // Limpa o campo de input
+            exibirUltimosRepassesFeitos('producao');
         })
         .catch(error => {
             alert('Erro ao registrar repasse.');
