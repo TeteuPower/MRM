@@ -150,7 +150,13 @@ async function finalizarPedido(pedido) {
     }
 }
 
-
+ let totalKg = 0;
+ function somarTotalKg() {
+    const totalKgElement = document.getElementById('total-pedidos-aguardando-producao');
+    const totalKgElementPacotes = document.getElementById('total-pedidos-aguardando-producao-pacotes');
+    totalKgElement.textContent = `Total a ser produzido: ${totalKg.toFixed(0)} Kg`;
+    totalKgElementPacotes.textContent = `${(totalKg * 2).toFixed(0)} Pacotes`;
+ }
 function exibirPedidosAguardandoProducao() {
     const listaPedidos = document.getElementById('lista-pedidos-aguardando-producao');
     listaPedidos.innerHTML = ''; // Limpa a lista
@@ -179,13 +185,14 @@ function exibirPedidosAguardandoProducao() {
         });
 //console.log(pedidosFiltrados)
         // Ordena os pedidos por data de criação (mais recentes primeiro)
-        pedidosFiltrados.sort((a, b) => b.dataCriacao - a.dataCriacao);
+        pedidosFiltrados.sort((a, b) => b.id - a.id);
 
         // Itera sobre os pedidos filtrados e adiciona cada um à lista
         pedidosFiltrados.forEach(pedido => {
             //console.log(pedido)
             const listItem = document.createElement('li');
             listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)}Kg`;
+            totalKg = totalKg + parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2);
 
             listItem.addEventListener('click', () => {
                 exibirDetalhesPedido(pedido.id);
@@ -193,6 +200,8 @@ function exibirPedidosAguardandoProducao() {
 
             listaPedidos.appendChild(listItem);
         });
+        somarTotalKg();
+        //console.log(totalKg)
     })
     .catch(error => {
         alert('Erro ao buscar pedidos.');
