@@ -176,6 +176,7 @@ function exibirPedidosAguardandoProducao() {
         return response.json();
     })
     .then(pedidos => {
+        totalKg = 0;
         // Filtra os pedidos com base no termo de pesquisa
         const pedidosFiltrados = pedidos.filter(pedido => {
             return (pedido.status === 'Em produção') &&
@@ -278,12 +279,12 @@ function exibirPedidosFinalizados() {
             })
             .then(vendas => {
     const pedidosFinalizados = vendas.filter(pedido => {
+        //console.log(pedido.data_finalizacao);
         return pedido.status === 'Finalizado' &&
         (pedido.id.toString().includes(termoPesquisa) || 
         pedido.cliente.toLowerCase().includes(termoPesquisa) ||
         pedido.vendedor.toLowerCase().includes(termoPesquisa)); // Adiciona pesquisa por vendedor
-})
-.sort((a, b) => b.dataCriacao - a.dataCriacao); // Ordena por data (mais recentes primeiro)
+    }).sort((a, b) => new Date(b.data_finalizacao) - new Date(a.data_finalizacao)); // Ordena por data (mais recentes primeiro
 
     const inicio = (paginaAtualPedidosFinalizados - 1) * pedidosPorPagina;
     const fim = inicio + pedidosPorPagina;
