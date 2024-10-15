@@ -8,7 +8,16 @@ document.querySelector('.close-btn').addEventListener('click', function() {
 
 document.addEventListener('DOMContentLoaded', function () {
     exibirLogin();
+    jaEstaLogado();
 });
+
+function jaEstaLogado() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+        window.location.href = '/adm/pagina_inicial';
+    }
+}
 
 function checkAdminPassword() {
     const adminPassword = document.getElementById('adminPassword').value;

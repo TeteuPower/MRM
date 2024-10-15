@@ -258,6 +258,18 @@
         padding: 3px; /* Diminui o espaçamento interno */
     }
 
+    #tabela-vendas-vendedor-simples td:nth-child(2), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples th:nth-child(2) {
+        white-space: normal; /* Permite que o texto quebre a linha */
+        height: auto; /* Permite que a célula se ajuste à altura do texto */
+    }
+
+    #tabela-vendas-vendedor-simples-socio td:nth-child(1), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples-socio th:nth-child(1) {
+        white-space: normal; /* Permite que o texto quebre a linha */
+        height: auto; /* Permite que a célula se ajuste à altura do texto */
+    }
+
     #tabela-vendas-vendedor-simples td:nth-child(1), /* Oculta a coluna */
     #tabela-vendas-vendedor-simples th:nth-child(1) {
         display: none;
