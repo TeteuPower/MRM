@@ -88,7 +88,48 @@ function salvarEstoqueNoLocalStorage() {
     localStorage.setItem('estoque', JSON.stringify(window.estoque));
 }
 
+function fecharModalDetalhesPedido() {
+    document.getElementById('modal-detalhes-pedido').style.display = 'none';
+
+    // Limpa as informações do modal
+    document.getElementById('modal-numero-pedido').textContent = '';
+    document.getElementById('modal-cliente').textContent = '';
+    document.getElementById('modal-vendedor').textContent = '';
+    document.getElementById('modal-descricao').textContent = '';
+    document.getElementById('modal-data-criacao').textContent = '';
+    document.getElementById('modal-data-producao').textContent = '';
+    document.getElementById('modal-data-finalizacao').textContent = '';
+    document.getElementById('modal-valor-venda').textContent = '';
+    document.getElementById('modal-valor-pago').textContent = '';
+    document.getElementById('modal-valor-insumos').textContent = '';
+    document.getElementById('modal-lucro-venda').textContent = '';
+    document.getElementById('modal-status').textContent = '';
+    document.getElementById('modal-saldoVenda').textContent = '';
+    document.getElementById('modal-solicitado-por').textContent = '';
+    document.getElementById('modal-produtor-span').textContent = '';
+    document.getElementById('total-rape-pedido').textContent = '';
+
+    // Limpa os inputs do modal
+    document.getElementById('modal-produtor').value = '';
+    document.querySelectorAll('#area-lote input').forEach(input => input.value = '');
+
+    // Remove os event listeners dos botões "Cancelar Pedido"
+    document.getElementById('btn-cancelar-pedido').removeEventListener('click', cancelarPedido);
+    document.getElementById('btn-cancelar-pedido2').removeEventListener('click', cancelarPedido);
+    document.getElementById('btn-cancelar-pedido3').removeEventListener('click', cancelarPedido);
+    document.getElementById('btn-editar-pedido').removeEventListener('click', abrirModalEditarPedido);
+    document.getElementById('btn-editar-pedido2').removeEventListener('click', abrirModalEditarPedido);
+    document.getElementById('btn-editar-pedido3').removeEventListener('click', abrirModalEditarPedido);
+    document.getElementById('btn-formatar-texto').removeEventListener('click', copiarParaAreaDeTransferencia);
+    document.getElementById('btn-formatar-texto2').removeEventListener('click', copiarParaAreaDeTransferencia);
+
+    pedido = null;
+}
+
 function exibirDetalhesPedido(id) {
+    let pedido; // Define a variável 'pedido' dentro do escopo da função
+    // Exibe o modal
+    document.getElementById('modal-detalhes-pedido').style.display = 'block';
     // Faz uma requisição GET para a API para obter os detalhes do pedido
     fetch(`/api/pedidos/${id}`, {
         headers: {
@@ -101,7 +142,8 @@ function exibirDetalhesPedido(id) {
         }
         return response.json();
     })
-    .then(pedido => {
+    .then(pedidoData => {
+        pedido = pedidoData;
     //console.log(pedido);
     document.getElementById('modal-numero-pedido').textContent = `Detalhes do Pedido nº ${pedido.id}`;
     document.getElementById('modal-cliente').textContent = pedido.cliente;
@@ -289,6 +331,7 @@ function exibirDetalhesPedido(id) {
     } else {
         areaFinalizado.style.display = 'none';
     }
+    adicionarEventListeners(pedido);
 
         // Preenche o valor do frete
         const valorFreteExibicao = document.getElementById('modal-valor-frete-exibicao');
@@ -297,7 +340,12 @@ function exibirDetalhesPedido(id) {
         } else {
             valorFreteExibicao.textContent = 'Não informado'; // Ou qualquer outro valor padrão se o frete não estiver definido
         }
-            // Adicione um event listener ao botão "Editar Pedido"
+    })
+}
+
+function adicionarEventListeners(pedido) {
+
+        // Adicione um event listener ao botão "Editar Pedido"
         document.getElementById('btn-editar-pedido').addEventListener('click', () =>
         {
             abrirModalEditarPedido(pedido);
@@ -329,30 +377,26 @@ function exibirDetalhesPedido(id) {
         {
             cancelarPedido(pedido);
         });
-            // Adicione um event listener ao botão "Formatar Texto"
-            document.getElementById('btn-formatar-texto').addEventListener('click', () => {
-                if (pedido) {
-                    const textoFormatado = formatarTextoPedido(pedido);
-                    //console.log(textoFormatado)
-                    // Copia o texto para a área de transferência
-                    copiarParaAreaDeTransferencia(textoFormatado); // Chama a função auxiliar para copiar o texto
-                    alert('Texto formatado copiado para a área de transferência!');
-                }
-            });
-            // Adicione um event listener ao botão "Formatar Texto"
-            document.getElementById('btn-formatar-texto2').addEventListener('click', () => {
-                if (pedido) {
-                    const textoFormatado = formatarTextoPedido(pedido);
-                    //console.log(textoFormatado)
-                    // Copia o texto para a área de transferência
-                    copiarParaAreaDeTransferencia(textoFormatado); // Chama a função auxiliar para copiar o texto
-                    alert('Texto formatado copiado para a área de transferência!');
-                }
-            });
-    })
-
-    // Exibe o modal
-    document.getElementById('modal-detalhes-pedido').style.display = 'block';
+        // Adicione um event listener ao botão "Formatar Texto"
+        document.getElementById('btn-formatar-texto').addEventListener('click', () => {
+            if (pedido) {
+                const textoFormatado = formatarTextoPedido(pedido);
+                //console.log(textoFormatado)
+                // Copia o texto para a área de transferência
+                copiarParaAreaDeTransferencia(textoFormatado); // Chama a função auxiliar para copiar o texto
+                alert('Texto formatado copiado para a área de transferência!');
+            }
+        });
+        // Adicione um event listener ao botão "Formatar Texto"
+        document.getElementById('btn-formatar-texto2').addEventListener('click', () => {
+            if (pedido) {
+                const textoFormatado = formatarTextoPedido(pedido);
+                //console.log(textoFormatado)
+                // Copia o texto para a área de transferência
+                copiarParaAreaDeTransferencia(textoFormatado); // Chama a função auxiliar para copiar o texto
+                alert('Texto formatado copiado para a área de transferência!');
+            }
+        });
 }
 
 /*function carregarPedidosDoLocalStorage() {
@@ -762,3 +806,38 @@ function validarValor(valor) {
     alert('Por favor, insira um valor numérico válido.');
     return;
 }*/
+
+function cancelarPedido(pedido) {
+    //console.log(pedido)
+    if (confirm(`Tem certeza que deseja DELETAR o pedido nº ${pedido.id} do cliente ${pedido.cliente}? Todos os pagamentos que o ${pedido.cliente} fez relacionados a esse pedido também serão excluídos!`)) {
+        const confirmacao = prompt(`Digite 'deletar' para confirmar a exclusão do pedido nº ${pedido.id} do cliente ${pedido.cliente}, se não está seguro disso contacte o Matheus!`);
+        if (confirmacao === 'deletar') {
+        // Faz uma requisição DELETE para a API para cancelar o pedido
+        fetch(`/api/pedidos/${pedido.id}`, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao cancelar pedido.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            location.reload();
+            return;
+        })
+        .catch(error => {
+            alert('Erro ao cancelar pedido.');
+            console.error(error);
+            return;
+        });
+    } else{
+        alert('Exclusão cancelada');
+        return;
+    }}
+    return;
+}

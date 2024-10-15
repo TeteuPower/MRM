@@ -540,9 +540,13 @@ async function confirmarRepassesEmpresa(area, repasses, vendedor) {
     if (confirm(`Confirma que o ${vendedor} está fazendo um repasse de R$:${formatarValor(totalRepassesEmpresaConvertido.toFixed(2))} para o caixa da empresa?`)) {
         try {
             // Mapeia os repasses para um array de promises
-            const promises = repasses.map(async (repasse) => {
-            //console.log(repasse);
-                let comissaoConvertida = await converterDolarParaReal(repasse.custoTotal);
+        const promises = repasses.map(async (repasse) => {
+        //console.log(repasse);
+        //console.log(totalRepassesEmpresaConvertido);
+
+            if (repasse.moeda === 'dolar') {
+            
+                const valorConvertido = await converterDolarParaReal(repasse.custoTotal);
                 const pedidoId = parseInt(repasse.id);
                 const vendedorId = parseInt(repasse.vendedor_id);
                 const moeda = 'real';
@@ -559,18 +563,49 @@ async function confirmarRepassesEmpresa(area, repasses, vendedor) {
                     body: JSON.stringify({
                         pedidoId: pedidoId,
                         vendedorId: vendedorId,
-                        valor: totalRepassesEmpresaConvertido.toFixed(2),
+                        valor: parseFloat(valorConvertido).toFixed(2),
                         moeda: moeda,
                         administradorId: administradorId,
                         finalizaComissao: true
                     })
                 });
-
                 if (!response.ok) {
                     throw new Error('Erro ao registrar repasse.');
                 }
                 return response.json();
-            });
+            }
+
+            if (repasse.moeda === 'real') {
+            
+                const valor = parseFloat(repasse.custoTotal).toFixed(2);
+                const pedidoId = parseInt(repasse.id);
+                const vendedorId = parseInt(repasse.vendedor_id);
+                const moeda = 'real';
+                const administradorId = parseInt(localStorage.getItem('administrador'));
+                //console.log(pedidoId, vendedorId, vendedor_destinatario_id, comissaoConvertida.toFixed(2), administradorId, moeda);
+
+                // Registra o repasse na API
+                const response = await fetch('/api/divisao-lucros/repasses-empresa', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        pedidoId: pedidoId,
+                        vendedorId: vendedorId,
+                        valor: valor,
+                        moeda: moeda,
+                        administradorId: administradorId,
+                        finalizaComissao: true
+                    })
+                });
+                if (!response.ok) {
+                    throw new Error('Erro ao registrar repasse.');
+                }
+                return response.json();
+            }
+        });
 
             // Aguarda todas as promises serem resolvidas
             await Promise.all(promises);

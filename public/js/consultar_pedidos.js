@@ -101,10 +101,6 @@ function exibirInputsLote(pedido) {
     });
 }
 
-function fecharModalDetalhesPedido() {
-    document.getElementById('modal-detalhes-pedido').style.display = 'none';
-}
-
 async function finalizarPedido(pedido) {
     if (confirm(`Confirma a finalização do pedido nº ${pedido.id}?`)) {
         pedido.status = 'Finalizado';
@@ -696,40 +692,6 @@ function popularProdutoresEditar() {
         alert('Erro ao buscar produtores.');
         console.error(error);
     });
-}
-
-function cancelarPedido(pedido) {
-    //console.log(pedido)
-    if (confirm(`Tem certeza que deseja DELETAR o pedido nº ${pedido.id} do cliente ${pedido.cliente}? Todos os pagamentos que o ${pedido.cliente} fez relacionados a esse pedido também serão excluídos!`)) {
-        const confirmacao = prompt(`Digite 'deletar' para confirmar a exclusão do pedido nº ${pedido.id} do cliente ${pedido.cliente}, se não está seguro disso contacte o Matheus!`);
-        if (confirmacao === 'deletar') {
-        // Faz uma requisição DELETE para a API para cancelar o pedido
-        fetch(`/api/pedidos/${pedido.id}`, {
-            method: 'DELETE',
-            headers: {
-                'Authorization': localStorage.getItem('token')
-            }
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao cancelar pedido.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message);
-            location.reload();
-            return;
-        })
-        .catch(error => {
-            alert('Erro ao cancelar pedido.');
-            console.error(error);
-            return;
-        });
-    } else{
-        alert('Exclusão cancelada');
-        return;
-    }}
 }
 
 function adicionarAoCarrinhoEditar() {
