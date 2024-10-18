@@ -6,9 +6,10 @@
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.11.0",
+    "nodemon": "^3.1.7",
     "request": "^2.88.2"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   }
 }
