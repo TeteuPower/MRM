@@ -13,9 +13,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 function jaEstaLogado() {
     const token = localStorage.getItem('token');
+    const admId = localStorage.getItem('administrador');
 
     if (token) {
-        window.location.href = '/adm/pagina_inicial';
+        if (admId === '1') {
+            window.location.href = '/adm/consultar_pedidos';
+        } else {
+            window.location.href = '/adm/pagina_inicial';
+        }
     }
 }
 
@@ -79,8 +84,11 @@ function checkAdminPassword() {
                 localStorage.setItem('administrador', administrador.id);
                 localStorage.setItem('administradorNome', administrador.nome);
 
-                // Redireciona para a página de consultar pedidos
-                window.location.href = '/adm/pagina_inicial';
+                if (administrador.id === 1) {
+                    window.location.href = '/adm/consultar_pedidos';
+                } else {
+                    window.location.href = '/adm/pagina_inicial';
+                }
 
                 // Exibe o alerta de boas-vindas
                 alert(`Seja bem vindo, ${administrador.nome}!`);
