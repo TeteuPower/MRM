@@ -124,6 +124,8 @@ function fecharModalDetalhesPedido() {
     document.getElementById('btn-formatar-texto2').removeEventListener('click', copiarParaAreaDeTransferencia);
 
     pedido = null;
+    // Recarrega a página
+    window.location.reload();
 }
 
 function exibirDetalhesPedido(id) {
