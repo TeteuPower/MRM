@@ -16,6 +16,7 @@ function createConnection() {
             console.log('Reconectando ao banco de dados...');
             connection = createConnection(); // Recria a conexão
         } else {
+            console.error(err); // Imprime o objeto de erro completo
             throw err; // Lança o erro para outros tratamentos de erro
         }
     });
