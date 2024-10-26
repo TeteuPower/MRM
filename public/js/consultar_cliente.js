@@ -100,6 +100,9 @@ function exibirDetalhesCliente(cliente) {
 
 function fecharModalDetalhesCliente() {
     document.getElementById('modal-detalhes-cliente').style.display = 'none';
+    // Recarrega a página
+    window.location.reload();
+    
 }
 
 
