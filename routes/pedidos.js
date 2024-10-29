@@ -143,7 +143,7 @@ router.put('/editar/:id', autenticar, (req, res) => {
           return;
       }
 
-      if (result.affectedRows > 0) {
+      /*if (result.affectedRows > 0) {
           // Atualiza os itens do pedido
           itens.forEach(item => {
               const sqlItem = 'UPDATE itens_pedido SET lote = ? WHERE pedido_id = ? AND produto_id = ?';
@@ -159,7 +159,8 @@ router.put('/editar/:id', autenticar, (req, res) => {
           res.json({ message: 'Pedido atualizado com sucesso!' });
       } else {
           res.status(404).json({ error: 'Pedido não encontrado.' });
-      }
+      }*/
+          res.json({ message: 'Pedido atualizado com sucesso!' });
   });
 });
 

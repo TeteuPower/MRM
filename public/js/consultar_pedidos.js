@@ -594,7 +594,7 @@ function editarPedido(pedido) {
     .then(data => {
         alert(data.message);
         fecharModalEditarPedido();
-        fecharModalDetalhesPedido();
+        //fecharModalDetalhesPedido();
         exibirPedidos();
         return;
     })
