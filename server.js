@@ -140,6 +140,11 @@ app.get('/adm/estoque', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'estoque.html'));
 });
 
+//Define a rota para desligar_servidor
+app.get('/adm/desligar_servidor', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'html', 'desligar_servidor.html'));
+});
+
 
 
 module.exports = {
@@ -234,6 +239,15 @@ app.get('/api/decodificar-token', autenticar, (req, res) => {
 app.get('/api/verificar-token', autenticar, (req, res) => {
     // Se o middleware autenticar for bem-sucedido, o token é válido
     res.json({ valido: true });
+});
+
+// Rota para desligar o servidor
+app.get('/shutdown', autenticar, (req, res) => {
+    console.log('Desligando o servidor...');
+    res.send('Desligando o servidor...');
+    setTimeout(() => {
+        process.exit(0);
+    }, 1000);
 });
 
 // API para converter dólar para real
