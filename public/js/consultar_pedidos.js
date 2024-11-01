@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     //carregarClientesDoLocalStorage();
     //carregarPedidosDoLocalStorage();
     exibirPedidos();
-    popularSelectProdutos();
-    popularSelectTiposRape('tipo-rape');
     //carregarFuncionariosDoLocalStorage();
 
     //document.getElementById('moeda').addEventListener('change', calcularSaldoVenda);
@@ -22,6 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     document.getElementById('btn-adicionar-produto').addEventListener('click', function () {
         document.getElementById('modal-adicionar-produto').style.display = 'block';
+        popularSelectTiposRape('tipo-rape');
+        popularSelectProdutos();
     });
 
     const pesquisaInput = document.getElementById('pesquisa-pedido');
