@@ -1,7 +1,7 @@
 const mysql = require('mysql2');
 require('dotenv').config();
 
-const DATABASE_URL = process.env.DATABASE_URL;
+const DATABASE_URL = process.env.DATABASE_URL_ADMINISTRADORES;
 
 // Função para criar a conexão com o banco de dados
 function createConnection() {
