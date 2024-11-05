@@ -94,6 +94,10 @@
     background-color: rgb(255, 0, 0); 
 }
 
+.cinza {
+    background-color: #555;
+}
+
 .paginacao {
     display: flex;
     justify-content: center;

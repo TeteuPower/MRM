@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function () {
     //carregarFuncionariosDoLocalStorage();
 
     //document.getElementById('moeda').addEventListener('change', calcularSaldoVenda);
+    document.getElementById('btn-arquivar-pedido').addEventListener('click', function () {
+        alert('Ainda não desenvolvido');
+    });
     document.getElementById('editar-valor-venda').addEventListener('input', calcularSaldoVenda);
     document.getElementById('editar-valor-pago').addEventListener('input', calcularSaldoVenda);
     document.getElementById('produto').addEventListener('change', function () {
