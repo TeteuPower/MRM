@@ -6,7 +6,7 @@ const DATABASE_URL_ADMINISTRADORES = process.env.DATABASE_URL_ADMINISTRADORES;
 // Cria um pool de conexões
 const db = mysql.createPool({
     uri: DATABASE_URL_ADMINISTRADORES, // Usando DATABASE_URL diretamente
-    connectionLimit: 50, // Número máximo de conexões no pool (ajuste conforme necessário)
+    connectionLimit: 10, // Número máximo de conexões no pool (ajuste conforme necessário)
     waitForConnections: true, // Espera por uma conexão disponível se o pool estiver cheio; Se true, o pool aguardará por uma conexão disponível se atingir o limite. Se false, ele retornará um erro imediatamente.
     queueLimit: 0 // Define o número máximo de solicitações na fila de espera por uma conexão. 0 significa sem limite (pode consumir muita memória sob alta carga).
 });
