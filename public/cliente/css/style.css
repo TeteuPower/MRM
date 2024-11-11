@@ -334,6 +334,9 @@ section {
 
 .footer {
     color: black;
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2));
+    padding: 10px;
+    color: white;
 }
 
 .footer h1 {
@@ -539,7 +542,7 @@ section {
 }
 
 /* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 1000px) {
 
     * {
         font-size: 13px;
@@ -611,6 +614,7 @@ section {
 
     .mb-nav-item {
         display: flex;
+        text-align: center;
         align-items: center;
         justify-content: center;
         flex: 25%;
