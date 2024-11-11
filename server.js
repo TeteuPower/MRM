@@ -28,7 +28,17 @@ app.use('/html', express.static(path.join(__dirname, 'public', 'html'), {
         res.setHeader('Content-Type', 'text/html');
     }
 }));
+app.use('/html', express.static(path.join(__dirname, 'public', 'cliente', 'html'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/html');
+    }
+}));
 app.use('/css', express.static(path.join(__dirname, 'public', 'css'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/css');
+    }
+}));
+app.use('/css', express.static(path.join(__dirname, 'public', 'cliente', 'css'), {
     setHeaders: function (res, path, stat) {
         res.setHeader('Content-Type', 'text/css');
     }
@@ -38,10 +48,22 @@ app.use('/js', express.static(path.join(__dirname, 'public', 'js'), {
         res.setHeader('Content-Type', 'text/javascript');
     }
 }));
+app.use('/js', express.static(path.join(__dirname, 'public', 'cliente', 'js'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/javascript');
+    }
+}));
 app.use('/statics', express.static(path.join(__dirname, 'statics')));
+app.use('/img', express.static(path.join(__dirname, 'public', 'cliente', 'img')));
+app.use('/assets', express.static(path.join(__dirname, 'public', 'cliente', 'assets')));
 
 // Define a rota para a página de login (index.html)
 app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'index.html'));
+});
+
+// Define a rota para a página de login (index.html)
+app.get('/adm', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'html', 'index.html'));
 });
 

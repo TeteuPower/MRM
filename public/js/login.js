@@ -113,7 +113,7 @@ function checkAdminPassword() {
 
 function exibirLogin() {
     // Verifica se estamos na página de login
-    const isLoginPage = window.location.pathname === '/html/index.html' || window.location.pathname === '/'; 
+    const isLoginPage = window.location.pathname === '/adm' || window.location.pathname === '/'; 
 
     if (isLoginPage) {
         // Se estiver na página de login, exibe o conteúdo
