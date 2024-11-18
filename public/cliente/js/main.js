@@ -57,16 +57,18 @@ isElInViewPort = (el) => {
     )
 }
 
-loop = () => {
-    elToShow.forEach((item, index) => {
+// Adapte sua função loop para funcionar com o MutationObserver
+function loop() {
+    //Esta função agora só é executada para os elementos estáticos da página
+    const staticElements = document.querySelectorAll('.play-on-scroll:not(.food-item)'); // Seleciona apenas elementos que não são produtos
+    staticElements.forEach((item) => {
         if (isElInViewPort(item)) {
-            item.classList.add('start')
+            item.classList.add('start');
         } else {
-            item.classList.remove('start')
+            item.classList.remove('start');
         }
-    })
-
-    scroll(loop)
+    });
+    scroll(loop);
 }
 
 loop()
@@ -86,3 +88,89 @@ bottomNavItems.forEach((item, index) => {
         bottomMove.style.left = index * 25 + '%'
     }
 })
+
+window.addEventListener('scroll', () => {
+    const mbNav = document.querySelector('.mb-nav');
+    const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+  
+    if (scrollPosition + windowHeight >= documentHeight) {
+      mbNav.classList.add('hidden');
+      mbNav.setAttribute('data-aos', 'fade-down'); // Animação para ocultar
+    } else {
+      mbNav.classList.remove('hidden');
+      mbNav.setAttribute('data-aos', 'fade-up'); // Animação para mostrar
+    }
+  });
+
+  const productList = document.getElementById('product-list');
+// Configura o MutationObserver
+const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+        if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+            // Novos elementos foram adicionados ao productList
+            mutation.addedNodes.forEach(node => {
+                if (node.classList.contains('food-item')) {
+                   if (isElInViewPort(node)) {
+                        node.classList.add('start');
+                    }
+                }
+            });
+        }
+    });
+});
+
+// Inicia a observação
+observer.observe(productList, { childList: true });
+
+
+// Função para buscar produtos via API
+async function fetchProducts() {
+    try {
+        const response = await fetch('/api/produtos'); // Rota da sua API
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
+        const products = await response.json();
+        displayProducts(products);
+        loop();
+    } catch (error) {
+        console.error('Erro ao buscar produtos:', error);
+        productList.innerHTML = '<p>Erro ao carregar produtos.</p>';
+    }
+}
+
+// Função para exibir os produtos na página
+function displayProducts(products) {
+    //productList.innerHTML = ''; // Limpa o container
+    console.log(products.produtos);
+
+    products.produtos.forEach(product => {
+        const productItem = document.createElement('div');
+        productItem.classList.add('food-item', `${product.categoria}-type`); // Adiciona classes dinamicamente
+
+        // Construção do HTML do produto (adapte conforme necessário)
+        productItem.innerHTML = `
+            <div class="item-wrap bottom-up play-on-scroll">
+                <div class="item-img">
+                    <div class="img-holder bg-img" style="background-image: url(${product.imagem || 'img/logo2.png'});"></div> </div>
+                <div class="item-info">
+                    <div>
+                        <h3>${product.nome}</h3>
+                        <span>${product.preco}</span>
+                    </div>
+                    <div class="cart-btn" data-product-id="${product.id}">
+                        <i class='bx bx-cart-alt'></i>
+                    </div>
+                </div>
+            </div>
+        `;
+        productList.appendChild(productItem);
+    });
+
+    // Adicione aqui a lógica do carrinho de compras (passo 4)
+}
+
+// Chama a função para buscar os produtos ao carregar a página
+fetchProducts();
