@@ -1,14 +1,14 @@
 const productList = document.getElementById('product-list');
 
 // Função para buscar produtos via API
-async function fetchProducts() {
+async function carregarProdutos() {
     try {
         const response = await fetch('/api/produtos'); // Rota da sua API
         if (!response.ok) {
             throw new Error(`Erro HTTP: ${response.status}`);
         }
         const products = await response.json();
-        displayProducts(products);
+        exibirProdutos(products);
     } catch (error) {
         console.error('Erro ao buscar produtos:', error);
         productList.innerHTML = '<p>Erro ao carregar produtos.</p>';
@@ -16,7 +16,7 @@ async function fetchProducts() {
 }
 
 // Função para exibir os produtos na página
-function displayProducts(products) {
+function exibirProdutos(products) {
     //productList.innerHTML = ''; // Limpa o container
     console.log(products.produtos);
 
@@ -47,7 +47,7 @@ function displayProducts(products) {
 }
 
 // Chama a função para buscar os produtos ao carregar a página
-fetchProducts();
+carregarProdutos();
 
 // Lógica para filtrar por categoria (mantém a mesma lógica do seu código anterior, 
 // adaptando para usar as classes dinâmicas adicionadas acima)

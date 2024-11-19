@@ -52,4 +52,8 @@ function getConnection() {
 
 
 // Exporta a função getConnection e o próprio pool (para maior flexibilidade)
-module.exports = db, dbClientes;
+module.exports = {
+    db,
+    dbClientes,
+    getConnection
+};

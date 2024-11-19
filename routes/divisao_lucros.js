@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db');
+const { db } = require('../db');
 const autenticar = require('../middleware/auth');
 
 // Rota para obter os repasses pendentes para produção (GET /api/divisao-lucros/repasses-producao)

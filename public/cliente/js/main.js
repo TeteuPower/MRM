@@ -126,14 +126,14 @@ observer.observe(productList, { childList: true });
 
 
 // Função para buscar produtos via API
-async function fetchProducts() {
+async function carregarProdutos() {
     try {
         const response = await fetch('/api/produtos'); // Rota da sua API
         if (!response.ok) {
             throw new Error(`Erro HTTP: ${response.status}`);
         }
         const products = await response.json();
-        displayProducts(products);
+        exibirProdutos(products);
         loop();
     } catch (error) {
         console.error('Erro ao buscar produtos:', error);
@@ -142,9 +142,9 @@ async function fetchProducts() {
 }
 
 // Função para exibir os produtos na página
-function displayProducts(products) {
+function exibirProdutos(products) {
     //productList.innerHTML = ''; // Limpa o container
-    console.log(products.produtos);
+    //console.log(products.produtos);
 
     products.produtos.forEach(product => {
         const productItem = document.createElement('div');
@@ -173,4 +173,4 @@ function displayProducts(products) {
 }
 
 // Chama a função para buscar os produtos ao carregar a página
-fetchProducts();
+carregarProdutos();

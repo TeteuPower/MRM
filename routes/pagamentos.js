@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db');
+const { db } = require('../db');
 const autenticar = require('../middleware/auth');
 
 // Rota para obter todos os clientes (GET /api/pagamentos/clientes)

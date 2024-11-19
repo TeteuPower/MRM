@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db'); // Importa a conexão com o banco de dados
+const { db } = require('../db'); // Importa a conexão com o banco de dados
 const autenticar = require('../middleware/auth'); // Importa o middleware de autenticação
 const bcrypt = require('bcrypt'); // Importa o módulo bcrypt
 

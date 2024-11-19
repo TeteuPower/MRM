@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const dbClientes = require('../../db'); // Importa o módulo de conexão com o banco de dados
+const {dbClientes} = require('../../db'); // Importa o módulo de conexão com o banco de dados
+//console.log(dbClientes);
 
 // Rota para obter os dados do estoque
 router.get('/', (req, res) => {
