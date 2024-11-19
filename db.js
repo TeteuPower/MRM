@@ -2,10 +2,19 @@ const mysql = require('mysql2');
 require('dotenv').config();
 
 const DATABASE_URL_ADMINISTRADORES = process.env.DATABASE_URL_ADMINISTRADORES;
+const DATABASE_URL_CLIENTES = process.env.DATABASE_URL_CLIENTES;
 
-// Cria um pool de conexões
+// Cria um pool de conexões para administradores
 const db = mysql.createPool({
     uri: DATABASE_URL_ADMINISTRADORES, // Usando DATABASE_URL diretamente
+    connectionLimit: 10, // Número máximo de conexões no pool (ajuste conforme necessário)
+    waitForConnections: true, // Espera por uma conexão disponível se o pool estiver cheio; Se true, o pool aguardará por uma conexão disponível se atingir o limite. Se false, ele retornará um erro imediatamente.
+    queueLimit: 0 // Define o número máximo de solicitações na fila de espera por uma conexão. 0 significa sem limite (pode consumir muita memória sob alta carga).
+});
+
+// Cria um pool de conexões para clientes
+const dbClientes = mysql.createPool({
+    uri: DATABASE_URL_CLIENTES, // Usando DATABASE_URL diretamente
     connectionLimit: 10, // Número máximo de conexões no pool (ajuste conforme necessário)
     waitForConnections: true, // Espera por uma conexão disponível se o pool estiver cheio; Se true, o pool aguardará por uma conexão disponível se atingir o limite. Se false, ele retornará um erro imediatamente.
     queueLimit: 0 // Define o número máximo de solicitações na fila de espera por uma conexão. 0 significa sem limite (pode consumir muita memória sob alta carga).
@@ -43,4 +52,4 @@ function getConnection() {
 
 
 // Exporta a função getConnection e o próprio pool (para maior flexibilidade)
-module.exports = db
+module.exports = db, dbClientes;
