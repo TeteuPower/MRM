@@ -1,4 +1,4 @@
-const productList = document.getElementById('product-list');
+carregarProdutos();
 
 // Função para buscar produtos via API
 async function carregarProdutos() {
@@ -9,6 +9,7 @@ async function carregarProdutos() {
         }
         const products = await response.json();
         exibirProdutos(products);
+        loop();
     } catch (error) {
         console.error('Erro ao buscar produtos:', error);
         productList.innerHTML = '<p>Erro ao carregar produtos.</p>';
@@ -18,7 +19,7 @@ async function carregarProdutos() {
 // Função para exibir os produtos na página
 function exibirProdutos(products) {
     //productList.innerHTML = ''; // Limpa o container
-    console.log(products.produtos);
+    //console.log(products.produtos);
 
     products.produtos.forEach(product => {
         const productItem = document.createElement('div');
@@ -43,12 +44,75 @@ function exibirProdutos(products) {
         productList.appendChild(productItem);
     });
 
-    // Adicione aqui a lógica do carrinho de compras (passo 4)
+    productList.addEventListener('click', (event) => {
+        if (event.target.classList.contains('bx-cart-alt')) {
+            const productId = event.target.closest('.cart-btn').dataset.productId;
+            addToCart(productId);
+            //openCartModal(); // Abre o modal ao adicionar um item
+        }
+    });
+
+    function addToCart(productId) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.push(productId);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartModal();
+        openModal();
+        //alert('Produto adicionado ao carrinho!'); // Ou atualize a interface do carrinho
+    }
 }
 
-// Chama a função para buscar os produtos ao carregar a página
-carregarProdutos();
+// Função para abrir o modal
+function openModal() {
+    const modal = document.getElementById('cart-modal');
+    modal.style.display = 'flex';
+    //AOS.refresh(); // Atualiza animações AOS após alterações no DOM
+}
 
-// Lógica para filtrar por categoria (mantém a mesma lógica do seu código anterior, 
-// adaptando para usar as classes dinâmicas adicionadas acima)
-// ...
+// Função para fechar o modal
+function closeModal() {
+    const modal = document.getElementById('cart-modal');
+    modal.style.display = 'none';
+}
+
+// Adiciona evento de clique para fechar o modal
+document.querySelector('.close-modal').addEventListener('click', closeModal);
+
+// Função para atualizar o conteúdo do carrinho no modal
+function updateCartModal() {
+    let total = 0;
+
+    const cartItems = document.getElementById('cart-items');
+    cartItems.innerHTML = ''; // Limpa a lista
+
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (cart.length === 0) {
+        cartItems.innerHTML = '<li>Seu carrinho está vazio.</li>';
+        document.getElementById('cart-total').textContent = 'Total: R$ 0.00';
+        return;
+    }
+
+    //Aqui precisaremos de uma chamada à API para obter os detalhes dos produtos.  
+    // Vou assumir que /api/produtos/:id retorna um produto.  Adapte conforme necessário
+
+    cart.forEach(async productId => {
+        try{
+            const response = await fetch(`/api/produtos/${productId}`);
+            const product = await response.json();
+
+            const listItem = document.createElement('li');
+            listItem.innerHTML = `${product.nome} - R$ ${parseFloat(product.preco).toFixed(2)}`; //Ajustado para mostrar o preço formatado
+            total += parseFloat(product.preco);
+            console.log(total);
+            cartItems.appendChild(listItem);
+            document.getElementById('cart-total').textContent = `Total: R$ ${total.toFixed(2)}`; 
+        } catch (error){
+            console.error("erro ao obter dados do produto", error);
+            //Adicione tratamento de erro aqui
+        }
+    });
+}
+
+//Chama a função para atualizar o carrinho quando o modal é aberto
+document.getElementById('cart-modal').addEventListener('shown.bs.modal', updateCartModal); //Use um evento mais apropriado para seu framework

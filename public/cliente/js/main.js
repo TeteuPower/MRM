@@ -125,7 +125,7 @@ const observer = new MutationObserver(mutations => {
 observer.observe(productList, { childList: true });
 
 
-// Função para buscar produtos via API
+/* Função para buscar produtos via API
 async function carregarProdutos() {
     try {
         const response = await fetch('/api/produtos'); // Rota da sua API
@@ -173,4 +173,4 @@ function exibirProdutos(products) {
 }
 
 // Chama a função para buscar os produtos ao carregar a página
-carregarProdutos();
+carregarProdutos();*/

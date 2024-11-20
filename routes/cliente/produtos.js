@@ -33,4 +33,23 @@ router.get('/', (req, res) => {
     });
 });
 
+// Rota para obter informações dos produtos
+
+router.get('/:id', (req, res) => {
+    const produtoId = req.params.id;
+    const sql = 'SELECT * FROM produtos WHERE id = ?';
+    dbClientes.query(sql, [produtoId], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar produto:', err);
+            res.status(500).json({ error: 'Erro ao buscar produto.' });
+            return;
+        }
+        if (results.length > 0) {
+            res.json(results[0]);
+        } else {
+            res.status(404).json({ error: 'Produto nao encontrado.' });
+        }
+    });
+});
+
 module.exports = router;
