@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Pedidos</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estoque.css">
+    <link rel="stylesheet" href="../css/consultar_pedidos.css">
+</head>
+<body>
+    <div id="nome-administrador" class="usuario-logado"></div>
+    <div id="cabecalho"></div>
+
+    <main>
+        <section id="consultar-pedidos">
+            <h2>Consultar Pedidos</h2>
+
+            <input type="text" id="pesquisa-pedido" placeholder="Pesquisar por pedido...">
+
+            <div class="pedidos-container">
+                <div class="pedidos-aguardando-producao">
+                    <h3>Pedidos Aguardando Produção</h3>
+                    <ul id="lista-pedidos-aguardando-producao">
+                        <!-- Pedidos aguardando produção serão adicionados aqui -->
+                    </ul>
+                    <h2 id="total-pedidos-aguardando-producao"></h2>
+                    <p id="total-pedidos-aguardando-producao-pacotes"></h2>
+                </div>
+        
+                <div class="pedidos-finalizados-aguardando-envio">
+                    <h3>Pedidos Finalizados Aguardando Envio</h3>
+                    <ul id="lista-pedidos-finalizados-aguardando-envio">
+                        <!-- Pedidos finalizados aguardando envio serão adicionados aqui -->
+                    </ul>
+                </div>
+        
+                <div class="pedidos-finalizados">
+                    <h3>Pedidos Finalizados</h3>
+                    <ul id="lista-pedidos-finalizados">
+                        <!-- Pedidos finalizados serão adicionados aqui -->
+                    </ul>
+                    <div class="paginacao">
+                        <button id="btn-pagina-anterior" style="display: none;">Página Anterior</button>
+                        <ul id="menu-paginacao"></ul>
+                        <button id="btn-proxima-pagina" style="display: none;">Próxima Página</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div id="modal-detalhes-pedido" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalDetalhesPedido()">×</span>
+                <h3 id="modal-numero-pedido">Detalhes do Pedido</h3>
+                <p><strong>Cliente:</strong> <span id="modal-cliente"></span></p>
+                <p><strong>Vendedor:</strong> <span id="modal-vendedor"></span></p>
+                <p><strong>Descrição/Comentários:</strong> <span id="modal-descricao"></span></p>
+                <p><strong>Criação:</strong> <span id="modal-data-criacao"></span></p> <!-- Data que o pedido foi criado -->
+                <p><strong>Produção:</strong> <span id="modal-data-producao"></span></p> <!-- Data que o pedido foi produzido -->
+                <p><strong>Finalização:</strong> <span id="modal-data-finalizacao"></span></p> <!-- Data que o pedido foi finalizado -->
+                <p><strong>Valor da Venda:</strong> <span id="modal-valor-venda"></span></p>
+                <p><strong>Valor dos insumos:</strong> <span id="modal-valor-insumos"></span></p>
+                <p><strong>Valor do Frete:</strong> <span id="modal-valor-frete-exibicao"></span></p>
+                <p><strong>Lucro da venda:</strong> <span id="modal-lucro-venda"></span></p>
+                <p><strong>Valor Pago:</strong> <span id="modal-valor-pago"></span></p>
+                <p><strong>Saldo atual da venda:</strong> <span id="modal-saldoVenda"></span></p>
+                <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                <p><strong>Produtor responsável:</strong> <span id="modal-produtor-span"></span></p>
+                <p><strong>Cadastrado por:</strong> <span id="modal-solicitado-por"></span></p>
+
+                <h4>Itens do Pedido:</h4>
+                <table id="modal-tabela-itens">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Lote</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itens do pedido serão adicionados aqui -->
+                    </tbody>
+                </table>
+                <p id="total-rape-pedido">Quantidade total de rapé: 0Kg (0 Pacotes)</p> <!-- Adiciona o elemento para exibir a quantidade total -->
+
+                <div id="area-lote" style="display: none;">
+                    <h4>Informar Lotes:</h4>
+                    <div id="inputs-lote">
+                        <!-- Inputs para os lotes serão adicionados aqui -->
+                    </div>
+                    <div class="input-group">
+                        <label for="modal-produtor">Produtor:</label>
+                        <select id="modal-produtor">
+                            <!-- Opções de produtores serão adicionadas aqui -->
+                        </select>
+                    </div>
+                    <button id="btn-atualizar-status" class="btn-acao verde">Pronto, aguardando envio</button>
+                    <button id="btn-editar-pedido" class="btn-acao laranja">Editar Pedido</button>
+                    <button id="btn-cancelar-pedido" class="btn-acao vermelho">Cancelar Pedido</button>
+                    <button id="btn-arquivar-pedido" class="btn-acao cinza">Arquivar Pedido</button>
+                </div>
+                <div id="area-frete" style="display: none;">
+                    <div class="input-group">
+                        <label for="modal-valor-frete">Valor do Frete:(Em Reais)</label>
+                        <input type="number" id="modal-valor-frete">
+                    </div>
+                    <button id="btn-finalizar-pedido" class="btn-acao verde">Finalizar Pedido</button>
+                    <button id="btn-editar-pedido2" class="btn-acao laranja" disabled>Editar Pedido(Não Disponivel)</button>
+                    <button id="btn-formatar-texto" class="btn-acao verde">Formatar Texto</button>
+                    <button id="btn-cancelar-pedido2" class="btn-acao vermelho">Cancelar Pedido</button>
+                </div>
+                <div id="area-finalizado" style="display: none;">
+                    <button id="btn-editar-pedido3" class="btn-acao laranja" disabled>Editar Pedido(Não Disponivel)</button>
+                    <button id="btn-cancelar-pedido3" class="btn-acao vermelho">Excluir Pedido</button>
+                    <button id="btn-formatar-texto2" class="btn-acao verde">Formatar Texto</button>
+                </div>
+                <div id="area-nota-fiscal" style="display: none;">
+                    <button id="btn-adicionar-nota-fiscal" class="btn-acao azul">Adicionar Nota Fiscal</button>
+                    <button id="btn-consultar-nota-fiscal" class="btn-acao azul" style="display: none;">Consultar Nota Fiscal</button>
+                </div>
+
+            </div>
+        </div>
+        <div id="modal-editar-pedido" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalEditarPedido()">×</span>
+                <h3 id="editar-nome-pedido">Editar Pedido</h3>
+        
+                <form id="form-editar-pedido">
+                    <div class="input-group">
+                        <p id="editar-cliente"></p>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-vendedor">Vendedor:</label>
+                        <select id="editar-vendedor">
+                            <option value="">Selecione o Vendedor</option>
+                            <!-- Opções de vendedores serão adicionadas aqui -->
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-descricao">Descrição:</label>
+                        <textarea id="editar-descricao" placeholder="Descrição/Comentários"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-moeda">Moeda:</label>
+                        <select id="editar-moeda">
+                            <option value="real">Real (R$)</option>
+                            <option value="dolar">Dólar (US$)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-valor-venda">Valor da Venda:</label>
+                        <input type="number" id="editar-valor-venda" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-valor-pago">Valor Pago pelo Cliente:</label>
+                        <input type="number" id="editar-valor-pago">
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-status">Status:</label>
+                        <select id="editar-status">
+                            <option value="Em produção">Em produção</option>
+                            <option value="Pronto, aguardando envio">Pronto, aguardando envio</option>
+                            <option value="Finalizado">Finalizado</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-valor-frete">Valor do Frete:</label>
+                        <input type="number" id="editar-valor-frete">
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-produtor">Produtor:</label>
+                        <select id="editar-produtor">
+                            <!-- Opções de produtores serão adicionadas aqui -->
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <h3>Saldo da Venda:</h3><p id="editar-saldo-venda"></p>
+                    </div>
+                    <div class="input-group">
+                        <h4>Itens do Pedido:</h4>
+                        <button type="button" id="btn-adicionar-produto" class="btn-acao verde">Adicionar Itens</button>
+                        <table id="modal-tabela-editar-itens">
+                            <thead>
+                                <tr>
+                                    <th>Produto</th>
+                                    <th>Quantidade</th>
+                                    <th>Lote</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Itens do pedido serão adicionados aqui -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="area-lote" style="display: none;">
+                        <h4>Informar Lotes:</h4>
+                        <div id="inputs-lote">
+                            <!-- Inputs para os lotes serão adicionados aqui -->
+                        </div>
+                    </div>
+        
+                    <div class="botoes-acao">
+                        <button type="button" id="salvar-alteracoes" class="btn-acao verde">Salvar Alterações</button>
+                        <button type="button" onclick="fecharModalEditarPedido()" class="btn-acao vermelho">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        
+            <div id="modal-adicionar-produto" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="fecharModalAdicionarProduto()">×</span>
+                    <h2>Adicionar Produto</h2>
+    
+                    <div class="input-group">
+                        <label for="produto">Produto:</label>
+                        <select id="produto">
+                            <!-- Opções de produtos serão adicionadas aqui -->
+                        </select>
+                    </div>
+    
+                    <div id="opcoes-tipo-rape" class="input-group" style="display: none;">
+                        <label for="tipo-rape">Tipo de Rapé:(Pacotes 500gr)</label>
+                        <select id="tipo-rape">
+                            <option value="">Selecione o Tipo</option>
+                            <!-- Opções de tipos de rapé serão adicionadas aqui -->
+                        </select>
+                    </div>
+    
+                    <div class="input-group">
+                        <label for="quantidade">Quantidade:</label>
+                        <input type="number" id="quantidade" min="1" value="1">
+                    </div>
+    
+                    <button type="button" onclick="adicionarAoCarrinhoEditar()">Adicionar</button>
+                </div>
+            </div>
+
+
+        </div>
+    </main>
+
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/consultar_pedidos.js"></script>
+</body>
+</html>

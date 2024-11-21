@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar Cliente</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estoque.css">
+    <link rel="stylesheet" href="../css/consultar_cliente.css">
+</head>
+<body>
+    <div id="nome-administrador" class="usuario-logado"></div>
+    <div id="cabecalho"></div>
+
+    <main>
+        <section id="consultar-cliente">
+            <h2>Consultar Cliente</h2>
+
+            <input type="text" id="pesquisa-cliente" placeholder="Pesquisar por nome ou parte do nome...">
+
+            <ul id="lista-clientes">
+                <!-- Lista de clientes será adicionada aqui -->
+            </ul>
+        </section>
+
+        <div id="modal-detalhes-cliente" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalDetalhesCliente()">×</span>
+                <h3 id="modal-nome-cliente">Detalhes do Cliente</h3>
+                <p><strong>E-mail:</strong> <span id="modal-email-cliente"></span></p>
+                <p><strong>Telefone:</strong> <span id="modal-telefone-cliente"></span></p>
+                <p><strong>Endereço:</strong> <span id="modal-endereco-cliente"></span></p>
+                <!-- Adicione mais detalhes do cliente aqui, se necessário -->
+                <button id="btn-extrato-cliente" class="btn-acao verde">Extrato do Cliente</button>
+                <button id="btn-editar-cliente" class="btn-acao azul">Editar Cliente</button>
+            </div>
+        </div>
+        <div id="modal-extrato-cliente" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalExtratoCliente()">×</span>
+                <h3 id="extrato-nome-cliente">Extrato do Cliente</h3>
+        
+                <div id="saldo-cliente">
+                    <p><strong>Saldo em Reais:</strong> <span id="saldo-reais">R$ 0.00</span></p>
+                    <p><strong>Saldo em Dólares:</strong> <span id="saldo-dolares">US$ 0.00</span></p>
+                </div>
+        
+                <h4>Extrato de Transações</h4>
+                <table id="tabela-extrato">
+                    <thead>
+                        <tr>
+                            <th>Vendedor:</th>
+                            <th>Pedido:</th>
+                            <th>Status:</th>
+                            <th>Valor da venda:</th>
+                            <th>Valor já pago:</th>
+                            <th>Saldo da venda:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Transações serão adicionadas aqui -->
+                    </tbody>
+                </table>
+                <h4>Extrato de Pagamentos do Cliente</h4>
+                <table id="tabela-pagamentos">
+                    <thead>
+                        <tr>
+                            <th>Data:</th>
+                            <th>Recebido por:</th>
+                            <th>Referente ao pedido:</th>
+                            <th>Valor:</th>
+                            <th>Saldo da venda:</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Transações serão adicionadas aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div id="modal-editar-cliente" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalEditarCliente()">×</span>
+                <h3 id="editar-nome-cliente">Editar Cliente</h3>
+        
+                <form id="form-editar-cliente">
+                    <div class="input-group">
+                        <label for="editar-nome">Nome:</label>
+                        <input type="text" id="editar-nome" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-email">E-mail:</label>
+                        <input type="email" id="editar-email" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-telefone">Telefone:</label>
+                        <input type="tel" id="editar-telefone" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-endereco">Endereço:</label>
+                        <textarea type="text" id="editar-endereco" required></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-login">Login:</label>
+                        <input type="text" id="editar-login" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="editar-senha">Senha:</label>
+                        <input type="password" id="editar-senha" required disabled>
+                    </div>
+        
+                    <div class="botoes-acao">
+                        <button type="button" id="modificarCliente" class="btn-acao verde">Salvar Alterações</button>
+                        <button type="button" onclick="fecharModalEditarCliente()" class="btn-acao vermelho">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/consultar_cliente.js"></script> 
+</body>
+</html>

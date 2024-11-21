@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espírito do Nativo</title>
+    <link rel="stylesheet" href="../css/global.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="../statics/indigenas.jpg" alt="Logo">
+        </div>
+        <div class="form-container">
+            <h1>Login</h1>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="username">Usuário:</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="input-group">
+                    <label for="password">Senha:</label>
+                    <input type="password" id="password" required>
+                </div>
+                <button type="submit">Entrar</button>
+                <button type="button" id="adminBtn">Administração</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="adminModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">×</span>
+            <h2>Acesso Administrativo</h2>
+            <label for="adminUsuario">Usuário:</label>
+            <input type="text" id="adminUsuario">
+            <label for="adminPassword">Senha:</label>
+            <input type="password" id="adminPassword">
+            <button type="button" onclick="checkAdminPassword()">Acessar</button>
+        </div>
+    </div>
+
+    <script src="../js/login.js"></script>
+</body>
+</html>

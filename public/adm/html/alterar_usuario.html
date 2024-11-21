@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Usuário</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estoque.css">
+    <link rel="stylesheet" href="../css/alterar_usuario.css">
+</head>
+<body>
+    <div id="nome-administrador" class="usuario-logado"></div>
+    <div id="cabecalho"></div>
+
+    <main>
+        <section id="alterar-usuario">
+            <h2>Alterar Usuário</h2>
+
+            <div id="usuario-atual">
+                <h3>Usuário Atual: <span id="nome-usuario-atual"></span></h3>
+            </div>
+
+            <form id="form-alterar-usuario">
+                <div class="input-group">
+                    <label for="novo-usuario">Novo Usuário:</label>
+                    <input type="text" id="novo-usuario" placeholder="Novo Usuário">
+                </div>
+
+                <div class="input-group">
+                    <label for="confirmar-novo-usuario">Confirmar Novo Usuário:</label>
+                    <input type="text" id="confirmar-novo-usuario" placeholder="Confirmar Novo Usuário">
+                </div>
+
+                <button id="btn-salvar-novo-usuario" class="btn-acao verde">Salvar Alterações</button>
+            </form>
+        </section>
+    </main>
+
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/alterar_usuario.js"></script>
+</body>
+</html>

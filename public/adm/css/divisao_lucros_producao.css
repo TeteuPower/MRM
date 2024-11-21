@@ -1,0 +1,70 @@
+/* divisao_lucros_simples.css */
+#divisao-lucros-simples {
+    margin-top: 60px;
+    text-align: center;
+}
+
+.repasses-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite que as divs quebrem para a próxima linha se necessário */
+}
+
+.vendedor-rafael,
+.vendedor-maithe {
+    flex: 1 1 300px; /* Cada div ocupa pelo menos 300px e pode crescer */
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.vendedor-rafael h3,
+.vendedor-maithe h3 {
+    margin-bottom: 15px;
+}
+
+.vendedor-rafael p,
+.vendedor-maithe p {
+    margin-bottom: 5px;
+}
+
+/* Estilos para telas menores */
+@media (max-width: 768px) {
+    .repasses-container {
+        flex-direction: column;
+    }
+
+    .vendedor-rafael,
+    .vendedor-maithe {
+        flex: 1 1 100%;
+    }
+}
+
+.vendedor-rafael .input-group,
+.vendedor-maithe .input-group {
+    margin-bottom: 10px;
+}
+
+.vendedor-rafael button,
+.vendedor-maithe button {
+    margin-top: 10px;
+}
+
+#tabela-vendas-vendedor,
+#tabela-producoes-produtor {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#tabela-vendas-vendedor th,
+#tabela-vendas-vendedor td,
+#tabela-producoes-produtor th,
+#tabela-producoes-produtor td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+}

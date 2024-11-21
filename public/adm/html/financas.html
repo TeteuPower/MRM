@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finanças</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estoque.css">
+    <link rel="stylesheet" href="../css/financas.css">
+</head>
+<body>
+    <div id="nome-administrador" class="usuario-logado"></div>
+    <div id="cabecalho"></div>
+
+    <main>
+        <section id="financas">
+            <h2>Finanças</h2>
+
+            <div class="pagamentos-clientes">
+
+                <h4>Adicionar um novo Pagamento de cliente (Método temporário)</h4>
+                <div class="input-group">
+                    <label for="cliente-pagamento">Qual cliente está pagando?</label>
+                    <select id="cliente-pagamento">
+                        <option value="">Selecione o Cliente</option>
+                        <!-- Opções de clientes serão adicionadas aqui -->
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="valor-pagamento">Valor:</label>
+                    <input type="number" id="valor-pagamento" placeholder="Valor do Pagamento">
+                </div>
+
+                <div class="input-group">
+                    <label for="moeda-pagamento">Moeda:</label>
+                    <select id="moeda-pagamento">
+                        <option value="real">Real (R$)</option>
+                        <option value="dolar">Dólar (US$)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="recebeu-pagamento">Quem está recebendo?</label>
+                    <select id="recebeu-pagamento">
+                        <option value="">Selecione o vendedor</option>
+                        <!-- Opções de clientes serão adicionadas aqui -->
+                    </select>
+                </div>
+
+                <button id="btn-adicionar-pagamento" class="btn-acao verde">Adicionar Pagamento</button>
+
+
+            </div>
+
+            <div class="repasses-comissao">
+                <h3>Repasses pendentes da produção!</h3>
+                <ul id="lista-repasses-pendentes-comissao">
+                    <!-- Pedidos com o status do repasse não feito -->
+                </ul>
+                <button id="btn-adicionar-pagamento-produtor" class="btn-acao verde">Adicionar repasse para Produtor</button>
+            </div>
+
+            <div class="clientes-negativos">
+                <h3>Clientes com o Saldo Negativo</h3>
+                <ul id="lista-clientes-negativos">
+                    <!-- Clientes com saldo negativo serão adicionados aqui -->
+                </ul>
+                <div class="paginacao-pagamentos">
+                    <button id="btn-pagina-anterior-clientes" style="display: none;">Página Anterior</button>
+                    <ul id="menu-paginacao-clientes"></ul>
+                    <button id="btn-proxima-pagina-clientes" style="display: none;">Próxima Página</button>
+                </div>
+            </div>
+
+            <div class="pagamentos-clientes">
+                <h3>Últimos pagamentos dos Clientes</h3>
+                <ul id="lista-pagamentos-clientes">
+                    <!-- Pagamentos de clientes serão adicionados aqui -->
+                </ul>
+                <div class="paginacao-pagamentos">
+                    <button id="btn-pagina-anterior-pagamentos" style="display: none;">Página Anterior</button>
+                    <ul id="menu-paginacao-pagamentos"></ul>
+                    <button id="btn-proxima-pagina-pagamentos" style="display: none;">Próxima Página</button>
+                </div>
+            </div>
+
+            <div class="repasses-comissao">
+                <h3>Últimos repasses feitos para produção!</h3>
+                <ul id="lista-repasses-comissao">
+                    <!-- Últimos repasses de comissão serão adicionados aqui -->
+                </ul>
+                <div class="paginacao-pagamentos">
+                    <button id="btn-pagina-anterior-repasses" style="display: none;">Página Anterior</button>
+                    <ul id="menu-paginacao-repasses"></ul>
+                    <button id="btn-proxima-pagina-repasses" style="display: none;">Próxima Página</button>
+                </div>
+            </div>
+
+            <div class="resumo-mensal">
+                <h3>Resumo Mensal</h3>
+                <div class="resumo-vendedores">
+                    <h4>Vendedores</h4>
+                    <ul id="lista-resumo-vendedores">
+                        <!-- Resumo de ganhos dos vendedores será adicionado aqui -->
+                    </ul>
+                </div>
+
+                <div class="resumo-produtores">
+                    <h4>Produtores</h4>
+                    <ul id="lista-resumo-produtores">
+                        <!-- Resumo de ganhos dos produtores será adicionado aqui -->
+                    </ul>
+                </div>
+
+                <div class="resumo-empresa">
+                    <h4>Empresa</h4>
+                    <p>Lucro Total: <span id="lucro-total">R$ 0.00</span></p>
+                </div>
+            </div>
+            <div id="modal-repasses-produtores" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn" onclick="fecharModalRepassesProdutores()">×</span>
+                    <h3>Repasses para Produtores</h3>
+            
+                    <ul id="lista-repasses-modal">
+                        <!-- Repasses pendentes serão adicionados aqui -->
+                    </ul>
+            
+                    <div class="resumo-repasses">
+                        <h4>Resumo dos Repasses:</h4>
+                        <p>Total: <span id="total-repasses">R$ 0.00</span></p>
+                    </div>
+            
+                    <div class="input-group">
+                        <label for="vendedor-repasse">Vendedor Responsável:</label>
+                        <select id="vendedor-repasse">
+                            <option value="">Selecione o Vendedor</option>
+                            <!-- Opções de vendedores serão adicionadas aqui -->
+                        </select>
+                    </div>
+            
+                    <button id="btn-confirmar-repasses" class="btn-acao verde">Confirmar Repasses</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/financas.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+/* gastos.css */
+#gastos {
+    text-align: center;
+}
+
+#form-gasto-empresa {
+    width: 50%;
+    margin: 20px auto;
+    background-color: #333;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#form-gasto-empresa .input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+#form-gasto-empresa label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#form-gasto-empresa input,
+#form-gasto-empresa select,
+#form-gasto-empresa textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 3px;
+    background-color: #111;
+    color: #eee;
+}
+
+#gastos .input-group {
+    margin-bottom: 10px;
+}
+
+.extrato-caixa {
+    background-color: #333;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.extrato-caixa h3 {
+    margin-bottom: 15px;
+}
+
+#tabela-extrato-caixa {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: auto; /* Permite rolagem horizontal */
+    
+}
+
+#tabela-extrato-caixa th,
+#tabela-extrato-caixa td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+    white-space: nowrap; /* Evita que o texto quebre em várias linhas */
+}
+
+/* Estilos para telas menores */
+@media (max-width: 768px) {
+    #tabela-extrato-caixa {
+        font-size: 0.7em; /* Diminui o tamanho da fonte ainda mais */
+    }
+
+    #tabela-extrato-caixa th,
+    #tabela-extrato-caixa td {
+        padding: 5px; /* Diminui o espaçamento interno */
+    }
+
+    #tabela-extrato-caixa td:nth-child(7), /* Oculta a coluna "Pedido" */
+    #tabela-extrato-caixa th:nth-child(7) {
+        display: none;
+    }
+    #tabela-extrato-caixa td:nth-child(4), /* Oculta a coluna "Pedido" */
+    #tabela-extrato-caixa th:nth-child(4) {
+        display: none;
+    }
+    #tabela-extrato-caixa td:nth-child(2), /* Seleciona a segunda coluna (descrição) */
+    #tabela-extrato-caixa th:nth-child(2) {
+    white-space: normal; /* Permite que o texto quebre a linha */
+    height: auto; /* Permite que a célula se ajuste à altura do texto */
+    }
+
+}
+
+.paginacao ul {
+    display: flex;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+}
+
+.paginacao li {
+    background-color: #222;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #555;
+}
+
+.paginacao li a {
+    text-decoration: none;
+    color: #eee;
+    font-weight: bold;
+}
+
+.paginacao li.ativo {
+    background-color: #555;
+}
+
+.filtro-extrato {
+    margin-bottom: 15px;
+}
+
+.filtro-extrato label {
+    display: inline-block;
+    width: 100px;
+    text-align: right;
+    margin-right: 10px;
+}
+
+.filtro-extrato select {
+    background-color: #222;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: 1px solid #555;
+    color: #eee;
+    font-weight: bold;
+}

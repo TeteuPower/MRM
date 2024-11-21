@@ -1,0 +1,188 @@
+/* divisao_lucros.css */
+#divisao-lucros {
+    margin-top: 60px;
+    text-align: center;
+}
+strong {
+    font-weight: bold;
+    color: rgb(238, 255, 0);
+}
+
+.repasses-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite que as divs quebrem para a próxima linha se necessário */
+}
+
+.repasses-producao,
+.repasses-administradores,
+.repasses-empresa {
+    display: flex;
+    flex: 1 1 300px; /* Cada div ocupa pelo menos 300px e pode crescer */
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    flex-direction: column;
+}
+
+.repasses-empresa h3 {
+    text-align: center;
+}
+
+.lista-container {
+    display: flex;
+    flex-direction: row;
+}
+
+#lista-repasses-empresa-rafael,
+#lista-repasses-empresa-maithe {
+    flex-direction: row;
+    padding: 0;
+}
+
+.repasses-producao h3,
+.repasses-administradores h3,
+.repasses-empresa h3 {
+    margin-bottom: 15px;
+}
+
+#lista-repasses-producao,
+#lista-repasses-administradores,
+#lista-repasses-empresa {
+    list-style: none;
+    padding: 0;
+}
+
+#lista-repasses-producao li,
+#lista-repasses-administradores li,
+#lista-repasses-empresa li {
+    display: flex;
+    align-items: center;
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#lista-repasses-empresa-rafael li,
+#lista-repasses-empresa-maithe li {
+    display: flex;
+    list-style-type: none;
+    flex-direction: row;
+    padding: 5px;
+    background-color: #222;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.texto-pendencias {
+    margin: 0%;
+}
+
+#btn-fazer-repasses-empresa-maithe,
+#btn-fazer-repasses-empresa-rafael {
+    margin-right: 0px;
+    padding: 5px 5px;
+}
+
+#lista-repasses-producao input[type="checkbox"],
+#lista-repasses-administradores input[type="checkbox"],
+#lista-repasses-empresa input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+.repasses-producao button,
+.repasses-administradores button,
+.repasses-empresa button {
+    margin-right: 10px;
+}
+
+.repasses-producao span,
+.repasses-administradores span,
+.repasses-empresa span {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.repasses-feitos,
+.resumo-distribuicoes {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+.repasses-feitos h3,
+.resumo-distribuicoes h3 {
+    margin-bottom: 15px;
+}
+
+#lista-repasses-feitos-producao,
+#lista-repasses-feitos-vendedores,
+#lista-repasses-feitos-empresa {
+    list-style: none;
+    padding: 0;
+}
+
+#lista-repasses-feitos-producao li,
+#lista-repasses-feitos-vendedores li,
+#lista-repasses-feitos-empresa li {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#lista-repasses-feitos-producao li:hover,
+#lista-repasses-feitos-vendedores li:hover,
+#lista-repasses-feitos-empresa li:hover {
+    background-color: #444;
+}
+
+.resumo-distribuicoes .distribuicao-vendedor,
+.resumo-distribuicoes .distribuicao-vendedores {
+    flex: 1;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+    margin-bottom: 10px;
+}
+
+.resumo-distribuicoes .distribuicao-vendedor h4,
+.resumo-distribuicoes .distribuicao-vendedores h4 {
+    margin-bottom: 15px;
+}
+
+.resumo-distribuicoes p {
+    margin-bottom: 5px;
+}
+
+.adicionar-repasse .input-group {
+    margin-bottom: 10px;
+}
+
+/* Estilos para telas menores */
+@media (max-width: 768px) {
+    .repasses-container {
+        flex-direction: column;
+    }
+
+    .repasses-producao,
+    .repasses-administradores,
+    .repasses-empresa {
+        flex: 1 1 100%;
+    }
+
+    .resumo-distribuicoes .distribuicao-vendedor,
+    .resumo-distribuicoes .distribuicao-vendedores {
+        flex: 1 1 100%;
+    }
+}

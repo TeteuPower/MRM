@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastrar Novo Gasto da Empresa</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estoque.css">
+    <link rel="stylesheet" href="../css/gastos.css">
+</head>
+<body>
+    <div id="nome-administrador" class="usuario-logado"></div>
+    <div id="cabecalho"></div>
+
+    <main>
+        <section id="gastos">
+            <h2>Cadastrar Novo Gasto da Empresa</h2>
+
+            <form id="form-gasto-empresa">
+                <h1 id="saldo-empresa">Saldo no caixa da empresa: R$ 0,00</h1>
+                <div class="input-group">
+                    <label for="descricao-gasto">Descrição do Gasto:</label>
+                    <textarea id="descricao-gasto" placeholder="Detalhes do Gasto"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <label for="valor-gasto">Valor:</label>
+                    <input type="text" id="valor-gasto" placeholder="Valor do Gasto">
+                </div>
+
+                <div class="input-group"></div>
+                    <label for="moeda-gasto">Moeda:</label>
+                    <select id="moeda-gasto" disabled>
+                        <option value="real">Real (R$)</option>
+                        <option value="dolar">Dólar (US$)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="administrador-gasto">Administrador Responsável:</label>
+                    <select id="administrador-gasto">
+                        <option value="">Selecione o Administrador</option>
+                        <!-- Opções de administradores serão adicionadas aqui -->
+                    </select>
+                </div>
+
+                <button type="submit" class="btn-acao verde">Registrar Gasto</button>
+            </form>
+            <div class="extrato-caixa">
+                <h3>Extrato do Caixa</h3>
+                <h1 id="saldo-empresa2">Caixa: R$ 0,00</h1>
+                
+                <div class="filtro-extrato">
+                    <label for="filtro-extrato">Filtrar por:</label>
+                    <select id="filtro-extrato">
+                        <option value="todos">Todos</option>
+                        <option value="gastos">Gastos</option>
+                        <option value="adições">Adições</option>
+                    </select>
+                </div>
+        
+                <table id="tabela-extrato-caixa">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Descrição</th>
+                            <th>Valor</th>
+                            <!--<th>Moeda</th>-->
+                            <th>Administrador</th>
+                            <th>Vendedor</th>
+                            <!--<th>Pedido</th>-->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itens do extrato serão adicionados aqui -->
+                    </tbody>
+                </table>
+        
+                <div class="paginacao">
+                    <button id="btn-pagina-anterior-extrato" style="display: none;">Página Anterior</button>
+                    <ul id="menu-paginacao-extrato"></ul>
+                    <button id="btn-proxima-pagina-extrato" style="display: none;">Próxima Página</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/gastos.js"></script>
+</body>
+</html>
