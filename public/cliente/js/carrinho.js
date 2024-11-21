@@ -62,6 +62,27 @@ function exibirProdutos(products) {
     }
 }
 
+const modalBtn = document.getElementById('modal-btn');
+const logoCarrinho = document.querySelector('.logo-carrinho');
+const textoCabecalho = document.querySelector('.texto-cabecalho');
+const carrinho = document.querySelector('.carrinho');
+const btnCheckout = document.querySelector('.btn-checkout');
+
+modalBtn.addEventListener('change', () => {
+    if (modalBtn.checked) {
+        updateCartModal();
+        logoCarrinho.classList.add('start');
+        textoCabecalho.classList.add('start');
+        carrinho.classList.add('start'); 
+        btnCheckout.classList.add('start');
+    } else {
+        logoCarrinho.classList.remove('start');
+        textoCabecalho.classList.remove('start');
+        carrinho.classList.remove('start');
+        btnCheckout.classList.remove('start');
+    }
+});
+
 // Função para abrir o modal
 function openModal() {
     const modal = document.getElementById('cart-modal');
@@ -71,8 +92,12 @@ function openModal() {
 
 // Função para fechar o modal
 function closeModal() {
-    const modal = document.getElementById('cart-modal');
-    modal.style.display = 'none';
+    const modal = document.getElementById('modal-btn');
+    logoCarrinho.classList.remove('start');
+    textoCabecalho.classList.remove('start');
+    carrinho.classList.remove('start');
+    btnCheckout.classList.remove('start');
+    modal.checked = false; // Desmarca o checkbox, fechando o modal
 }
 
 // Adiciona evento de clique para fechar o modal

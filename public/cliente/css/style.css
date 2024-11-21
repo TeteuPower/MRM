@@ -241,6 +241,19 @@ section {
     transition: .3s ease-in-out;
 }
 
+button {
+    padding: .5rem 2.5rem;
+    margin: 0 1rem;
+    outline: none;
+    border: 1px solid var(--primary-color);
+    background-color: transparent;
+    color: var(--primary-color);
+    font-weight: 600;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+}
+
 .food-category button:hover,
 .food-category button.active {
     background-color: var(--primary-color);
@@ -577,7 +590,7 @@ section {
     display: none;
 }
 
-.modal {
+/*.modal {
     display: none;
     position: fixed;
     z-index: 1;
@@ -587,16 +600,17 @@ section {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.4);
-}
+}*/
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 1% auto;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
     max-width: 600px; /* Define a largura máxima */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
 }
 
 .close-modal {
@@ -613,6 +627,218 @@ section {
     cursor: pointer;
 }
 
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
+
+.cabecalho-carrinho {
+    display: flex;
+    align-items: center;
+    justify-content: space-around; /* Centraliza o item do meio */
+}
+
+.logo-carrinho {
+    margin-left: 0px;
+}
+
+.close-modal {
+    margin-right: 7px;
+}
+
+.logo-carrinho {
+    max-height: 100px;
+    max-width: 100px;
+    border-radius: 50%;
+}
+
+/*.cabecalho-carrinho {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 25px;
+    margin-left: 25px;
+}*/
+
+.btn-checkout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.section{
+  position: relative;
+  width: 100%;
+  display: block;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+.full-height{
+  min-height: 100vh;
+}
+
+[type="checkbox"]:checked,
+[type="checkbox"]:not(:checked){
+  position: absolute;
+  left: -9999px;
+}
+.modal-btn:checked + label,
+.modal-btn:not(:checked) + label{
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 2;
+  height: 50px;
+  transition: all 200ms linear;
+  border-radius: 4px;
+  width: 240px;
+  letter-spacing: 1px;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -ms-flex-pack: center;
+  text-align: center;
+    -ms-flex-item-align: center;
+    align-self: center;
+  border: none;
+  cursor: pointer;
+  background-color: #000000;
+  color: #ffeba7;
+  box-shadow: 0 12px 35px 0 rgba(16,39,112,.25);
+}
+.modal-btn:not(:checked) + label:hover{
+  background-color: #ffeba7;
+  color: #102770;
+}
+.modal-btn:checked + label .uil,
+.modal-btn:not(:checked) + label .uil{
+	margin-left: 10px;
+	font-size: 18px;
+}
+.modal-btn:checked + label:after,
+.modal-btn:not(:checked) + label:after{
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  z-index: 110;
+  width: 40px;
+  border-radius: 3px;
+  height: 30px;
+  text-align: center;
+  line-height: 30px;
+  font-size: 18px;
+  background-color: #ffeba7;
+  color: #000000;
+  font-family: 'unicons';
+  content: '\eac6'; 
+  box-shadow: 0 12px 25px 0 rgba(16,39,112,.25);
+  transition: all 200ms linear;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+}
+/*.modal-btn:checked + label:hover:after,
+.modal-btn:not(:checked) + label:hover:after{
+  background-color: #000000;
+  color: #ffeba7;
+}
+.modal-btn:checked + label:after{
+  transition: opacity 300ms 300ms ease, transform 300ms 300ms ease, background-color 250ms linear, color 250ms linear;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}*/
+.modal{
+  position: fixed;
+  display: block;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -ms-flex-pack: center;
+  justify-content: center;
+  margin: 0 auto;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  overflow-x: hidden;
+  background-color: rgba(31,32,41,.75);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 250ms 700ms ease;
+}
+.modal-btn:checked ~ .modal{
+  pointer-events: auto;
+  opacity: 1;
+  transition: all 300ms ease-in-out;
+}
+.modal-wrap {
+  position: relative;
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 40px;
+  overflow: hidden;
+  padding-bottom: 20px;
+  background-color: #fff;
+    -ms-flex-item-align: center;
+    align-self: center;
+    box-shadow: 0 12px 25px 0 rgba(199,175,189,.25);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 250ms 250ms ease, transform 300ms 250ms ease;
+}
+.modal-wrap img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.modal-wrap p {
+  padding: 20px 30px 0 30px;
+}
+.modal-btn:checked ~ .modal .modal-wrap{
+  opacity: 1;
+  transform: scale(1);
+  transition: opacity 250ms 500ms ease, transform 350ms 500ms ease;
+}
+
+
+.logo {
+	position: absolute;
+	top: 25px;
+	left: 25px;
+	display: block;
+	z-index: 1000;
+	transition: all 250ms linear;
+}
+.logo img {
+	height: 26px;
+	width: auto;
+	display: block;
+  	filter: brightness(10%);
+	transition: filter 250ms 700ms linear;
+}
+.modal-btn:checked ~ .logo img {
+  	filter: brightness(100%);
+	transition: all 250ms linear;
+}
+
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 1000px) {
 
@@ -622,6 +848,10 @@ section {
 
     h1 {
         font-size: 3rem !important;
+    }
+
+    h2 {
+        font-size: 2rem !important;
     }
 
     span {
@@ -670,6 +900,14 @@ section {
     .modal-content {
         width: 95%; /* Ajuste a largura para telas menores */
     }
+
+    .modal-wrap {
+		width: calc(100% - 40px);
+		padding-bottom: 15px;
+	}
+	.modal-wrap p {
+	  padding: 15px 20px 0 20px;
+	}
 
     /* MOBILE NAV */
 
