@@ -88,9 +88,22 @@ html {
     border-radius: 1rem;
 }
 
+.logo-adm {
+    /*max-height: 100px;
+    max-width: 100px;
+    border-radius: 50%;*/
+    width: 4rem;
+    height: 4rem;
+}
+
+.right-menu {
+    display: flex;
+    /*align-items: center;
+    justify-content: center;
+    flex-direction:row;*/
+}
+
 .cart-btn {
-    width: 3rem;
-    height: 3rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -100,7 +113,18 @@ html {
     transition: .5s ease-in-out;
 }
 
-.cart-btn:hover {
+.adm-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 2rem;
+    cursor: pointer;
+    transition: .5s ease-in-out;
+    margin-left: 12px;
+}
+
+.adm-btn:hover {
     background-color: var(--primary-color);
     color: var(--white);
     border-radius: 1rem;
@@ -131,6 +155,7 @@ html {
     width: 100%;
     max-width: 1366px;
     margin: 0 auto;
+    margin-top: 150px;
 }
 
 .containerFooter {
@@ -145,7 +170,7 @@ html {
 
 
 section {
-    padding: 9rem 0;
+    padding: 1rem 0;
 }
 
 .slogan {
@@ -153,7 +178,7 @@ section {
 }
 
 .slogan h1 {
-    font-size: 7rem;
+    font-size: 5.8rem;
     color: var(--primary-color);
 }
 
@@ -165,7 +190,7 @@ section {
     border: .125rem solid var(--primary-color);
     border-radius: 2rem;
     color: var(--primary-color);
-    margin: 3rem 0;
+    margin: 2.5rem 0;
     cursor: pointer;
     font-weight: 600;
     transition: .5s ease-in-out;
@@ -838,12 +863,14 @@ section {
 	transition: all 250ms linear;
 }
 
-
 /* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 1293px) {
 
     * {
         font-size: 13px;
+    }
+    .container {
+        margin-top: 0px;
     }
 
     h1 {
