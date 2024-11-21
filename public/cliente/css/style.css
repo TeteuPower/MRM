@@ -111,6 +111,7 @@ html {
     font-size: 2rem;
     cursor: pointer;
     transition: .5s ease-in-out;
+    gap: 5px; /* Adiciona espaço entre os elementos */
 }
 
 .cart-btn:hover {
@@ -341,8 +342,11 @@ section {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    flex-direction: column;
     margin-top: 3rem;
     padding: 0 1rem;
+    width: 100%; /* Isso garante que todos os elementos da item-info se ajustem */
+    box-sizing: border-box;
 }
 
 .item-info h3 {
@@ -621,6 +625,18 @@ section {
     display: none;
 }
 
+.quantity-input {
+    width: 40px; /* Largura inicial */
+    text-align: center;
+    -moz-appearance: textfield; /* Remove os spinners padrão */
+    appearance: textfield; /* Remove os spinners padrão */
+}
+
+.quantity-input::-webkit-inner-spin-button, 
+.quantity-input::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+}
+
 /*.modal {
     display: none;
     position: fixed;
@@ -875,6 +891,7 @@ section {
     * {
         font-size: 13px;
     }
+
     .container {
         margin-top: 0px;
     }
@@ -941,6 +958,10 @@ section {
 	.modal-wrap p {
 	  padding: 15px 20px 0 20px;
 	}
+
+    .quantity-input {
+        width: 30px; /* Diminui a largura */
+      }
 
     /* MOBILE NAV */
 

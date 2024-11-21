@@ -18,25 +18,29 @@ async function carregarProdutos() {
 
 // Função para exibir os produtos na página
 function exibirProdutos(products) {
-    //productList.innerHTML = ''; // Limpa o container
+    productList.innerHTML = ''; // Limpa o container
     //console.log(products.produtos);
 
     products.produtos.forEach(product => {
+        //console.log(product);
         const productItem = document.createElement('div');
         productItem.classList.add('food-item', `${product.categoria}-type`); // Adiciona classes dinamicamente
 
-        // Construção do HTML do produto (adapte conforme necessário)
+        // Construção do HTML do produto
         productItem.innerHTML = `
             <div class="item-wrap bottom-up play-on-scroll">
                 <div class="item-img">
                     <div class="img-holder bg-img" style="background-image: url(${product.imagem || 'img/logo2.png'});"></div> </div>
                 <div class="item-info">
+                    <div class="cart-btn" data-product-id="${product.id}">
+                        <i class='bx bx-up-arrow-alt increase-btn'></i>
+                        <input type="number" min="1" max="10" value="1" class="quantity-input">
+                        <i class='bx bx-down-arrow-alt decrease-btn'></i>
+                        <i class='bx bx-cart-alt add-to-cart-btn'></i>
+                    </div>
                     <div>
                         <h3>${product.nome}</h3>
                         <span>${product.preco}</span>
-                    </div>
-                    <div class="cart-btn" data-product-id="${product.id}">
-                        <i class='bx bx-cart-alt'></i>
                     </div>
                 </div>
             </div>
@@ -48,7 +52,6 @@ function exibirProdutos(products) {
         if (event.target.classList.contains('bx-cart-alt')) {
             const productId = event.target.closest('.cart-btn').dataset.productId;
             addToCart(productId);
-            //openCartModal(); // Abre o modal ao adicionar um item
         }
     });
 
@@ -56,9 +59,7 @@ function exibirProdutos(products) {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         cart.push(productId);
         localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartModal();
         abrirCarrinho();
-        //alert('Produto adicionado ao carrinho!'); // Ou atualize a interface do carrinho
     }
 }
 
@@ -73,7 +74,6 @@ document.querySelector('.bx-cart-alt').addEventListener('click', function(event)
     abrirCarrinho();
 });
 function abrirCarrinho() {
-    //event.preventDefault(); // Impede o link de redirecionar
     modalBtn.checked = true;
     updateCartModal();
     logoCarrinho.classList.add('start');
@@ -109,8 +109,7 @@ function updateCartModal() {
         return;
     }
 
-    //Aqui precisaremos de uma chamada à API para obter os detalhes dos produtos.  
-    // Vou assumir que /api/produtos/:id retorna um produto.  Adapte conforme necessário
+    //Uma chamada à API para obter os detalhes dos produtos.  
 
     cart.forEach(async productId => {
         try{

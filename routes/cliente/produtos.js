@@ -6,7 +6,7 @@ const {dbClientes} = require('../../db'); // Importa o módulo de conexão com o
 // Rota para obter os dados do estoque
 router.get('/', (req, res) => {
     // Consulta SQL para obter os produtos e suas quantidades
-    const sqlProdutos = `(SELECT * FROM produtos)`;
+    const sqlProdutos = `(SELECT id, nome, unidade, status, preco, categoria FROM produtos)`;
     dbClientes.query(sqlProdutos, (err, results) => {
         if (err) {
             console.error('Erro ao buscar os produtos:', err);

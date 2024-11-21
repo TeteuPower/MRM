@@ -104,7 +104,7 @@ window.addEventListener('scroll', () => {
     }
   });
 
-  const productList = document.getElementById('product-list');
+const productList = document.getElementById('product-list');
 // Configura o MutationObserver
 const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
