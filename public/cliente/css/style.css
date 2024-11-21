@@ -241,7 +241,7 @@ section {
     transition: .3s ease-in-out;
 }
 
-button {
+.buttonCarrinho {
     padding: .5rem 2.5rem;
     margin: 0 1rem;
     outline: none;
@@ -663,7 +663,7 @@ button {
     justify-content: center;
 }
 
-.section{
+.sectionModal{
   position: relative;
   width: 100%;
   display: block;
