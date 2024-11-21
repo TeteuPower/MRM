@@ -113,6 +113,12 @@ html {
     transition: .5s ease-in-out;
 }
 
+.cart-btn:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 100px;
+}
+
 .adm-btn {
     display: flex;
     align-items: center;

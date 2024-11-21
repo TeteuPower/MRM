@@ -57,7 +57,7 @@ function exibirProdutos(products) {
         cart.push(productId);
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartModal();
-        openModal();
+        abrirCarrinho();
         //alert('Produto adicionado ao carrinho!'); // Ou atualize a interface do carrinho
     }
 }
@@ -68,29 +68,23 @@ const textoCabecalho = document.querySelector('.texto-cabecalho');
 const carrinho = document.querySelector('.carrinho');
 const btnCheckout = document.querySelector('.btn-checkout');
 
-modalBtn.addEventListener('change', () => {
-    if (modalBtn.checked) {
-        updateCartModal();
-        logoCarrinho.classList.add('start');
-        textoCabecalho.classList.add('start');
-        carrinho.classList.add('start'); 
-        btnCheckout.classList.add('start');
-    } else {
-        logoCarrinho.classList.remove('start');
-        textoCabecalho.classList.remove('start');
-        carrinho.classList.remove('start');
-        btnCheckout.classList.remove('start');
-    }
-});
-
 // Função para abrir o modal
-function openModal() {
-    const modal = document.getElementById('cart-modal');
-    modal.style.display = 'flex';
-    //AOS.refresh(); // Atualiza animações AOS após alterações no DOM
-}
+document.querySelector('.bx-cart-alt').addEventListener('click', function(event) {
+    abrirCarrinho();
+});
+function abrirCarrinho() {
+    //event.preventDefault(); // Impede o link de redirecionar
+    modalBtn.checked = true;
+    updateCartModal();
+    logoCarrinho.classList.add('start');
+    textoCabecalho.classList.add('start');
+    carrinho.classList.add('start'); 
+    btnCheckout.classList.add('start');
+};
 
 // Função para fechar o modal
+// Adiciona evento de clique para fechar o modal
+document.querySelector('.close-modal').addEventListener('click', closeModal);
 function closeModal() {
     const modal = document.getElementById('modal-btn');
     logoCarrinho.classList.remove('start');
@@ -99,9 +93,6 @@ function closeModal() {
     btnCheckout.classList.remove('start');
     modal.checked = false; // Desmarca o checkbox, fechando o modal
 }
-
-// Adiciona evento de clique para fechar o modal
-document.querySelector('.close-modal').addEventListener('click', closeModal);
 
 // Função para atualizar o conteúdo do carrinho no modal
 function updateCartModal() {
@@ -129,7 +120,7 @@ function updateCartModal() {
             const listItem = document.createElement('li');
             listItem.innerHTML = `${product.nome} - R$ ${parseFloat(product.preco).toFixed(2)}`; //Ajustado para mostrar o preço formatado
             total += parseFloat(product.preco);
-            console.log(total);
+            //console.log(total);
             cartItems.appendChild(listItem);
             document.getElementById('cart-total').textContent = `Total: R$ ${total.toFixed(2)}`; 
         } catch (error){
