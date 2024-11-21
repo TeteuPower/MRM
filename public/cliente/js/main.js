@@ -2,13 +2,13 @@
 
 let backToTopBtn = document.querySelector('.back-to-top')
 
-window.onscroll = () => {
+/*window.onscroll = () => {
     if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
         backToTopBtn.style.display = 'flex'
     } else {
         backToTopBtn.style.display = 'none'
     }
-}
+}*/
 
 // top nav menu
 
@@ -94,15 +94,16 @@ window.addEventListener('scroll', () => {
     const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
+    const MARGEM_ERRO = 100; // Adiciona uma margem de erro de 100 pixels
   
-    if (scrollPosition + windowHeight >= documentHeight) {
+    if (scrollPosition + windowHeight + MARGEM_ERRO >= documentHeight) {
       mbNav.classList.add('hidden');
       mbNav.setAttribute('data-aos', 'fade-down'); // Animação para ocultar
     } else {
       mbNav.classList.remove('hidden');
       mbNav.setAttribute('data-aos', 'fade-up'); // Animação para mostrar
     }
-  });
+});
 
 const productList = document.getElementById('product-list');
 // Configura o MutationObserver
@@ -174,3 +175,58 @@ function exibirProdutos(products) {
 
 // Chama a função para buscar os produtos ao carregar a página
 carregarProdutos();*/
+
+//Lógica tema dark e light e botão up
+(function($) { "use strict";
+
+	//Switch dark/light
+	
+	$(".switch").on('click', function () {
+		if ($("body").hasClass("light")) {
+			$("body").removeClass("light");
+			$(".switch").removeClass("switched");
+		}
+		else {
+			$("body").addClass("light");
+			$(".switch").addClass("switched");
+		}
+	});
+		
+	$(document).ready(function(){"use strict";
+	
+		//Scroll back to top
+		
+		var progressPath = document.querySelector('.progress-wrap path');
+		var pathLength = progressPath.getTotalLength();
+		progressPath.style.transition = progressPath.style.WebkitTransition = 'none';
+		progressPath.style.strokeDasharray = pathLength + ' ' + pathLength;
+		progressPath.style.strokeDashoffset = pathLength;
+		progressPath.getBoundingClientRect();
+		progressPath.style.transition = progressPath.style.WebkitTransition = 'stroke-dashoffset 10ms linear';		
+		var updateProgress = function () {
+			var scroll = $(window).scrollTop();
+			var height = $(document).height() - $(window).height();
+			var progress = pathLength - (scroll * pathLength / height);
+			progressPath.style.strokeDashoffset = progress;
+		}
+		updateProgress();
+		$(window).scroll(updateProgress);	
+		var offset = 50;
+		var duration = 550;
+		jQuery(window).on('scroll', function() {
+			if (jQuery(this).scrollTop() > offset) {
+				jQuery('.progress-wrap').addClass('active-progress');
+			} else {
+				jQuery('.progress-wrap').removeClass('active-progress');
+			}
+		});				
+		jQuery('.progress-wrap').on('click', function(event) {
+			event.preventDefault();
+			jQuery('html, body').animate({scrollTop: 0}, duration);
+			return false;
+		})
+		
+		
+	});
+	
+})(jQuery); 
