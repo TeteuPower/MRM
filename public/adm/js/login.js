@@ -1,13 +1,13 @@
-document.getElementById('adminBtn').addEventListener('click', function() {
+/*document.getElementById('adminBtn').addEventListener('click', function() {
     document.getElementById('adminModal').style.display = 'block';
 });
 
 document.querySelector('.close-btn').addEventListener('click', function() {
     document.getElementById('adminModal').style.display = 'none';
-});
+});*/
 
 document.addEventListener('DOMContentLoaded', function () {
-    exibirLogin();
+    //exibirLogin();
     jaEstaLogado();
 });
 
@@ -25,8 +25,8 @@ function jaEstaLogado() {
 }
 
 function checkAdminPassword() {
-    const adminPassword = document.getElementById('adminPassword').value;
-    const adminUsuario = document.getElementById('adminUsuario').value;
+    const adminPassword = document.getElementById('logpass').value;
+    const adminUsuario = document.getElementById('logemail').value;
 
 
     // Faz uma requisição POST para a rota de login para obter o token
