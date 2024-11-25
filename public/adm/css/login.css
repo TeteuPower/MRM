@@ -11,7 +11,8 @@ body{
 	font-size: 15px;
 	line-height: 1.7;
 	color: #c4c3ca;
-	background-color: #1f2029;
+  background-image: url(../../../statics/aldeia.jpeg);
+	background-color: #0a240d;
 	overflow-x: hidden;
 }
 a {
@@ -48,6 +49,14 @@ h6 span{
 .full-height{
   min-height: 100vh;
 }
+
+.botoes-login {
+  background-color: rgba(0, 0, 0, 0.5); /* Preto com 50% de transparência */
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
 [type="checkbox"]:checked,
 [type="checkbox"]:not(:checked){
   position: absolute;
@@ -64,7 +73,7 @@ h6 span{
   padding: 0;
   margin: 10px auto;
   cursor: pointer;
-  background-color: #ffeba7;
+  background-color: #0F9D58;
 }
 .checkbox:checked + label:before,
 .checkbox:not(:checked) + label:before{
@@ -73,7 +82,7 @@ h6 span{
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  color: #ffeba7;
+  color: #ffffff;
   background-color: #102770;
   font-family: 'unicons';
   content: '\eb4f';
@@ -117,11 +126,16 @@ h6 span{
 .card-front, .card-back {
   width: 100%;
   height: 100%;
-  background-color: #2a2b38;
+  /*background-color: #00350e;
   background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat.svg');
   background-position: bottom center;
   background-repeat: no-repeat;
-  background-size: 300%;
+  background-size: 300%;*/
+  backdrop-filter: blur(5px); /* Ajusta o raio do blur */
+  color: black;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.2));
+  padding: 10px;
+  color: white;
   position: absolute;
   border-radius: 6px;
   left: 0;
@@ -189,7 +203,7 @@ h6 span{
   font-size: 24px;
   line-height: 48px;
   text-align: left;
-  color: #ffeba7;
+  color: #0F9D58;
   -webkit-transition: all 200ms linear;
     transition: all 200ms linear;
 }
@@ -263,8 +277,8 @@ h6 span{
   -ms-flex-pack: center;
   text-align: center;
   border: none;
-  background-color: #ffeba7;
-  color: #102770;
+  background-color: #0F9D58;
+  color: #ffffff;
   box-shadow: 0 8px 24px 0 rgba(255,235,167,.2);
 }
 .btn:active,
