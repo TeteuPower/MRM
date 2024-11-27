@@ -1,3 +1,5 @@
+temaSalvo();
+
 // back tot top
 
 let backToTopBtn = document.querySelector('.back-to-top')
@@ -72,6 +74,7 @@ function loop() {
 }
 
 loop()
+
 
 // mobile nav
 
@@ -185,10 +188,12 @@ carregarProdutos();*/
 		if ($("body").hasClass("light")) {
 			$("body").removeClass("light");
 			$(".switch").removeClass("switched");
+            localStorage.setItem('tema', 'light');
 		}
 		else {
 			$("body").addClass("light");
 			$(".switch").addClass("switched");
+            localStorage.setItem('tema', 'dark');
 		}
 	});
 		
@@ -230,3 +235,17 @@ carregarProdutos();*/
 	});
 	
 })(jQuery); 
+
+function temaSalvo() {
+    let tema = localStorage.getItem('tema');
+    if (tema == 'dark') {
+        $("body").addClass("light");
+        $(".switch").addClass("switched");
+        //console.log('tema dark definido');
+    }
+    if (tema == 'light') {
+        $("body").removeClass("light");
+        $(".switch").removeClass("switched");
+        //console.log('tema light definido');
+    }
+};
