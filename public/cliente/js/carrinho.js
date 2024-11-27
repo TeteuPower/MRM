@@ -94,6 +94,18 @@ function closeModal() {
     modal.checked = false; // Desmarca o checkbox, fechando o modal
 }
 
+//Limpar carrinho
+document.getElementById('checkout-limpar').addEventListener('click', limparCarrinho);
+function limparCarrinho() {
+    // Remover todos os itens do carrinho do localStorage e atualizar o modal
+    if (confirm('Deseja realmente limpar o carrinho?')) {
+        localStorage.removeItem('cart');
+        updateCartModal();
+    } else {
+        return; // Interrompe a função se o usuário cancelar
+    }
+}
+
 // Função para atualizar o conteúdo do carrinho no modal
 function updateCartModal() {
     let total = 0;
