@@ -9,7 +9,7 @@ function autenticar(req, res, next) {
 
     try {
         // Obtém a chave secreta da variável de ambiente JWT_SECRET
-        const secretKey = process.env.JWT_SECRET; 
+        const secretKey = process.env.JWT_SECRET_ADMIN; 
 
         // Verifica se a chave secreta está definida
         if (!secretKey) {

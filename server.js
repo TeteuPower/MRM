@@ -212,7 +212,7 @@ app.use('/api/usuarios', require('./routes/cliente/usuarios'));
 
 
 // Rota para login do administrador (gera o token)
-app.post('/api/login', (req, res) => {
+app.post('/api/login-admin', (req, res) => {
     const { usuario, senha } = req.body; // Recebe usuário e senha
 
     const sql = `SELECT * FROM administradores WHERE usuario = ?`; // Busca por usuário
@@ -233,7 +233,7 @@ app.post('/api/login', (req, res) => {
             const senhaValida = await bcrypt.compare(senha, administrador.senha); 
 
             if (senhaValida) {
-                const token = jwt.sign({ id: administrador.id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+                const token = jwt.sign({ id: administrador.id }, process.env.JWT_SECRET_ADMIN, { expiresIn: '24h' });
                 return res.json({ token, id: administrador.id, nome: administrador.nome, usuario: administrador.usuario });
             } else {
                 return res.status(401).json({ error: 'Senha incorreta.' });
@@ -254,7 +254,7 @@ app.get('/api/decodificar-token', autenticar, (req, res) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_ADMIN);
         res.json({ id: decoded.id }); // Envia o ID do administrador como resposta
     } catch (err) {
         return res.status(401).json({ error: 'Token inválido.' });

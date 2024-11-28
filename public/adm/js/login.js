@@ -30,7 +30,7 @@ function checkAdminPassword() {
 
 
     // Faz uma requisição POST para a rota de login para obter o token
-    fetch('/api/login', {
+    fetch('/api/login-admin', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
