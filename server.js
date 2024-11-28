@@ -207,6 +207,8 @@ app.use('/api/divisao-lucros', autenticar, require('./routes/divisao_lucros'));
 app.use('/api/divisao-lucros-simples', autenticar, require('./routes/divisao_lucros_simples'));
 // Usa a rota para clientes sem token
 app.use('/api/produtos', require('./routes/cliente/produtos'));
+// Usa a rota para clientes sem token
+app.use('/api/usuarios', require('./routes/cliente/usuarios'));
 
 
 // Rota para login do administrador (gera o token)

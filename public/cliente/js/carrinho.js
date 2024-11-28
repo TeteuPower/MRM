@@ -200,7 +200,7 @@ function decrementQuantity(productId) {
     }
     //Se quantidade for igual a 1 exclui o produto do carrinho
     else if (item && parseInt(item.quantity) === 1) {
-        console.log(item.productId);
+        //console.log(item.productId);
         cart.splice(cart.indexOf(item), 1);
         localStorage.setItem('cart', JSON.stringify(cart));
         updateCartModal();
