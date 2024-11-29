@@ -1,19 +1,38 @@
-/*document.getElementById('adminBtn').addEventListener('click', function() {
-    document.getElementById('adminModal').style.display = 'block';
-});
-
-document.querySelector('.close-btn').addEventListener('click', function() {
-    document.getElementById('adminModal').style.display = 'none';
-});*/
-
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     //exibirLogin();
     jaEstaLogado();
-});
+    const entrarSpan = document.getElementById('entrarSpan');
+    const cadastrarSpan = document.getElementById('cadastrarSpan');
+  
+    if (entrarSpan) {
+      entrarSpan.addEventListener('click', function() {
+        const checkbox = document.getElementById('reg-log');
+        checkbox.checked = !checkbox.checked;
+      });
+    }
+
+    if (cadastrarSpan) {
+      cadastrarSpan.addEventListener('click', function() {
+        const checkbox = document.getElementById('reg-log');
+        checkbox.checked = !checkbox.checked;
+      });
+    }
+
+  });
 
 function jaEstaLogado() {
     const token = localStorage.getItem('token');
     const admId = localStorage.getItem('administrador');
+    const tokenUser = localStorage.getItem('tokenUser');
+
+    if (token && tokenUser) {
+        alert('Você está logado com a conta de administrador e de cliente, será deslogada as duas contas');
+        //remove token from local storage
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenUser');
+        localStorage.removeItem('administrador');
+        localStorage.removeItem('administradorNome');
+    }
 
     if (token) {
         if (admId === '1') {
@@ -21,6 +40,10 @@ function jaEstaLogado() {
         } else {
             window.location.href = '/adm/pagina_inicial';
         }
+    }
+
+    if (tokenUser) {
+        window.location.href = '/menu';
     }
 }
 
@@ -115,6 +138,7 @@ function checkAdminPassword() {
             } else {
             console.log(data);
             alert('Seja bem vindo usuário!');
+            window.location.href = '/menu';
             }
         })
         .catch(error => {

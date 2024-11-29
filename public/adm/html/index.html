@@ -14,7 +14,7 @@
 			<div class="row full-height justify-content-center">
 				<div class="col-12 text-center align-self-center py-5">
 					<div class="section pb-5 pt-5 pt-sm-2 text-center">
-						<h6 class="mb-0 pb-3 botoes-login"><span>Entrar </span><span>Cadastrar</span></h6>
+						<h6 class="mb-0 pb-3 botoes-login"><span id="entrarSpan">Entrar </span><span id="cadastrarSpan">Cadastrar</span></h6>
 						  <input class="checkbox botoes-login" type="checkbox" id="reg-log" name="reg-log"/>
 						  <label for="reg-log"></label>
 						<div class="card-3d-wrap mx-auto">
@@ -33,6 +33,7 @@
 											</div>
 											
 											<a href="#" class="btn mt-4" onclick="checkAdminPassword()">Entrar</a>
+											<a href="/" class="btn mt-4">Cancelar</a>
 											<p class="mb-0 mt-4 text-center"><a href="#0" class="link">Esqueceu sua senha?</a></p>
 										  </div>
 									  </div>
@@ -57,11 +58,7 @@
 												<input type="password" name="logpass" class="form-style" placeholder="Confirme sua senha" id="confirm-new-logpass" autocomplete="off">
 												<i class="input-icon uil uil-lock-alt"></i>
 											</div>
-											<!--<div class="form-group mt-2">
-												<label for="revendedor">Revendedor:</label>
-												<input type="checkbox" id="revendedor">
-											</div>-->
-											<button type="submit" class="btn mt-4" onclick="cadastrarUsuario()">Enviar</button>
+											<button type="submit" class="btn mt-4" onclick="cadastrarUsuario()">Cadastrar</button>
 										  </div>
 									  </div>
 								  </div>
@@ -72,43 +69,6 @@
 			  </div>
 		</div>
 	</div>
-
-
-
-
-
-    <!--<div class="container">
-        <div class="logo">
-            <img src="../statics/indigenas.jpg" alt="Logo">
-        </div>
-        <div class="form-container">
-            <h1>Login</h1>
-            <form id="loginForm">
-                <div class="input-group">
-                    <label for="username">Usuário:</label>
-                    <input type="text" id="username" required>
-                </div>
-                <div class="input-group">
-                    <label for="password">Senha:</label>
-                    <input type="password" id="password" required>
-                </div>
-                <button type="submit">Entrar</button>
-                <button type="button" id="adminBtn">Administração</button>
-            </form>
-        </div>
-    </div>
-
-    <div id="adminModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn">×</span>
-            <h2>Acesso Administrativo</h2>
-            <label for="adminUsuario">Usuário:</label>
-            <input type="text" id="adminUsuario">
-            <label for="adminPassword">Senha:</label>
-            <input type="password" id="adminPassword">
-            <button type="button" onclick="checkAdminPassword()">Acessar</button>
-        </div>
-    </div>-->
 
     <script src="../js/login.js"></script>
 	<script src="../js/novo_usuario.js"></script>

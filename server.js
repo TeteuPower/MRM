@@ -168,6 +168,11 @@ app.get('/adm/desligar_servidor', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'adm', 'html', 'desligar_servidor.html'));
 });
 
+//Define a rota para menu do usuário
+app.get('/menu', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'menu.html'));
+});
+
 
 
 module.exports = {
