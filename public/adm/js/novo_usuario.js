@@ -29,6 +29,13 @@ function cadastrarUsuario(event) {
         return;
     }
 
+    //consulta se o email é válido
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert('Por favor, insira um email válido.');
+        return;
+    }
+
     fetch('/api/usuarios', {
         method: 'POST',
         headers: {

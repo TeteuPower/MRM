@@ -216,7 +216,7 @@ app.use('/api/produtos', require('./routes/cliente/produtos'));
 // Usa a rota para clientes sem token
 app.use('/api/usuarios', require('./routes/cliente/usuarios'));
 // Usa a rota para enviar emails
-app.use('/api/mail', require('./src/controllers/mail'));
+app.use('/api/mail', require('./src/controllers/sendgrid'));
 
 
 // Rota para login do administrador (gera o token)

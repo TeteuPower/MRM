@@ -1,16 +1,38 @@
 const send = require("../services/nodemailer");
-const fs = require('fs'); // Importe o módulo fs (sem promises)
+const fs = require('fs');
 const path = require('path');
+const validator = require('validator');
 
-const sendMail = (req, res) => {
+const emailTemplatePath = path.join(__dirname, '..', '..', 'public', 'mail_models', 'confirmar_email.html');
+let emailTemplate; // Variável para armazenar o template
+
+try {
+    emailTemplate = fs.readFileSync(emailTemplatePath, 'utf-8');
+} catch (error) {
+    console.error("Erro ao ler o template de email:", error);
+    // Template padrão de erro
+    //emailTemplate = "<h1>Erro ao carregar o template de email</h1><p>Por favor, tente novamente mais tarde.</p>";
+    // Ou:
+    throw new Error("Erro ao ler o template de email"); 
+}
+
+
+const sendMail = async (req, res) => {
     const { email } = req.body;
 
+    if (!email || !validator.isEmail(email)) {
+        return res.status(400).json({ message: 'Endereço de email inválido.' });
+    }
+
     const subject = 'Espírito Do Nativo';
-    const html = fs.readFileSync(path.join(__dirname, '..', '..', 'public', 'mail_models', 'confirmar_email.html'), 'utf-8');
 
-    send(email, subject, html);
-
-    return res.json('Email enviado com sucesso!');
-}
+    try {
+        await send(email, subject, emailTemplate);
+        return res.status(200).json({ message: 'Email de confirmação enviado com sucesso!' }); // status 200 para sucesso.
+    } catch (error) {
+        console.error("Erro ao enviar email:", error);
+        return res.status(500).json({ message: 'Erro ao enviar email. Por favor, tente novamente mais tarde.' });
+    }
+};
 
 module.exports = sendMail;
