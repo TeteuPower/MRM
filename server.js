@@ -215,6 +215,8 @@ app.use('/api/divisao-lucros-simples', autenticar, require('./routes/divisao_luc
 app.use('/api/produtos', require('./routes/cliente/produtos'));
 // Usa a rota para clientes sem token
 app.use('/api/usuarios', require('./routes/cliente/usuarios'));
+// Usa a rota para enviar emails
+app.use('/api/mail', require('./src/controllers/mail'));
 
 
 // Rota para login do administrador (gera o token)

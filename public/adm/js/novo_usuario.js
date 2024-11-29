@@ -44,7 +44,7 @@ function cadastrarUsuario(event) {
         return response.json();
     })
     .then(data => {
-        alert(data.message);
+        alert('Conta criada com sucesso!');
         // Limpa o formulário
         document.getElementById('logname').value = '';
         document.getElementById('new-logemail').value = '';
@@ -52,6 +52,28 @@ function cadastrarUsuario(event) {
         document.getElementById('confirm-new-logpass').value = '';
         const checkbox = document.getElementById('reg-log');
         checkbox.checked = !checkbox.checked; // Inverte o estado atual do checkbox
+
+        //Envia email de confirmação
+        fetch('/api/mail', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao enviar email de confirmação.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            //console.log('Email de confirmação enviado com sucesso.');
+        })
+        .catch(error => {
+            alert('Erro ao enviar email de confirmação.');
+            console.error(error);
+        });
     })
     .catch(error => {
         alert('Erro ao cadastrar usuário.');

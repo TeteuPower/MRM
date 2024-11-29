@@ -139,8 +139,8 @@ function checkAdminPassword() {
                     console.error(error);
                 });
             } else {
-            console.log(data);
-            alert('Seja bem vindo usuário!');
+            const nome = localStorage.getItem('Usuario');
+            alert(`Seja bem vindo ${nome}!`);
             window.location.href = '/menu';
             }
         })
