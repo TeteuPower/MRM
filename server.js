@@ -6,6 +6,7 @@ const app = express();
 const jwt = require('jsonwebtoken'); // Importa o módulo jsonwebtoken
 const request = require('request')
 const autenticar = require('./middleware/auth'); // Importa o middleware de autenticação
+const autenticarClientes = require('./middleware/authClientes'); // Importas o middleware de autenticação
 const bcrypt = require('bcrypt'); // Importa o módulo bcrypt
 require('dotenv').config(); // Carrega as variáveis do .env
 
@@ -245,6 +246,39 @@ app.post('/api/login-admin', (req, res) => {
     });
 });
 
+// Rota para login do usuário (gera o token)
+app.post('/api/login-user', (req, res) => {
+    const { usuario, senha } = req.body;
+
+    const sql = `SELECT * FROM usuarios WHERE usuario = ?`;
+    db.query(sql, [usuario], async (err, results) => {
+        if (err) {
+            console.error('Erro ao verificar o usuário:', err);
+            return res.status(500).json({ error: 'Erro ao verificar o usuário.' });
+        }
+
+        if (results.length === 0) {
+            return res.status(401).json({ error: 'Usuário não encontrado.' });
+        }
+
+        const usuarioDb = results[0];
+
+        try {
+            const senhaValida = await bcrypt.compare(senha, usuarioDb.senha);
+
+            if (senhaValida) {
+                const token = jwt.sign({ id: usuarioDb.id }, process.env.JWT_SECRET_USER, { expiresIn: '24h' });
+                return res.json({ token, id: usuarioDb.id, nome: usuarioDb.nome, usuario: usuarioDb.usuario });
+            } else {
+                return res.status(401).json({ error: 'Senha incorreta.' });
+            }
+        } catch (err) {
+            console.error('Erro ao comparar senhas:', err);
+            return res.status(500).json({ error: 'Erro ao verificar a senha.' });
+        }
+    });
+});
+
 // Rota para decodificar o token JWT
 app.get('/api/decodificar-token', autenticar, (req, res) => {
     const token = req.headers.authorization;
@@ -255,6 +289,22 @@ app.get('/api/decodificar-token', autenticar, (req, res) => {
 
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_ADMIN);
+        res.json({ id: decoded.id }); // Envia o ID do administrador como resposta
+    } catch (err) {
+        return res.status(401).json({ error: 'Token inválido.' });
+    }
+});
+
+// Rota para decodificar o token JWT
+app.get('/api/decodificar-token-user', autenticarClientes, (req, res) => {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({ error: 'Token não fornecido.' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_USER);
         res.json({ id: decoded.id }); // Envia o ID do administrador como resposta
     } catch (err) {
         return res.status(401).json({ error: 'Token inválido.' });
