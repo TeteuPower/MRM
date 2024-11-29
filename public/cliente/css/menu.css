@@ -36,6 +36,13 @@ html {
     overflow-x: hidden;
 }
 
+body {
+    background-color: var(--primary-color);
+    background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat-back.svg');
+    background-position: center;
+    background-repeat: repeat;
+}
+
 .nav {
     position: fixed;
     top: 0;
@@ -186,7 +193,7 @@ section {
 
 .slogan h1 {
     font-size: 5.8rem;
-    color: var(--primary-color);
+    color: var(--background-color);
 }
 
 .slogan button {
@@ -1087,7 +1094,7 @@ section {
 	--black-light: #424455;
 }
 body.light{
-    background-color: var(--black-blue-light);
+    background-color: var(--black-blue);
 }
 
 body.light .nav {
