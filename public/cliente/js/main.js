@@ -258,3 +258,39 @@ function formatarValor(valor) {
     const decimal = partes[1];
     return inteiro + ',' + decimal; // Junta as partes com vírgula
   }
+
+  function verificarAutenticacao() {
+    const token = localStorage.getItem('tokenUser');
+
+    if (!token) {
+        // Redireciona para a página de login se não houver token
+        alert('Você deve fazer o Login primeiro');
+        window.location.href = '/adm';
+        return Promise.reject(false); // Retorna uma promessa rejeitada para evitar erros nas páginas protegidas
+    }
+
+    // Função para verificar a validade do token
+    function verificarToken() {
+        fetch('/api/verificar-token-user', {
+            headers: {
+                'Authorization': token
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                alert('Token de segurança vencido, faça o login novamente');
+                localStorage.removeItem('token');
+                window.location.href = '/adm';
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao verificar o token:', error);
+        });
+    }
+
+    // Verifica a validade do token imediatamente
+    verificarToken();
+
+    // Verifica a validade do token a cada 100 segundos (100000 milissegundos)
+    setInterval(verificarToken, 100000);
+}

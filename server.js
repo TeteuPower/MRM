@@ -322,6 +322,12 @@ app.get('/api/verificar-token', autenticar, (req, res) => {
     res.json({ valido: true });
 });
 
+// Rota para verificar a validade do token JWT
+app.get('/api/verificar-token-user', autenticarClientes, (req, res) => {
+    // Se o middleware autenticar for bem-sucedido, o token é válido
+    res.json({ valido: true });
+});
+
 // Rota para desligar o servidor
 app.get('/shutdown', autenticar, (req, res) => {
     console.log('Desligando o servidor...');

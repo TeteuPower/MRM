@@ -36,13 +36,16 @@ function jaEstaLogado() {
 
     if (token) {
         if (admId === '1') {
+            alert('Você está logado!');
             window.location.href = '/adm/consultar_pedidos';
         } else {
+            alert('Você está logado!');
             window.location.href = '/adm/pagina_inicial';
         }
     }
 
     if (tokenUser) {
+        alert('Você está logado!');
         window.location.href = '/menu';
     }
 }
