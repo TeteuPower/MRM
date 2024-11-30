@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {dbClientes} = require('../../db')
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken'); // Importa o módulo jsonwebtoken
 
 // Rota para criar um novo usuário (POST /api/usuarios)
 router.post('/', async (req, res) => {
@@ -25,19 +26,41 @@ router.post('/', async (req, res) => {
             return res.status(400).json({ error: 'Este usuário já está cadastrado.' });
         }
 
+        // Gera o token JWT para confirmação de email (usando JWT_SECRET_MAIL)
+        const token = jwt.sign({ id: email }, process.env.JWT_SECRET_MAIL, { expiresIn: '1h' }); //
+
         // Gera o hash da senha
         const saltRounds = 10;
         const senhaHash = await bcrypt.hash(senha, saltRounds);
 
         // Insere o novo usuário no banco de dados
-        const sql = 'INSERT INTO usuarios (nome, email, telefone, endereco, usuario, senha, saldoReais, saldoDolares) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-        const [result] = await dbClientes.promise().query(sql, [nome, email, telefone, endereco, usuario, senhaHash, 0, 0]);
+        const sql = 'INSERT INTO usuarios (nome, email, telefone, endereco, usuario, senha, saldoReais, saldoDolares, token_confirmacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const [result] = await dbClientes.promise().query(sql, [nome, email, telefone, endereco, usuario, senhaHash, 0, 0, token]);
 
-        res.json({ message: 'Usuário criado com sucesso!', id: result.insertId });
+        res.json({ message: 'Usuário criado com sucesso!', token: token });
     } catch (error) {
         console.error('Erro ao criar usuário:', error);
         res.status(500).json({ error: 'Erro ao criar usuário.' });
     }
 });
+
+// Rota para confirmar o email (GET /api/usuarios/confirmar-email)
+router.get('/confirmar-email', async (req, res) => {
+    const token = req.query.token;
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_MAIL);
+        const email = decoded.id;
+
+        const sql = 'UPDATE usuarios SET email_verificado = TRUE WHERE email = ?';
+        await dbClientes.promise().query(sql, [email]);
+
+        res.json({ message: 'Email confirmado com sucesso!' });
+        //res.redirect('/'); // Redireciona para a página de login
+    } catch (error) {
+        console.error('Erro ao confirmar email:', error);
+        res.status(500).json({ error: 'Erro ao confirmar email.' });
+    }
+})
 
 module.exports = router;

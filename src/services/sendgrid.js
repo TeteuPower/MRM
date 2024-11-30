@@ -10,7 +10,7 @@ const sendGrid = (to, subject, html) => {
         html
     })
     .then(() => {
-        console.log('Email enviado com sucesso!');
+        //console.log('Email enviado com sucesso!');
     })
     .catch((error) => {
         console.error('Erro ao enviar o email:', error);

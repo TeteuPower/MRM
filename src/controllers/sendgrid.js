@@ -16,9 +16,11 @@ try {
     throw new Error("Erro ao ler o template de email"); 
 }
 
-
 const sendMail = async (req, res) => {
-    const { email } = req.body;
+    const { email, token } = req.body;
+
+    const confirmationLink = `https://espiritodonativo.com.br/api/usuarios/confirmar-email?token=${token}`;
+    const html = emailTemplate.replace('{{confirmationLink}}', confirmationLink); // Substitui o placeholder
 
     if (!email || !validator.isEmail(email)) {
         return res.status(400).json({ message: 'Endereço de email inválido.' });
@@ -27,7 +29,7 @@ const sendMail = async (req, res) => {
     const subject = 'Espírito Do Nativo';
 
     try {
-        await sendGrid(email, subject, emailTemplate);
+        await sendGrid(email, subject, html);
         return res.status(200).json({ message: 'Email de confirmação enviado com sucesso!' }); // status 200 para sucesso.
     } catch (error) {
         console.error("Erro ao enviar email:", error);

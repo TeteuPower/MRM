@@ -51,6 +51,8 @@ function cadastrarUsuario(event) {
         return response.json();
     })
     .then(data => {
+        const token = data.token;
+        //console.log(token);
         alert('Conta criada com sucesso!');
         // Limpa o formulário
         document.getElementById('logname').value = '';
@@ -66,7 +68,7 @@ function cadastrarUsuario(event) {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ email })
+            body: JSON.stringify({ email, token })
         })
         .then(response => {
             if (!response.ok) {
