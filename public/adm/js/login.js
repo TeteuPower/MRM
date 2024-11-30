@@ -75,7 +75,9 @@ function checkAdminPassword() {
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error('Senha incorreta.');
+            return response.json().then(errorData => {
+                throw new Error(errorData.error || 'Erro ao fazer login.');
+            });
         }
         return response.json();
     })
@@ -152,6 +154,7 @@ function checkAdminPassword() {
     })
     .catch(error => {
         // Senha incorreta
+        //console.log('aaaaa')
         alert(error.message); 
     });
 }

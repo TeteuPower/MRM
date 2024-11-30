@@ -53,7 +53,7 @@ function cadastrarUsuario(event) {
     .then(data => {
         const token = data.token;
         //console.log(token);
-        alert('Conta criada com sucesso!');
+        alert('Conta criada com sucesso! Por favor, confirme seu email. Verifique a caixa de SPAN');
         // Limpa o formulário
         document.getElementById('logname').value = '';
         document.getElementById('new-logemail').value = '';

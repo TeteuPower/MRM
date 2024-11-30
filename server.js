@@ -270,6 +270,11 @@ app.post('/api/login-user', (req, res) => {
 
         const usuarioDb = results[0];
 
+        //Verifica se o email foi verificado
+        if (!usuarioDb.email_verificado) {
+            return res.status(401).json({ error: 'Email não verificado. Por favor, verifique seu email e a caixa de SPAN.' });
+        }
+
         try {
             const senhaValida = await bcrypt.compare(senha, usuarioDb.senha);
 
