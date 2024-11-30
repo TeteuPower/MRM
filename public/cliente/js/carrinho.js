@@ -1,5 +1,10 @@
 carregarProdutos();
 
+//Botão de finalizar compra direciona para a página de menu
+document.getElementById('checkout-btn').addEventListener('click', () => {
+    window.location.href = '/menu';
+})
+
 // Função para buscar produtos via API
 async function carregarProdutos() {
     try {

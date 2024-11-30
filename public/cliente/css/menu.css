@@ -28,7 +28,6 @@ a {
 
 }
 
-body,
 html {
     background-color: var(--background-color);
     scroll-behavior: smooth;
@@ -37,10 +36,13 @@ html {
 }
 
 body {
-    background-color: var(--primary-color);
+    background-color: #17b31f;
     background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat-back.svg');
     background-position: center;
     background-repeat: repeat;
+    scroll-behavior: smooth;
+    position: relative;
+    overflow-x: hidden;
 }
 
 .nav {
@@ -148,6 +150,11 @@ body {
     height: 100vh;
 }
 
+.fullheight-slogan {
+    height: 80vh;
+    margin-bottom: 145px;
+}
+
 .align-items-center {
     display: flex;
     align-items: center;
@@ -188,11 +195,11 @@ section {
 }
 
 .slogan {
-    text-align: left;
+    text-align: center;
 }
 
 .slogan h1 {
-    font-size: 5.8rem;
+    font-size: 2.8rem;
     color: var(--background-color);
 }
 
@@ -204,7 +211,7 @@ section {
     border: .125rem solid var(--primary-color);
     border-radius: 2rem;
     color: var(--primary-color);
-    margin: 2.5rem 0;
+    margin-top: 8.5rem;
     cursor: pointer;
     font-weight: 600;
     transition: .5s ease-in-out;
@@ -570,6 +577,13 @@ section {
 .rowFooter {
     flex-wrap: wrap;
 }
+.row-slogan {
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
 
 
 [class*="col-"] {
@@ -892,10 +906,87 @@ section {
 	transition: all 250ms linear;
 }
 
+.promoCode {
+  border:2px solid #efefef;
+  float: left;
+  width: 55%;
+  padding: 2%;
+  label {
+    display: block;
+    width: 100%;
+ font-style: italic;
+    font-size: 1.15em;
+ 
+    margin-bottom: .5em;
+    letter-spacing: -.025em;
+    
+  }
+  input {
+    width: 65%;
+    font-size: 1em;
+    padding: .5em;
+    float: left;
+    border: 1px solid #dadada;
+    &:active, &:focus {
+      outline: 0;
+     
+    }
+  }
+  a.promo-btn {
+    float: left;
+    width: 25%;
+    padding: .75em 0;
+    border-radius: 0 1em 1em 0;
+    text-align: center;
+    border: 1px solid #82ca9c;
+    &:hover {
+       border: 1px solid #f69679;
+       background: #f69679;
+    }
+  }
+}
+
+.promo-btn {
+     &:link , &:visited {
+      text-decoration: none;
+      font-family: fontSans;
+      letter-spacing: -.015em;
+      font-size: 1em;
+      padding: 1em 3em;
+      color: #fff;
+      background: #82ca9c;
+      font-weight: bold;
+      border-radius: 50px;
+    float: right;
+      text-align: right;
+    }
+      &:after {
+      content: "\276f";
+      padding: .5em;
+      position: relative;
+      right:0;
+      
+    }
+    &:hover , &:focus, &:active {
+      background: #f69679;
+        &:after {
+        right: -10px;
+      }
+    }
+  
+  .promoCode & {
+    font-size: .85em;
+    paddding: .5em 2em;
+  }
+}
+
+
+
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 1293px) {
 
-    * {
+    p {
         font-size: 13px;
     }
 
@@ -969,6 +1060,10 @@ section {
     .quantity-input {
         width: 30px; /* Diminui a largura */
       }
+
+    .fullheight-slogan {
+        height: 80vh;
+    }
 
     /* MOBILE NAV */
 

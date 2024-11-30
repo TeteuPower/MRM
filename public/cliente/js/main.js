@@ -214,16 +214,35 @@ carregarProdutos();*/
 			var progress = pathLength - (scroll * pathLength / height);
 			progressPath.style.strokeDashoffset = progress;
 		}
+        // Função para controlar a visibilidade dos elementos baseada na proximidade do final da página
+        var scrollBottom = 0;
+		var hideOnScrollBottom = function () {
+            scrollBottom = $(document).height() - $(window).scrollTop() - $(window).height(); // Distância até o final
+            if (scrollBottom < 50) {
+                jQuery('.progress-wrap').removeClass('active-progress');
+                jQuery('.switch').removeClass('active-progress');
+            }
+            //console.log(scrollBottom);
+        }
 		updateProgress();
+        hideOnScrollBottom();
 		$(window).scroll(updateProgress);	
+        $(window).scroll(hideOnScrollBottom);
 		var offset = 50;
 		var duration = 550;
 		jQuery(window).on('scroll', function() {
-			if (jQuery(this).scrollTop() > offset) {
+			if (jQuery(this).scrollTop() > offset && scrollBottom > 100) {
+                //console.log(progress);
 				jQuery('.progress-wrap').addClass('active-progress');
+                jQuery('.switch').addClass('active-progress');
 			} else {
 				jQuery('.progress-wrap').removeClass('active-progress');
+                jQuery('.switch').removeClass('active-progress');
 			}
+            if (scrollBottom < 100) {
+                jQuery('.progress-wrap').removeClass('active-progress');
+                jQuery('.switch').removeClass('active-progress');
+            }
 		});				
 		jQuery('.progress-wrap').on('click', function(event) {
 			event.preventDefault();
@@ -280,6 +299,7 @@ function formatarValor(valor) {
             if (!response.ok) {
                 alert('Token de segurança vencido, faça o login novamente');
                 localStorage.removeItem('token');
+                localStorage.removeItem('tokenUser');
                 window.location.href = '/adm';
             }
         })
@@ -294,3 +314,9 @@ function formatarValor(valor) {
     // Verifica a validade do token a cada 100 segundos (100000 milissegundos)
     setInterval(verificarToken, 100000);
 }
+
+//Resgata botão sobre nós e direciona para a página de login
+const botaoSobre = document.getElementById('btn-sobre-nos');
+botaoSobre.addEventListener('click', () => {
+  window.location.href = '/adm';
+});

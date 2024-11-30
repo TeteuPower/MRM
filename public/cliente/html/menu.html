@@ -86,68 +86,47 @@
             </div>
             <div class="right-menu">
                 <div class="cart-btn">
-                        <i class='bx bx-cart-alt left-to-right play-on-scroll'></i>
+                    <a href="/">
+                        <i class='bx bx-home left-to-right play-on-scroll'></i>
+                    </a>
                 </div>
                 <div class="adm-btn">
-                    <a href='/'>
+                    <a href="#" id="logout-btn">
                         <i class='bx bx-exit left-to-right play-on-scroll'></i>
                     </a>
-                    <i class='bx bx-cart-alt' style="display: none;"></i>
                 </div>
             </div>
         </div>
     </div>
     <!-- END TOP NAVIGATION -->
     <!-- SECTION HOME -->
-    <section id="home" class="fullheight align-items-center bg-img bg-img-fixed">
+    <section id="home" class="fullheight-slogan align-items-center bg-img bg-img-fixed">
         <div class="container">
-            <div class="row">
+            <div class="row-slogan">
                 <div class="col-6 col-xs-12">
                     <div class="slogan">
-                        <h1 class="left-to-right play-on-scroll">
-                            Compras!
+                        <h1 class="left-to-right play-on-scroll" id="h1-slogan">
+                            Carrinho!<br><i class='bx bx-cart-alt'></i>
                         </h1>
-                        <p class="left-to-right play-on-scroll delay-2" style="color: white;">
-                            Aqui serão exibidas as compras dos clientes
-                            
+                        <p class="left-to-right play-on-scroll delay-2" style="color: white;" id="p-slogan">
+                            Parece que o seu carrinho está vazio!
                         </p>
+                        <button class="left-to-right play-on-scroll" id="btn-slogan">
+                            Clique aqui e conheça nossos produtos!
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+    <!-- END SECTION HOME -->
+     <!-- SWITCH DARK/ LIGHT MODE -->
     <div class="switch">
         <div class="circle">
             <i class='bx bx-moon'></i>
         </div>
     </div>	
-    <!-- END SECTION HOME -->
-    <!-- SECION ABOUT -->
-    <section class="about fullheight align-items-center" id="about">
-        <div class="container">
-            <div class="row">
-                <div class="col-7 h-xs">
-                    <img src="img\indiosoprandorape.jpg" alt=""
-                        class="fullwidth left-to-right play-on-scroll">
-                </div>
-                <div class="col-5 col-xs-12 align-items-center">
-                    <div class="about-slogan right-to-left play-on-scroll">
-                        <h3>
-                            <span class="primary-color"></span> Trabalhe <span class="primary-color">conosco!</span>
-                            seja um revendedor das medicinas da <span class="primary-color">floresta!</span>
-                        </h3>
-                        <p>
-                            O nosso propósito é o de cura! Se você também tem esse anseio, junte-se a nós!
-                            Queremos curar o mundo com as sagradas medicinas dos povos originários e
-                            temos orgulho de trabalharmos sob a benção dos pajés de diversas etnias, reconhecendo que esses povos são
-                            detentores de grande sabedoria.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- END SECION ABOUT -->
+    <!-- END SWITCH DARK/ LIGHT MODE -->
     <!-- ITENS MENU SECTION -->
     <section class="align-items-center bg-img bg-img-fixed" id="E-Commerce"
         style="background-image: url(img/fundonatureza.jpg);">
@@ -195,6 +174,32 @@
         </div>
     </section>
     <!-- END ITENS MENU SECTION -->
+    <!-- SECION ABOUT -->
+    <section class="about fullheight align-items-center" id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-7 h-xs">
+                    <img src="img\indiosoprandorape.jpg" alt=""
+                        class="fullwidth left-to-right play-on-scroll">
+                </div>
+                <div class="col-5 col-xs-12 align-items-center">
+                    <div class="about-slogan right-to-left play-on-scroll">
+                        <h3>
+                            <span class="primary-color"></span> Trabalhe <span class="primary-color">conosco!</span>
+                            seja um revendedor das medicinas da <span class="primary-color">floresta!</span>
+                        </h3>
+                        <p>
+                            O nosso propósito é o de cura! Se você também tem esse anseio, junte-se a nós!
+                            Queremos curar o mundo com as sagradas medicinas dos povos originários e
+                            temos orgulho de trabalharmos sob a benção dos pajés de diversas etnias, reconhecendo que esses povos são
+                            detentores de grande sabedoria.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END SECION ABOUT -->
     <!-- CARRINHO SECTION -->
     <!-- Modal Carrinho -->		
     <input class="modal-btn" type="checkbox" id="modal-btn" name="modal-btn"/>
