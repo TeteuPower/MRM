@@ -3,6 +3,7 @@ const router = express.Router();
 const {dbClientes} = require('../../db')
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken'); // Importa o módulo jsonwebtoken
+const path = require('path');
 
 // Rota para criar um novo usuário (POST /api/usuarios)
 router.post('/', async (req, res) => {
@@ -55,8 +56,8 @@ router.get('/confirmar-email', async (req, res) => {
         const sql = 'UPDATE usuarios SET email_verificado = TRUE WHERE email = ?';
         await dbClientes.promise().query(sql, [email]);
 
-        res.json({ message: 'Email confirmado com sucesso!' });
-        //res.redirect('/'); // Redireciona para a página de login
+        //res.json({ message: 'Email confirmado com sucesso!' });
+        res.sendFile(path.join(__dirname, '../../public/cliente/html/confirmacao_email.html'));
     } catch (error) {
         console.error('Erro ao confirmar email:', error);
         res.status(500).json({ error: 'Erro ao confirmar email.' });
