@@ -105,13 +105,19 @@
             <div class="row-slogan">
                 <div class="col-6 col-xs-12">
                     <div class="slogan">
-                        <h1 class="left-to-right play-on-scroll" id="h1-slogan">
+                        <div>
+                            <h1 class="left-to-right play-on-scroll" id="h1-slogan">
                             Carrinho!<br><i class='bx bx-cart-alt'></i>
-                        </h1>
-                        <p class="left-to-right play-on-scroll delay-2" style="color: white;" id="p-slogan">
-                            Parece que o seu carrinho está vazio!
-                        </p>
-                        <button class="left-to-right play-on-scroll" id="btn-slogan">
+                            </h1>
+                            <p class="left-to-right play-on-scroll delay-2" style="color: white;" id="p-slogan">
+                                Parece que o seu carrinho está vazio!
+                            </p>
+                        </div>
+                        <div class="left-to-right play-on-scroll" id="carrinho">
+                        </div>
+                        <div class="left-to-right play-on-scroll" id="div-btn-slogan">
+                        </div>
+                        <button class="btn-slogan left-to-right play-on-scroll" id="btn-slogan">
                             Clique aqui e conheça nossos produtos!
                         </button>
                     </div>
@@ -133,9 +139,11 @@
         <div class="container">
             <div class="food-menu">
                 <h1>
-                    Conheça os nossos <span class="primary-color">produtos</span>
+                    Produtos no <span class="primary-color">atacado</span>
                 </h1>
                 <p>
+                    Considere ser um revendedor e comprar no varejo, <a href="#about" class="primary-color">clique aqui</a>
+                    para consultar um vendedor e se tornar um parceiro.
                     Produzimos nossas medicinas com respeito, responsabilidade e profundo conhecimento. As matérias-primas vêm
                     diretamente da floresta, coletadas pelos indígenas, e todo o processo de produção honra a medicina e a natureza.
                 </p>
@@ -331,6 +339,8 @@
             </div>
         </div>
     </section>
+    <!-- criando um paragrafo oculto -->
+    <p style="display: none;" id="btn-sobre-nos"></p>
     <!-- END FOOTER SECTION -->
     <div class="rowFooter" style = "text-align: center;">
         <div class="col-md-12">
@@ -343,6 +353,7 @@
     </div>
 
     <script src="js/main.js"></script>
+    <script src="../js/carrinho.js"></script>
     <script src="js/menu.js"></script>
 </body>
 

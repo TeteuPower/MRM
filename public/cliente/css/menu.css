@@ -196,6 +196,9 @@ section {
 
 .slogan {
     text-align: center;
+    /*alinha em coluna */
+    display: flex;
+    flex-direction: column;
 }
 
 .slogan h1 {
@@ -203,7 +206,13 @@ section {
     color: var(--background-color);
 }
 
-.slogan button {
+.botoes-slogan {
+    display: flex;
+    justify-content: center;
+
+}
+
+.btn-slogan {
     padding: 1rem 5rem;
     outline: none;
     border: none;
@@ -217,7 +226,26 @@ section {
     transition: .5s ease-in-out;
 }
 
-.slogan button:hover {
+.btn-slogan:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.btn-abrir-modal {
+    padding: 1rem 2rem;
+    outline: none;
+    border: none;
+    background-color: var(--background-color);
+    border: .125rem solid var(--primary-color);
+    border-radius: 2rem;
+    color: var(--primary-color);
+    margin-top: 3.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: .5s ease-in-out;
+}
+
+.btn-abrir-modal:hover {
     background-color: var(--primary-color);
     color: var(--white);
 }
@@ -976,7 +1004,7 @@ section {
   
   .promoCode & {
     font-size: .85em;
-    paddding: .5em 2em;
+    padding: .5em 2em;
   }
 }
 

@@ -1,5 +1,5 @@
 verificarAutenticacao();
-//popularMenu();
+popularMenu();
 
 //resgata o nome de usuário do local storage
 const nomeUsuario = localStorage.getItem('Usuario');
@@ -24,6 +24,8 @@ function logout() {
     alert('Você foi deslogado com sucesso!');
 }
 
+document.getElementById('btn-abrir-modal').addEventListener('click', abrirCarrinho);
+
 //Modifica a página se o usuário já tem um carrinho ativo
 function popularMenu() {
     const carrinho = JSON.parse(localStorage.getItem('cart')) ?? [];
@@ -32,13 +34,25 @@ function popularMenu() {
         document.getElementById('h1-slogan').textContent = `Finalize sua compra!`;
         document.getElementById('p-slogan').innerHTML = `
         <div class="promoCode">
-            <label for="promo">Código Promocional:</label>
-            <input type="text" name="promo" placholder="Enter Code" >
+            <label for="promoCode">Código Promocional:</label>
+            <input type="text" id="promoCode" name="promoCode" placholder="Enter Code" >
             <a class="promo-btn"></a>
+            <p>Essa área ainda está em construção, por enquanto utilize o modal</p>
+        </div>
+        `;
+        document.getElementById('btn-slogan').style.display = 'none';
+        document.getElementById('div-btn-slogan').innerHTML = `
+        <div class="botoes-slogan">
+            <button class="btn-abrir-modal left-to-right play-on-scroll" id="btn-abrir-modal">
+                Conferir carrinho (temporário)
+            </button>
+            <button class="btn-abrir-modal left-to-right play-on-scroll" id="btn-finalizar-venda">
+                Finalizar Compra!
+            </button>
         </div>
         `;
     } else {
-        alert('Carrinho vazio!');
+        //alert('Carrinho vazio!');
         //document.getElementById('carrinho-link').textContent = 'Carrinho';
     }
 }
