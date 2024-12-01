@@ -28,7 +28,7 @@ router.post('/', async (req, res) => {
         }
 
         // Gera o token JWT para confirmação de email (usando JWT_SECRET_MAIL)
-        const token = jwt.sign({ id: email }, process.env.JWT_SECRET_MAIL, { expiresIn: '1h' }); //
+        const token = jwt.sign({ id: email }, process.env.JWT_SECRET_MAIL, { expiresIn: '30d' }); //
 
         // Gera o hash da senha
         const saltRounds = 10;
