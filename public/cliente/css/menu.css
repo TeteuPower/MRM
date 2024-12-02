@@ -1448,6 +1448,12 @@ body.light .navbar-brand::after{
 	transform: translateY(0);
 }
 
+.switch.active-progress {
+	opacity: 1;
+	visibility: visible;
+	transform: translateY(0);
+}
+
 .progress-wrap svg path { 
 	fill: none; 
 }
@@ -1465,6 +1471,7 @@ body.light .navbar-brand::after{
 	transition: all 300ms linear; 
 } 
 .switch {
+    visibility: hidden;
 	width: 80px;
 	height: 4px;
 	border-radius: 27px;
