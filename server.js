@@ -34,12 +34,22 @@ app.use('/html', express.static(path.join(__dirname, 'public', 'cliente', 'html'
         res.setHeader('Content-Type', 'text/html');
     }
 }));
+app.use('/html', express.static(path.join(__dirname, 'checkout', 'public', 'html'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/html');
+    }
+}));
 app.use('/css', express.static(path.join(__dirname, 'public', 'adm', 'css'), {
     setHeaders: function (res, path, stat) {
         res.setHeader('Content-Type', 'text/css');
     }
 }));
 app.use('/css', express.static(path.join(__dirname, 'public', 'cliente', 'css'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/css');
+    }
+}));
+app.use('/css', express.static(path.join(__dirname, 'checkout', 'public', 'css'), {
     setHeaders: function (res, path, stat) {
         res.setHeader('Content-Type', 'text/css');
     }
@@ -171,6 +181,11 @@ app.get('/adm/desligar_servidor', (req, res) => {
 //Define a rota para menu do usuário
 app.get('/menu', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'menu.html'));
+});
+
+//Define rota do checkout
+app.get('/checkout', (req, res) => {
+    res.sendFile(path.join(__dirname, 'checkout', 'public', 'html', 'checkout.html'));
 });
 
 

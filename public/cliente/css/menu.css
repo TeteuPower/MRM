@@ -155,11 +155,29 @@ body {
     margin-bottom: 145px;
 }
 
+.fullheight-dinamico {
+    margin-top: 145px;
+    margin-bottom: 100px;
+}
+
+.fullheight-dinamico h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--background-color);
+    text-align: center;
+}
+
 .align-items-center {
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+}
+
+.align-items-center-menu2 {
+    display: flex;
+    text-align: center;
+    flex-direction: column;
 }
 
 .bg-img {
@@ -455,20 +473,22 @@ section {
 }
 
 .input-group {
-    padding: 1rem;
-    border: .125rem solid var(--primary-color);
+    padding: 0.6rem;
+    border: .125rem solid var(--black);
     border-radius: 2rem;
     display: flex;
-    justify-content: space-between;
-    margin-top: 2rem;
+    align-items: center; /* Alinha verticalmente ao centro */
+    margin-top: 0.5rem;
 }
 
 .input-group input {
-    flex: auto;
+    flex: 1; /* Ocupa o espaço disponível */
     outline: none;
     border: none;
     color: var(--primary-color);
     background-color: transparent;
+    font-weight: 600;
+    margin-left: 5px;
 }
 
 .input-group button {
@@ -935,19 +955,18 @@ section {
 }
 
 .promoCode {
+  color: var(--background-color);
   border:2px solid #efefef;
   float: left;
-  width: 55%;
+  width: 20%; /*largura horizontal*/
   padding: 2%;
   label {
     display: block;
     width: 100%;
- font-style: italic;
+    font-style: italic;
     font-size: 1.15em;
- 
     margin-bottom: .5em;
     letter-spacing: -.025em;
-    
   }
   input {
     width: 65%;
@@ -955,10 +974,6 @@ section {
     padding: .5em;
     float: left;
     border: 1px solid #dadada;
-    &:active, &:focus {
-      outline: 0;
-     
-    }
   }
   a.promo-btn {
     float: left;
@@ -1008,6 +1023,69 @@ section {
   }
 }
 
+.carrinho-dinamico h1 {
+    margin-bottom: 50px;
+}
+
+.divisoria-tela {
+    display: flex;
+    justify-content: space-between; /* Distribui o espaço entre os itens */
+    gap: 15px; /* Espaçamento entre os itens */
+    margin-left: 20px;
+    margin-right: 20px;
+    overflow: auto; /* ou overflow-y: auto; se quiser apenas rolagem vertical */
+}
+
+.formulario, .resumo {
+    color: var(--primary-color);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    width: calc(50% - 7.5px); /* Ajuste para o gap */
+    padding: 20px;
+    background-color: var(--background-color);
+    box-sizing: border-box; /* Importante para o cálculo da largura */
+    border-radius: 2rem;
+}
+.resumo-conteudo {
+    /* Fazendo div acompanhar a página rolando para baixo */
+    position: sticky;
+    top: 20px;
+}
+
+.formulario label {
+    color: var(--black);
+    font-weight: 600;
+}
+
+.formulario h3 {
+    text-align: left;
+    margin-left: 10px;
+    margin-top: 15px;
+}
+
+.nome-completo {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas de tamanho igual */
+    gap: 15px; /* Define o espaçamento entre os inputs */
+}
+
+@media only screen and (max-width: 1293px) {
+    .divisoria-tela {
+        display: block; /* Muda para display block */
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .formulario, .resumo {
+        width: 100%; /* Ocupa toda a largura */
+        margin-bottom: 20px; /* Espaçamento entre os elementos */
+    }
+
+    .nome-completo {
+        display: block; /* Muda para display block */
+        gap: 0; /* Remove o gap para evitar espaçamento vertical em telas menores */
+        grid-template-columns: 1fr; /* Uma coluna em telas menores */
+    }
+}
 
 
 
@@ -1043,6 +1121,28 @@ section {
         background-attachment: fixed;
     }
 
+    .promoCode {
+        width: 55%; /*largura horizontal*/
+        label {
+            width: 100%;
+            font-size: .8em;
+          }
+        input {
+        padding: .1em;
+        }
+        a.promo-btn {
+        float: left;
+        width: 25%;
+        padding: .25em 0;
+        border-radius: 0 1em 1em 0;
+        text-align: center;
+        border: 1px solid #82ca9c;
+        &:hover {
+        border: 1px solid #f69679;
+        background: #f69679;
+        }
+  }
+    }
     .about-slogan.start {
         transform: translateX(0) !important;
     }
