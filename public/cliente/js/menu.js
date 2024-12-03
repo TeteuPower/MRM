@@ -3,6 +3,13 @@ popularMenu();
 carregarProdutos();
 popularInputs ();
 
+//Disparar função confereCep() e confereCpfBlur() quando o cep e o cpf estiver preenchido
+document.getElementById('cep').addEventListener('blur', confereCep);
+document.getElementById('cpf').addEventListener('blur', confereCpfBlur);
+
+//Adicionando função ao botão de confirmar dados
+document.getElementById('btn-confirmar-dados').addEventListener('click', confirmarDados);
+
 //Inicia depois no dom
 window.addEventListener('DOMContentLoaded', () => {
     //Botão de #E-Commerce
@@ -222,6 +229,37 @@ cpfInput.addEventListener('input', () => {
   cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
   cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
   cpfInput.value = cpf;
+});
+
+const telefoneInput = document.getElementById('telefone');
+
+telefoneInput.addEventListener('input', () => {
+  let telefone = telefoneInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+
+  // Adiciona o nono dígito se necessário
+    if (telefone.length > 4 && telefone[2] != 9) {
+        telefone = telefone.slice(0, 2) + '9' + telefone.slice(2)
+    }
+
+  let formattedTelefone = '';
+
+    if(telefone.length > 0) {
+        formattedTelefone = "(" + telefone.substring(0, 2) + ") ";
+    }
+
+    if(telefone.length > 2) {
+        formattedTelefone += telefone.substring(2,3) + " ";
+    }
+
+    if(telefone.length > 3) {
+        formattedTelefone += telefone.substring(3, 7) + "-";
+    }
+    if(telefone.length > 7) {
+        formattedTelefone += telefone.substring(7, 11);
+    }
+
+
+  telefoneInput.value = formattedTelefone;
 });
 
 //Limpar carrinho
@@ -454,22 +492,31 @@ function popularInputs () {
 
 }
 
-//Adicionando função ao botão de confirmar dados
-document.getElementById('btn-confirmar-dados').addEventListener('click', confirmarDados);
-
 function confirmarDados() {
-    const sobrenome = document.getElementById('sobrenome');
-    const telefone = document.getElementById('telefone');
+    const nomeInput = document.getElementById('nome');
+    const nome = nomeInput.value;
+    const sobrenomeInput = document.getElementById('sobrenome');
+    const sobrenome = sobrenomeInput.value;
+    const telefoneComSimbolos = document.getElementById('telefone');
+    const telefone = telefoneComSimbolos.value.replace(/\D/g, '');
     const cpfComSimbolos = document.getElementById('cpf');
     const cpf = cpfComSimbolos.value.replace(/\D/g, '');
-    const nomeEndereco = document.getElementById('nome-endereco');
-    const cep = document.getElementById('cep');
-    const endereco = document.getElementById('endereco');
-    const numero = document.getElementById('numero');
-    const bairro = document.getElementById('bairro');
-    const cidade = document.getElementById('cidade');
-    const estado = document.getElementById('estado');
-    const complemento = document.getElementById('complemento');
+    const nomeEnderecoInput = document.getElementById('nome-endereco');
+    const nomeEndereco = nomeEnderecoInput.value;
+    const cepInput = document.getElementById('cep');
+    const cep = cepInput.value.replace(/\D/g, '');
+    const enderecoInput = document.getElementById('endereco');
+    const endereco = enderecoInput.value;
+    const numeroInput = document.getElementById('numero');
+    const numero = numeroInput.value;
+    const bairroInput = document.getElementById('bairro');
+    const bairro = bairroInput.value;
+    const cidadeInput = document.getElementById('cidade');
+    const cidade = cidadeInput.value;
+    const estadoInput = document.getElementById('estado');
+    const estado = estadoInput.value;
+    const complementoInput = document.getElementById('complemento');
+    const complemento = complementoInput.value;
 
     //Usar função de validação de CPF
     if (!TestaCPF(cpf)) {
@@ -478,7 +525,7 @@ function confirmarDados() {
     }
 
     //Valida os dados do endereço
-    if (telefone.value.length < 11) {
+    if (telefone.length < 11) {
         alert('Por favor, insira um telefone com DDD.');
         return;
     }
@@ -490,12 +537,12 @@ function confirmarDados() {
         alert('Por favor, preencha seu telefone.');
         return;
     }
-    if (endereco.value === '') {
-        alert('Por favor, preencha o nome do endereço.');
-        return;
-    }
     if (cep.value === '') {
         alert('Por favor, preencha o CEP.');
+        return;
+    }
+    if (endereco.value === '') {
+        alert('Por favor, preencha o endereço.');
         return;
     }
     if (numero.value === '') {
@@ -511,47 +558,57 @@ function confirmarDados() {
         return;
     }
 
-    /*Faz uma consulta a api api/usuarios/me enviando o token do localStorage
+    //Atualiza dados do cliente
     fetch('/api/usuarios/me', {
-        method: 'GET',
+        method: 'PUT',
         headers: {
+            'Content-Type': 'application/json',
             'Authorization': localStorage.getItem('tokenUser')
-        }
+        },
+        body: JSON.stringify({ nome, telefone, sobrenome, cpf })
     })
     .then(response => response.json())
     .then(data => {
         //console.log(data);
-        const id = data.id;
-        //console.log(id);
-        fetch(`/api/usuarios/${id}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': localStorage.getItem('tokenUser')
-            },
-            body: JSON.stringify({
-                sobrenome: sobrenome.value,
-                telefone: telefone.value,
-                cpf: cpf,
-                nomeEndereco: nomeEndereco.value,
-                cep: cep.value,
-                endereco: endereco.value,
-                numero: numero.value,
-                bairro: bairro.value,
-                cidade: cidade.value,
-                estado: estado.value,
-                complemento: complemento.value
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            //console.log(data);
-            alert('Dados atualizados com sucesso!');
-            })
+        //alert('Dados atualizados com sucesso!');
     })
     .catch(error => {
-        console.error('Error:', error);
-    });*/
+        console.error('Erro ao atualizar dados:', error);
+        alert('Erro ao atualizar dados.');
+    });
+
+    //console.log(cep);
+    //Atualiza dados do endereço
+    //console.log('Nome endereço:', nomeEndereco, ';', 'CEP:', cep, ';', 'Endereço:', endereco, ';', 'Número:', numero, ';', 'Bairro:', bairro, ';', 'Cidade:', cidade, ';', 'Estado:', estado, ';', 'Complemento:', complemento);
+    fetch('api/usuarios/enderecos' , {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('tokenUser')
+        },
+        body: JSON.stringify({ nomeEndereco, cep, endereco, numero, bairro, cidade, estado, complemento })
+    })
+    .then(response => response.json())
+    .then(data => {
+        //console.log(data);
+        alert('Dados confirmados com sucesso!');
+        //bloqueia todos os campos de dados
+        nomeEnderecoInput.disabled = true;
+        sobrenomeInput.disabled = true;
+        telefoneInput.disabled = true;
+        cpfInput.disabled = true;
+        enderecoInput.disabled = true;
+        numeroInput.disabled = true;
+        cepInput.disabled = true;
+        bairroInput.disabled = true;
+        cidadeInput.disabled = true;
+        estadoInput.disabled = true;
+        complementoInput.disabled = true;
+    })
+    .catch(error => {
+        console.error('Erro ao atualizar endereço:', error);
+        alert('Erro ao atualizar endereço.');
+    });
 
 }
 
@@ -598,5 +655,11 @@ function confereCep() { //evento blur dispara quando input perde o foco
         });
 };
 
-//Disparar função confereCep() quando o cep estiver preenchido
-document.getElementById('cep').addEventListener('blur', confereCep);
+function confereCpfBlur() {
+    const cpfInput = document.getElementById('cpf');
+    const cpf = cpfInput.value.replace(/\D/g, '');
+    if (!TestaCPF(cpf)) {
+        alert('Por favor, insira um CPF válido.');
+        cpfInput.value = '';
+    }
+}

@@ -68,7 +68,7 @@ router.get('/confirmar-email', async (req, res) => {
 // Rota para criar um novo endereço (POST /api/usuarios/:id/enderecos)
 router.post('/enderecos', autenticarClientes, async (req, res) => {
     const usuarioId = req.usuario.id;//Modelo de como resgatar o código do usuário pelo lado do servidor apenas pelo acessToken
-    const { cep, endereco, bairro, cidade, estado, complemento } = req.body;
+    const { nomeEndereco, cep, endereco, numero, bairro, cidade, estado, complemento } = req.body;
 
     // Verifica se todos os campos obrigatórios foram fornecidos
     if (!cep || !endereco || !bairro || !cidade || !estado) {
@@ -77,8 +77,8 @@ router.post('/enderecos', autenticarClientes, async (req, res) => {
 
     try {
         // Insere o novo endereço no banco de dados
-        const sql = 'INSERT INTO enderecos (usuario_id, cep, endereco, bairro, cidade, estado, complemento) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        const [result] = await dbClientes.promise().query(sql, [usuarioId, cep, endereco, bairro, cidade, estado, complemento]);
+        const sql = 'INSERT INTO enderecos (usuario_id, apelido, cep, endereco, numero, bairro, cidade, estado, complemento) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
+        const [result] = await dbClientes.promise().query(sql, [usuarioId, nomeEndereco, cep, endereco, numero, bairro, cidade, estado, complemento]);
 
         res.json({ message: 'Endereço criado com sucesso!', id: result.insertId });
     } catch (error) {
@@ -110,6 +110,23 @@ router.get('/me', autenticarClientes, async (req, res) => {
     } catch (error) {
         console.error('Erro ao buscar usuário:', error);
         res.status(500).json({ error: 'Erro ao buscar usuário.' });
+    }
+});
+
+// Rota para atualizar os dados do usuário (PUT /api/usuarios/me)
+router.put('/me', autenticarClientes, async (req, res) => {
+    const usuarioId = req.usuario.id;
+    const { nome, telefone, sobrenome, cpf } = req.body;
+    //console.log('id:',usuarioId,';','nome:',nome,';','telefone:',telefone,';','sobrenome:',sobrenome,';','cpf:',cpf);
+
+    try {
+        const sql = 'UPDATE usuarios SET nome = ?, telefone = ?, sobrenome = ?, cpf = ? WHERE id = ?';
+        await dbClientes.promise().query(sql, [nome, telefone, sobrenome, cpf, usuarioId]);
+
+        res.json({ message: 'Usuário atualizado com sucesso!' });
+    } catch (error) {
+        console.error('Erro ao atualizar usuário:', error);
+        res.status(500).json({ error: 'Erro ao atualizar usuário.' });
     }
 });
 
