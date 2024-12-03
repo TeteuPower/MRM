@@ -8,7 +8,7 @@ const autenticarClientes = require('../../middleware/authClientes'); // Importa 
 
 // Rota para criar um novo usuário (POST /api/usuarios)
 router.post('/', async (req, res) => {
-    const { nome, email, telefone, endereco, usuario, senha } = req.body;
+    const { nome, email, telefone, usuario, senha } = req.body;
 
     // Verifica se todos os campos obrigatórios foram fornecidos
     if (!nome || !email || !usuario || !senha) {
@@ -36,8 +36,8 @@ router.post('/', async (req, res) => {
         const senhaHash = await bcrypt.hash(senha, saltRounds);
 
         // Insere o novo usuário no banco de dados
-        const sql = 'INSERT INTO usuarios (nome, email, telefone, endereco, usuario, senha, saldoReais, saldoDolares, token_confirmacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)';
-        const [result] = await dbClientes.promise().query(sql, [nome, email, telefone, endereco, usuario, senhaHash, 0, 0, token]);
+        const sql = 'INSERT INTO usuarios (nome, email, telefone, usuario, senha, saldoReais, saldoDolares, token_confirmacao) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+        const [result] = await dbClientes.promise().query(sql, [nome, email, telefone, usuario, senhaHash, 0, 0, token]);
 
         res.json({ message: 'Usuário criado com sucesso!', token: token });
     } catch (error) {
@@ -53,9 +53,9 @@ router.get('/confirmar-email', async (req, res) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET_MAIL);
         const email = decoded.id;
-
-        const sql = 'UPDATE usuarios SET email_verificado = TRUE WHERE email = ?';
-        await dbClientes.promise().query(sql, [email]);
+        const sql = 'UPDATE usuarios SET email_verificado = TRUE, token_confirmacao = ? WHERE email = ?';
+        const mensagemLog = 'Email verificado ' + new Date().toISOString();
+        await dbClientes.promise().query(sql, [mensagemLog, email]);
 
         //res.json({ message: 'Email confirmado com sucesso!' });
         res.sendFile(path.join(__dirname, '../../public/cliente/html/confirmacao_email.html'));
@@ -127,6 +127,75 @@ router.put('/me', autenticarClientes, async (req, res) => {
     } catch (error) {
         console.error('Erro ao atualizar usuário:', error);
         res.status(500).json({ error: 'Erro ao atualizar usuário.' });
+    }
+});
+
+// Rota para enviar email de redefinição de senha do usuário
+router.post('/redefinir-senha', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const sql = 'SELECT * FROM usuarios WHERE email = ?';
+        const [result] = await dbClientes.promise().query(sql, [email]);
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Usuário nao encontrado.' });
+        }
+
+        const { id } = result[0];
+
+        // Gera o token JWT para redefinição de senha (usando JWT_SECRET_MAIL)
+        const token = jwt.sign({ id }, process.env.JWT_SECRET_MAIL, { expiresIn: '1h' });
+
+        // Atualiza o token de redefinição de senha no banco de dados
+        const sqlUpdate = 'UPDATE usuarios SET token_confirmacao = ? WHERE id = ?';
+        await dbClientes.promise().query(sqlUpdate, [token, id]);
+
+        // Envia o email com o link de redefinição de senha
+        const linkRedefinirSenha = `http://espiritodonativo.com.br/api/usuarios/redefinir-senha/${token}`;
+        // Envia o email com o link de redefinição de senha
+        //await enviarEmailRedefinirSenha(email, linkRedefinirSenha);
+
+        res.json({ message: 'Email de redefinição de senha enviado com sucesso!' });
+    } catch (error) {
+        console.error('Erro ao enviar email de redefinição de senha:', error);
+        res.status(500).json({ error: 'Erro ao enviar email de redefinição de senha.' });
+    }
+});
+
+// Rota para redefinir a senha ( https://espiritodonativo.com.br/api/usuarios/mudar-senha/?token=${token})
+router.post('/mudar-senha/:token', async (req, res) => {
+    const { token } = req.params;
+    const { senha } = req.body;
+
+    if (!senha) {
+        return res.status(400).json({ error: 'Senha é obrigatória.' });
+    }
+    if (senha.length < 8) {
+        return res.status(400).json({ error: 'Senha precisa ter no mínimo 8 caracteres.' });
+    }
+
+    try {
+        const sql = 'SELECT * FROM usuarios WHERE token_confirmacao = ?';
+        const [result] = await dbClientes.promise().query(sql, [token]);
+
+        if (result.length === 0) {
+            return res.status(404).json({ error: 'Usuário nao encontrado.' });
+        }
+
+        const { id } = result[0];
+
+        // Atualiza a senha no banco de dados
+        const saltRounds = 10;
+        const senhaHash = await bcrypt.hash(senha, saltRounds);
+        const sqlUpdate = 'UPDATE usuarios SET senha = ?, token_confirmacao = ? WHERE id = ?';
+        const mensagemLog = 'Senha recuperada em ' + new Date().toISOString();
+        await dbClientes.promise().query(sqlUpdate, [senhaHash, mensagemLog, id]);
+
+        res.json({ message: 'Senha redefinida com sucesso!' });
+    } catch (error) {
+        console.error('Erro ao redefinir senha:', error);
+        res.status(500).json({ error: 'Erro ao redefinir senha.' });
     }
 });
 
