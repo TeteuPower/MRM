@@ -1,14 +1,8 @@
 verificarAutenticacao();
 popularMenu();
 carregarProdutos();
-popularInputs ();
 
-//Disparar função confereCep() e confereCpfBlur() quando o cep e o cpf estiver preenchido
-document.getElementById('cep').addEventListener('blur', confereCep);
-document.getElementById('cpf').addEventListener('blur', confereCpfBlur);
 
-//Adicionando função ao botão de confirmar dados
-document.getElementById('btn-confirmar-dados').addEventListener('click', confirmarDados);
 
 //Inicia depois no dom
 window.addEventListener('DOMContentLoaded', () => {
@@ -19,13 +13,18 @@ window.addEventListener('DOMContentLoaded', () => {
             ecommerceSection.scrollIntoView({ behavior: 'smooth' });
         }
     });
+
+    saudacao();
 });
 
-//resgata o nome de usuário do local storage
-const nomeUsuario = localStorage.getItem('Usuario');
+function saudacao() {
+    //resgata o nome de usuário do local storage
+    const nomeUsuario = localStorage.getItem('Usuario');
 
-//exibe o nome de usuário no menu
-document.getElementById('nome-usuario').textContent = `Olá, ${nomeUsuario}!`;
+    //exibe o nome de usuário no menu
+    document.getElementById('nome-usuario').textContent = `Olá, ${nomeUsuario}!`;
+}
+
 
 
 //Cria função de Logout
@@ -204,6 +203,55 @@ function popularMenu() {
         </div>
         `;*/
         popularResumo();
+
+        //Disparar função confereCep() e confereCpfBlur() quando o cep e o cpf estiver preenchido
+        document.getElementById('cep').addEventListener('blur', confereCep);
+        document.getElementById('cpf').addEventListener('blur', confereCpfBlur);
+        //Adicionando função ao botão de confirmar dados
+        document.getElementById('btn-confirmar-dados').addEventListener('click', confirmarDados);
+        popularInputs ();
+
+        const cpfInput = document.getElementById('cpf');
+
+        cpfInput.addEventListener('input', () => {
+        let cpf = cpfInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+        cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+        cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+        cpfInput.value = cpf;
+        });
+
+        const telefoneInput = document.getElementById('telefone');
+
+        telefoneInput.addEventListener('input', () => {
+        let telefone = telefoneInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+
+        // Adiciona o nono dígito se necessário
+            if (telefone.length > 4 && telefone[2] != 9) {
+                telefone = telefone.slice(0, 2) + '9' + telefone.slice(2)
+            }
+
+        let formattedTelefone = '';
+
+            if(telefone.length > 0) {
+                formattedTelefone = "(" + telefone.substring(0, 2) + ") ";
+            }
+
+            if(telefone.length > 2) {
+                formattedTelefone += telefone.substring(2,3) + " ";
+            }
+
+            if(telefone.length > 3) {
+                formattedTelefone += telefone.substring(3, 7) + "-";
+            }
+            if(telefone.length > 7) {
+                formattedTelefone += telefone.substring(7, 11);
+            }
+
+
+        telefoneInput.value = formattedTelefone;
+        });
+
     } else {   
         document.getElementById('carrinho-dinamico').style.display = 'none';
         document.getElementById('home').style.display = 'block';
@@ -221,46 +269,9 @@ function popularMenu() {
     }
 }
 
-const cpfInput = document.getElementById('cpf');
-
-cpfInput.addEventListener('input', () => {
-  let cpf = cpfInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-  cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-  cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
-  cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-  cpfInput.value = cpf;
-});
-
-const telefoneInput = document.getElementById('telefone');
-
-telefoneInput.addEventListener('input', () => {
-  let telefone = telefoneInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
-
-  // Adiciona o nono dígito se necessário
-    if (telefone.length > 4 && telefone[2] != 9) {
-        telefone = telefone.slice(0, 2) + '9' + telefone.slice(2)
-    }
-
-  let formattedTelefone = '';
-
-    if(telefone.length > 0) {
-        formattedTelefone = "(" + telefone.substring(0, 2) + ") ";
-    }
-
-    if(telefone.length > 2) {
-        formattedTelefone += telefone.substring(2,3) + " ";
-    }
-
-    if(telefone.length > 3) {
-        formattedTelefone += telefone.substring(3, 7) + "-";
-    }
-    if(telefone.length > 7) {
-        formattedTelefone += telefone.substring(7, 11);
-    }
 
 
-  telefoneInput.value = formattedTelefone;
-});
+
 
 //Limpar carrinho
 function limparCarrinho() {
@@ -517,6 +528,8 @@ function confirmarDados() {
     const estado = estadoInput.value;
     const complementoInput = document.getElementById('complemento');
     const complemento = complementoInput.value;
+    const telefoneInput = document.getElementById('telefone');
+    const cpfInput = document.getElementById('cpf');
 
     //Usar função de validação de CPF
     if (!TestaCPF(cpf)) {
