@@ -490,7 +490,7 @@ section {
     margin-top: 0.5rem;
 }
 
-.input-group input {
+.input-group input, select {
     flex: 1; /* Ocupa o espaço disponível */
     outline: none;
     border: none;

@@ -417,6 +417,23 @@ app.get('/api/converter-real-dolar', (req, res) => {
     });
 });
 
+app.get('/busca-cep/:cep', async (req, res) => {
+  const cep = req.params.cep;
+  try {
+    const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+    const data = await response.json();
+
+    if (data.erro) {
+      return res.status(404).json(data); // Retorna o erro 404 se o CEP não for encontrado
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.error("Erro ao buscar CEP:", error);
+    res.status(500).json({ erro: true, mensagem: 'Erro ao buscar o CEP' }); // Retorna um erro 500 para erros internos do servidor
+  }
+});
+
 db.getConnection((err, connection) => {
     if (err) {
         console.error('Erro ao conectar ao banco de dados:', err);

@@ -79,7 +79,7 @@ function popularMenu() {
 
                         <div class="input-group left-to-right play-on-scroll">
                             <label for="cpf">CPF:</label>
-                            <input type="cpf" id="cpf" name="cpf" required>
+                            <input type="text" id="cpf" name="cpf" required maxlength="14">
                         </div>
 
                         <h3 class="left-to-right play-on-scroll">
@@ -87,18 +87,23 @@ function popularMenu() {
                         </h3>
 
                         <div class="input-group left-to-right play-on-scroll">
-                            <label for="nome-endereco">Nome do Endereço (opcional):</label>
+                            <label for="nome-endereco">Apelido:</label>
                             <input type="text" id="nome-endereco" name="nome-endereco">
                         </div>
 
                         <div class="input-group left-to-right play-on-scroll">
                             <label for="cep">CEP:</label>
-                            <input type="text" id="cep" name="cep" required>
+                            <input type="number" id="cep" name="cep" required>
                         </div>
 
                         <div class="input-group left-to-right play-on-scroll">
                             <label for="endereco">Endereço:</label>
                             <input type="text" id="endereco" name="endereco" required>
+                        </div>
+
+                        <div class="input-group left-to-right play-on-scroll">
+                            <label for="numero">N°:</label>
+                            <input type="text" id="numero" name="numero" required>
                         </div>
 
                         <div class="input-group left-to-right play-on-scroll">
@@ -113,7 +118,36 @@ function popularMenu() {
 
                         <div class="input-group left-to-right play-on-scroll">
                             <label for="estado">Estado:</label>
-                            <input type="text" id="estado" name="estado" required>
+                            <select id="estado" name="estado" required>
+                                <option value="">Selecione um estado</option>
+                                <option value="AC">Acre</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="AP">Amapá</option>
+                                <option value="AM">Amazonas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="DF">Distrito Federal</option>
+                                <option value="ES">Espírito Santo</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="PA">Pará</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PR">Paraná</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RJ">Rio de Janeiro</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="RO">Rondônia</option>
+                                <option value="RR">Roraima</option>
+                                <option value="SC">Santa Catarina</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="SE">Sergipe</option>
+                                <option value="TO">Tocantins</option>
+                            </select>
                         </div>
 
                         <div class="input-group left-to-right play-on-scroll">
@@ -123,8 +157,8 @@ function popularMenu() {
 
                     </form>
 
-                    <button class="btn-enviar left-to-right play-on-scroll" id="btn-enviar">
-                        Finalizar Pedido
+                    <button class="btn-enviar left-to-right play-on-scroll" id="btn-confirmar-dados">
+                        Confirmar Dados
                     </button>
 
 
@@ -179,6 +213,16 @@ function popularMenu() {
         */
     }
 }
+
+const cpfInput = document.getElementById('cpf');
+
+cpfInput.addEventListener('input', () => {
+  let cpf = cpfInput.value.replace(/\D/g, ''); // Remove caracteres não numéricos
+  cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+  cpf = cpf.replace(/(\d{3})(\d)/, '$1.$2');
+  cpf = cpf.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+  cpfInput.value = cpf;
+});
 
 //Limpar carrinho
 function limparCarrinho() {
@@ -409,3 +453,150 @@ function popularInputs () {
     })
 
 }
+
+//Adicionando função ao botão de confirmar dados
+document.getElementById('btn-confirmar-dados').addEventListener('click', confirmarDados);
+
+function confirmarDados() {
+    const sobrenome = document.getElementById('sobrenome');
+    const telefone = document.getElementById('telefone');
+    const cpfComSimbolos = document.getElementById('cpf');
+    const cpf = cpfComSimbolos.value.replace(/\D/g, '');
+    const nomeEndereco = document.getElementById('nome-endereco');
+    const cep = document.getElementById('cep');
+    const endereco = document.getElementById('endereco');
+    const numero = document.getElementById('numero');
+    const bairro = document.getElementById('bairro');
+    const cidade = document.getElementById('cidade');
+    const estado = document.getElementById('estado');
+    const complemento = document.getElementById('complemento');
+
+    //Usar função de validação de CPF
+    if (!TestaCPF(cpf)) {
+        alert('Por favor, insira um CPF válido.');
+        return;
+    }
+
+    //Valida os dados do endereço
+    if (telefone.value.length < 11) {
+        alert('Por favor, insira um telefone com DDD.');
+        return;
+    }
+    if (sobrenome.value === '') {
+        alert('Por favor, preencha o sobrenome.');
+        return;
+    }
+    if (telefone.value === '') {
+        alert('Por favor, preencha seu telefone.');
+        return;
+    }
+    if (endereco.value === '') {
+        alert('Por favor, preencha o nome do endereço.');
+        return;
+    }
+    if (cep.value === '') {
+        alert('Por favor, preencha o CEP.');
+        return;
+    }
+    if (numero.value === '') {
+        alert('Por favor, preencha o número.');
+        return;
+    }
+    if (bairro.value === '') {
+        alert('Por favor, preencha o bairro.');
+        return;
+    }
+    if (cidade.value === '') {
+        alert('Por favor, preencha a cidade.');
+        return;
+    }
+
+    /*Faz uma consulta a api api/usuarios/me enviando o token do localStorage
+    fetch('/api/usuarios/me', {
+        method: 'GET',
+        headers: {
+            'Authorization': localStorage.getItem('tokenUser')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        //console.log(data);
+        const id = data.id;
+        //console.log(id);
+        fetch(`/api/usuarios/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('tokenUser')
+            },
+            body: JSON.stringify({
+                sobrenome: sobrenome.value,
+                telefone: telefone.value,
+                cpf: cpf,
+                nomeEndereco: nomeEndereco.value,
+                cep: cep.value,
+                endereco: endereco.value,
+                numero: numero.value,
+                bairro: bairro.value,
+                cidade: cidade.value,
+                estado: estado.value,
+                complemento: complemento.value
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            //console.log(data);
+            alert('Dados atualizados com sucesso!');
+            })
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });*/
+
+}
+
+function confereCep() { //evento blur dispara quando input perde o foco
+    const cepInput = document.getElementById('cep');
+    const cep = cepInput.value.replace(/\D/g, '');
+        fetch(`/busca-cep/${cep}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.erro) {
+                alert('CEP inválido.');
+                cepInput.value = '';
+                endereco.value = '';
+                bairro.value = '';
+                cidade.value = '';
+                estado.value = '';
+                endereco.disabled = false;
+                bairro.disabled = false;
+                cidade.disabled = false;
+                estado.disabled = false;
+                return;
+            }
+            //console.log(data);
+            endereco.value = data.logradouro;
+            bairro.value = data.bairro;
+            cidade.value = data.localidade;
+            estado.value = data.uf;
+            if (endereco.value !== '') {
+                endereco.disabled = true;
+            }
+            if (bairro.value !== '') {
+                bairro.disabled = true;
+            }
+            if (cidade.value !== '') {
+                cidade.disabled = true;
+            }
+            if (estado.value !== '') {
+                estado.disabled = true;
+            }
+        })
+        .catch(error => {
+            console.error('Erro ao buscar o CEP:', error);
+            alert('Erro ao buscar o CEP.');
+        });
+};
+
+//Disparar função confereCep() quando o cep estiver preenchido
+document.getElementById('cep').addEventListener('blur', confereCep);
