@@ -1,6 +1,7 @@
 verificarAutenticacao();
 popularMenu();
 carregarProdutos();
+popularInputs ();
 
 //Inicia depois no dom
 window.addEventListener('DOMContentLoaded', () => {
@@ -77,13 +78,18 @@ function popularMenu() {
                         </div>
 
                         <div class="input-group left-to-right play-on-scroll">
-                            <label for="empresa">Empresa (opcional):</label>
-                            <input type="text" id="empresa" name="empresa">
+                            <label for="cpf">CPF:</label>
+                            <input type="cpf" id="cpf" name="cpf" required>
                         </div>
 
                         <h3 class="left-to-right play-on-scroll">
                             Endereço
                         </h3>
+
+                        <div class="input-group left-to-right play-on-scroll">
+                            <label for="nome-endereco">Nome do Endereço (opcional):</label>
+                            <input type="text" id="nome-endereco" name="nome-endereco">
+                        </div>
 
                         <div class="input-group left-to-right play-on-scroll">
                             <label for="cep">CEP:</label>
@@ -353,11 +359,53 @@ function exibirProdutos(products) {
         alert('Produto adicionado ao carrinho.');
         const resumoSection = document.getElementById('btn-enviar');
         if (resumoSection) {
-            console.log('tentei')
+            //console.log('tentei')
             resumoSection.scrollIntoView({ behavior: 'smooth' });
         }
         popularMenu();
         //popularResumo();
 
     }
+}
+
+function popularInputs () {
+    const email = document.getElementById('email');
+    const nome = document.getElementById('nome');
+    const sobrenome = document.getElementById('sobrenome');
+    const telefone = document.getElementById('telefone');
+    const cpf = document.getElementById('cpf');
+
+    //Faz uma consulta a api api/usuarios/me enviando o token do localStorage
+    fetch('/api/usuarios/me', {
+        method: 'GET',
+        headers: {
+            'Authorization': localStorage.getItem('tokenUser')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        //console.log(data);
+        email.value = data.email;
+        nome.value = data.nome;
+        sobrenome.value = data.sobrenome;
+        telefone.value = data.telefone;
+        cpf.value = data.cpf;
+        //Criar lógica para quando existir o dado, adicionar um disabled ao input junto
+        if (email.value !== '') {
+            email.disabled = true;
+        }
+        if (nome.value!== '') {
+            nome.disabled = true;
+        }
+        if (sobrenome.value !== '') {
+            sobrenome.disabled = true;
+        }
+        if (telefone.value !== '') {
+            telefone.disabled = true;
+        }
+        if (cpf.value !== '') {
+            cpf.disabled = true;
+        }
+    })
+
 }
