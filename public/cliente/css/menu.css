@@ -333,7 +333,7 @@ section {
     transition: .3s ease-in-out;
 }
 
-.buttonCarrinho {
+.buttonCarrinho, .btn-enviar {
     padding: .5rem 2.5rem;
     margin: 0 1rem;
     outline: none;
@@ -344,6 +344,15 @@ section {
     border-radius: 1rem;
     cursor: pointer;
     transition: .3s ease-in-out;
+}
+
+.btn-enviar {
+    margin-top: 10px;
+}
+
+.btn-enviar:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
 }
 
 .food-category button:hover,
@@ -1044,11 +1053,42 @@ section {
     background-color: var(--background-color);
     box-sizing: border-box; /* Importante para o cálculo da largura */
     border-radius: 2rem;
+    width: 100%;
 }
-.resumo-conteudo {
-    /* Fazendo div acompanhar a página rolando para baixo */
-    position: sticky;
-    top: 20px;
+
+.resumo {
+    display: flex;
+    flex-direction: column; /* Para alinhamento vertical */
+}
+
+.resumo-itens {
+    display: flex;
+    flex-direction: column; /* Itens dispostos em coluna */
+    width: 100%; /* Ocupa toda a largura do pai */
+}
+
+.resumo-itens li {
+    display: flex; /* Torna cada item da lista um container flex */
+    justify-content: space-between; /* Distribui o espaço entre os elementos */
+    align-items: center; /* Alinha os itens verticalmente ao centro */
+    width: 100%; /* Ocupa toda a largura do pai (resumo-itens) */
+    /* Adicione padding ou margin se necessário para espaçamento */
+    padding: 10px 0; /* Exemplo de padding */
+}
+
+.resumo h3{
+    margin-bottom: 15px;
+}
+@media only screen and (max-width: 511px) {
+    .botoes-resumo {
+        display: flex;
+        justify-content: space-between;
+        gap: 1px;
+    }
+    .buttonCarrinho, .btn-enviar {
+        margin: 0 0 0 0;
+        margin-top: 10px;
+    }
 }
 
 .formulario label {
@@ -1536,6 +1576,7 @@ body.light .navbar-brand::after{
     align-items: center; /* Alinha itens verticalmente ao centro */
     padding: 10px;
     border-bottom: 1px solid #ccc;
+    width: 100%; /* Ocupa toda a largura disponível */
   }
   
   .cart-item-image {

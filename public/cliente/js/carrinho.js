@@ -77,8 +77,8 @@ function exibirProdutos(products) {
 
     function addToCart(productId, quantity) {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const produtoJaExiste = cart.find(item => parseInt(item.productId) === parseInt(productId));
 
-        const produtoJaExiste = cart.find(item => item.productId === productId);
         if (produtoJaExiste) {
             //console.log(produtoJaExiste.quantity , quantity);
             produtoJaExiste.quantity = parseFloat(produtoJaExiste.quantity) + parseFloat(quantity);
@@ -152,6 +152,8 @@ function updateCartModal() {
 
     //Uma chamada à API para obter os detalhes dos produtos.  
     //console.log(cart);
+    //Organiza em ordem crescente pelo id dos objetos
+    cart.sort((a, b) => a.id - b.id); // Ordena o array 'cart' pelo 'id' em ordem crescente
     cart.forEach(async item => {
         try{
             //console.log( item.productId );
