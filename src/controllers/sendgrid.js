@@ -19,7 +19,9 @@ try {
 const sendMail = async (req, res) => {
     const { email, token } = req.body;
 
-    const confirmationLink = `https://espiritodonativo.com.br/api/usuarios/confirmar-email?token=${token}`;
+    const apiUrl = process.env.API_URL;
+
+    const confirmationLink = `${apiUrl}/api/usuarios/confirmar-email?token=${token}`;
     const html = emailTemplate.replaceAll('{{confirmationLink}}', confirmationLink); // Substitui o placeholder
 
     if (!email || !validator.isEmail(email)) {

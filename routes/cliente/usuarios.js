@@ -152,8 +152,10 @@ router.post('/redefinir-senha', async (req, res) => {
         const sqlUpdate = 'UPDATE usuarios SET token_confirmacao = ? WHERE id = ?';
         await dbClientes.promise().query(sqlUpdate, [token, id]);
 
+        const apiUrl = process.env.API_URL;
         // Envia o email e o token para api de enviar email
-        const response = await fetch('https://espiritodonativo.com.br/api/mail-recover', {
+        const response = await fetch(`${apiUrl}/api/mail-recover`, {
+
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
