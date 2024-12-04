@@ -136,7 +136,7 @@ function limparCarrinho() {
 }
 
 // Função para atualizar o conteúdo do carrinho no modal
-function updateCartModal() {
+async function updateCartModal() {
     let total = 0;
 
     const cartItems = document.getElementById('cart-items');
@@ -151,10 +151,8 @@ function updateCartModal() {
     }
 
     //Uma chamada à API para obter os detalhes dos produtos.  
-    //console.log(cart);
-    //Organiza em ordem crescente pelo id dos objetos
-    cart.sort((a, b) => a.id - b.id); // Ordena o array 'cart' pelo 'id' em ordem crescente
-    cart.forEach(async item => {
+    //Oraganiza em ordem crescente pela POSIÇÃO dos objetos
+    for (const item of cart) {
         try{
             //console.log( item.productId );
             const response = await fetch(`/api/produtos/${item.productId}`);
@@ -183,7 +181,7 @@ function updateCartModal() {
             console.error("erro ao obter dados do produto", error);
             //Adicione tratamento de erro aqui
         }
-    });
+    };
 }
 
 function incrementQuantity(productId) {

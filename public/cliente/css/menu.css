@@ -197,6 +197,14 @@ body {
     margin-top: 150px;
 }
 
+.valores-resumo {
+    text-align: left;
+}
+
+li {
+    list-style-type: none; /* Remove as bolinhas/markers */
+}
+
 .containerFooter {
     /*Alinha os itens no centro da página*/
     display: flex;
@@ -334,7 +342,7 @@ section {
 }
 
 .buttonCarrinho, .btn-enviar {
-    padding: .5rem 2.5rem;
+    padding: .5rem 1rem;
     margin: 0 1rem;
     outline: none;
     border: 1px solid var(--primary-color);
@@ -353,6 +361,19 @@ section {
 .btn-enviar:hover {
     background-color: var(--primary-color);
     color: var(--white);
+}
+
+.btn-enviar-2 {
+    padding: .5rem 1rem;
+    outline: none;
+    border: 1px solid var(--primary-color);
+    font-weight: 600;
+    border-radius: 1rem;
+    cursor: pointer;
+    transition: .3s ease-in-out;
+    background-color: var(--primary-color);
+    color: var(--white);
+    margin-top: 7px;
 }
 
 .food-category button:hover,
@@ -1080,10 +1101,9 @@ section {
     margin-bottom: 15px;
 }
 @media only screen and (max-width: 511px) {
-    .botoes-resumo {
-        display: flex;
-        justify-content: space-between;
-        gap: 1px;
+    .btn-enviar-2, .btn-enviar-3{
+        font-size: 12px;
+        padding: .5rem 0.5rem;
     }
     .buttonCarrinho, .btn-enviar {
         margin: 0 0 0 0;

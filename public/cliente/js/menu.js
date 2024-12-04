@@ -47,150 +47,17 @@ function popularMenu() {
         const menuOcultar = document.getElementById('home')
         menuOcultar.style.display = 'none';
         //document.getElementById('h1-slogan').textContent = `Finalize sua compra!`;
-        document.getElementById('carrinho-dinamico').innerHTML = `
+        /*document.getElementById('carrinho-dinamico').innerHTML = `
 
         
-        <div class="fullheight-dinamico align-items-center-menu2 bg-img bg-img-fixed">
-
-            <h1 class="left-to-right play-on-scroll">
-                Finalize sua compra!<i class='bx bx-cart-alt right-to-left play-on-scroll'></i>
-            </h1>
-            <div class="divisoria-tela">
-
-                <section class="formulario left-to-right play-on-scroll">
-                    <h3 class="left-to-right play-on-scroll">
-                    Contato
-                    </h3>
-                    <form>
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="email">Email:</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-
-                        <div class="nome-completo left-to-right play-on-scroll">
-                            <div class="input-group">
-                                <label for="nome">Nome:</label>
-                                <input type="text" id="nome" name="nome" required>
-                            </div>
-                            <div class="input-group">
-                                <label for="sobrenome">Sobrenome:</label>
-                                <input type="text" id="sobrenome" name="sobrenome" required>
-                            </div>
-                        </div>
-
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="telefone">Telefone:</label>
-                            <input type="tel" id="telefone" name="telefone" required>
-                        </div>
-
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="cpf">CPF:</label>
-                            <input type="text" id="cpf" name="cpf" required maxlength="14">
-                        </div>
-
-                        <h3 class="left-to-right play-on-scroll">
-                            Endereço
-                        </h3>
-
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="nome-endereco">Apelido:</label>
-                            <input type="text" id="nome-endereco" name="nome-endereco">
-                        </div>
-
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="cep">CEP:</label>
-                            <input type="number" id="cep" name="cep" required>
-                        </div>
-
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="endereco">Endereço:</label>
-                            <input type="text" id="endereco" name="endereco" required>
-                        </div>
-
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="numero">N°:</label>
-                            <input type="text" id="numero" name="numero" required>
-                        </div>
-
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="bairro">Bairro:</label>
-                            <input type="text" id="bairro" name="bairro" required>
-                        </div>
-
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="cidade">Cidade:</label>
-                            <input type="text" id="cidade" name="cidade" required>
-                        </div>
-
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="estado">Estado:</label>
-                            <select id="estado" name="estado" required>
-                                <option value="">Selecione um estado</option>
-                                <option value="AC">Acre</option>
-                                <option value="AL">Alagoas</option>
-                                <option value="AP">Amapá</option>
-                                <option value="AM">Amazonas</option>
-                                <option value="BA">Bahia</option>
-                                <option value="CE">Ceará</option>
-                                <option value="DF">Distrito Federal</option>
-                                <option value="ES">Espírito Santo</option>
-                                <option value="GO">Goiás</option>
-                                <option value="MA">Maranhão</option>
-                                <option value="MT">Mato Grosso</option>
-                                <option value="MS">Mato Grosso do Sul</option>
-                                <option value="MG">Minas Gerais</option>
-                                <option value="PA">Pará</option>
-                                <option value="PB">Paraíba</option>
-                                <option value="PR">Paraná</option>
-                                <option value="PE">Pernambuco</option>
-                                <option value="PI">Piauí</option>
-                                <option value="RJ">Rio de Janeiro</option>
-                                <option value="RN">Rio Grande do Norte</option>
-                                <option value="RS">Rio Grande do Sul</option>
-                                <option value="RO">Rondônia</option>
-                                <option value="RR">Roraima</option>
-                                <option value="SC">Santa Catarina</option>
-                                <option value="SP">São Paulo</option>
-                                <option value="SE">Sergipe</option>
-                                <option value="TO">Tocantins</option>
-                            </select>
-                        </div>
-
-                        <div class="input-group left-to-right play-on-scroll">
-                            <label for="complemento">Complemento:</label>
-                            <input type="text" id="complemento" name="complemento">
-                        </div>
-
-                    </form>
-
-                    <button class="btn-enviar left-to-right play-on-scroll" id="btn-confirmar-dados">
-                        Confirmar Dados
-                    </button>
 
 
-                </section>
-
-                <section class="resumo right-to-left play-on-scroll" id="resumo">
-                    <h3>
-                        Resumo do Pedido
-                    </h3>
-                    <div class="resumo right-to-left play-on-scroll" id="resumo-itens">
-                        <!-- RESUMO INSERIDO AQUI VIA JS -->
-                    </div>
-                    <div class="botoes-resumo">
-                        <button class="btn-enviar left-to-right play-on-scroll" id="btn-enviar">
-                            Finalizar Pedido
-                        </button>
-                        <button class="btn-enviar left-to-right play-on-scroll" id="limpar-carrinho">
-                            Limpar Carrinho
-                        </button>
-                    </div>
-                </section>
-            </div>
-        </div>
 
 
-        `;
+
+
+
+        `;*/
         document.getElementById('btn-slogan').style.display = 'none';
         /*document.getElementById('div-btn-slogan').innerHTML = `
         <div class="botoes-slogan">
@@ -286,7 +153,7 @@ function limparCarrinho() {
 }
 
 // Função para atualizar o conteúdo do carrinho no modal
-function popularResumo() {
+async function popularResumo() {
     let total = 0;
 
     const cartItems = document.getElementById('resumo-itens');
@@ -301,12 +168,10 @@ function popularResumo() {
     }
 
     //Uma chamada à API para obter os detalhes dos produtos.  
-    //console.log(cart);
-    //Organiza em ordem crescente pelo id dos objetos
-    cart.sort((a, b) => a.id - b.id); // Ordena o array 'cart' pelo 'id' em ordem crescente
-    cart.forEach(async item => {
+    //Oraganiza em ordem crescente pela POSIÇÃO dos objetos
+    for (const item of cart) {
         try{
-            //console.log( item.productId );
+            //console.log( item.productId, index );
             const response = await fetch(`/api/produtos/${item.productId}`);
             const product = await response.json();
 
@@ -328,13 +193,47 @@ function popularResumo() {
             total += parseFloat(product.preco * item.quantity);
             //console.log(total);
             cartItems.appendChild(listItem);
-            document.getElementById('cart-total').textContent = `Total: R$ ${formatarValor(total.toFixed(2))}`; 
-            document.getElementById('limpar-carrinho').addEventListener('click', limparCarrinho);
+
+            document.getElementById('resumo-total').innerHTML = `
+
+            <div class="valores-resumo">
+                <br>
+                <span class="cart-total">Frete: ${product.frete ? `R$ ${formatarValor(product.frete.toFixed(2))}` : 'Insira um cep para calcular'}</span>
+                <br>
+                <span class="cart-total">Desconto: R$ 0,00 </span>
+                <br>
+                <span class="cart-total">Total: R$ ${formatarValor(total.toFixed(2))}</span>
+
+            </div>
+            
+            `; 
         } catch (error){
             console.error("erro ao obter dados do produto", error);
             //Adicione tratamento de erro aqui
         }
-    });
+    };
+
+    if (cart.length > 0) {
+        cartItems.insertAdjacentHTML('beforeend', `
+            <div class="botoes-resumo">
+                <button class="btn-enviar btn-enviar-3 left-to-right play-on-scroll" id="limpar-carrinho">
+                    Limpar Carrinho
+                </button>
+                <button class="btn-enviar-2 left-to-right play-on-scroll" id="adicionar-mais-produtos">
+                    Continuar comprando
+                </button>
+            </div>
+        `);
+
+        document.getElementById('limpar-carrinho').addEventListener('click', limparCarrinho);
+
+        document.getElementById('adicionar-mais-produtos').addEventListener('click', () => {
+            const ecommerceSection = document.getElementById('E-Commerce');
+            if (ecommerceSection) {
+                ecommerceSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
 }
 
 function incrementQuantity(productId) {
