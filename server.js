@@ -188,6 +188,11 @@ app.get('/checkout', (req, res) => {
     res.sendFile(path.join(__dirname, 'checkout', 'public', 'html', 'checkout.html'));
 });
 
+//Define rota de página teste
+app.get('/recuperar-senha', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'recuperar_senha.html'));
+});
+
 
 
 module.exports = {
@@ -232,6 +237,8 @@ app.use('/api/produtos', require('./routes/cliente/produtos'));
 app.use('/api/usuarios', require('./routes/cliente/usuarios'));
 // Usa a rota para enviar emails
 app.use('/api/mail', require('./src/controllers/sendgrid'));
+// Usa a rota para enviar emails recuperação de senha
+app.use('/api/mail-recover', require('./src/controllers/sendgrid_pass_rec'));
 
 
 // Rota para login do administrador (gera o token)

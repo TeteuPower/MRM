@@ -18,6 +18,12 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     }
 
+    const recuperarSenha = document.getElementById('esqueceu-senha');
+    recuperarSenha.addEventListener('click', function(event) {
+        event.preventDefault();
+        esqueceuSenha();
+    });
+
   });
 
 function jaEstaLogado() {
@@ -142,7 +148,7 @@ function checkAdminPassword() {
                 });
             } else {
             const nome = localStorage.getItem('Usuario');
-            alert(`Seja bem vindo ${nome}!`);
+            alert(`Bem vindo(a) ${nome}!`);
             window.location.href = '/menu';
             }
         })
@@ -168,4 +174,34 @@ function exibirLogin() {
         document.body.classList.add('visivel');
         return Promise.resolve(true); // Retorna uma promessa resolvida para evitar erros nas páginas protegidas
     }
+}
+
+// Esqueceu senha
+function esqueceuSenha() {
+    const email = document.getElementById('logemail').value;
+    if (!email) {
+        alert('Preencha o e-mail que deseja recuperar a senha.');
+        return;
+    }
+
+    fetch('/api/usuarios/redefinir-senha', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email })
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao enviar e-mail de redefinição de senha.');
+        }
+        return response.json();
+    })
+    .then(data => {
+        alert(data.message);
+    })
+    .catch(error => {
+        console.error('Erro ao enviar e-mail de redefinição de senha:', error);
+        alert('Erro ao enviar e-mail de redefinição de senha.');
+    });
 }

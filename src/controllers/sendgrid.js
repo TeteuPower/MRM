@@ -20,7 +20,7 @@ const sendMail = async (req, res) => {
     const { email, token } = req.body;
 
     const confirmationLink = `https://espiritodonativo.com.br/api/usuarios/confirmar-email?token=${token}`;
-    const html = emailTemplate.replace('{{confirmationLink}}', confirmationLink); // Substitui o placeholder
+    const html = emailTemplate.replaceAll('{{confirmationLink}}', confirmationLink); // Substitui o placeholder
 
     if (!email || !validator.isEmail(email)) {
         return res.status(400).json({ message: 'Endereço de email inválido.' });

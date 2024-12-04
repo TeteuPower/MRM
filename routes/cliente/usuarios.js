@@ -151,11 +151,17 @@ router.post('/redefinir-senha', async (req, res) => {
         const sqlUpdate = 'UPDATE usuarios SET token_confirmacao = ? WHERE id = ?';
         await dbClientes.promise().query(sqlUpdate, [token, id]);
 
-        // Envia o email com o link de redefinição de senha
-        const linkRedefinirSenha = `http://espiritodonativo.com.br/api/usuarios/redefinir-senha/${token}`;
-        // Envia o email com o link de redefinição de senha
-        //await enviarEmailRedefinirSenha(email, linkRedefinirSenha);
-
+        // Envia o email e o token para api de enviar email
+        const response = await fetch('https://espiritodonativo.com.br/api/mail-recover', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, token })
+        });
+        if (!response.ok) {
+            throw new Error('Erro ao enviar email de redefinição de senha.');
+        }
         res.json({ message: 'Email de redefinição de senha enviado com sucesso!' });
     } catch (error) {
         console.error('Erro ao enviar email de redefinição de senha:', error);
@@ -164,15 +170,14 @@ router.post('/redefinir-senha', async (req, res) => {
 });
 
 // Rota para redefinir a senha ( https://espiritodonativo.com.br/api/usuarios/mudar-senha/?token=${token})
-router.post('/mudar-senha/:token', async (req, res) => {
-    const { token } = req.params;
-    const { senha } = req.body;
+router.post('/mudar-senha', async (req, res) => {
+    const { token, senha } = req.body;
 
     if (!senha) {
         return res.status(400).json({ error: 'Senha é obrigatória.' });
     }
-    if (senha.length < 8) {
-        return res.status(400).json({ error: 'Senha precisa ter no mínimo 8 caracteres.' });
+    if (senha.length < 6) {
+        return res.status(400).json({ error: 'Senha precisa ter no mínimo 6 caracteres.' });
     }
 
     try {
