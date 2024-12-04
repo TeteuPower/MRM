@@ -220,6 +220,10 @@ button {
     transition: .5s ease-in-out;
 }
 
+strong {
+    color: var(--primary-color);
+}
+
 .slogan button:hover {
     background-color: var(--primary-color);
     color: var(--white);
@@ -911,6 +915,10 @@ button {
 
     * {
         font-size: 13px;
+    }
+    
+    strong {
+        font-size: 32px;
     }
 
     .container {

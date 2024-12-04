@@ -58,7 +58,8 @@ router.get('/confirmar-email', async (req, res) => {
         await dbClientes.promise().query(sql, [mensagemLog, email]);
 
         //res.json({ message: 'Email confirmado com sucesso!' });
-        res.sendFile(path.join(__dirname, '../../public/cliente/html/confirmacao_email.html'));
+        //res.sendFile(path.join(__dirname, '../../public/cliente/html/confirmacao_email.html'));
+        res.redirect('/boas-vindas');
     } catch (error) {
         console.error('Erro ao confirmar email:', error);
         res.status(500).json({ error: 'Erro ao confirmar email.' });

@@ -188,9 +188,14 @@ app.get('/checkout', (req, res) => {
     res.sendFile(path.join(__dirname, 'checkout', 'public', 'html', 'checkout.html'));
 });
 
-//Define rota de página teste
+//Define rota da página de recuperação de senha
 app.get('/recuperar-senha', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'recuperar_senha.html'));
+});
+
+//Rota de boas vindas após confirmar email
+app.get('/boas-vindas', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'confirmacao_email.html'));
 });
 
 

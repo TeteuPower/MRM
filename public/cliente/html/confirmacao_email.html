@@ -1,10 +1,16 @@
 <!DOCTYPE html>
+
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Confirmação de Email</title>
-    <link rel="stylesheet" href="../../css/confirmacao_email.css">
+    <title> Espirito do Nativo </title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../css/recuperar_senha.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQ7TZHLVQY"></script>
     <script>
@@ -15,11 +21,26 @@
     gtag('config', 'G-YQ7TZHLVQY');
     </script>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Bem-vindo ao Espirito Do Nativo!</h1>
+
+    <div class="col-xs-12 align-items-center left-to-right play-on-scroll container ">
+        <h1>Bem-vindo(a)</h1><h1>ao</h1><strong>Espirito Do Nativo!</strong></h1>
         <p>Seu email foi confirmado com sucesso! Você já pode acessar sua conta.</p>
-        <a href="/menu" class="btn">Acessar</a>
+        <button id="btn-recuperar-senha">Entrar</button>
     </div>
+
+    <div class="rowFooter right-to-left play-on-scroll" style = "text-align: center;">
+        <div class="col-md-12">
+            <p style="font-size: 13px;">
+                Copyright &copy;
+                <script>document.write(new Date().getFullYear());</script> | Todos os direitos reservados | Desenvolvido pela <a href="https://tpowert.com.br/" target="_blank"> <span style="color: #563D7C;"> TPowerTech </span>
+                    </a> 
+            </p>
+        </div>
+    </div>
+
+    <script src="js/boas-vindas.js"></script>
 </body>
+
 </html>
