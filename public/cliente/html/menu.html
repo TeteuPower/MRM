@@ -153,7 +153,7 @@
                         <h3 class="left-to-right play-on-scroll">
                         Contato
                         </h3>
-                        <form>
+                        <div>
                             <div class="input-group left-to-right play-on-scroll">
                                 <label for="email">Email*:</label>
                                 <input type="email" id="email" name="email" required>
@@ -179,12 +179,16 @@
                                 <label for="cpf">CPF*:</label>
                                 <input type="text" id="cpf" name="cpf" required maxlength="14">
                             </div>
-
-                            <div id="endereco-container">
+                            <div class="botoes-expandir">
                                 <button id="toggle-endereco" class="input-group left-to-right play-on-scroll">
-                                    <i class='bx bx-down-arrow-alt left-to-right play-on-scroll'></i>Adicionar endereço
+                                    <i class='bx bx-down-arrow-alt left-to-right play-on-scroll'></i>Novo endereço
                                 </button>
-    
+                                
+                                <button id="toggle-endereco-salvo" class="input-group left-to-right play-on-scroll">
+                                    Endereços salvos<i class='bx bx-down-arrow-alt left-to-right play-on-scroll'></i>
+                                </button>
+                            </div>
+                            <div id="endereco-container">
                                 <div class="conteudo-endereco">
                                     <h3 class="left-to-right play-on-scroll">
                                         Endereço
@@ -258,16 +262,70 @@
                                         <label for="complemento">Complemento:</label>
                                         <input type="text" id="complemento" name="complemento">
                                     </div>
+                                    <button class="btn-enviar left-to-right play-on-scroll" id="btn-confirmar-dados">
+                                        Salvar Endereço
+                                    </button>
                                 </div>
         
                             </div>
     
-                        </form>
-    
-                        <button class="btn-enviar left-to-right play-on-scroll" id="btn-confirmar-dados">
-                            Confirmar Endereço
-                        </button>
-    
+                        </div>
+                        <br>
+
+                        <!-- Endereços já salvos -->
+                        <div id="enderecos-salvos">
+                            <div class="conteudo-endereco-salvo-container">
+
+                                <div class="input-group-enderecos left-to-right play-on-scroll">
+                                    <div class="conteudo-endereco-salvo">
+                                        <h3>Apartamento da Praia</h3>
+                                        <p>Rua: Rua Tucuna</p>
+                                        <p>N°: 1168</p>
+                                        <p>Bairro: Pompéia</p>
+                                        <p>Cidade: São Paulo</p>
+                                        <p>Estado: SP</p>
+                                        <p>Complemento: Casa 2</p>
+                                    </div>
+                                </div>
+
+                                <div class="input-group-enderecos left-to-right play-on-scroll">
+                                    <div class="conteudo-endereco-salvo">
+                                        <h3>Apartamento da Praia</h3>
+                                        <p>Rua: Rua Tucuna</p>
+                                        <p>N°: 1168</p>
+                                        <p>Bairro: Pompéia</p>
+                                        <p>Cidade: São Paulo</p>
+                                        <p>Estado: SP</p>
+                                        <p>Complemento: Casa 2</p>
+                                    </div>
+                                </div>
+
+                                <div class="input-group-enderecos left-to-right play-on-scroll">
+                                    <div class="conteudo-endereco-salvo">
+                                        <h3>Apartamento da Praia</h3>
+                                        <p>Rua: Rua Tucuna</p>
+                                        <p>N°: 1168</p>
+                                        <p>Bairro: Pompéia</p>
+                                        <p>Cidade: São Paulo</p>
+                                        <p>Estado: SP</p>
+                                        <p>Complemento: Casa 2</p>
+                                    </div>
+                                </div>
+
+                                <div class="input-group-enderecos left-to-right play-on-scroll">
+                                    <div class="conteudo-endereco-salvo">
+                                        <h3>Apartamento da Praia</h3>
+                                        <p>Rua: Rua Tucuna</p>
+                                        <p>N°: 1168</p>
+                                        <p>Bairro: Pompéia</p>
+                                        <p>Cidade: São Paulo</p>
+                                        <p>Estado: SP</p>
+                                        <p>Complemento: Casa 2</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
     
                     </section>
     

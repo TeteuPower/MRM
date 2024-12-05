@@ -246,6 +246,12 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function() {
+    $('#toggle-endereco-salvo').click(function() {
+        $('#enderecos-salvos').toggleClass('mostrar');
+    });
+});
+
 //Disparar função confereCep() e confereCpfBlur() quando o cep e o cpf estiver preenchido
 document.getElementById('cep').addEventListener('blur', confereCep);
 document.getElementById('cpf').addEventListener('blur', confereCpfBlur);
@@ -455,35 +461,34 @@ function confirmarDados() {
         alert('Por favor, insira um telefone com DDD.');
         return;
     }
-    if (sobrenome.value === '') {
+    if (sobrenome === '') {
         alert('Por favor, preencha o sobrenome.');
         return;
     }
-    if (telefone.value === '') {
+    if (telefone === '') {
         alert('Por favor, preencha seu telefone.');
         return;
     }
-    if (cep.value === '') {
+    if (cep === '') {
         alert('Por favor, preencha o CEP.');
         return;
     }
-    if (endereco.value === '') {
+    if (endereco === '') {
         alert('Por favor, preencha o endereço.');
         return;
     }
-    if (numero.value === '') {
+    if (numero === '') {
         alert('Por favor, preencha o número.');
         return;
     }
-    if (bairro.value === '') {
+    if (bairro === '') {
         alert('Por favor, preencha o bairro.');
         return;
     }
-    if (cidade.value === '') {
+    if (cidade === '') {
         alert('Por favor, preencha a cidade.');
         return;
     }
-
     //Atualiza dados do cliente
     fetch('/api/usuarios/me', {
         method: 'PUT',
@@ -517,7 +522,7 @@ function confirmarDados() {
     .then(response => response.json())
     .then(data => {
         //console.log(data);
-        alert('Dados confirmados com sucesso!');
+        alert('Novo endereço adicionado com sucesso!');
         //bloqueia todos os campos de dados
         nomeEnderecoInput.disabled = true;
         sobrenomeInput.disabled = true;
