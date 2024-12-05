@@ -532,6 +532,17 @@ section {
     cursor: pointer;
 }
 
+.input-group-checkout {
+    font-weight: 600;
+    border-radius: 1rem;
+    font-size: 10px;
+    text-align: center;
+}
+
+.input-group-checkout input, select {
+    min-width: 0px;
+}
+
 .back-to-top {
     position: fixed;
     bottom: 70px;
@@ -1080,6 +1091,17 @@ section {
 .resumo {
     display: flex;
     flex-direction: column; /* Para alinhamento vertical */
+    margin-bottom: 20px; /* Espaçamento entre os elementos */
+}
+
+#endereco-container .conteudo-endereco {
+    overflow: hidden; /* Essencial para a transição de altura funcionar */
+    max-height: 0; /* Começa com altura zero (escondido) */
+    transition: max-height 0.3s ease-in-out; /* Transição suave de 0.3 segundos */
+}
+
+#endereco-container.mostrar .conteudo-endereco {
+    max-height: 500px; /* Altura máxima quando aberto (ajuste conforme necessário) */
 }
 
 .resumo-itens {
@@ -1100,6 +1122,11 @@ section {
 .resumo h3{
     margin-bottom: 15px;
 }
+
+.valores-resumo h1 {
+    color: var(--primary-color);
+}
+
 @media only screen and (max-width: 511px) {
     .btn-enviar-2, .btn-enviar-3{
         font-size: 12px;

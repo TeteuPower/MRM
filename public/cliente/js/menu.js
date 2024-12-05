@@ -71,9 +71,6 @@ function popularMenu() {
         `;*/
         popularResumo();
 
-        //Disparar função confereCep() e confereCpfBlur() quando o cep e o cpf estiver preenchido
-        document.getElementById('cep').addEventListener('blur', confereCep);
-        document.getElementById('cpf').addEventListener('blur', confereCpfBlur);
         //Adicionando função ao botão de confirmar dados
         document.getElementById('btn-confirmar-dados').addEventListener('click', confirmarDados);
         popularInputs ();
@@ -197,6 +194,13 @@ async function popularResumo() {
             document.getElementById('resumo-total').innerHTML = `
 
             <div class="valores-resumo">
+                <h3 class="left-to-right play-on-scroll">Checkout</h3>
+                <!-- Cupom de desconto -->
+                <div class="input-group input-group-checkout">
+                    <label for="promoCode">Código Promocional:</label>
+                    <input type="text" id="promoCode" name="promoCode" placholder="Enter Code" >
+                    <button class="promo-btn"></button>
+                </div>
                 <br>
                 <span class="cart-total">Frete: ${product.frete ? `R$ ${formatarValor(product.frete.toFixed(2))}` : 'Insira um cep para calcular'}</span>
                 <br>
@@ -235,6 +239,16 @@ async function popularResumo() {
         });
     }
 }
+
+$(document).ready(function() {
+    $('#toggle-endereco').click(function() {
+        $('#endereco-container').toggleClass('mostrar');
+    });
+});
+
+//Disparar função confereCep() e confereCpfBlur() quando o cep e o cpf estiver preenchido
+document.getElementById('cep').addEventListener('blur', confereCep);
+document.getElementById('cpf').addEventListener('blur', confereCpfBlur);
 
 function incrementQuantity(productId) {
     //console.log(productId);
