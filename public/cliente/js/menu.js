@@ -541,6 +541,7 @@ function confirmarDados() {
 function confereCep() { //evento blur dispara quando input perde o foco
     const cepInput = document.getElementById('cep');
     const cep = cepInput.value.replace(/\D/g, '');
+    if ($('#cep').is(':visible')) {
         fetch(`/busca-cep/${cep}`)
         .then(response => response.json())
         .then(data => {
@@ -576,9 +577,10 @@ function confereCep() { //evento blur dispara quando input perde o foco
             }
         })
         .catch(error => {
-            console.error('Erro ao buscar o CEP:', error);
-            alert('Erro ao buscar o CEP.');
+            //console.error('Erro ao buscar o CEP:', error);
+            //alert('Erro ao buscar o CEP.');
         });
+    }
 };
 
 function confereCpfBlur() {
