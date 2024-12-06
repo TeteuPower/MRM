@@ -207,5 +207,36 @@ router.post('/mudar-senha', async (req, res) => {
     }
 });
 
+//Rota para obter os endereços do cliente
+router.get('/enderecos', autenticarClientes, async (req, res) => {
+    const usuarioId = req.usuario.id;
+    try {
+        const sql = 'SELECT * FROM enderecos WHERE usuario_id = ?';
+        const [result] = await dbClientes.promise().query(sql, [usuarioId]);
+        res.json(result);
+    } catch (error) {
+        console.error('Erro ao buscar endereços:', error);
+        res.status(500).json({ error: 'Erro ao buscar endereços.' });
+    }
+});
+
+// Rota para excluir um endereço do cliente
+router.delete('/enderecos/:id', autenticarClientes, async (req, res) => {
+    const { id } = req.params;
+    const usuarioId = req.usuario.id;
+    try {
+        const sql = 'DELETE FROM enderecos WHERE id = ? AND usuario_id = ?';
+        const [result] = await dbClientes.promise().query(sql, [id, usuarioId]);
+        if (result.affectedRows > 0) {
+            res.json({ message: 'Endereço excluído com sucesso!' });
+        } else {
+            res.status(404).json({ error: 'Endereço não encontrado.' });
+        }
+    } catch (error) {
+        console.error('Erro ao excluir endereço:', error);
+        res.status(500).json({ error: 'Erro ao excluir endereço.' });
+    }
+});
+
 
 module.exports = router;

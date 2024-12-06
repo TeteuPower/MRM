@@ -1,8 +1,7 @@
 verificarAutenticacao();
 popularMenu();
 carregarProdutos();
-
-
+popularEnderecos();
 
 //Inicia depois no dom
 window.addEventListener('DOMContentLoaded', () => {
@@ -422,6 +421,79 @@ function popularInputs () {
 
 }
 
+function popularEnderecos() {
+    const enderecosSection = document.getElementById('enderecos-salvos-conteudo');
+    enderecosSection.innerHTML = ''; // Limpa o container
+
+    fetch('/api/usuarios/enderecos', {
+        method: 'GET',
+        headers: {
+            'Authorization': localStorage.getItem('tokenUser')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        //console.log(data);
+        data.forEach(endereco => {
+            const enderecoItem = document.createElement('div');
+            //enderecoItem.classList.add('input-group-enderecos left-to-right play-on-scroll');
+            enderecoItem.innerHTML = `
+            <div class="input-group-enderecos left-to-right play-on-scroll">
+                <div class="conteudo-endereco-salvo">
+                    <h3>${endereco.apelido}</h3>
+                    <p><strong style="color: black;">Endereço:</strong> ${endereco.endereco}</p>
+                    <p><strong style="color: black;">N°:</strong> ${endereco.numero}</p>
+                    <p><strong style="color: black;">Bairro:</strong> ${endereco.bairro}</p>
+                    <p><strong style="color: black;">Cidade:</strong> ${endereco.cidade}</p>
+                    <p><strong style="color: black;">Estado:</strong> ${endereco.estado}</p>
+                    <p><strong style="color: black;">Complemento:</strong> ${endereco.complemento}</p>
+                    <button class="botao-excluir" data-id="${endereco.id}"><i class='bx bx-trash'></i></button>
+                </div>
+            </div>
+            `;
+            enderecosSection.appendChild(enderecoItem);
+        })
+
+        enderecosSection.addEventListener('click', (event) => {
+            if (event.target.classList.contains('bx-trash')) { // Clica no ícone
+                 const botaoExcluir = event.target.parentNode;
+                const enderecoId = botaoExcluir.dataset.id;
+                excluirEndereco(enderecoId);
+            } else if (event.target.classList.contains("botao-excluir")) { // Clica no botão
+                const enderecoId = event.target.dataset.id;
+                excluirEndereco(enderecoId);
+            }
+        });
+    });
+
+}
+
+async function excluirEndereco(enderecoId) {
+    if (confirm('Tem certeza de que deseja excluir este endereço?')) { //confirmação antes de excluir.
+        try {
+            const response = await fetch(`/api/usuarios/enderecos/${enderecoId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': localStorage.getItem('tokenUser')
+                }
+            });
+
+            if (response.ok) {
+                // Remove o endereço do DOM
+                const enderecoDiv = document.querySelector(`.botao-excluir[data-id="${enderecoId}"]`).closest('.input-group-enderecos');
+                enderecoDiv.remove();
+                alert('Endereço excluído com sucesso!');
+            } else {
+                const errorData = await response.json();
+                alert('Erro ao excluir endereço: ' + errorData.error);
+            }
+        } catch (error) {
+            console.error('Erro ao excluir endereço:', error);
+            alert('Erro ao excluir endereço.');
+        }
+    }
+}
+
 function confirmarDados() {
     const nomeInput = document.getElementById('nome');
     const nome = nomeInput.value;
@@ -521,8 +593,11 @@ function confirmarDados() {
     })
     .then(response => response.json())
     .then(data => {
+        //Remove a classe "mostrar" do endereco-container
+        const enderecoContainer = document.getElementById('endereco-container');
+        enderecoContainer.classList.remove('mostrar');
         //console.log(data);
-        alert('Novo endereço adicionado com sucesso!');
+        //alert('Novo endereço adicionado com sucesso!');
         //bloqueia todos os campos de dados
         nomeEnderecoInput.disabled = true;
         sobrenomeInput.disabled = true;
@@ -535,6 +610,10 @@ function confirmarDados() {
         cidadeInput.disabled = true;
         estadoInput.disabled = true;
         complementoInput.disabled = true;
+        //Um atraso de meio segundo para iniciar a função de popular enderecos
+        setTimeout(() => {
+            popularEnderecos();
+        }, 500);
     })
     .catch(error => {
         console.error('Erro ao atualizar endereço:', error);

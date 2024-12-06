@@ -1118,7 +1118,16 @@ section {
 }
 
 #enderecos-salvos.mostrar .conteudo-endereco-salvo-container {
-    max-height: 535px; /* Altura máxima quando aberto (ajuste conforme necessário) */
+    max-height: 935px; /* Altura máxima quando aberto (ajuste conforme necessário) */
+}
+
+.conteudo-endereco-salvo-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-weight: bold;
+
 }
 
 .resumo-itens {
@@ -1729,6 +1738,8 @@ body.light .navbar-brand::after{
 }
 
 .conteudo-endereco-salvo {
+    max-width: 250px;
+    overflow-y: auto;
     padding: 5px;
     width: 100%;
 }
