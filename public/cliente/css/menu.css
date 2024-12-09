@@ -199,6 +199,7 @@ body {
 
 .valores-resumo {
     text-align: left;
+    font-weight: bold;
 }
 
 li {
@@ -1742,4 +1743,17 @@ body.light .navbar-brand::after{
     overflow-y: auto;
     padding: 5px;
     width: 100%;
+}
+
+
+.nenhum-endereco {
+    text-align: center;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+.selecionado {
+    background-color: var(--primary-color); /* Ou a cor que você preferir */
+    color: var(--white);
 }

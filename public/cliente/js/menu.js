@@ -201,9 +201,9 @@ async function popularResumo() {
                     <button class="promo-btn"></button>
                 </div>
                 <br>
-                <span class="cart-total">Frete: ${product.frete ? `R$ ${formatarValor(product.frete.toFixed(2))}` : 'Insira um cep para calcular'}</span>
+                <span class="cart-total" id="frete">Frete: 'Selecione um endereço'</span>
                 <br>
-                <span class="cart-total">Desconto: R$ 0,00 </span>
+                <span class="cart-total" id="desconto">Desconto: R$ 0,00 </span>
                 <br>
                 <span class="cart-total">Total: R$ ${formatarValor(total.toFixed(2))}</span>
 
@@ -438,8 +438,8 @@ function popularEnderecos() {
             const enderecoItem = document.createElement('div');
             //enderecoItem.classList.add('input-group-enderecos left-to-right play-on-scroll');
             enderecoItem.innerHTML = `
-            <div class="input-group-enderecos left-to-right play-on-scroll">
-                <div class="conteudo-endereco-salvo">
+            <div class="input-group-enderecos left-to-right play-on-scroll" data-id="${endereco.id}">
+                <div class="conteudo-endereco-salvo" >
                     <h3>${endereco.apelido}</h3>
                     <p><strong style="color: black;">Endereço:</strong> ${endereco.endereco}</p>
                     <p><strong style="color: black;">N°:</strong> ${endereco.numero}</p>
@@ -448,6 +448,7 @@ function popularEnderecos() {
                     <p><strong style="color: black;">Estado:</strong> ${endereco.estado}</p>
                     <p><strong style="color: black;">Complemento:</strong> ${endereco.complemento}</p>
                     <button class="botao-excluir" data-id="${endereco.id}"><i class='bx bx-trash'></i></button>
+                    <input type="hidden" id="cep-${endereco.id}" value="${endereco.cep}">
                 </div>
             </div>
             `;
@@ -464,6 +465,34 @@ function popularEnderecos() {
                 excluirEndereco(enderecoId);
             }
         });
+
+        // Seleciona endereço quando clicado
+        enderecosSection.addEventListener('click', (event) => {
+            const conteudoClicado = event.target.closest('.input-group-enderecos');
+
+            if (conteudoClicado) {  // Verifica se clicou dentro de um .conteudo-endereco-salvo
+                //Verifica se já existe um endereço selecionado no local storage, se existir excluir o atual e substitui pelo novo
+                    const enderecoId = conteudoClicado.dataset.id;
+                    //console.log("ID do endereço clicado:", enderecoId);
+                    // Salva o endereço selecionado no LocalStorage
+                    localStorage.setItem('enderecoId', enderecoId);
+                    //Atualiza valor do frete
+                    atualizarFrete(enderecoId);
+                    // Adicione class "selecionado" ao endereço clicado
+                    const enderecos = document.querySelectorAll('.input-group-enderecos');
+                    enderecos.forEach(endereco => {
+                        //console.log(endereco);
+                        endereco.classList.remove('selecionado');
+                        if (endereco.dataset.id === enderecoId) { // Adiciona somente ao clicado
+                            endereco.classList.add('selecionado');
+                        }
+                    });
+            }
+            //Oculta sem-enderecos-salvos
+            const semEnderecosSalvos = document.getElementById('sem-enderecos-salvos');
+            semEnderecosSalvos.style.display = 'none';
+
+        })
     });
 
 }
@@ -674,4 +703,11 @@ function confereCpfBlur() {
         alert('Por favor, insira um CPF válido.');
         cpfInput.value = '';
     }
+}
+
+function atualizarFrete(enderecoId) {
+    const freteInput = document.getElementById('frete');
+    const cepValue = document.getElementById(`cep-${enderecoId}`).value.replace(/\D/g, '');
+    //console.log(cepValue);
+    
 }
