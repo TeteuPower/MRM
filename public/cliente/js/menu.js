@@ -198,18 +198,21 @@ async function popularResumo() {
                 <div class="input-group input-group-checkout">
                     <label for="promoCode">Código Promocional:</label>
                     <input type="text" id="promoCode" name="promoCode" placholder="Enter Code" >
-                    <button class="promo-btn"></button>
+                    <button id="btn-aplicar-cupom" class="promo-btn"></button>
                 </div>
                 <br>
                 <span class="cart-total" id="frete">Frete: 'Selecione um endereço'</span>
                 <br>
                 <span class="cart-total" id="desconto">Desconto: R$ 0,00 </span>
                 <br>
-                <span class="cart-total">Total: R$ ${formatarValor(total.toFixed(2))}</span>
+                <span class="cart-total" value="${total.toFixed(2)}" id="total">Total: R$ ${formatarValor(total.toFixed(2))}</span>
 
             </div>
             
             `; 
+            // Adicionando evento ao botão de código promocional
+            const btnPromoCode = document.getElementById('btn-aplicar-cupom');
+            btnPromoCode.addEventListener('click', codigoPromocional);
         } catch (error){
             console.error("erro ao obter dados do produto", error);
             //Adicione tratamento de erro aqui
@@ -470,13 +473,9 @@ function popularEnderecos() {
         enderecosSection.addEventListener('click', (event) => {
             const conteudoClicado = event.target.closest('.input-group-enderecos');
 
-            if (conteudoClicado) {  // Verifica se clicou dentro de um .conteudo-endereco-salvo
-                //Verifica se já existe um endereço selecionado no local storage, se existir excluir o atual e substitui pelo novo
+            if (conteudoClicado) {
                     const enderecoId = conteudoClicado.dataset.id;
-                    //console.log("ID do endereço clicado:", enderecoId);
-                    // Salva o endereço selecionado no LocalStorage
-                    localStorage.setItem('enderecoId', enderecoId);
-                    //Atualiza valor do frete
+                    sessionStorage.setItem('enderecoId', enderecoId);
                     atualizarFrete(enderecoId);
                     // Adicione class "selecionado" ao endereço clicado
                     const enderecos = document.querySelectorAll('.input-group-enderecos');
@@ -707,7 +706,48 @@ function confereCpfBlur() {
 
 function atualizarFrete(enderecoId) {
     const freteInput = document.getElementById('frete');
+    //Resgata o cep
     const cepValue = document.getElementById(`cep-${enderecoId}`).value.replace(/\D/g, '');
     //console.log(cepValue);
+    freteInput.innerText = 'Frete: GRÁTIS';
+}
+
+function codigoPromocional() {
+    const cupom = document.getElementById('promoCode').value;
     
+    fetch(`/api/usuarios/cupons/${cupom}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': localStorage.getItem('tokenUser'),
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        //console.log(data);
+        //Verifica se o booleano data.ativo é verdadeiro
+        if (data.ativo === 1) {
+            const desconto = parseFloat(data.desconto);
+            //console.log('Desconto:',desconto);
+            const descontoInput = document.getElementById('desconto');
+            const totalInput = document.getElementById('total');
+            const total = parseFloat(totalInput.getAttribute('value'));
+            //console.log('Total:',total);
+            const novoTotal = total - (total * desconto / 100); // Calcula o novo total com o desconto
+            descontoInput.innerText = `Desconto: R$ ${formatarValor((novoTotal - total).toFixed(2))}`; // Atualiza o valor do desconto na tela
+            totalInput.innerText = `Total: R$ ${formatarValor(novoTotal.toFixed(2))}`;
+            //Insere o cupom no localStorage
+            sessionStorage.setItem('cupom', cupom);
+            alert('Cupom aplicado com sucesso!');
+        } else {
+            alert('Cupom expirado.');
+        }
+    })
+    .catch(error => {
+        console.error('Código promocional não encontrado:', error);
+        alert('Código promocional não encontrado.');
+    });
+    if (codigoPromocional === '') {
+        alert('Por favor, insira um cupom.');
+    }
 }

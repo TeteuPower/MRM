@@ -238,5 +238,19 @@ router.delete('/enderecos/:id', autenticarClientes, async (req, res) => {
     }
 });
 
+// Rota para obter dados do cupon de desconto
+router.get('/cupons/:cupom', autenticarClientes, async (req, res) => {
+    const { cupom } = req.params;
+    //console.log(cupom);
+    try {
+        const sql = 'SELECT * FROM cupons WHERE codigo = ?';
+        const [result] = await dbClientes.promise().query(sql, [cupom]);
+        res.json(result[0]);
+    } catch (error) {
+        console.error('Erro ao buscar cupons:', error);
+        res.status(500).json({ error: 'Erro ao buscar cupons.' });
+    }
+});
+
 
 module.exports = router;
