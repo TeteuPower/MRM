@@ -244,6 +244,8 @@ app.use('/api/usuarios', require('./routes/cliente/usuarios'));
 app.use('/api/mail', require('./src/controllers/sendgrid'));
 // Usa a rota para enviar emails recuperação de senha
 app.use('/api/mail-recover', require('./src/controllers/sendgrid_pass_rec'));
+// Rota que recebe notificações do MercadoPago
+app.use('/api/mercadopago', require('./routes/mercadopago'));
 
 
 // Rota para login do administrador (gera o token)
