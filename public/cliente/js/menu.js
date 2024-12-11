@@ -2,7 +2,7 @@ verificarAutenticacao();
 popularMenu();
 carregarProdutos();
 popularEnderecos();
-alert('Use o cupom "inauguracao" e garanta 50% de desconto!');
+//alert('Use o cupom "inauguracao" e garanta 50% de desconto!');
 
 //Inicia depois no dom
 window.addEventListener('DOMContentLoaded', () => {
@@ -790,12 +790,12 @@ function finalizarPedido() {
         console.log(data);
         if (data.status === 'success') {
             alert('Pedido realizado com sucesso!');
-            localStorage.removeItem('cart');
+            /*localStorage.removeItem('cart');
             sessionStorage.removeItem('cupom');
             sessionStorage.removeItem('enderecoId');
-            window.location.href = '/menu';
+            window.location.href = '/menu';*/
         } else {
-            //alert('Erro ao realizar o pedido.');
+            alert('Erro ao realizar o pedido.');
         }
     })
     .catch(error => {

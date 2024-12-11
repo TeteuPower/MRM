@@ -16,65 +16,112 @@ router.post('/', autenticarClientes, async (req, res) => {
 
   //Consulta a tabela enderecos e busca o endereço se o usuario_id for igual ao usuarioId
   const endereco = await dbClientes.promise().query('SELECT * FROM enderecos WHERE id = ? AND usuario_id = ?', [pedido.endereco_id, usuarioId]);
-  //console.log('Endereço do pedido: ',endereco[0]);
+  //console.log('Endereço do pedido: ',endereco[0][0]);
   //Consulta a tabela usuarios e busca dados do usuario
   const usuario = await dbClientes.promise().query('SELECT nome, email, telefone, sobrenome, cpf FROM usuarios WHERE id = ?', [usuarioId]);
   //console.log('Dados do usuario: ',usuario[0]);
   //Consulta a tabela cupons e verifica o desconto
   const cupom = await dbClientes.promise().query('SELECT desconto, ativo FROM cupons WHERE codigo = ?', [pedido.cupom]);
-  console.log('Cupom: ',cupom[0]);
+  //console.log('Cupom: ',cupom[0]);
 
   //itera sobre cada produto no pedido.produtos, consulta a tabela produtos e resgata o preco através do id e multiplica pela quantity do produto
-  let total = 0;
-  for (let i = 0; i < pedido.produtos.length; i++) {
-    const produto = await dbClientes.promise().query('SELECT preco FROM produtos WHERE id = ?', [pedido.produtos[i].productId]);
-    total += produto[0][0].preco * pedido.produtos[i].quantity;
-    console.log('Id do produto: ',pedido.produtos[i].productId,'Quantidade: ', pedido.produtos[i].quantity,'Preço: ', produto[0][0].preco);
-  }
-  if (cupom[0].length > 0) {
-    if (cupom[0][0].ativo == '1') {
-      total = total * (1 - (cupom[0][0].desconto/100));
-    } else {
-      console.log('Cupom não ativo');
+  try {
+    let total = 0;
+    const produtosParaMercadoPago = [];
+    for (let i = 0; i < pedido.produtos.length; i++) {
+      const produto = await dbClientes.promise().query('SELECT preco, nome FROM produtos WHERE id = ?', [pedido.produtos[i].productId]);
+      total += produto[0][0].preco * pedido.produtos[i].quantity;
+      //console.log('Id do produto: ',pedido.produtos[i].productId,'Quantidade: ', pedido.produtos[i].quantity,'Preço: ', produto[0][0].preco);
+      //console.log(produto[0][0].nome);
+
+      produtosParaMercadoPago.push({ // Adiciona o item ao array
+        id: pedido.produtos[i].productId, // Usando o ID do produto como ID do item
+        title: produto[0][0].nome, // Nome do produto
+        quantity: pedido.produtos[i].quantity,
+        unit_price: parseFloat(produto[0][0].preco),
+        currency_id: 'BRL',
+        //picture_url: imagemProduto // URL da imagem do produto
+      });
+
+
     }
-  } else {
-    console.log('Cupom não encontrado');
-  }
-
-  console.log('Total: ',total);
-
-  return;
-  const client = new MercadoPagoConfig({ accessToken: process.env.ACCESS_TOKEN_MERCADOPAGO });
-
-  const preference = new Preference(client);
-
-  preference.create({
-    body: {
-      items: [
-        {
-          id: '1',
-          title: 'Rapé',
+    //console.log(produtosParaMercadoPago);
+    let desconto = 0;
+    if (cupom[0].length > 0) {
+      if (cupom[0][0].ativo == '1') {
+        const totalComDesconto = total * (1 - (cupom[0][0].desconto/100));
+        desconto = total - totalComDesconto;
+        total = totalComDesconto;
+        console.log('Desconto: ',desconto);
+        produtosParaMercadoPago.push({
+          id: 'desconto', // Um ID para o item de desconto
+          title: 'Desconto do cupom',
           quantity: 1,
-          unit_price: 500
-        }
-      ],
-      back_urls: { // Adicionando URLs de retorno (importantes!)
-        success: "URL_DE_SUCESSO",
-        failure: "URL_DE_FALHA",
-        pending: "URL_DE_PENDENCIA"
+          unit_price: -desconto, // Valor negativo para representar desconto
+          currency_id: 'BRL'
+        });
+      } else {
+        console.log('Cupom não ativo');
       }
-
+    } else {
+      console.log('Cupom não encontrado');
     }
-  })
-  .then(result => {
-    console.log("Preferência criada com sucesso:");
-    console.log(result); // Exibe o ID da preferência
-    console.log(result.init_point); // Exibe o link da preferência
-  })
-  .catch(error => {
-    console.error("Erro ao criar preferência:");
-    console.error(error);
-  });
+
+    console.log('Total: ',total);
+
+    //console.log(produtosParaMercadoPago);
+
+
+    const client = new MercadoPagoConfig({ accessToken: process.env.ACCESS_TOKEN_MERCADOPAGO });
+
+    const preference = new Preference(client);
+
+    preference.create({
+      body: {
+        items: produtosParaMercadoPago,
+        payer: {
+          name: usuario[0][0].nome,
+          surname: usuario[0][0].sobrenome,
+          email: usuario[0][0].email,
+          phone: {
+            area_code: `${(usuario[0][0].telefone).slice(0, 2)}`,
+            number: `${(usuario[0][0].telefone).slice(2)}`
+          },
+          identification: {
+            type: 'CPF',
+            number: usuario[0][0].cpf
+          }
+        },
+        address: {
+          zip_code: endereco[0][0].cep,
+          street_name: endereco[0][0].endereco,
+          street_number: endereco[0][0].numero
+        },
+        back_urls: { // Adicionando URLs de retorno (importantes!)
+          success: `${process.env.API_URL}/compra-efetuada`,
+          failure: `${process.env.API_URL}/compra-falhou`,
+          pending: `${process.env.API_URL}/compra-pendente`
+        }
+
+      }
+    })
+    .then(result => {
+      console.log("Preferência criada com sucesso:");
+      //console.log(result); // Exibe o ID da preferência
+      console.log(result.init_point); // Exibe o link da preferência
+    })
+    .catch(error => {
+      console.error("Erro ao criar preferência:");
+      console.error(error);
+    });
+
+
+    //console.log('Telefone: ',telefone);
+  } catch (error) {
+    console.log(error);
+  }
+
+
 });
 
 
