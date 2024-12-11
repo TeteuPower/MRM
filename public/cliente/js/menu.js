@@ -372,7 +372,7 @@ function exibirProdutos(products) {
         localStorage.setItem('cart', JSON.stringify(cart));
         //chama função que atualiza o resumo:
         alert('Produto adicionado ao carrinho.');
-        const resumoSection = document.getElementById('btn-enviar');
+        const resumoSection = document.getElementById('resumo-itens');
         if (resumoSection) {
             //console.log('tentei')
             resumoSection.scrollIntoView({ behavior: 'smooth' });
@@ -752,3 +752,57 @@ function codigoPromocional() {
         alert('Por favor, insira um cupom.');
     }
 }
+
+//Função que finaliza o pedido
+
+function finalizarPedido() {
+    const cupom = sessionStorage.getItem('cupom');
+    const produtos = JSON.parse(localStorage.getItem('cart'));
+    const enderecoId = sessionStorage.getItem('enderecoId');
+    //const tokenUsuario = localStorage.getItem('tokenUser');
+    if (produtos.length === 0) {
+        alert('Seu carrinho esta vazio.');
+        return;
+    }
+    //console.log(produtos);
+    if (enderecoId === null) {
+        alert('Selecione um endereço para finalizar o pedido.');
+        return;
+    }
+    //console.log(enderecoId);
+    //console.log(tokenUsuario);
+    //console.log(cupom);
+    //Envia dados da compra para api do mercadopago
+    fetch('/api/mercadopago', {
+        method: 'POST',
+        headers: {
+            'Authorization': localStorage.getItem('tokenUser'),
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            produtos: produtos,
+            endereco_id: enderecoId,
+            cupom: cupom
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        if (data.status === 'success') {
+            alert('Pedido realizado com sucesso!');
+            localStorage.removeItem('cart');
+            sessionStorage.removeItem('cupom');
+            sessionStorage.removeItem('enderecoId');
+            window.location.href = '/menu';
+        } else {
+            //alert('Erro ao realizar o pedido.');
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao realizar o pedido:', error);
+        alert('Erro ao realizar o pedido.');
+    });
+}
+
+//Atribuindo evento listener ao botão
+document.getElementById('btn-enviar').addEventListener('click', finalizarPedido);
