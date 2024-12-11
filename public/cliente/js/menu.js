@@ -2,7 +2,7 @@ verificarAutenticacao();
 popularMenu();
 carregarProdutos();
 popularEnderecos();
-//alert('Use o cupom "inauguracao" e garanta 50% de desconto!');
+alert('Use o cupom "inauguracao" e garanta 50% de desconto!');
 
 //Inicia depois no dom
 window.addEventListener('DOMContentLoaded', () => {
@@ -756,6 +756,8 @@ function codigoPromocional() {
 //Função que finaliza o pedido
 
 function finalizarPedido() {
+    alert('Em Desenvolvimento!');
+    return
     const cupom = sessionStorage.getItem('cupom');
     const produtos = JSON.parse(localStorage.getItem('cart'));
     const enderecoId = sessionStorage.getItem('enderecoId');
