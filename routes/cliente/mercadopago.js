@@ -6,7 +6,7 @@ require('dotenv').config();
 
 //Rota que cria novo pagamento
 router.post('/', autenticarClientes, (req, res) => {
-  const client = new MercadoPagoConfig({ accessToken: process.env.ACCESS_TOKEN });
+  const client = new MercadoPagoConfig({ accessToken: process.env.ACCESS_TOKEN_MERCADOPAGO });
 
   const preference = new Preference(client);
 
