@@ -35,7 +35,7 @@ router.post('/', autenticarClientes, async (req, res) => {
       //console.log(produto[0][0].nome);
 
       produtosParaMercadoPago.push({ // Adiciona o item ao array
-        id: pedido.produtos[i].productId, // Usando o ID do produto como ID do item
+        id: pedido.produtos[i].productId, // Usando o ID do produto como ID do item.
         title: produto[0][0].nome, // Nome do produto
         quantity: pedido.produtos[i].quantity,
         unit_price: parseFloat(produto[0][0].preco),
@@ -105,7 +105,29 @@ router.post('/', autenticarClientes, async (req, res) => {
 
       }
     })
-    .then(result => {
+    .then(async result => {
+
+      //console.log(result); // Exibe o ID da preferência
+      //Adiciona os dados da venda na tabela pedidos_usuarios
+      await dbClientes.promise().query
+      ('INSERT INTO pedidos_usuarios (usuario_id, vendedor_id, moeda, valor_venda, valor_frete, status, data_criacao, endereco_id, preference_id, client_id, collector_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)', 
+      [usuarioId, 1, 'BRL', total, 0, 'pendente', new Date(), pedido.endereco_id, result.init_point, result.client_id, result.collector_id]);
+      const pedidoId = await dbClientes.promise().query('SELECT MAX(id) as id FROM pedidos_usuarios WHERE usuario_id =?', [usuarioId]);
+      console.log('Pedido ID: ', pedidoId[0][0].id);
+
+      //Adiciona os dados dos itens do pedido na tabela itens_pedido_usuario
+      for (let i = 0; i < pedido.produtos.length; i++) {
+        await dbClientes.promise().query
+        ('INSERT INTO itens_pedido_usuario (pedido_id, produto_id, quantidade, produto, tipo_rape) VALUES (?,?,?,?,?)', 
+        [pedidoId[0][0].id, pedido.produtos[i].productId, pedido.produtos[i].quantity, 'produto[0][0].nome', 'tipo_rape']);
+        console.log('Produto: ', pedido.produtos[i])
+      }
+      res.status(200).json({
+        message: 'Pedido criado com sucesso',
+        pedidoId: pedidoId[0][0].id,
+        init_point: result.init_point,
+      });
+
       console.log("Preferência criada com sucesso:");
       //console.log(result); // Exibe o ID da preferência
       console.log(result.init_point); // Exibe o link da preferência

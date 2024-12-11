@@ -2,7 +2,7 @@ verificarAutenticacao();
 popularMenu();
 carregarProdutos();
 popularEnderecos();
-alert('Use o cupom "inauguracao" e garanta 50% de desconto!');
+//alert('Use o cupom "inauguracao" e garanta 50% de desconto!');
 
 //Inicia depois no dom
 window.addEventListener('DOMContentLoaded', () => {
@@ -756,8 +756,6 @@ function codigoPromocional() {
 //Função que finaliza o pedido
 
 function finalizarPedido() {
-    alert('Em Desenvolvimento!');
-    return
     const cupom = sessionStorage.getItem('cupom');
     const produtos = JSON.parse(localStorage.getItem('cart'));
     const enderecoId = sessionStorage.getItem('enderecoId');
@@ -790,14 +788,12 @@ function finalizarPedido() {
     .then(response => response.json())
     .then(data => {
         console.log(data);
-        if (data.status === 'success') {
-            alert('Pedido realizado com sucesso!');
-            /*localStorage.removeItem('cart');
+        if (data.init_point) {
+            localStorage.removeItem('cart');
             sessionStorage.removeItem('cupom');
             sessionStorage.removeItem('enderecoId');
-            window.location.href = '/menu';*/
-        } else {
-            alert('Erro ao realizar o pedido.');
+            //Redireciona o cliente para o checkout do mercadopago
+            window.location.href = data.init_point;
         }
     })
     .catch(error => {
