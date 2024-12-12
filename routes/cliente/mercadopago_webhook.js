@@ -8,7 +8,7 @@ require('dotenv').config();
 
 router.post('/notificacao', async (req, res) => {
     //Definindo req.body como json
-    req.body = JSON.parse(req.body);
+    //req.body = JSON.parse(req.body);
     console.log(req.body);
     //console.log(req.body.id);
     //const id_pedido = req.body.id;

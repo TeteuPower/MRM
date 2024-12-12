@@ -247,7 +247,7 @@ app.use('/api/mail-recover', require('./src/controllers/sendgrid_pass_rec'));
 // Rota que recebe notificações do MercadoPago
 app.use('/api/mercadopago', autenticarClientes, require('./routes/cliente/mercadopago.js'));
 // Rota que recebe notificações do MercadoPago
-app.use('/api/mercadopago/webhook', require('./routes/cliente/mercadopago_webhook.js'));
+app.use('/api/webhook/mercadopago', require('./routes/cliente/mercadopago_webhook.js'));
 
 
 // Rota para login do administrador (gera o token)
