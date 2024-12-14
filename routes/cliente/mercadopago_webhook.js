@@ -12,6 +12,8 @@ router.post('/notificacao', async (req, res) => {
     console.log(req.body);
     //console.log(req.body.id);
     //const id_pedido = req.body.id;
+    //Retornando status de mensagem recebida
+    res.status(200).json({ message: 'Mensagem recebida com sucesso!' });
 });
 
 module.exports = router;
