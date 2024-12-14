@@ -52,7 +52,7 @@ router.post('/', autenticarClientes, async (req, res) => {
         const totalComDesconto = total * (1 - (cupom[0][0].desconto/100));
         desconto = total - totalComDesconto;
         total = totalComDesconto;
-        console.log('Desconto: ',desconto);
+        //console.log('Desconto: ',desconto);
         produtosParaMercadoPago.push({
           id: 'desconto', // Um ID para o item de desconto
           title: 'Desconto do cupom',
@@ -67,7 +67,7 @@ router.post('/', autenticarClientes, async (req, res) => {
       console.log('Cupom não encontrado');
     }
 
-    console.log('Total: ',total);
+    //console.log('Total: ',total);
 
     //console.log(produtosParaMercadoPago);
 
@@ -98,9 +98,9 @@ router.post('/', autenticarClientes, async (req, res) => {
           street_number: endereco[0][0].numero
         },
         back_urls: { // Adicionando URLs de retorno (importantes!)
-          success: `${process.env.API_URL}/compra-efetuada`,
-          failure: `${process.env.API_URL}/compra-falhou`,
-          pending: `${process.env.API_URL}/compra-pendente`
+          success: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`,
+          failure: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`,
+          pending: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`
         }
 
       }
@@ -113,14 +113,14 @@ router.post('/', autenticarClientes, async (req, res) => {
       ('INSERT INTO pedidos_usuarios (usuario_id, vendedor_id, moeda, valor_venda, valor_frete, status, data_criacao, endereco_id, preference_id, client_id, collector_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)', 
       [usuarioId, 1, 'BRL', total, 0, 'pendente', new Date(), pedido.endereco_id, result.init_point, result.client_id, result.collector_id]);
       const pedidoId = await dbClientes.promise().query('SELECT MAX(id) as id FROM pedidos_usuarios WHERE usuario_id =?', [usuarioId]);
-      console.log('Pedido ID: ', pedidoId[0][0].id);
+      //console.log('Pedido ID: ', pedidoId[0][0].id);
 
       //Adiciona os dados dos itens do pedido na tabela itens_pedido_usuario
       for (let i = 0; i < pedido.produtos.length; i++) {
         await dbClientes.promise().query
         ('INSERT INTO itens_pedido_usuario (pedido_id, produto_id, quantidade, produto, tipo_rape) VALUES (?,?,?,?,?)', 
         [pedidoId[0][0].id, pedido.produtos[i].productId, pedido.produtos[i].quantity, 'produto[0][0].nome', 'tipo_rape']);
-        console.log('Produto: ', pedido.produtos[i])
+        //console.log('Produto: ', pedido.produtos[i])
       }
       res.status(200).json({
         message: 'Pedido criado com sucesso',
@@ -128,9 +128,9 @@ router.post('/', autenticarClientes, async (req, res) => {
         init_point: result.init_point,
       });
 
-      console.log("Preferência criada com sucesso:");
+      //console.log("Preferência criada com sucesso:");
       //console.log(result); // Exibe o ID da preferência
-      console.log(result.init_point); // Exibe o link da preferência
+      console.log('Gerado novo Pedido: ', result.init_point); // Exibe o link da preferência
     })
     .catch(error => {
       console.error("Erro ao criar preferência:");
