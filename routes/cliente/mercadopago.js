@@ -3,26 +3,22 @@ const router = express.Router();
 const autenticarClientes = require('../../middleware/authClientes'); // Importa o middleware de autenticação
 const {dbClientes} = require('../../db')
 const { MercadoPagoConfig, Preference } = require('mercadopago');
-//const axios = require('axios');
 require('dotenv').config();
 
 //Rota que cria novo pagamento
 router.post('/', autenticarClientes, async (req, res) => {
   const usuarioId = req.usuario.id;
   const pedido = req.body;
-  //console.log('Todos os dados do pedido: ', pedido)
-  //console.log('Id do usuario: ',usuarioId);
-  //console.log('Id do endereço: ',pedido.endereco_id);
 
   //Consulta a tabela enderecos e busca o endereço se o usuario_id for igual ao usuarioId
   const endereco = await dbClientes.promise().query('SELECT * FROM enderecos WHERE id = ? AND usuario_id = ?', [pedido.endereco_id, usuarioId]);
-  //console.log('Endereço do pedido: ',endereco[0][0]);
+
   //Consulta a tabela usuarios e busca dados do usuario
   const usuario = await dbClientes.promise().query('SELECT nome, email, telefone, sobrenome, cpf FROM usuarios WHERE id = ?', [usuarioId]);
-  //console.log('Dados do usuario: ',usuario[0]);
+
   //Consulta a tabela cupons e verifica o desconto
   const cupom = await dbClientes.promise().query('SELECT desconto, ativo FROM cupons WHERE codigo = ?', [pedido.cupom]);
-  //console.log('Cupom: ',cupom[0]);
+
 
   //itera sobre cada produto no pedido.produtos, consulta a tabela produtos e resgata o preco através do id e multiplica pela quantity do produto
   try {
@@ -107,7 +103,7 @@ router.post('/', autenticarClientes, async (req, res) => {
     })
     .then(async result => {
 
-      console.log('Resultado da preferência após gerar um novo pedido: ',result); // Exibe o ID da preferência
+      //console.log('Resultado da preferência após gerar um novo pedido: ',result); // Exibe o ID da preferência
       //Adiciona os dados da venda na tabela pedidos_usuarios
       await dbClientes.promise().query
       ('INSERT INTO pedidos_usuarios (usuario_id, vendedor_id, moeda, valor_venda, valor_frete, status, data_criacao, endereco_id, preference_id, client_id, collector_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)', 
@@ -128,17 +124,13 @@ router.post('/', autenticarClientes, async (req, res) => {
         init_point: result.init_point,
       });
 
-      //console.log("Preferência criada com sucesso:");
-      //console.log(result); // Exibe o ID da preferência
-      console.log('Gerado novo Pedido: ', result.init_point); // Exibe o link da preferência
+      //console.log('Gerado novo Pedido: ', result.init_point); // Exibe o link da preferência
     })
     .catch(error => {
       console.error("Erro ao criar preferência:");
       console.error(error);
     });
 
-
-    //console.log('Telefone: ',telefone);
   } catch (error) {
     console.log(error);
   }
