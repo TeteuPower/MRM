@@ -9,6 +9,7 @@ require('dotenv').config();
 router.post('/notificacao', async (req, res) => {
 try {
     const pagamento = req.body
+    console.log('Notificação do Mercado Pago recebida: ', pagamento);
     const pagamentoId = pagamento.data.id;
 
     try {
