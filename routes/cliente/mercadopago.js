@@ -76,8 +76,9 @@ router.post('/', autenticarClientes, async (req, res) => {
     await dbClientes.promise().query
     ('INSERT INTO pedidos_usuarios (usuario_id, vendedor_id, moeda, valor_venda, valor_frete, status, data_criacao, endereco_id, cupom) VALUES (?,?,?,?,?,?,?,?,?)', 
     [usuarioId, 1, 'BRL', total, 0, 'criando pagamento', new Date(), pedido.endereco_id, pedido.cupom]);
-    const pedidoId = await dbClientes.promise().query('SELECT MAX(id) as id FROM pedidos_usuarios WHERE usuario_id =?', [usuarioId]);
-    console.log('Pedido ID: ', pedidoId[0][0].id);
+    const pedidoIdConsulta = await dbClientes.promise().query('SELECT MAX(id) as id FROM pedidos_usuarios WHERE usuario_id =?', [usuarioId]);
+    const pedidoId = pedidoId[0][0].id;
+    console.log('Pedido ID: ', pedidoId);
 
 
     const client = new MercadoPagoConfig({ accessToken: process.env.ACCESS_TOKEN_MERCADOPAGO });
@@ -111,7 +112,7 @@ router.post('/', autenticarClientes, async (req, res) => {
           pending: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`
         },
         auto_return: 'all',
-        external_reference: pedidoId.id,
+        external_reference: pedidoId,
 
       }
     })
@@ -121,7 +122,7 @@ router.post('/', autenticarClientes, async (req, res) => {
       //Adiciona os dados da venda na tabela pedidos_usuarios
       await dbClientes.promise().query
       ('UPDATE pedidos_usuarios SET status = ?, preference_id = ?, client_id = ?, collector_id = ? WHERE id = ?',
-      ['Aguardando Pagamento', result.init_point, result.client_id, result.collector_id, pedidoId.id]);
+      ['Link de Pagamento gerado', result.init_point, result.client_id, result.collector_id, pedidoId]);
       //const pedidoId = await dbClientes.promise().query('SELECT MAX(id) as id FROM pedidos_usuarios WHERE usuario_id =?', [usuarioId]);
       //console.log('Pedido ID: ', pedidoId[0][0].id);
 
@@ -129,12 +130,12 @@ router.post('/', autenticarClientes, async (req, res) => {
       for (let i = 0; i < pedido.produtos.length; i++) {
         await dbClientes.promise().query
         ('INSERT INTO itens_pedido_usuario (pedido_id, produto_id, quantidade, produto, tipo_rape) VALUES (?,?,?,?,?)', 
-        [pedidoId[0][0].id, pedido.produtos[i].productId, pedido.produtos[i].quantity, 'produto[0][0].nome', 'tipo_rape']);
+        [pedidoId, pedido.produtos[i].productId, pedido.produtos[i].quantity, 'produto[0][0].nome', 'tipo_rape']);
         //console.log('Produto: ', pedido.produtos[i])
       }
       res.status(200).json({
         message: 'Pedido criado com sucesso',
-        pedidoId: pedidoId[0][0].id,
+        pedidoId: pedidoId,
         init_point: result.init_point,
       });
 
