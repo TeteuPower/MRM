@@ -107,7 +107,7 @@ router.post('/', autenticarClientes, async (req, res) => {
     })
     .then(async result => {
 
-      //console.log(result); // Exibe o ID da preferência
+      console.log('Resultado da preferência após gerar um novo pedido: ',result); // Exibe o ID da preferência
       //Adiciona os dados da venda na tabela pedidos_usuarios
       await dbClientes.promise().query
       ('INSERT INTO pedidos_usuarios (usuario_id, vendedor_id, moeda, valor_venda, valor_frete, status, data_criacao, endereco_id, preference_id, client_id, collector_id) VALUES (?,?,?,?,?,?,?,?,?,?,?)', 
