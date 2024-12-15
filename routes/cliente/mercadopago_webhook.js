@@ -35,7 +35,7 @@ try {
         throw new Error("Resposta da API do Mercado Pago incompleta.");
     }
     const status = data.status;
-    const id = data.id;
+    const id = data.external_reference;
     if (!id) {
         console.error("ID do pagamento não encontrado na resposta da API do Mercado Pago:", data);
         throw new Error("ID do pagamento não encontrado na resposta da API do Mercado Pago.");
@@ -43,7 +43,7 @@ try {
 
         try{
             //Atualizando o status do pedido no banco de dados
-            await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE preference_id = ?', [status, id]);
+            await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE id = ?', [status, id]);
         } catch (error) {
             console.error("Erro ao atualizar no DB:", error);
             throw new Error("Erro ao atualizar o status do pedido no banco de dados.");
