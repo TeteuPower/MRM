@@ -12,13 +12,13 @@ router.post('/', autenticarClientes, async (req, res) => {
 
   //Consulta a tabela enderecos e busca o endereço se o usuario_id for igual ao usuarioId
   const endereco = await dbClientes.promise().query('SELECT * FROM enderecos WHERE id = ? AND usuario_id = ?', [pedido.endereco_id, usuarioId]);
-  if (!endereco[0][0].length) {
+  if (!endereco[0].length) {
     return res.status(404).json({ error: 'Endereço de entrega não encontrado.' });
   };
 
   //Consulta a tabela usuarios e busca dados do usuario
   const usuario = await dbClientes.promise().query('SELECT nome, email, telefone, sobrenome, cpf FROM usuarios WHERE id = ?', [usuarioId]);
-  if (!usuario[0][0].length) {
+  if (!usuario[0].length) {
     return res.status(404).json({ error: 'Usuário de entrega não encontrado.' });
   }
 
