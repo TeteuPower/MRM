@@ -29,16 +29,20 @@ try {
 
     const data = await response.json();
     // Verificando se os campos necessários existem na resposta
-    if (!data.status || !data.collector_id) {
+    if (!data.status || !data.id) {
         console.error("Dados incompletos na resposta da API do Mercado Pago:", data);
         throw new Error("Resposta da API do Mercado Pago incompleta.");
     }
     const status = data.status;
-    const collector_id = data.collector_id;
+    const id = data.id;
+    if (!id) {
+        console.error("ID do pagamento não encontrado na resposta da API do Mercado Pago:", data);
+        throw new Error("ID do pagamento não encontrado na resposta da API do Mercado Pago.");
+    }
 
         try{
             //Atualizando o status do pedido no banco de dados
-            await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE collector_id = ?', [status, collector_id]);
+            await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE collector_id = ?', [status, id]);
         } catch (error) {
             console.error("Erro ao atualizar no DB:", error);
             throw new Error("Erro ao atualizar o status do pedido no banco de dados.");

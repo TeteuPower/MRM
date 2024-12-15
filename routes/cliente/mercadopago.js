@@ -103,7 +103,8 @@ router.post('/', autenticarClientes, async (req, res) => {
           success: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`,
           failure: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`,
           pending: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`
-        }
+        },
+        auto_return: 'all',
 
       }
     })
@@ -113,7 +114,7 @@ router.post('/', autenticarClientes, async (req, res) => {
       //Adiciona os dados da venda na tabela pedidos_usuarios
       await dbClientes.promise().query
       ('INSERT INTO pedidos_usuarios (usuario_id, vendedor_id, moeda, valor_venda, valor_frete, status, data_criacao, endereco_id, preference_id, client_id, collector_id, cupom) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)', 
-      [usuarioId, 1, 'BRL', total, 0, 'pendente', new Date(), pedido.endereco_id, result.init_point, result.client_id, result.collector_id, pedido.cupom]);
+      [usuarioId, 1, 'BRL', total, 0, 'pendente', new Date(), pedido.endereco_id, result.init_point, result.id, result.collector_id, pedido.cupom]);
       const pedidoId = await dbClientes.promise().query('SELECT MAX(id) as id FROM pedidos_usuarios WHERE usuario_id =?', [usuarioId]);
       //console.log('Pedido ID: ', pedidoId[0][0].id);
 
