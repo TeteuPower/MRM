@@ -26,29 +26,14 @@ router.post('/notificacao', async (req, res) => {
     //console.log(data);
     console.log('Resultado da consulta feita no payments do mercadopago depois de receber o webhook: ',data);
     const status = data.status;
+    const collector_id = data.collector_id;
     console.log('Status do pagamento: ',status);
     //const id_pedido = data.metadata.id_pedido;
     //console.log(id_pedido);
-    /*if (status == 'approved') {
-        await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE id = ?', ['entregue', id_pedido]);
-    } else if (status == 'in_process') {
-        await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE id = ?', ['pendente', id_pedido]);
-    } else if (status == 'rejected') {
-        await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE id = ?', ['cancelado', id_pedido]);
-    } else if (status == 'in_mediation') {
-        await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE id = ?', ['pendente', id_pedido]);
-    } else if (status == 'in_dispute') {
-        await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE id = ?', ['pendente', id_pedido]);
-    }*/
-    
 
+    //Atualizando o status do pedido no banco de dados
+    await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE collector_id = ?', [status, collector_id]);
 
-
-
-
-
-    //console.log(req.body.id);
-    //const id_pedido = req.body.id;
     //Retornando status de mensagem recebida
     res.status(200).json({ message: 'Mensagem recebida com sucesso!' });
 
