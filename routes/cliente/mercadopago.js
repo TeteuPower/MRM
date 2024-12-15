@@ -105,6 +105,7 @@ router.post('/', autenticarClientes, async (req, res) => {
           pending: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`
         },
         auto_return: 'all',
+        external_reference: 666,
 
       }
     })
