@@ -28,6 +28,7 @@ try {
     }
 
     const data = await response.json();
+    console.log(data);
     // Verificando se os campos necessários existem na resposta
     if (!data.status || !data.id) {
         console.error("Dados incompletos na resposta da API do Mercado Pago:", data);
