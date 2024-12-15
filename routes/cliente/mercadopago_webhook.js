@@ -42,7 +42,7 @@ try {
 
         try{
             //Atualizando o status do pedido no banco de dados
-            await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE collector_id = ?', [status, id]);
+            await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE preference_id = ?', [status, id]);
         } catch (error) {
             console.error("Erro ao atualizar no DB:", error);
             throw new Error("Erro ao atualizar o status do pedido no banco de dados.");
