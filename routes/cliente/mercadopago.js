@@ -77,7 +77,7 @@ router.post('/', autenticarClientes, async (req, res) => {
     ('INSERT INTO pedidos_usuarios (usuario_id, vendedor_id, moeda, valor_venda, valor_frete, status, data_criacao, endereco_id, cupom) VALUES (?,?,?,?,?,?,?,?,?)', 
     [usuarioId, 1, 'BRL', total, 0, 'criando pagamento', new Date(), pedido.endereco_id, pedido.cupom]);
     const pedidoIdConsulta = await dbClientes.promise().query('SELECT MAX(id) as id FROM pedidos_usuarios WHERE usuario_id =?', [usuarioId]);
-    const pedidoId = pedidoId[0][0].id;
+    const pedidoId = pedidoIdConsulta[0][0].id;
     console.log('Pedido ID: ', pedidoId);
 
 
