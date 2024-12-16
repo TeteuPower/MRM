@@ -57,13 +57,39 @@ try {
         console.error("Erro ao processar notificação do Mercado Pago:", error);
         res.status(500).json({ error: 'Erro ao processar notificação do Mercado Pago.' });
     }
-
 } catch (error) {
     console.error("Erro ao processar o webhook:", error);
     res.status(500).json({ error: 'Erro ao processar o webhook.' });
 }
 
 
+});
+
+router.get('/notificacao', autenticarClientes, (req, res) => {
+    try {
+        const pagamento = req.query;
+        const payment_id = pagamento.payment_id;
+        const status = pagamento.status;
+        console.log('Redirecionar cliente: ', 'Pagamento: ', pagamento, 'Status: ', status, 'Payment_id: ', payment_id);
+
+        let redirectUrl;
+
+        if (status === 'approved') {
+            redirectUrl = '/pagamento-aprovado';
+        } else if (status ==='pending'){
+            redirectUrl = `/aguardando-pagamento?payment_id=${payment_id}`;
+        }
+        
+        else {
+            redirectUrl = '/pagamento-rejeitado';
+        }
+
+        res.status(200).json({ redirectUrl }); // Enviando a URL como JSON
+
+    } catch (error) {
+        console.error("Erro no webhook (GET):", error);
+        res.status(500).json({ error: "Erro no processamento." }); // Respondendo com erro em formato JSON
+    }
 });
 
 module.exports = router;

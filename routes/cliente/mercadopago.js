@@ -113,6 +113,7 @@ router.post('/', autenticarClientes, async (req, res) => {
         },
         auto_return: 'all',
         external_reference: pedidoId,
+        notification_url: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`,
 
       }
     })
