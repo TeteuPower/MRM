@@ -174,7 +174,7 @@ async function popularResumo() {
             const listItem = document.createElement('li');
             listItem.innerHTML = `
                 <div class="cart-item">
-                    <img src="${product.imagem || '../img/logo2.png'}" alt="${product.nome}" class="cart-item-image">
+                    <img src="${product.img_url || '../img/logo2.png'}" alt="${product.nome}" class="cart-item-image">
                     <div class="cart-item-info">  
                         <span class="cart-item-name">${product.nome}</span>
                         <span class="cart-item-price">R$ ${formatarValor(parseFloat(product.preco).toFixed(2))}</span>
@@ -319,7 +319,7 @@ function exibirProdutos(products) {
         productItem.innerHTML = `
             <div class="item-wrap bottom-up play-on-scroll">
                 <div class="item-img">
-                    <div class="img-holder bg-img" style="background-image: url(${product.imagem || 'img/logo2.png'});"></div> </div>
+                    <div class="img-holder bg-img" style="background-image: url(${product.img_url || 'img/logo2.png'});"></div> </div>
                 <div class="item-info">
                     <div class="cart-btn" data-product-id="${product.id}">
                         <i class='bx bx-up-arrow-alt increase-btn'></i>

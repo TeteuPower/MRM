@@ -1659,6 +1659,7 @@ body.light .navbar-brand::after{
     max-height: 60px;
     margin-right: 10px;
     object-fit: cover;
+    border-radius: 100px;
   }
   
   .cart-item-info { /* Novo container para nome e preço */

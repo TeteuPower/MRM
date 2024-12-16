@@ -165,10 +165,12 @@ async function updateCartModal() {
             const response = await fetch(`/api/produtos/${item.productId}`);
             const product = await response.json();
 
+            //console.log(product);
+
             const listItem = document.createElement('li');
             listItem.innerHTML = `
                 <div class="cart-item">
-                    <img src="${product.imagem || '../img/logo2.png'}" alt="${product.nome}" class="cart-item-image">
+                    <img src="${product.img_url || '../img/logo2.png'}" alt="${product.nome}" class="cart-item-image">
                     <div class="cart-item-info">  
                         <span class="cart-item-name">${product.nome}</span>
                         <span class="cart-item-price">R$ ${formatarValor(parseFloat(product.preco).toFixed(2))}</span>
