@@ -10,12 +10,13 @@ router.post('/notificacao', async (req, res) => {
 try {
     const pagamento = req.body
     console.log('Notificação recebida do Mercado Pago: ', pagamento);
-    if (!pagamento.data.id) {
-        console.error("Notificação do Mercado Pago não possui ID do pagamento");
-        res.status(200).json({ message: 'Webhook recebido!'});
-        return;
-    };
-    const pagamentoId = pagamento.data.id;
+    
+    const pagamentoId = pagamento.data?.id; // Usando Optional Chaining (?.) para evitar o erro
+
+    if (!pagamentoId) {
+        console.warn("Notificação do Mercado Pago não possui ID do pagamento. Provavelmente, não é uma notificação de pagamento.");
+        return res.status(200).json({ message: 'Webhook recebido (sem ID de pagamento).' }); // Retorna 200 OK, mesmo sem processar
+    }
 
     try {
     //Consultando api do mercado Pago com o id do pagamento para conferir o status https://api.mercadopago.com/v1/payments/${pagamentoId}
@@ -72,7 +73,7 @@ try {
 
 });
 
-router.get('/notificacao', autenticarClientes, (req, res) => {
+router.get('/notificacao', (req, res) => {
     try {
         const pagamento = req.query;
         const payment_id = pagamento.payment_id;
