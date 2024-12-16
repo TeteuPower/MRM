@@ -31,19 +31,11 @@ function exibirProdutos(products) {
         const productItem = document.createElement('div');
         productItem.classList.add('food-item', `${product.categoria}-type`); // Adiciona classes dinamicamente
         let categoria = product.categoria
-        let imagemUrl = '../img/logo2.png';
+        //console.log(product);
+        let imagemUrl = product.img_url;
 
         if (categoria === 'rape') {
             imagemUrl = '../img/img_rape.jpg';
-        }
-        if (categoria === 'couripes') {
-            imagemUrl = '../img/img_jacare_couripe.png';
-        }
-        if (categoria === 'artesanatos') {
-            imagemUrl = '../img/artesanatos.jpg';
-        }
-        if (categoria === 'outros') {
-            imagemUrl = '../img/logo2.png';
         }
 
         // Construção do HTML do produto
