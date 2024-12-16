@@ -30,12 +30,27 @@ function exibirProdutos(products) {
         //console.log(product);
         const productItem = document.createElement('div');
         productItem.classList.add('food-item', `${product.categoria}-type`); // Adiciona classes dinamicamente
+        let categoria = product.categoria
+        let imagemUrl = '../img/logo2.png';
+
+        if (categoria === 'rape') {
+            imagemUrl = '../img/img_rape.jpg';
+        }
+        if (categoria === 'couripes') {
+            imagemUrl = '../img/img_jacare_couripe.png';
+        }
+        if (categoria === 'artesanatos') {
+            imagemUrl = '../img/artesanatos.jpg';
+        }
+        if (categoria === 'outros') {
+            imagemUrl = '../img/logo2.png';
+        }
 
         // Construção do HTML do produto
         productItem.innerHTML = `
             <div class="item-wrap bottom-up play-on-scroll">
                 <div class="item-img">
-                    <div class="img-holder bg-img" style="background-image: url(${product.imagem || 'img/logo2.png'});"></div> </div>
+                    <div class="img-holder bg-img" style="background-image: url(${ imagemUrl || '../img/logo2.png'});"></div> </div>
                 <div class="item-info">
                     <div class="cart-btn" data-product-id="${product.id}">
                         <i class='bx bx-up-arrow-alt increase-btn'></i>
