@@ -31,7 +31,7 @@ router.post('/', autenticarClientes, async (req, res) => {
     let total = 0;
     const produtosParaMercadoPago = [];
     for (let i = 0; i < pedido.produtos.length; i++) {
-      const produto = await dbClientes.promise().query('SELECT preco, nome FROM produtos WHERE id = ?', [pedido.produtos[i].productId]);
+      const produto = await dbClientes.promise().query('SELECT preco, nome FROM produtos_site WHERE id = ?', [pedido.produtos[i].productId]);
       total += produto[0][0].preco * pedido.produtos[i].quantity;
       //console.log('Id do produto: ',pedido.produtos[i].productId,'Quantidade: ', pedido.produtos[i].quantity,'Preço: ', produto[0][0].preco);
       //console.log(produto[0][0].nome);
