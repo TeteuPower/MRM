@@ -164,13 +164,20 @@ async function updateCartModal() {
             //console.log( item.productId );
             const response = await fetch(`/api/produtos/${item.productId}`);
             const product = await response.json();
+            let categoria = product.categoria
+            //console.log(product);
+            let imagemUrl = product.img_url;
+    
+            if (categoria === 'rape') {
+                imagemUrl = '../img/img_rape.jpg';
+            }
 
             //console.log(product);
 
             const listItem = document.createElement('li');
             listItem.innerHTML = `
                 <div class="cart-item">
-                    <img src="${product.img_url || '../img/logo2.png'}" alt="${product.nome}" class="cart-item-image">
+                    <img src="${imagemUrl || '../img/logo2.png'}" alt="${product.nome}" class="cart-item-image">
                     <div class="cart-item-info">  
                         <span class="cart-item-name">${product.nome}</span>
                         <span class="cart-item-price">R$ ${formatarValor(parseFloat(product.preco).toFixed(2))}</span>

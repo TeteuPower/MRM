@@ -170,11 +170,18 @@ async function popularResumo() {
             //console.log( item.productId, index );
             const response = await fetch(`/api/produtos/${item.productId}`);
             const product = await response.json();
+            let categoria = product.categoria
+            //console.log(product);
+            let imagemUrl = product.img_url;
+    
+            if (categoria === 'rape') {
+                imagemUrl = '../img/img_rape.jpg';
+            }
 
             const listItem = document.createElement('li');
             listItem.innerHTML = `
                 <div class="cart-item">
-                    <img src="${product.img_url || '../img/logo2.png'}" alt="${product.nome}" class="cart-item-image">
+                    <img src="${imagemUrl || '../img/logo2.png'}" alt="${product.nome}" class="cart-item-image">
                     <div class="cart-item-info">  
                         <span class="cart-item-name">${product.nome}</span>
                         <span class="cart-item-price">R$ ${formatarValor(parseFloat(product.preco).toFixed(2))}</span>
@@ -314,12 +321,19 @@ function exibirProdutos(products) {
         //console.log(product);
         const productItem = document.createElement('div');
         productItem.classList.add('food-item', `${product.categoria}-type`); // Adiciona classes dinamicamente
+        let categoria = product.categoria
+        //console.log(product);
+        let imagemUrl = product.img_url;
+
+        if (categoria === 'rape') {
+            imagemUrl = '../img/img_rape.jpg';
+        }
 
         // Construção do HTML do produto
         productItem.innerHTML = `
             <div class="item-wrap bottom-up play-on-scroll">
                 <div class="item-img">
-                    <div class="img-holder bg-img" style="background-image: url(${product.img_url || 'img/logo2.png'});"></div> </div>
+                    <div class="img-holder bg-img" style="background-image: url(${imagemUrl || 'img/logo2.png'});"></div> </div>
                 <div class="item-info">
                     <div class="cart-btn" data-product-id="${product.id}">
                         <i class='bx bx-up-arrow-alt increase-btn'></i>
