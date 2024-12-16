@@ -73,26 +73,51 @@ try {
 
 });
 
-router.get('/notificacao', (req, res) => {
+router.get('/notificacao', async (req, res) => {
     try {
         const pagamento = req.query;
         const payment_id = pagamento.payment_id;
-        const status = pagamento.status;
-        console.log('Redirecionar cliente: ', 'Pagamento: ', pagamento, 'Status: ', status, 'Payment_id: ', payment_id);
+        //console.log('Redirecionar cliente: ', 'Pagamento: ', pagamento, 'Payment_id: ', payment_id);
+        try {
+            //Consultando api do mercado Pago com o id do pagamento para conferir o status https://api.mercadopago.com/v1/payments/${pagamentoId}
+            const response = fetch(`https://api.mercadopago.com/v1/payments/${payment_id}`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${process.env.ACCESS_TOKEN_MERCADOPAGO}`
+                }
+            });
+            // Verificando o status da resposta da API do Mercado Pago
+            if (!response.ok) {
+                const errorData = await response.json(); // Tenta obter detalhes do erro da resposta
+                console.error("Erro ao consultar a API do Mercado Pago:", response.status, errorData);
+                throw new Error(`Erro na API do Mercado Pago: ${response.status}`);
+            }
 
-        let redirectUrl;
+            const data = await response.json();
+            const status = data.status;
+            const id = data.external_reference;
+            console.log('AAAAAA')
 
-        if (status === 'approved') {
-            redirectUrl = '/pagamento-aprovado';
-        } else if (status ==='pending'){
-            redirectUrl = `/aguardando-pagamento?payment_id=${payment_id}`;
+            let redirectUrl;
+
+            if (status === 'approved') {
+                redirectUrl = '/pagamento-aprovado';
+            } else if (status ==='pending'){
+                redirectUrl = `/aguardando-pagamento?payment_id=${payment_id}`;
+            }
+            
+            else {
+                redirectUrl = '/pagamento-rejeitado';
+            }
+
+            res.status(200).json({ redirectUrl }); // Enviando a URL como JSON
+
         }
-        
-        else {
-            redirectUrl = '/pagamento-rejeitado';
+        catch (error) {
+            console.error("Erro ao processar notificação do Mercado Pago:", error);
+            res.status(500).json({ error: 'Erro ao processar notificação do Mercado Pago.' });
         }
 
-        res.status(200).json({ redirectUrl }); // Enviando a URL como JSON
 
     } catch (error) {
         console.error("Erro no webhook (GET):", error);

@@ -198,6 +198,21 @@ app.get('/boas-vindas', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'confirmacao_email.html'));
 });
 
+//Rota de pagamento bem sucedido
+app.get('/sucesso', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'pagamento_success.html'));
+});
+
+//Rota de pagamento pendente
+app.get('/pendente', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'pagamento_pending.html'));
+});
+
+//Rota de pagamento falhou
+app.get('/falhou', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'pagamento_failure.html'));
+});
+
 
 
 module.exports = {

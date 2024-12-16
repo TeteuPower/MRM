@@ -107,9 +107,9 @@ router.post('/', autenticarClientes, async (req, res) => {
           street_number: endereco[0][0].numero
         },
         back_urls: { // Adicionando URLs de retorno (importantes!)
-          success: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`,
-          failure: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`,
-          pending: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`
+          success: `${process.env.API_URL}/sucesso`,
+          failure: `${process.env.API_URL}/falhou`,
+          pending: `${process.env.API_URL}/pendente`
         },
         auto_return: 'all',
         external_reference: pedidoId,
