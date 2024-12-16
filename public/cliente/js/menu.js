@@ -2,7 +2,6 @@ verificarAutenticacao();
 popularMenu();
 carregarProdutos();
 popularEnderecos();
-alert('Use o cupom "inauguracao" e garanta 50% de desconto!');
 
 //Inicia depois no dom
 window.addEventListener('DOMContentLoaded', () => {
@@ -267,7 +266,8 @@ function incrementQuantity(productId) {
     if (item) {
         item.quantity++;
         localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartModal();
+        popularResumo();
+        //updateCartModal();
     }
 }
 function decrementQuantity(productId) {
@@ -276,14 +276,16 @@ function decrementQuantity(productId) {
     if (item && parseInt(item.quantity) > 1) {
         item.quantity--;
         localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartModal();
+        popularResumo()
+        //updateCartModal();
     }
     //Se quantidade for igual a 1 exclui o produto do carrinho
     else if (item && parseInt(item.quantity) === 1) {
         //console.log(item.productId);
         cart.splice(cart.indexOf(item), 1);
         localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartModal();
+        popularResumo()
+        //updateCartModal();
     }
 }
 
@@ -464,10 +466,10 @@ function popularEnderecos() {
                  const botaoExcluir = event.target.parentNode;
                 const enderecoId = botaoExcluir.dataset.id;
                 excluirEndereco(enderecoId);
-            } else if (event.target.classList.contains("botao-excluir")) { // Clica no botão
+            } /*else if (event.target.classList.contains("botao-excluir")) { // Clica no botão
                 const enderecoId = event.target.dataset.id;
                 excluirEndereco(enderecoId);
-            }
+            }*/
         });
 
         // Seleciona endereço quando clicado
@@ -625,7 +627,7 @@ function confirmarDados() {
         //Remove a classe "mostrar" do endereco-container
         const enderecoContainer = document.getElementById('endereco-container');
         enderecoContainer.classList.remove('mostrar');
-        //console.log(data);
+        //console.log('Id do endereço: ',data.id);
         //alert('Novo endereço adicionado com sucesso!');
         //bloqueia todos os campos de dados
         nomeEnderecoInput.disabled = true;
@@ -642,7 +644,25 @@ function confirmarDados() {
         //Um atraso de meio segundo para iniciar a função de popular enderecos
         setTimeout(() => {
             popularEnderecos();
-        }, 500);
+
+            //Movendo a tela para a div botoes-expandir
+            const botoesExpandir = document.getElementById('telefone');
+            botoesExpandir.scrollIntoView({ behavior: 'smooth' });
+            
+
+            setTimeout(() => {
+                //Abrindo endereços salvos
+                const enderecoContainerSalvos = document.getElementById('enderecos-salvos');
+                enderecoContainerSalvos.classList.add('mostrar');
+                setTimeout(() => {
+                    //Clicando no endereço com data.id
+                    const enderecoDiv = document.querySelector(`.input-group-enderecos[data-id="${data.id}"]`);
+                    enderecoDiv.click();
+                }, 200);
+            }, 1000);
+            
+        }, 100);
+
     })
     .catch(error => {
         console.error('Erro ao atualizar endereço:', error);
@@ -804,3 +824,4 @@ function finalizarPedido() {
 
 //Atribuindo evento listener ao botão
 document.getElementById('btn-enviar').addEventListener('click', finalizarPedido);
+alert('Use o cupom "inauguracao" e garanta 50% de desconto!');

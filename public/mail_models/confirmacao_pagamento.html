@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <title>Espírito do Nativo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+  <style>
+    body {
+      width: 100%;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+      background-color: #F6F6F6;
+      font-family: 'Kanit', sans-serif;
+    }
+    .container {
+      width: 600px;
+      max-width: 100%;
+      margin: 0 auto;
+      background-color: #F6F3EB;
+    }
+    .content {
+      padding: 20px;
+      background-color: #4f9c0b;
+      background-image: url('https://epzbxxn.stripocdn.email/content/guids/CABINET_f4f8be13dd07ed085a349f5fd969d18a/images/group_32_Dyn.png');
+      background-repeat: no-repeat;
+      background-position: center bottom;
+      background-size: contain; /* Para a imagem não cortar em telas menores*/
+    }
+    h1 {
+      font-size: 50px;
+      font-weight: bold;
+      line-height: 60px;
+      color: #F6F3EB;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    h3 {
+      font-size: 20px;
+      color: #F6F3EB;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    h3 a {
+      color: #02604D;
+      text-decoration: underline;
+    }
+    p {
+      font-size: 14px;
+      color: #ffffff;
+      line-height: 21px;
+      text-align: center;
+      margin-bottom: 30px;
+      font-family: helvetica, 'helvetica neue', arial, verdana, sans-serif;
+
+    }
+    .button-wrapper {
+      text-align: center;
+      width: 100%;
+      margin: 0 auto;
+    }
+    .button {
+      display: inline-block;
+      background-color: #02604D;
+      color: #F6F3EB;
+      font-size: 20px;
+      font-weight: bold;
+      padding: 10px 30px;
+      border-radius: 15px;
+      text-decoration: none;
+      margin-bottom: 35px;
+      /* ALinhar botão no centro */
+      align-items: center;
+      justify-content: center;
+    }
+    .menu {
+      text-align: center;
+      padding: 10px 0;
+    }
+    .menu a {
+      display: inline-block;
+      color: #000000;
+      font-size: 12px;
+      text-decoration: none;
+      padding: 0 5px;
+    }
+    .menu a:not(:first-child) {
+      border-left: 1px solid #999;
+    }
+    .social {
+      text-align: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      
+    }
+
+    .social a {
+        margin: 0 10px; /* Adjust as needed */
+    }
+
+    .social img {
+      width: 24px;
+      height: 24px;
+      display: inline-block; /* Remove extra space below images */
+      vertical-align: middle; /* Align images vertically */
+    }
+
+    @media only screen and (max-width: 600px) {
+        .container {width: 95%}
+        h1 { font-size: 30px; line-height: 36px; margin-bottom: 20px; }
+        h3 { font-size: 18px;  margin-bottom: 15px;}
+        p { font-size: 16px; line-height: 24px; margin-bottom: 20px; }
+        .button { font-size: 18px; padding: 8px 20px; margin-bottom: 25px; }
+        .menu a { font-size: 14px; padding: 5px;}
+         .content {
+            background-size: cover; /* Imagem cobre todo o fundo */
+         }
+
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <img src="https://epzbxxn.stripocdn.email/content/guids/CABINET_0ccdaaa2988711529378bd502328f495e71e43db2fee6325b7d881c3f6890f3b/images/logo2.png" alt="Logo" height="100" style="display: block; margin: 20px auto 10px;">
+    <div class="content">
+      <h1>Pagamento Confirmado!</h1>
+      <p>Recebemos o seu pagamento referente ao pedido Nº: {{pedido}}. Obrigado(a) por comprar conosco!</p>
+      <p>Seu código de rastreio dos correios será enviado para esse e-mail nos próximos dias!</p>
+      <p>Para acompanhar o status do seu pedido, clique no botão abaixo</p>
+      <p>Em caso de dúvidas, não hesite em entrar em contato conosco, estamos dispostos a ajudá-lo através dos canais abaixo e do 
+        whatsapp: (11) 9 9309-7553
+      </p>
+      <a href="{{orderLink}}" class="button">Visualizar Pedido</a>
+    </div>
+     <div class="menu">
+      <a href="https://espiritodonativo.com.br/">SOBRE NÓS</a>
+      <a href="https://espiritodonativo.com.br/">REVENDEDOR</a>
+      <a href="https://espiritodonativo.com.br/">E-COMMERCE</a>
+      <a href="https://espiritodonativo.com.br/">CONTATO</a>
+    </div>
+    <div class="social">
+      <a href="https://espiritodonativo.com.br/"><img src="https://epzbxxn.stripocdn.email/content/assets/img/social-icons/logo-colored/facebook-logo-colored.png" alt="Facebook"></a>
+      <a href="https://espiritodonativo.com.br/"><img src="https://epzbxxn.stripocdn.email/content/assets/img/social-icons/logo-colored/x-logo-colored.png" alt="X"></a>
+      <a href="https://espiritodonativo.com.br/"><img src="https://epzbxxn.stripocdn.email/content/assets/img/social-icons/logo-colored/instagram-logo-colored.png" alt="Instagram"></a>
+      <a href="https://espiritodonativo.com.br/"><img src="https://epzbxxn.stripocdn.email/content/assets/img/social-icons/logo-colored/youtube-logo-colored.png" alt="Youtube"></a>
+    </div>
+  </div>
+</body>
+</html>
