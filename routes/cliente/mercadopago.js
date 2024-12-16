@@ -78,7 +78,7 @@ router.post('/', autenticarClientes, async (req, res) => {
     [usuarioId, 1, 'BRL', total, 0, 'criando pagamento', new Date(), pedido.endereco_id, pedido.cupom]);
     const pedidoIdConsulta = await dbClientes.promise().query('SELECT MAX(id) as id FROM pedidos_usuarios WHERE usuario_id =?', [usuarioId]);
     const pedidoId = pedidoIdConsulta[0][0].id;
-    console.log('Pedido ID: ', pedidoId);
+    console.log('Novo Pedido Gerado ID: ', pedidoId);
 
 
     const client = new MercadoPagoConfig({ accessToken: process.env.ACCESS_TOKEN_MERCADOPAGO });
@@ -119,7 +119,7 @@ router.post('/', autenticarClientes, async (req, res) => {
     })
     .then(async result => {
 
-      console.log('Resultado da preferência após gerar um novo pedido: ', result);
+      console.log('Preferência gerada para o novo pedido: ', result.init_point);
       //Adiciona os dados da venda na tabela pedidos_usuarios
       await dbClientes.promise().query
       ('UPDATE pedidos_usuarios SET status = ?, preference_id = ?, client_id = ?, collector_id = ? WHERE id = ?',

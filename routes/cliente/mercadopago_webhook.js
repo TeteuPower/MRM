@@ -9,7 +9,12 @@ require('dotenv').config();
 router.post('/notificacao', async (req, res) => {
 try {
     const pagamento = req.body
-    console.log('Notificação do Mercado Pago recebida: ', pagamento);
+    console.log('Notificação recebida do Mercado Pago: ', pagamento);
+    if (!pagamento.data.id) {
+        console.error("Notificação do Mercado Pago não possui ID do pagamento");
+        res.status(200).json({ message: 'Webhook recebido!'});
+        return;
+    };
     const pagamentoId = pagamento.data.id;
 
     try {
@@ -28,7 +33,7 @@ try {
     }
 
     const data = await response.json();
-    console.log(data);
+    //console.log(data);
     // Verificando se os campos necessários existem na resposta
     if (!data.status || !data.id) {
         console.error("Dados incompletos na resposta da API do Mercado Pago:", data);
@@ -48,6 +53,8 @@ try {
             console.error("Erro ao atualizar no DB:", error);
             throw new Error("Erro ao atualizar o status do pedido no banco de dados.");
         }
+
+    console.log(`Pedido Nº${id} alterou status de pagamento para ${status}`);
 
 
     //Retornando status de mensagem recebida
