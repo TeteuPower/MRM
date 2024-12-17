@@ -31,7 +31,7 @@ a {
 body {
     background-color: #17b31f;
     /*background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/1462889/pat-back.svg');*/
-    background-image: url('../img/logo2.png'); /* Caminho para a imagem da logo */
+    background-image: url('https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/logo2.webp?alt=media&token=6016a6bf-968a-4919-973b-bce5f2b21ba0'); /* Caminho para a imagem da logo */
     background-position: center;
     background-repeat: repeat;
     scroll-behavior: smooth;

@@ -43,7 +43,7 @@ function exibirProdutos(products) {
         productItem.innerHTML = `
             <div class="item-wrap bottom-up play-on-scroll">
                 <div class="item-img">
-                    <div class="img-holder bg-img" style="background-image: url(${ imagemUrl || '../img/logo2.png'});"></div> </div>
+                    <div class="img-holder bg-img" style="background-image: url(${ imagemUrl || 'https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/logo2.webp?alt=media&token=6016a6bf-968a-4919-973b-bce5f2b21ba0'});"></div> </div>
                 <div class="item-info">
                     <div class="cart-btn" data-product-id="${product.id}">
                         <i class='bx bx-up-arrow-alt increase-btn'></i>
@@ -182,7 +182,7 @@ async function updateCartModal() {
             const listItem = document.createElement('li');
             listItem.innerHTML = `
                 <div class="cart-item">
-                    <img src="${imagemUrl || '../img/logo2.png'}" alt="${product.nome}" class="cart-item-image">
+                    <img src="${imagemUrl || 'https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/logo2.webp?alt=media&token=6016a6bf-968a-4919-973b-bce5f2b21ba0'}" alt="${product.nome}" class="cart-item-image">
                     <div class="cart-item-info">  
                         <span class="cart-item-name">${product.nome}</span>
                         <span class="cart-item-price">R$ ${formatarValor(parseFloat(product.preco).toFixed(2))}</span>

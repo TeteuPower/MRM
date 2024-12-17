@@ -158,7 +158,7 @@ function exibirProdutos(products) {
         productItem.innerHTML = `
             <div class="item-wrap bottom-up play-on-scroll">
                 <div class="item-img">
-                    <div class="img-holder bg-img" style="background-image: url(${product.imagem || 'img/logo2.png'});"></div> </div>
+                    <div class="img-holder bg-img" style="background-image: url(${product.imagem || 'https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/logo2.webp?alt=media&token=6016a6bf-968a-4919-973b-bce5f2b21ba0'});"></div> </div>
                 <div class="item-info">
                     <div>
                         <h3>${product.nome}</h3>
