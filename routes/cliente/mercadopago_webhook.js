@@ -98,7 +98,8 @@ try {
     //Retornando status de mensagem recebida
     res.status(200).json({ message: 'Webhook recebido com sucesso!' });
 
-        //Enviando email de pagamento recebido
+    //Enviando email de pagamento recebido quando status de pagamento for "approved"
+    if (status === 'approved') {
         try {
             const sql = 'SELECT email FROM usuarios WHERE id = ?';
             const [result] = await dbClientes.promise().query(sql, [usuarioId]);
@@ -116,12 +117,11 @@ try {
             if (!response.ok) {
                 throw new Error('Erro ao enviar email de confirmação de pagamento.');
             }
-            console.log('Email de pagamento recebido enviado com sucesso!');
         } catch (error) {
             console.error('Erro ao enviar email de pagamento recebido:', error);
             throw new Error('Erro ao enviar email de pagamento recebido.');
         }
-
+    }
     } catch (error) {
         console.error("Erro ao processar notificação do Mercado Pago:", error);
         res.status(500).json({ error: 'Erro ao processar notificação do Mercado Pago.' });
