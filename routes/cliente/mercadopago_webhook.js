@@ -9,14 +9,15 @@ require('dotenv').config();
 router.post('/notificacao', async (req, res) => {
 try {
     const pagamento = req.body
-    console.log('Notificação recebida do Mercado Pago: ', pagamento);
     
     const pagamentoId = pagamento.data?.id; // Usando Optional Chaining (?.) para evitar o erro
 
     if (!pagamentoId) {
-        console.warn("Notificação do Mercado Pago não possui ID do pagamento. Provavelmente, não é uma notificação de pagamento.");
+        console.warn("Recebido notificação do Mercado Pago sem ID de pagamento.");
         return res.status(200).json({ message: 'Webhook recebido (sem ID de pagamento).' }); // Retorna 200 OK, mesmo sem processar
-    }
+    } else {
+        console.log(`Notificação '${pagamento.action}' recebida do pagamento '${pagamentoId}'.`);
+    };
 
     try {
     //Consultando api do mercado Pago com o id do pagamento para conferir o status https://api.mercadopago.com/v1/payments/${pagamentoId}
@@ -53,6 +54,37 @@ try {
         } catch (error) {
             console.error("Erro ao atualizar no DB:", error);
             throw new Error("Erro ao atualizar o status do pedido no banco de dados.");
+        }
+
+        //Capturando itens do pedido no banco de dados
+        try {
+            //console.log('Id do pedido: ', id);
+            dbClientes.promise().query('SELECT * FROM itens_pedido_usuario WHERE pedido_id = ?', [id])
+            .then(async ([rows, fields]) => {
+                const itensDoPedido = rows;
+                //console.log(itensDoPedido);
+                //Atualizando quantidade do produto no estoque
+                for (let i = 0; i < itensDoPedido.length; i++) {
+                    await dbClientes.promise().query('UPDATE produtos_site SET quantidade = quantidade - ? WHERE id = ?',
+                        [itensDoPedido[i].quantidade, itensDoPedido[i].produto_id]);
+
+                    //Verificando a quantidade do produto
+                    const produto = await dbClientes.promise().query('SELECT quantidade FROM produtos_site WHERE id =?', [itensDoPedido[i].produto_id]);
+                    //console.log('Quantidade do produto:', produto[0][0].quantidade);
+
+                    //Desativando o produto se a quantidade for igual ou menor a 0
+                    if (produto[0][0].quantidade <= 0) {
+                        await dbClientes.promise().query('UPDATE produtos_site SET status = 0 WHERE id =?', [itensDoPedido[i].produto_id]);
+                        console.log(`Produto id: ${itensDoPedido[i].produto_id} desativado`);
+                    }
+                }
+            })
+            .catch(err => {
+                console.error('Erro ao buscar itens do pedido:', err);
+            });
+        } catch (error) {
+            console.error("Erro ao atualizar no DB:", error);
+            throw new Error("Erro ao atualizar a quantidade do produto no estoque.");
         }
 
     console.log(`Pedido Nº${id} alterou status de pagamento para ${status}`);
