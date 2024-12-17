@@ -78,7 +78,12 @@ router.post('/', autenticarClientes, async (req, res) => {
     [usuarioId, 1, 'BRL', total, 0, 'criando pagamento', new Date(), pedido.endereco_id, pedido.cupom]);
     const pedidoIdConsulta = await dbClientes.promise().query('SELECT MAX(id) as id FROM pedidos_usuarios WHERE usuario_id =?', [usuarioId]);
     const pedidoId = pedidoIdConsulta[0][0].id;
-    console.log('Novo pedido cadastrado no DB, ID: ', pedidoId);
+    console.log(`Novo pedido cadastrado. Usuário ID: ${usuarioId} Pedido ID: ${pedidoId}`);
+    const externalReference = JSON.stringify({ 
+      pedidoId: pedidoId,
+      usuarioId: usuarioId,
+      valor: total,
+    });
 
 
     const client = new MercadoPagoConfig({ accessToken: process.env.ACCESS_TOKEN_MERCADOPAGO });
@@ -112,7 +117,7 @@ router.post('/', autenticarClientes, async (req, res) => {
           pending: `${process.env.API_URL}/pendente`
         },
         auto_return: 'all',
-        external_reference: pedidoId,
+        external_reference: externalReference,
         notification_url: `${process.env.API_URL}/api/webhook/mercadopago/notificacao`,
 
       }

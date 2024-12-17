@@ -268,6 +268,8 @@ app.use('/api/mail-recover', require('./src/controllers/sendgrid_pass_rec'));
 app.use('/api/mercadopago', autenticarClientes, require('./routes/cliente/mercadopago.js'));
 // Rota que recebe notificações do MercadoPago
 app.use('/api/webhook/mercadopago', require('./routes/cliente/mercadopago_webhook.js'));
+// Rota que envia email de novo pagamento
+app.use('/api/email-pagamento-confirmado', require('./src/controllers/sendgrid_pagamento_confirmado'));
 
 
 // Rota para login do administrador (gera o token)

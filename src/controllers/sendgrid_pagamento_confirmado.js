@@ -17,12 +17,13 @@ try {
 }
 
 const sendMail = async (req, res) => {
-    const { email, pedidoId } = req.body;
+    const { email, pedidoId, pedidoValor } = req.body;
 
-    const apiUrl = process.env.API_URL;
-
-    const confirmationLink = `${apiUrl}/recuperar-senha?token=${token}`;
-    const html = emailTemplate.replaceAll('{{confirmationLink}}', confirmationLink); // Substitui o placeholder
+    const numeroPedido = pedidoId;
+    const valorPedido = pedidoValor;
+    const html = emailTemplate
+    .replaceAll('{{pedidoId}}', numeroPedido)
+    .replaceAll('{{pedidoValor}}', valorPedido);
 
     if (!email || !validator.isEmail(email)) {
         return res.status(400).json({ message: 'Endereço de email inválido.' });
@@ -32,7 +33,7 @@ const sendMail = async (req, res) => {
 
     try {
         await sendGrid(email, subject, html);
-        return res.status(200).json({ message: 'Email de confirmação enviado com sucesso!' }); // status 200 para sucesso.
+        return res.status(200).json({ message: 'Email de confirmação de pagamento enviado com sucesso!' }); // status 200 para sucesso.
     } catch (error) {
         console.error("Erro ao enviar email:", error);
         return res.status(500).json({ message: 'Erro ao enviar email. Por favor, tente novamente mais tarde.' });

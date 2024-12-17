@@ -172,6 +172,31 @@ router.post('/redefinir-senha', async (req, res) => {
     }
 });
 
+// Rota que envia email de pagamento confirmado
+router.post('/pagamento-confirmado', async (req, res) => {
+    const { email, pedidoId, pedidoValor } = req.body;
+
+    try {
+        const apiUrl = process.env.API_URL;
+        // Envia o email e o token para api de enviar email
+        const response = await fetch(`${apiUrl}/api/email-pagamento-confirmado`, {
+
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ email, pedidoId, pedidoValor })
+        });
+        if (!response.ok) {
+            throw new Error('Erro ao enviar email de confirmação de pagamento.');
+        }
+        res.json({ message: 'Email de confirmação de pagamento enviado com sucesso!' });
+    } catch (error) {
+        console.error('Erro ao enviar email de redefinição de senha:', error);
+        res.status(500).json({ error: 'Erro ao enviar email de redefinição de senha.' });
+    }
+});
+
 // Rota para redefinir a senha ( https://espiritodonativo.com.br/api/usuarios/mudar-senha/?token=${token})
 router.post('/mudar-senha', async (req, res) => {
     const { token, senha } = req.body;
