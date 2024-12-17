@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Espirito do Nativo </title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="../css/menu.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YQ7TZHLVQY"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-YQ7TZHLVQY');
+    </script>
+</head>
+
+<body>
+    <!-- MOBILE NAV -->
+    <div class="mb-nav" style="display: none;">
+        <div class="mb-move-item"></div>
+        <div class="mb-nav-item active">
+            <a href="#home">
+                <i class="bx bxs-home"></i>
+                <p>Compras</p>
+            </a>
+        </div>
+        <div class="mb-nav-item">
+            <a href="#about">
+                <i class='bx bxs-wink-smile'></i>
+                <p>Seja Parceiro</p>
+            </a>
+        </div>
+        <div class="mb-nav-item">
+            <a href="#E-Commerce">
+                <i class='bx bxs-store'></i>
+                <p>Loja</p>
+            </a>
+        </div>
+        <div class="mb-nav-item">
+            <a href="#testimonial">
+                <i class='bx bxs-book-alt'></i>
+                <p>Configurações</p>
+            </a>
+        </div>
+    </div>
+    <!-- END MOBILE NAV -->
+    <!-- BACK TO TOP BTN 
+    <a href="#home" class="back-to-top">
+        <i class="bx bxs-to-top"></i>
+    </a> -->								
+	<div class="progress-wrap">
+        <i class='bx bx-up-arrow-alt'></i>
+		<svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+			<path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"/>
+		</svg>
+	</div>
+    <!-- END BACK TO TOP BTN -->
+    <!-- TOP NAVIGATION -->
+    <div class="nav">
+        <div class="menu-wrap">
+            <a href="#home">
+                <div class="logo zoom play-on-scroll" id="nome-usuario">
+                    <!--<p class="logo left-to-right play-on-scroll" id="nome-usuario"></p>-->
+                </div>
+            </a>
+            <div class="menu h-xs">
+                <a href="#home">
+                    <div class="menu-item active">
+                        Compras
+                    </div>
+                </a>
+                <a href="#about">
+                    <div class="menu-item">
+                        Parceiro
+                    </div>
+                </a>
+                <a href="#E-Commerce">
+                    <div class="menu-item">
+                        Loja
+                    </div>
+                </a>
+                <a href="#testimonial">
+                    <div class="menu-item">
+                        Configurações
+                    </div>
+                </a>
+            </div>
+            <div class="right-menu">
+                <div class="cart-btn">
+                    <a href="/">
+                        <i class='bx bx-home left-to-right play-on-scroll'></i>
+                    </a>
+                </div>
+                <div class="adm-btn">
+                    <a href="#" id="logout-btn">
+                        <i class='bx bx-exit left-to-right play-on-scroll'></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END TOP NAVIGATION -->
+    <!-- SECTION HOME -->
+    <section id="home" class="fullheight-slogan align-items-center bg-img bg-img-fixed">
+        <div class="container">
+            <div class="row-slogan">
+                <div class="col-6 col-xs-12">
+                    <div class="slogan">
+                        <div>
+                            <h1 class="left-to-right play-on-scroll" id="h1-slogan">
+                            Carrinho!<br><i class='bx bx-cart-alt'></i>
+                            </h1>
+                            <p class="left-to-right play-on-scroll delay-2" style="color: white;" id="p-slogan">
+                                Parece que o seu carrinho está vazio!
+                            </p>
+                        </div>
+                        <div class="left-to-right play-on-scroll" id="carrinho">
+                        </div>
+                        <div class="left-to-right play-on-scroll" id="div-btn-slogan">
+                        </div>
+                        <button class="btn-slogan left-to-right play-on-scroll" id="btn-slogan">
+                            Clique aqui e conheça nossos produtos!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="carrinho-dinamico" id="carrinho-dinamico">
+            <!-- CARRINHO INSERIDO AQUI VIA JS -->
+
+
+
+
+
+
+            <div class="fullheight-dinamico align-items-center-menu2 bg-img bg-img-fixed">
+
+                <h1 class="left-to-right play-on-scroll">
+                    Finalize sua compra!<i class='bx bx-cart-alt right-to-left play-on-scroll'></i>
+                </h1>
+                <div class="divisoria-tela">
+    
+                    <section class="formulario left-to-right play-on-scroll">
+                        <h3 class="left-to-right play-on-scroll">
+                        Contato
+                        </h3>
+                        <div>
+                            <div class="input-group left-to-right play-on-scroll">
+                                <label for="email">Email*:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+    
+                            <div class="nome-completo left-to-right play-on-scroll">
+                                <div class="input-group">
+                                    <label for="nome">Nome*:</label>
+                                    <input type="text" id="nome" name="nome" required>
+                                </div>
+                                <div class="input-group">
+                                    <label for="sobrenome">Sobrenome*:</label>
+                                    <input type="text" id="sobrenome" name="sobrenome" required>
+                                </div>
+                            </div>
+    
+                            <div class="input-group left-to-right play-on-scroll">
+                                <label for="telefone">Telefone*:</label>
+                                <input type="tel" id="telefone" name="telefone" required>
+                            </div>
+    
+                            <div class="input-group left-to-right play-on-scroll">
+                                <label for="cpf">CPF*:</label>
+                                <input type="text" id="cpf" name="cpf" required maxlength="14">
+                            </div>
+                            <div class="botoes-expandir">
+                                <button id="toggle-endereco" class="input-group left-to-right play-on-scroll">
+                                    <i class='bx bx-down-arrow-alt left-to-right play-on-scroll'></i>Novo endereço
+                                </button>
+                                
+                                <button id="toggle-endereco-salvo" class="input-group left-to-right play-on-scroll">
+                                    Endereços salvos<i class='bx bx-down-arrow-alt left-to-right play-on-scroll'></i>
+                                </button>
+                            </div>
+                            <div id="endereco-container">
+                                <div class="conteudo-endereco">
+                                    <h3 class="left-to-right play-on-scroll">
+                                        Endereço
+                                    </h3>
+            
+                                    <div class="input-group left-to-right play-on-scroll">
+                                        <label for="nome-endereco">Apelido:</label>
+                                        <input type="text" id="nome-endereco" name="nome-endereco">
+                                    </div>
+            
+                                    <div class="input-group left-to-right play-on-scroll">
+                                        <label for="cep">CEP*:</label>
+                                        <input type="number" id="cep" name="cep" required>
+                                    </div>
+            
+                                    <div class="input-group left-to-right play-on-scroll">
+                                        <label for="endereco">Endereço*:</label>
+                                        <input type="text" id="endereco" name="endereco" required>
+                                    </div>
+            
+                                    <div class="input-group left-to-right play-on-scroll">
+                                        <label for="numero">N°*:</label>
+                                        <input type="text" id="numero" name="numero" required>
+                                    </div>
+
+                                    <div class="input-group left-to-right play-on-scroll">
+                                        <label for="complemento">Complemento:</label>
+                                        <input type="text" id="complemento" name="complemento">
+                                    </div>
+            
+                                    <div class="input-group left-to-right play-on-scroll">
+                                        <label for="bairro">Bairro*:</label>
+                                        <input type="text" id="bairro" name="bairro" required>
+                                    </div>
+            
+                                    <div class="input-group left-to-right play-on-scroll">
+                                        <label for="cidade">Cidade*:</label>
+                                        <input type="text" id="cidade" name="cidade" required>
+                                    </div>
+            
+                                    <div class="input-group left-to-right play-on-scroll">
+                                        <label for="estado">Estado*:</label>
+                                        <select id="estado" name="estado" required>
+                                            <option value="">Selecione um estado</option>
+                                            <option value="AC">Acre</option>
+                                            <option value="AL">Alagoas</option>
+                                            <option value="AP">Amapá</option>
+                                            <option value="AM">Amazonas</option>
+                                            <option value="BA">Bahia</option>
+                                            <option value="CE">Ceará</option>
+                                            <option value="DF">Distrito Federal</option>
+                                            <option value="ES">Espírito Santo</option>
+                                            <option value="GO">Goiás</option>
+                                            <option value="MA">Maranhão</option>
+                                            <option value="MT">Mato Grosso</option>
+                                            <option value="MS">Mato Grosso do Sul</option>
+                                            <option value="MG">Minas Gerais</option>
+                                            <option value="PA">Pará</option>
+                                            <option value="PB">Paraíba</option>
+                                            <option value="PR">Paraná</option>
+                                            <option value="PE">Pernambuco</option>
+                                            <option value="PI">Piauí</option>
+                                            <option value="RJ">Rio de Janeiro</option>
+                                            <option value="RN">Rio Grande do Norte</option>
+                                            <option value="RS">Rio Grande do Sul</option>
+                                            <option value="RO">Rondônia</option>
+                                            <option value="RR">Roraima</option>
+                                            <option value="SC">Santa Catarina</option>
+                                            <option value="SP">São Paulo</option>
+                                            <option value="SE">Sergipe</option>
+                                            <option value="TO">Tocantins</option>
+                                        </select>
+                                    </div>
+
+                                    <button class="btn-enviar left-to-right play-on-scroll" id="btn-confirmar-dados">
+                                        Salvar Endereço
+                                    </button>
+                                </div>
+        
+                            </div>
+    
+                        </div>
+                        <br>
+
+                        <!-- Endereços já salvos -->
+                        <div id="enderecos-salvos">
+                            <div id="enderecos-salvos-conteudo" class="conteudo-endereco-salvo-container">
+                                <!-- ENDEREÇOS INSERIDOS AQUI VIA JS -->
+                            </div>
+
+                        </div>
+                        <h3 id="sem-enderecos-salvos" class="nenhum-endereco">Selecione um endereço!</h3>
+    
+                    </section>
+    
+                    <section class="resumo right-to-left play-on-scroll" id="resumo">
+                        <div class="resumo right-to-left play-on-scroll">
+                            <h3>
+                                Resumo do Pedido
+                            </h3>
+                            <div class="right-to-left play-on-scroll" id="resumo-itens">
+                                <!-- RESUMO INSERIDO AQUI VIA JS -->
+                            </div>
+                        </div>
+                        <div class="resumo right-to-left play-on-scroll" id="resumo-total">
+                            <!-- RESUMO INSERIDO AQUI VIA JS -->
+                        </div>
+                        <div class="botoes-resumo">
+                            <button class="btn-enviar left-to-right play-on-scroll" id="btn-enviar">
+                                Finalizar Pedido
+                            </button>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+
+    </section>
+    <!-- END SECTION HOME -->
+     <!-- SWITCH DARK/ LIGHT MODE -->
+    <div class="switch">
+        <div class="circle">
+            <i class='bx bx-moon'></i>
+        </div>
+    </div>	
+    <!-- END SWITCH DARK/ LIGHT MODE -->
+    <!-- CARRINHO SECTION -->
+    <!-- Modal Carrinho -->		
+    <input class="modal-btn" type="checkbox" id="modal-btn" name="modal-btn"/>
+    <!--<label for="modal-btn">Open Modal <i class="uil uil-expand-arrows"></i></label> -->
+        <div class="modal" id="cart-modal">		
+            <div class="modal-wrap">
+              <div class="cabecalho-carrinho">
+                <img src="../img/logo2.png" alt="Espirito do Nativo logo" class="logo-carrinho left-to-right">
+                <div class="texto-cabecalho right-to-left"><h2>Seu Carrinho</h2></div>
+                <span class="close-modal">×</span>
+              </div>   		
+                <div class="carrinho modal-content zoom delay-8">
+                    <ul id="cart-items">
+                        <!-- Itens do carrinho serão adicionados aqui via JS -->
+                    </ul>
+                    <div id="cart-total">
+                        <!-- Total do carrinho -->
+                    </div>
+                </div>
+                <div class="btn-checkout left-to-right delay-4">
+                    <button class="buttonCarrinho" id="checkout-btn">Finalizar Compra</button>
+                    <button class="buttonCarrinho" id="checkout-limpar">Limpar</button>
+                </div>
+            </div>   		
+        </div>   
+    <!-- END CARRINHO SECTION -->
+    <!-- END FOOTER SECTION -->
+    <div class="rowFooter" style = "text-align: center;">
+        <div class="col-md-12">
+            <p style="font-size: 13px;">
+                Copyright &copy;
+                <script>document.write(new Date().getFullYear());</script> | Todos os direitos reservados | Desenvolvido pela <a href="https://tpowert.com.br/" target="_blank"> <span style="color: #563D7C;"> TPowerTech </span>
+                    </a> 
+            </p>
+        </div>
+    </div>
+
+    <script src="js/minha_pagina.js"></script>
+</body>
+
+</html>
