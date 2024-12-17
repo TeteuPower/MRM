@@ -175,7 +175,7 @@ async function popularResumo() {
             let imagemUrl = product.img_url;
     
             if (categoria === 'rape') {
-                imagemUrl = '../img/img_rape.jpg';
+                imagemUrl = 'https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/img_rape.webp?alt=media&token=5d601f96-27ee-49d6-8a48-6609937e431e';
             }
 
             const listItem = document.createElement('li');
@@ -327,7 +327,7 @@ function exibirProdutos(products) {
         let imagemUrl = product.img_url;
 
         if (categoria === 'rape') {
-            imagemUrl = '../img/img_rape.jpg';
+            imagemUrl = 'https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/img_rape.webp?alt=media&token=5d601f96-27ee-49d6-8a48-6609937e431e';
         }
 
         // Construção do HTML do produto
