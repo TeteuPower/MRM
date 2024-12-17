@@ -34,24 +34,24 @@ try {
         throw new Error(`Erro na API do Mercado Pago: ${response.status}`);
     }
 
-    const data = await response.json();
-    //console.log(data);
-    // Verificando se os campos necessários existem na resposta
-    if (!data.status || !data.id) {
-        console.error("Dados incompletos na resposta da API do Mercado Pago:", data);
-        throw new Error("Resposta da API do Mercado Pago incompleta.");
-    }
-    const externalReference = JSON.parse(data.external_reference);
-    console.log(externalReference);
-    const status = data.status;
-    const pedidoId = externalReference.pedidoId;
-    const usuarioId = externalReference.usuarioId;
-    const pedidoValor = externalReference.valor;
+        const data = await response.json();
+        //console.log(data);
+        // Verificando se os campos necessários existem na resposta
+        if (!data.status || !data.id) {
+            console.error("Dados incompletos na resposta da API do Mercado Pago:", data);
+            throw new Error("Resposta da API do Mercado Pago incompleta.");
+        }
+        const externalReference = JSON.parse(data.external_reference);
+        //console.log(externalReference);
+        const status = data.status;
+        const pedidoId = externalReference.pedidoId;
+        const usuarioId = externalReference.usuarioId;
+        const pedidoValor = externalReference.valor;
 
-    if (!pedidoId) {
-        console.error("ID do pagamento não encontrado na resposta da API do Mercado Pago:", data);
-        throw new Error("ID do pagamento não encontrado na resposta da API do Mercado Pago.");
-    }
+        if (!pedidoId) {
+            console.error("ID do pagamento não encontrado na resposta da API do Mercado Pago:", data);
+            throw new Error("ID do pagamento não encontrado na resposta da API do Mercado Pago.");
+        }
 
         try{
             //Atualizando o status do pedido no banco de dados
@@ -60,6 +60,8 @@ try {
             console.error("Erro ao atualizar no DB:", error);
             throw new Error("Erro ao atualizar o status do pedido no banco de dados.");
         }
+
+    if (status === 'approved') {
 
         //Capturando itens do pedido no banco de dados
         try {
@@ -91,6 +93,7 @@ try {
             console.error("Erro ao atualizar no DB:", error);
             throw new Error("Erro ao atualizar a quantidade do produto no estoque.");
         }
+    }
 
     console.log(`Pedido Nº${pedidoId} alterou status de pagamento para ${status}`);
 
