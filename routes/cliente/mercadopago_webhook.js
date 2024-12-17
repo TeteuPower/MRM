@@ -109,7 +109,7 @@ try {
             const email = result[0].email;
             const apiUrl = process.env.API_URL;
             // Envia o email e o token para api de enviar email
-            console.log(`Email: ${email}, Pedido: ${pedidoId}, Valor: ${pedidoValor}`);
+            console.log(`Email: ${email}, Pedido: ${pedidoId}, Valor R$: ${pedidoValor} ${status}`);
             const response = await fetch(`${apiUrl}/api/usuarios/pagamento-confirmado`, {
                 method: 'POST',
                 headers: {
@@ -123,6 +123,24 @@ try {
         } catch (error) {
             console.error('Erro ao enviar email de pagamento recebido:', error);
             throw new Error('Erro ao enviar email de pagamento recebido.');
+        }
+
+        //Enviando email de aviso de nova venda para administração
+        try {
+            const apiUrl = process.env.API_URL;
+            const response = await fetch(`${apiUrl}/api/email-pagamento-confirmado-admin`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ pedidoId, pedidoValor })
+            });
+            if (!response.ok) {
+                throw new Error('Erro ao enviar email de confirmação de pagamento à administração.');
+            }
+        } catch (error) {
+            console.error('Erro ao enviar email de pagamento recebido para administração:', error);
+            throw new Error('Erro ao enviar email de pagamento recebido para administração.');
         }
     }
     } catch (error) {

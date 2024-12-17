@@ -269,7 +269,9 @@ app.use('/api/mercadopago', autenticarClientes, require('./routes/cliente/mercad
 // Rota que recebe notificações do MercadoPago
 app.use('/api/webhook/mercadopago', require('./routes/cliente/mercadopago_webhook.js'));
 // Rota que envia email de novo pagamento
-app.use('/api/email-pagamento-confirmado', require('./src/controllers/sendgrid_pagamento_confirmado'));
+app.use('/api/email-pagamento-confirmado', require('./src/controllers/sg_pagamento_confirm_user'));
+// Rota que envia email de pedido aprovado para administrador
+app.use('/api/email-pagamento-confirmado-admin', require('./src/controllers/sg_pagamento_confirm_admin'));
 
 
 // Rota para login do administrador (gera o token)
