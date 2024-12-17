@@ -213,6 +213,11 @@ app.get('/falhou', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'pagamento_failure.html'));
 });
 
+// Rota da minha_pagina
+app.get('/minha_pagina', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'minha_pagina.html'));
+});
+
 
 
 module.exports = {

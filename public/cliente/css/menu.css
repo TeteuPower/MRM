@@ -444,6 +444,18 @@ section {
     color: var(--grey);
 }
 
+@media only screen and (max-width: 663px) {
+    .item-info h3 {
+        font-size: 0.9rem;
+    }
+}
+
+@media only screen and (max-width: 345px) {
+    .item-info h3 {
+        font-size: 0.7rem;
+    }
+}
+
 .item-info>div:first-child {
     text-align: left;
 }
