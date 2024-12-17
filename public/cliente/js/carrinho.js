@@ -28,6 +28,7 @@ function exibirProdutos(products) {
 
     products.produtos.forEach(product => {
         //console.log(product);
+        if (product.status === 1) {
         const productItem = document.createElement('div');
         productItem.classList.add('food-item', `${product.categoria}-type`); // Adiciona classes dinamicamente
         let categoria = product.categoria
@@ -58,6 +59,10 @@ function exibirProdutos(products) {
             </div>
         `;
         productList.appendChild(productItem);
+        } else {
+            //Produtos com estoque indisponível
+            //console.log(product);
+        }
     });
 
     productList.addEventListener('click', (event) => {
