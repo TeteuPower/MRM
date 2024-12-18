@@ -1193,9 +1193,9 @@ section {
 }
 
 .formulario h3 {
-    text-align: left;
-    margin-left: 10px;
+    text-align: center;
     margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 .nome-completo {
@@ -1779,4 +1779,8 @@ body.light .navbar-brand::after{
 .selecionado {
     background-color: var(--primary-color); /* Ou a cor que você preferir */
     color: var(--white);
+}
+
+.contato-container h3 {
+    text-align: left;
 }

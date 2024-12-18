@@ -21,7 +21,7 @@ function saudacao() {
     const nomeUsuario = localStorage.getItem('Usuario');
 
     //exibe o nome de usuário no menu
-    document.getElementById('nome-usuario').textContent = `Olá, ${nomeUsuario}!`;
+    document.getElementById('nome-usuario').textContent = `Oi ${nomeUsuario}!`;
 }
 
 
@@ -393,7 +393,7 @@ function exibirProdutos(products) {
         localStorage.setItem('cart', JSON.stringify(cart));
         //chama função que atualiza o resumo:
         popularMenu();
-        alert('Produto adicionado ao carrinho.');
+        //alert('Produto adicionado ao carrinho.');
         const resumoSection = document.getElementById('resumo-itens');
         if (resumoSection) {
             //console.log('tentei')
