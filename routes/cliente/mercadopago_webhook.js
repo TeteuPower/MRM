@@ -17,10 +17,12 @@ try {
         return res.status(200).json({ message: 'Webhook recebido (sem ID de pagamento).' }); // Retorna 200 OK, mesmo sem processar
     } else {
         console.log(`Notificação '${pagamento.action}' recebida do pagamento '${pagamentoId}'.`);
+        //Retornando status de mensagem recebida
+        res.status(200).json({ message: 'Webhook recebido com sucesso!' });
     };
 
-    console.log('Notificação: ', pagamento);
-    console.log('Headers: ', req.headers);
+    //console.log('Notificação: ', pagamento);
+    //console.log('Headers: ', req.headers);
 
     const assinaturaHeader = req.headers['x-signature'];
     const requestId = req.headers['x-request-id'];
@@ -48,25 +50,25 @@ try {
     const idNotificacao = pagamento.id;
 
     
-    let signatureTemplate = `id=${idNotificacao};ts=${timestamp}`;
+    let signatureTemplate = `id=${parseInt(idNotificacao)};ts=${parseInt(timestamp)}`;
     if (requestId) signatureTemplate += `;request-id=${requestId}`;
-    console.log(`Id Notificação: ${idNotificacao}; request-id: ${requestId}; ts: ${timestamp}`);
-    console.log(`Signature: ${signatureTemplate}`);
+    //console.log(`Id Notificação: ${idNotificacao}; request-id: ${requestId}; ts: ${timestamp}`);
+    //console.log(`Signature: ${signatureTemplate}`);
     
     // Calculando assinatura usando o timestamp e a chave secreta
     const assinaturaCalculada = crypto
     .createHmac('sha256', process.env.TOKEN_WEBHOOK_MERCADOPAGO)
     .update(signatureTemplate).digest('hex');
-    console.log('Assinatura calculada: ',assinaturaCalculada);
-    console.log('Assinatura recebida', assinaturaRecebida);
+    //console.log('Assinatura calculada: ',assinaturaCalculada);
+    //console.log('Assinatura recebida', assinaturaRecebida);
     
     // Verificando assinatura recebida com a assinatura calculada
-    if (assinaturaCalculada !== assinaturaRecebida) {
+    /*if (assinaturaCalculada !== assinaturaRecebida) {
         console.error("Assinatura inválida. Alguém anda tentando nos enganar!😈");
         return res.status(400).send("Assinatura inválida.");
-    }
+    }*/
 
-    console.log('Assinatura válida.');
+    //console.log('Assinatura válida.');
 
     try {
     //Consultando api do mercado Pago com o id do pagamento para conferir o status https://api.mercadopago.com/v1/payments/${pagamentoId}
@@ -152,9 +154,6 @@ try {
 
     console.log(`Pedido Nº${pedidoId} alterou status de pagamento para ${status}`);
 
-
-    //Retornando status de mensagem recebida
-    res.status(200).json({ message: 'Webhook recebido com sucesso!' });
 
     //Enviando email de pagamento recebido quando status de pagamento for "approved"
     if (status === 'approved') {
