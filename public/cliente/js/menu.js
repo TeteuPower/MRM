@@ -392,13 +392,13 @@ function exibirProdutos(products) {
         //cart.push(productId);
         localStorage.setItem('cart', JSON.stringify(cart));
         //chama função que atualiza o resumo:
+        popularMenu();
         alert('Produto adicionado ao carrinho.');
         const resumoSection = document.getElementById('resumo-itens');
         if (resumoSection) {
             //console.log('tentei')
             resumoSection.scrollIntoView({ behavior: 'smooth' });
         }
-        popularMenu();
         //popularResumo();
 
     }
