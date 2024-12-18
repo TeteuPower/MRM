@@ -149,7 +149,7 @@ router.post('/redefinir-senha', async (req, res) => {
         const { id } = result[0];
 
         // Gera o token JWT para redefinição de senha (usando JWT_SECRET_MAIL)
-        const token = jwt.sign({ id }, process.env.JWT_SECRET_MAIL, { expiresIn: '1h' });
+        const token = jwt.sign({ id }, process.env.JWT_SECRET_MAIL, { expiresIn: '30m' });
 
         // Atualiza o token de redefinição de senha no banco de dados
         const sqlUpdate = 'UPDATE usuarios SET token_confirmacao = ? WHERE id = ?';
@@ -228,7 +228,7 @@ router.post('/mudar-senha', async (req, res) => {
         const mensagemLog = 'Senha recuperada em ' + new Date().toISOString();
         await dbClientes.promise().query(sqlUpdate, [senhaHash, mensagemLog, id]);
 
-        console.log(`Senha redefinida para o usuário ID: ${id}}`)
+        console.log(`Senha redefinida para o usuário ID: ${id}`)
         res.json({ message: 'Senha redefinida com sucesso!' });
     } catch (error) {
         console.error('Erro ao redefinir senha:', error);
