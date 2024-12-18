@@ -9,13 +9,21 @@ require('dotenv').config();
 
 router.post('/notificacao', async (req, res) => {
 try {
-    const pagamento = req.body
-    console.log('Notificação: ', pagamento);
-    console.log('Headers: ', req.headers);
-    
+    const pagamento = req.body    
     const pagamentoId = pagamento.data?.id; // Usando Optional Chaining (?.) para evitar o erro
 
+    if (!pagamentoId) {
+        console.warn("Recebido notificação do Mercado Pago sem ID de pagamento.");
+        return res.status(200).json({ message: 'Webhook recebido (sem ID de pagamento).' }); // Retorna 200 OK, mesmo sem processar
+    } else {
+        console.log(`Notificação '${pagamento.action}' recebida do pagamento '${pagamentoId}'.`);
+    };
+
+    console.log('Notificação: ', pagamento);
+    console.log('Headers: ', req.headers);
+
     const assinaturaHeader = req.headers['x-signature'];
+    const requestId = req.headers['x-request-id'];
 
     if (!assinaturaHeader) {
         console.error("Assinatura de segurança ausente no cabeçalho.");
@@ -37,34 +45,28 @@ try {
         return res.status(400).send("Dados de assinatura inválidos.");
     }
 
-    const requestId = req.headers['x-request-id'];
-
-    const idNotificacao = pagamento.data.id;
+    const idNotificacao = pagamento.id;
 
     
-    const signatureTemplateParsed = `id=${idNotificacao};request-id=${requestId};ts=${timestamp}`;
+    let signatureTemplate = `id=${idNotificacao};ts=${timestamp}`;
+    if (requestId) signatureTemplate += `;request-id=${requestId}`;
     console.log(`Id Notificação: ${idNotificacao}; request-id: ${requestId}; ts: ${timestamp}`);
-    console.log(`Signature: ${signatureTemplateParsed}`);
+    console.log(`Signature: ${signatureTemplate}`);
     
     // Calculando assinatura usando o timestamp e a chave secreta
     const assinaturaCalculada = crypto
     .createHmac('sha256', process.env.TOKEN_WEBHOOK_MERCADOPAGO)
-    .update(signatureTemplateParsed).digest('hex');
+    .update(signatureTemplate).digest('hex');
     console.log('Assinatura calculada: ',assinaturaCalculada);
+    console.log('Assinatura recebida', assinaturaRecebida);
     
     // Verificando assinatura recebida com a assinatura calculada
     if (assinaturaCalculada !== assinaturaRecebida) {
         console.error("Assinatura inválida. Alguém anda tentando nos enganar!😈");
         return res.status(400).send("Assinatura inválida.");
     }
-    
 
-    if (!pagamentoId) {
-        console.warn("Recebido notificação do Mercado Pago sem ID de pagamento.");
-        return res.status(200).json({ message: 'Webhook recebido (sem ID de pagamento).' }); // Retorna 200 OK, mesmo sem processar
-    } else {
-        console.log(`Notificação '${pagamento.action}' recebida do pagamento '${pagamentoId}'.`);
-    };
+    console.log('Assinatura válida.');
 
     try {
     //Consultando api do mercado Pago com o id do pagamento para conferir o status https://api.mercadopago.com/v1/payments/${pagamentoId}
