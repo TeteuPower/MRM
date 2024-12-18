@@ -12,7 +12,7 @@ try {
     
     const pagamentoId = pagamento.data?.id; // Usando Optional Chaining (?.) para evitar o erro
 
-    const assinaturaRecebida = req.headers['x-signature'];
+    const assinaturaRecebida = req.headers;
     console.log("Assinatura de segurança: ",assinaturaRecebida);
 
     if (!pagamentoId) {
