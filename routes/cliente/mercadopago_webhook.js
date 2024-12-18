@@ -3,17 +3,64 @@ const router = express.Router();
 const autenticarClientes = require('../../middleware/authClientes'); // Importa o middleware de autenticação
 const {dbClientes} = require('../../db')
 const { MercadoPagoConfig, Preference } = require('mercadopago');
+const crypto = require('crypto');
 //const axios = require('axios');
 require('dotenv').config();
 
 router.post('/notificacao', async (req, res) => {
 try {
     const pagamento = req.body
+    console.log('Notificação: ', pagamento);
+    console.log('Headers: ', JSON.stringify(req.headers));
     
     const pagamentoId = pagamento.data?.id; // Usando Optional Chaining (?.) para evitar o erro
 
-    const assinaturaRecebida = req.headers;
-    console.log("Assinatura de segurança: ",assinaturaRecebida);
+    const assinaturaHeader = req.headers['x-signature'];
+
+    if (!assinaturaHeader) {
+        console.error("Assinatura de segurança ausente no cabeçalho.");
+        return res.status(400).send("Assinatura ausente.");
+    }
+      
+    const [tsParte, v1Parte] = assinaturaHeader.split(',');
+      
+    if (!tsParte || !v1Parte) {
+        console.error("Formato inválido da assinatura de segurança no cabeçalho da notificação.");
+        return res.status(400).send("Formato de assinatura inválido.");
+    }
+
+    const timestamp = tsParte.split('=')[1];
+    const assinaturaRecebida = v1Parte.split('=')[1];
+
+    if (!timestamp || !assinaturaRecebida) {
+        console.error("Timestamp ou assinatura inválidos no cabeçalho x-hook-signature.");
+        return res.status(400).send("Dados de assinatura inválidos.");
+    }
+
+    const requestId = req.headers['x-request-id'];
+
+    const idNotificacao = pagamento.id;
+
+    
+    const signatureTemplateParsed = `id=${idNotificacao};request-id=${requestId};ts=${timestamp}`;
+
+    // Lógica para remover partes opcionais, caso não existam na notificação:
+    let templateFinal = "id=" + (idNotificacao || "");
+    if (requestId) {
+    templateFinal += ";request-id=" + requestId;
+    }
+    templateFinal += ";ts=" + timestamp;
+    
+    // Calculando assinatura usando o timestamp e a chave secreta
+    const assinaturaCalculada = crypto.createHmac('sha256', process.env.TOKEN_WEBHOOK_MERCADOPAGO).update(signatureTemplateParsed).digest('hex');
+    console.log('Assinatura calculada: ',assinaturaCalculada);
+    
+    // Verificando assinatura recebida com a assinatura calculada
+    if (assinaturaCalculada !== assinaturaRecebida) {
+        console.error("Assinatura inválida.");
+        return res.status(400).send("Assinatura inválida.");
+    }
+    
 
     if (!pagamentoId) {
         console.warn("Recebido notificação do Mercado Pago sem ID de pagamento.");
