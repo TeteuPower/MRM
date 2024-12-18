@@ -32,6 +32,7 @@ const sendMail = async (req, res) => {
 
     try {
         await sendGrid(email, subject, html);
+        console.log(`Email de recuperação de senha enviado para ${email}`);
         return res.status(200).json({ message: 'Email de confirmação enviado com sucesso!' }); // status 200 para sucesso.
     } catch (error) {
         console.error("Erro ao enviar email:", error);

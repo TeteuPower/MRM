@@ -40,6 +40,7 @@ router.post('/', async (req, res) => {
         const [result] = await dbClientes.promise().query(sql, [nome, email, telefone, usuario, senhaHash, 0, 0, token]);
 
         res.json({ message: 'Usuário criado com sucesso!', token: token });
+        console.log(`Novo usuário cadastrado ${nome}, email: ${email}`);
     } catch (error) {
         console.error('Erro ao criar usuário:', error);
         res.status(500).json({ error: 'Erro ao criar usuário.' });
@@ -56,6 +57,7 @@ router.get('/confirmar-email', async (req, res) => {
         const sql = 'UPDATE usuarios SET email_verificado = TRUE, token_confirmacao = ? WHERE email = ?';
         const mensagemLog = 'Email verificado ' + new Date().toISOString();
         await dbClientes.promise().query(sql, [mensagemLog, email]);
+        console.log(`Email verificado: ${email}`);
 
         //res.json({ message: 'Email confirmado com sucesso!' });
         //res.sendFile(path.join(__dirname, '../../public/cliente/html/confirmacao_email.html'));
@@ -82,6 +84,7 @@ router.post('/enderecos', autenticarClientes, async (req, res) => {
         const [result] = await dbClientes.promise().query(sql, [usuarioId, nomeEndereco, cep, endereco, numero, bairro, cidade, estado, complemento]);
 
         res.json({ message: 'Endereço criado com sucesso!', id: result.insertId });
+        console.log(`Novo endereço criado ID: ${result.insertId}, usuário ID: ${usuarioId}`)
     } catch (error) {
         console.error('Erro ao criar endereço:', error);
         res.status(500).json({ error: 'Erro ao criar endereço.' });
@@ -225,6 +228,7 @@ router.post('/mudar-senha', async (req, res) => {
         const mensagemLog = 'Senha recuperada em ' + new Date().toISOString();
         await dbClientes.promise().query(sqlUpdate, [senhaHash, mensagemLog, id]);
 
+        console.log(`Senha redefinida para o usuário ID: ${id}}`)
         res.json({ message: 'Senha redefinida com sucesso!' });
     } catch (error) {
         console.error('Erro ao redefinir senha:', error);
@@ -253,6 +257,7 @@ router.delete('/enderecos/:id', autenticarClientes, async (req, res) => {
         const sql = 'DELETE FROM enderecos WHERE id = ? AND usuario_id = ?';
         const [result] = await dbClientes.promise().query(sql, [id, usuarioId]);
         if (result.affectedRows > 0) {
+            console.log(`Endereço ID: ${id} do usuário ID: ${usuarioId} EXCLUIDO`)
             res.json({ message: 'Endereço excluído com sucesso!' });
         } else {
             res.status(404).json({ error: 'Endereço não encontrado.' });

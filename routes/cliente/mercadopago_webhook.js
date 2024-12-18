@@ -30,8 +30,13 @@ try {
     // Verificando o status da resposta da API do Mercado Pago
     if (!response.ok) {
         const errorData = await response.json(); // Tenta obter detalhes do erro da resposta
-        console.error("Erro ao consultar a API do Mercado Pago:", response.status, errorData);
-        throw new Error(`Erro na API do Mercado Pago: ${response.status}`);
+        if (errorData.message === 'Payment not found') {
+            console.error(`Pagamento ${pagamentoId} não encontrado na API do Mercado Pago`)
+            return res.status(200).json({ message: 'Pagamento não encontrado.' }); // Retorna 200 OK, mesmo sem processar
+        } else {
+            console.error("Erro ao consultar a API do Mercado Pago:", response.status, errorData);
+            throw new Error(`Erro na API do Mercado Pago: ${response.status}`);
+        }
     }
 
         const data = await response.json();
@@ -49,15 +54,15 @@ try {
         const pedidoValor = externalReference.valor;
 
         if (!pedidoId) {
-            console.error("ID do pagamento não encontrado na resposta da API do Mercado Pago:", data);
-            throw new Error("ID do pagamento não encontrado na resposta da API do Mercado Pago.");
+            console.error("ID do pagamento não encontrado no externalReference do pedido:", data);
+            throw new Error("ID do pagamento não encontrado no externalReference do pedido");
         }
 
         try{
             //Atualizando o status do pedido no banco de dados
             await dbClientes.promise().query('UPDATE pedidos_usuarios SET status = ? WHERE id = ?', [status, pedidoId]);
         } catch (error) {
-            console.error("Erro ao atualizar no DB:", error);
+            console.error("Erro ao atualizar status do pedido no DB:", error);
             throw new Error("Erro ao atualizar o status do pedido no banco de dados.");
         }
 
@@ -74,6 +79,7 @@ try {
                 for (let i = 0; i < itensDoPedido.length; i++) {
                     await dbClientes.promise().query('UPDATE produtos_site SET quantidade = quantidade - ? WHERE id = ?',
                         [itensDoPedido[i].quantidade, itensDoPedido[i].produto_id]);
+                    console.log(`Produto id: ${itensDoPedido[i].produto_id} reduzida quantidade de ${itensDoPedido[i].quantidade} do estoque`);
 
                     //Verificando a quantidade do produto
                     const produto = await dbClientes.promise().query('SELECT quantidade FROM produtos_site WHERE id =?', [itensDoPedido[i].produto_id]);
