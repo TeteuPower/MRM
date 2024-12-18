@@ -19,14 +19,14 @@ try {
 
     if (!assinaturaHeader) {
         console.error("Assinatura de segurança ausente no cabeçalho.");
-        return res.status(400).send("Assinatura ausente.");
+        return res.status(400).send("Assinatura ausente. Que falta de educação!😜");
     }
       
     const [tsParte, v1Parte] = assinaturaHeader.split(',');
       
     if (!tsParte || !v1Parte) {
         console.error("Formato inválido da assinatura de segurança no cabeçalho da notificação.");
-        return res.status(400).send("Formato de assinatura inválido.");
+        return res.status(400).send("Dados de assinatura inválidos. Isso não me cheira bem...🤔");
     }
 
     const timestamp = tsParte.split('=')[1];
@@ -39,27 +39,22 @@ try {
 
     const requestId = req.headers['x-request-id'];
 
-    const idNotificacao = pagamento.id;
+    const idNotificacao = pagamento.data.id;
 
     
     const signatureTemplateParsed = `id=${idNotificacao};request-id=${requestId};ts=${timestamp}`;
     console.log(`Id Notificação: ${idNotificacao}; request-id: ${requestId}; ts: ${timestamp}`);
     console.log(`Signature: ${signatureTemplateParsed}`);
-
-    // Lógica para remover partes opcionais, caso não existam na notificação:
-    let templateFinal = "id=" + (idNotificacao || "");
-    if (requestId) {
-    templateFinal += ";request-id=" + requestId;
-    }
-    templateFinal += ";ts=" + timestamp;
     
     // Calculando assinatura usando o timestamp e a chave secreta
-    const assinaturaCalculada = crypto.createHmac('sha256', process.env.TOKEN_WEBHOOK_MERCADOPAGO).update(signatureTemplateParsed).digest('hex');
+    const assinaturaCalculada = crypto
+    .createHmac('sha256', process.env.TOKEN_WEBHOOK_MERCADOPAGO)
+    .update(signatureTemplateParsed).digest('hex');
     console.log('Assinatura calculada: ',assinaturaCalculada);
     
     // Verificando assinatura recebida com a assinatura calculada
     if (assinaturaCalculada !== assinaturaRecebida) {
-        console.error("Assinatura inválida.");
+        console.error("Assinatura inválida. Alguém anda tentando nos enganar!😈");
         return res.status(400).send("Assinatura inválida.");
     }
     
