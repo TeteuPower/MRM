@@ -12,6 +12,9 @@ try {
     
     const pagamentoId = pagamento.data?.id; // Usando Optional Chaining (?.) para evitar o erro
 
+    const assinaturaRecebida = req.headers['x-signature'];
+    console.log("Assinatura de segurança: ",assinaturaRecebida);
+
     if (!pagamentoId) {
         console.warn("Recebido notificação do Mercado Pago sem ID de pagamento.");
         return res.status(200).json({ message: 'Webhook recebido (sem ID de pagamento).' }); // Retorna 200 OK, mesmo sem processar
