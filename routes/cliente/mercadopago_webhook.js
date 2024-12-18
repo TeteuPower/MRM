@@ -11,7 +11,7 @@ router.post('/notificacao', async (req, res) => {
 try {
     const pagamento = req.body
     console.log('Notificação: ', pagamento);
-    console.log('Headers: ', JSON.stringify(req.headers));
+    console.log('Headers: ', req.headers);
     
     const pagamentoId = pagamento.data?.id; // Usando Optional Chaining (?.) para evitar o erro
 
@@ -43,6 +43,8 @@ try {
 
     
     const signatureTemplateParsed = `id=${idNotificacao};request-id=${requestId};ts=${timestamp}`;
+    console.log(`Id Notificação: ${idNotificacao}; request-id: ${requestId}; ts: ${timestamp}`);
+    console.log(`Signature: ${signatureTemplateParsed}`);
 
     // Lógica para remover partes opcionais, caso não existam na notificação:
     let templateFinal = "id=" + (idNotificacao || "");
