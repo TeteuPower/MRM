@@ -282,5 +282,30 @@ router.get('/cupons/:cupom', autenticarClientes, async (req, res) => {
     }
 });
 
+// Rota para obter os pedidos do cliente
+router.get('/pedidos', autenticarClientes, async (req, res) => {
+    const usuarioId = req.usuario.id;
+    try {
+        const sql = 'SELECT id, valor_venda, valor_frete, status, data_criacao, pago, endereco_id, preference_id, cupom FROM pedidos_usuarios WHERE usuario_id = ?';
+        const [result] = await dbClientes.promise().query(sql, [usuarioId]);
+        //Faz uma segunda consulta com o endereco_id a tabela de enderecos e retorna os dados do endereço
+        try {
+            for (let i = 0; i < result.length; i++) {
+                const enderecoId = result[i].endereco_id;
+                const sqlEndereco = 'SELECT * FROM enderecos WHERE id = ?';
+                const [endereco] = await dbClientes.promise().query(sqlEndereco, [enderecoId]);
+                result[i].endereco = endereco[0];
+            }
+        } catch (error) {
+            console.error('Erro ao buscar endereço do pedido:', error);
+            res.status(500).json({ error: 'Erro ao buscar endereço do pedido.' });
+        }
+        res.json(result);
+    } catch (error) {
+        console.error('Erro ao buscar pedidos:', error);
+        res.status(500).json({ error: 'Erro ao buscar pedidos.' });
+    }
+});
+
 
 module.exports = router;

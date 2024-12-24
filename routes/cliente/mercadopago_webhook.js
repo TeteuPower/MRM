@@ -146,6 +146,14 @@ try {
             .catch(err => {
                 console.error('Erro ao buscar itens do pedido:', err);
             });
+                try{
+                    //Altera o booleano pago na tabela de pedidos_usuarios para 1
+                    await dbClientes.promise().query('UPDATE pedidos_usuarios SET pago = 1 WHERE id = ?', [pedidoId]);
+                }
+                catch (error) {
+                    console.error("Erro ao atualizar o booleano de pago do pedido:", error);
+                    throw new Error("Erro ao atualizar o booleano de pago do pedido:");
+                }
         } catch (error) {
             console.error("Erro ao atualizar no DB:", error);
             throw new Error("Erro ao atualizar a quantidade do produto no estoque.");

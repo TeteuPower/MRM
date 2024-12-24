@@ -843,4 +843,4 @@ function finalizarPedido() {
 
 //Atribuindo evento listener ao botão
 document.getElementById('btn-enviar').addEventListener('click', finalizarPedido);
-alert('Use o cupom "inauguracao" e garanta 50% de desconto!');
+//alert('Use o cupom "inauguracao" e garanta 50% de desconto!');

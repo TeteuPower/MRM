@@ -859,3 +859,39 @@ function finalizarPedido() {
         alert('Erro ao realizar o pedido.');
     });
 }
+
+//Obter pedidos do cliente
+obterPedidos();
+function obterPedidos() {
+    fetch('/api/usuarios/pedidos', {
+        method: 'GET',
+        headers: {
+            'Authorization': localStorage.getItem('tokenUser'),
+            'Content-Type': 'application/json'
+        }
+    })    
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        return;
+        if (data.pedidos) {
+            const pedidos = data.pedidos;
+            const tbody = document.querySelector('tbody');
+            tbody.innerHTML = '';
+            pedidos.forEach(pedido => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${pedido.id}</td>
+                    <td>${pedido.data}</td>
+                    <td>${pedido.total}</td>
+                    <td>${pedido.status}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao obter os pedidos:', error);
+        alert('Erro ao obter os pedidos.');
+    });
+}
