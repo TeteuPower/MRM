@@ -1144,6 +1144,36 @@ section {
     max-height: 935px; /* Altura máxima quando aberto (ajuste conforme necessário) */
 }
 
+#pedidos-finalizados-container .conteudo-pedidos-finalizados {
+    overflow: hidden; /* Essencial para a transição de altura funcionar */
+    max-height: 0; /* Começa com altura zero (escondido) */
+    transition: max-height 0.6s ease-in-out; /* Transição suave de 0.3 segundos */
+}
+
+#pedidos-finalizados-container.mostrar .conteudo-pedidos-finalizados {
+    max-height: 535px; /* Altura máxima quando aberto (ajuste conforme necessário) */
+}
+
+#pedidos-pendentes-container .conteudo-pedidos-pendentes {
+    overflow: hidden; /* Essencial para a transição de altura funcionar */
+    max-height: 0; /* Começa com altura zero (escondido) */
+    transition: max-height 0.6s ease-in-out; /* Transição suave de 0.3 segundos */
+}
+
+#pedidos-pendentes-container.mostrar .conteudo-pedidos-pendentes {
+    max-height: 535px; /* Altura máxima quando aberto (ajuste conforme necessário) */
+}
+
+#pedidos-autorizados-container .conteudo-pedidos-autorizados {
+    overflow: hidden; /* Essencial para a transição de altura funcionar */
+    max-height: 0; /* Começa com altura zero (escondido) */
+    transition: max-height 0.6s ease-in-out; /* Transição suave de 0.3 segundos */
+}
+
+#pedidos-autorizados-container.mostrar .conteudo-pedidos-autorizados {
+    max-height: 535px; /* Altura máxima quando aberto (ajuste conforme necessário) */
+}
+
 .conteudo-endereco-salvo-container {
     display: flex;
     gap: 20px;

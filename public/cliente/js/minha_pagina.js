@@ -407,6 +407,24 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function() {
+    $('#toggle-pedidos-finalizados').click(function() {
+        $('#pedidos-finalizados-container').toggleClass('mostrar');
+    });
+});
+
+$(document).ready(function() {
+    $('#toggle-pedidos-pendentes').click(function() {
+        $('#pedidos-pendentes-container').toggleClass('mostrar');
+    });
+});
+
+$(document).ready(function() {
+    $('#toggle-pedidos-autorizados').click(function() {
+        $('#pedidos-autorizados-container').toggleClass('mostrar');
+    });
+});
+
 //Disparar função confereCep() e confereCpfBlur() quando o cep e o cpf estiver preenchido
 document.getElementById('cep').addEventListener('blur', confereCep);
 document.getElementById('cpf').addEventListener('blur', confereCpfBlur);
