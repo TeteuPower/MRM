@@ -879,7 +879,7 @@ function finalizarPedido() {
 }
 
 //Obter pedidos do cliente
-obterPedidos();
+//obterPedidos();
 function obterPedidos() {
     fetch('/api/usuarios/pedidos', {
         method: 'GET',
@@ -913,3 +913,64 @@ function obterPedidos() {
         alert('Erro ao obter os pedidos.');
     });
 }
+
+async function carregarPedidos() {
+    try {
+        const response = await fetch('/api/usuarios/pedidos', {
+            method: 'GET',
+            headers: {
+                'Authorization': localStorage.getItem('tokenUser'),
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Erro HTTP: ${response.status}`);
+        }
+        const pedidos = await response.json();
+
+        // Função auxiliar para criar elementos HTML para um pedido
+        function criarElementoPedido(pedido) {
+          const divPedido = document.createElement('div');
+          divPedido.className = 'pedido'; // Adicione uma classe para estilizar
+
+          const infoPedido = `
+              <p>ID do Pedido: ${pedido.id}</p>
+              <p>Valor da Venda: R$ ${formatarValor(parseFloat(pedido.valor_venda).toFixed(2))}</p>
+              <p>Valor do Frete: R$ ${formatarValor(parseFloat(pedido.valor_frete).toFixed(2))}</p>
+              <p>Pagamento: ${pedido.status === 'approved' ? 'Aprovado!' : pedido.status}</p>
+              <p>Data da Criação: ${new Date(pedido.data_criacao).toLocaleDateString()}</p>
+              <p>Cupom: ${pedido.cupom || 'Nenhum'}</p>
+              <p>Código de Rastreio: ${pedido.codigo_rastreio || 'Não disponível'}</p>
+              <p>Enviado: ${pedido.enviado ? 'Sim' : 'Não'}</p> 
+              <p>Endereço: ${pedido.endereco}, ${pedido.numero} - ${pedido.bairro}, ${pedido.cidade}-${pedido.estado} ${pedido.complemento ? '- ' + pedido.complemento : ''}</p>
+              ${pedido.preference_id ? `<a href="${pedido.preference_id}" target="_blank">Detalhes do Pagamento</a>` : ''}
+          `;
+
+          divPedido.innerHTML = infoPedido;
+          return divPedido;
+        }
+
+        // Separando os pedidos por status
+        const pedidosFinalizados = pedidos.filter(p => p.enviado === 1 && p.status === 'approved');
+        const pedidosPendentes = pedidos.filter(p => p.pago === 0);
+        const pedidosAutorizados = pedidos.filter(p => p.status === 'approved' && p.enviado === 0);
+
+
+        // Adicionando os pedidos aos respectivos containers
+        const containerFinalizados = document.getElementById('pedidos-finalizados-container').querySelector('.conteudo-pedidos-finalizados');
+        const containerPendentes = document.getElementById('pedidos-pendentes-container').querySelector('.conteudo-pedidos-pendentes');
+        const containerAutorizados = document.getElementById('pedidos-autorizados-container').querySelector('.conteudo-pedidos-autorizados');
+
+        pedidosFinalizados.forEach(pedido => containerFinalizados.appendChild(criarElementoPedido(pedido)));
+        pedidosPendentes.forEach(pedido => containerPendentes.appendChild(criarElementoPedido(pedido)));
+        pedidosAutorizados.forEach(pedido => containerAutorizados.appendChild(criarElementoPedido(pedido)));
+
+    } catch (error) {
+        console.error('Erro ao carregar pedidos:', error);
+        // Exiba uma mensagem de erro para o usuário
+        alert('Ocorreu um erro ao carregar os pedidos. Por favor, tente novamente mais tarde.');
+    }
+}
+
+// Chame a função para carregar os pedidos quando a página carregar
+window.onload = carregarPedidos;

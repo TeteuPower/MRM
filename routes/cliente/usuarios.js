@@ -286,20 +286,15 @@ router.get('/cupons/:cupom', autenticarClientes, async (req, res) => {
 router.get('/pedidos', autenticarClientes, async (req, res) => {
     const usuarioId = req.usuario.id;
     try {
-        const sql = 'SELECT id, valor_venda, valor_frete, status, data_criacao, pago, endereco_id, preference_id, cupom FROM pedidos_usuarios WHERE usuario_id = ?';
+        // Consulta com JOIN para obter os dados do pedido e endereço em uma única consulta
+        const sql = `
+            SELECT p.id, p.valor_venda, p.valor_frete, p.status, p.data_criacao, p.pago, p.preference_id, p.cupom, p.codigo_rastreio, p.enviado,
+                   e.cep, e.endereco, e.bairro, e.cidade, e.estado, e.complemento, e.apelido, e.numero
+            FROM pedidos_usuarios p
+            JOIN enderecos e ON p.endereco_id = e.id
+            WHERE p.usuario_id = ?`;
         const [result] = await dbClientes.promise().query(sql, [usuarioId]);
-        //Faz uma segunda consulta com o endereco_id a tabela de enderecos e retorna os dados do endereço
-        try {
-            for (let i = 0; i < result.length; i++) {
-                const enderecoId = result[i].endereco_id;
-                const sqlEndereco = 'SELECT * FROM enderecos WHERE id = ?';
-                const [endereco] = await dbClientes.promise().query(sqlEndereco, [enderecoId]);
-                result[i].endereco = endereco[0];
-            }
-        } catch (error) {
-            console.error('Erro ao buscar endereço do pedido:', error);
-            res.status(500).json({ error: 'Erro ao buscar endereço do pedido.' });
-        }
+
         res.json(result);
     } catch (error) {
         console.error('Erro ao buscar pedidos:', error);
