@@ -1213,226 +1213,6 @@ section {
     }
 }
 
-
-
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 1293px) {
-
-    .menu-wrap {
-        padding: 2.8rem;
-    }
-
-    p {
-        font-size: 13px;
-    }
-
-    .container {
-        margin-top: 0px;
-    }
-
-    h1 {
-        font-size: 3rem !important;
-    }
-
-    h2 {
-        font-size: 2rem !important;
-    }
-
-    span {
-        font-size: inherit;
-    }
-
-    .cart-btn i {
-        font-size: 2rem;
-    }
-
-    .about {
-        /*background-image: url(assets/dan-gold-4_jhDO54BYg-unsplash.jpg);*/
-        background-attachment: fixed;
-    }
-
-    .promoCode {
-        width: 55%; /*largura horizontal*/
-        label {
-            width: 100%;
-            font-size: .8em;
-          }
-        input {
-        padding: .1em;
-        }
-        a.promo-btn {
-        float: left;
-        width: 25%;
-        padding: .25em 0;
-        border-radius: 0 1em 1em 0;
-        text-align: center;
-        border: 1px solid #82ca9c;
-        &:hover {
-        border: 1px solid #f69679;
-        background: #f69679;
-        }
-  }
-    }
-    .about-slogan.start {
-        transform: translateX(0) !important;
-    }
-
-    .food-menu {
-        padding: 4rem 0;
-    }
-
-    .food-item {
-        width: 50%;
-        height: 25rem;
-    }
-
-    .food-category {
-        overflow-y: scroll;
-    }
-
-    .food-category button {
-        width: max-content;
-    }
-
-    .back-to-top {
-        bottom: 6rem;
-        right: 1rem;
-    }
-
-    .review-wrap.active {
-        transform: unset !important;
-    }
-
-    .modal-content {
-        width: 95%; /* Ajuste a largura para telas menores */
-    }
-
-    .modal-wrap {
-		width: calc(100% - 40px);
-		padding-bottom: 15px;
-	}
-	.modal-wrap p {
-	  padding: 15px 20px 0 20px;
-	}
-
-    .quantity-input {
-        width: 30px; /* Diminui a largura */
-      }
-
-    .fullheight-slogan {
-        margin-top: 150px;
-        height: 60vh;
-    }
-
-    /* MOBILE NAV */
-
-    .mb-nav {
-        position: fixed;
-        bottom: 0;
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-        background-color: var(--white);
-        z-index: 99;
-        overflow: hidden;
-        border-top-left-radius: 2rem;
-        border-top-right-radius: 2rem;
-        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
-    }
-
-    .mb-nav-item {
-        display: flex;
-        text-align: center;
-        align-items: center;
-        justify-content: center;
-        flex: 25%;
-        padding: 1rem 0;
-    }
-
-    .mb-nav-item i,
-    .mb-nav-item a {
-        font-size: 2rem;
-        color: var(--secon-color);
-        z-index: 2;
-        transition: .5s ease-in-out;
-    }
-
-    .mb-nav-item.active i {
-        color: var(--white);
-    }
-
-    .mb-move-item {
-        position: absolute;
-        left: 0;
-        width: 25%;
-        height: 100%;
-        background-color: var(--primary-color);
-        transition: .5s ease-in-out;
-    }
-
-    .switch {
-        top: 30px;
-        bottom: auto; 
-        right: auto;
-        left: 10px;
-    }
-
-    /* END MOBILE NAV */
-
-    .col-xs-1 {
-        width: 8.33%;
-    }
-
-    .col-xs-2 {
-        width: 16.66%;
-    }
-
-    .col-xs-3 {
-        width: 25%;
-    }
-
-    .col-xs-4 {
-        width: 33.33%;
-    }
-
-    .col-xs-5 {
-        width: 41.66%;
-    }
-
-    .col-xs-6 {
-        width: 50%;
-    }
-
-    .col-xs-7 {
-        width: 58.33%;
-    }
-
-    .col-xs-8 {
-        width: 66.66%;
-    }
-
-    .col-xs-9 {
-        width: 75%;
-    }
-
-    .col-xs-10 {
-        width: 83.33%;
-    }
-
-    .col-xs-11 {
-        width: 91.66%;
-    }
-
-    .col-xs-12 {
-        width: 100%;
-    }
-
-    .h-xs {
-        display: none;
-    }
-}
-
 /*Temar dark e Light e botão back to top */
 :root {
 	--red: #da2c4d;
@@ -1610,7 +1390,7 @@ body.light .navbar-brand::after{
     /*position: relative;*/
 	position: fixed;
 	right: 10px;
-    top: 77px;
+    top: 100px;
 	display: block;
     /*margin-bottom: 490px;*/
     margin-right: 20px;
@@ -2019,3 +1799,221 @@ body.light .navbar-brand::after{
 }
 
 /* FIM botão hamburguer */
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 1293px) {
+
+    .menu-wrap {
+        padding: 2.8rem;
+    }
+
+    p {
+        font-size: 13px;
+    }
+
+    .container {
+        margin-top: 0px;
+    }
+
+    h1 {
+        font-size: 3rem !important;
+    }
+
+    h2 {
+        font-size: 2rem !important;
+    }
+
+    span {
+        font-size: inherit;
+    }
+
+    .cart-btn i {
+        font-size: 2rem;
+    }
+
+    .about {
+        /*background-image: url(assets/dan-gold-4_jhDO54BYg-unsplash.jpg);*/
+        background-attachment: fixed;
+    }
+
+    .promoCode {
+        width: 55%; /*largura horizontal*/
+        label {
+            width: 100%;
+            font-size: .8em;
+          }
+        input {
+        padding: .1em;
+        }
+        a.promo-btn {
+        float: left;
+        width: 25%;
+        padding: .25em 0;
+        border-radius: 0 1em 1em 0;
+        text-align: center;
+        border: 1px solid #82ca9c;
+        &:hover {
+        border: 1px solid #f69679;
+        background: #f69679;
+        }
+  }
+    }
+    .about-slogan.start {
+        transform: translateX(0) !important;
+    }
+
+    .food-menu {
+        padding: 4rem 0;
+    }
+
+    .food-item {
+        width: 50%;
+        height: 25rem;
+    }
+
+    .food-category {
+        overflow-y: scroll;
+    }
+
+    .food-category button {
+        width: max-content;
+    }
+
+    .back-to-top {
+        bottom: 6rem;
+        right: 1rem;
+    }
+
+    .review-wrap.active {
+        transform: unset !important;
+    }
+
+    .modal-content {
+        width: 95%; /* Ajuste a largura para telas menores */
+    }
+
+    .modal-wrap {
+		width: calc(100% - 40px);
+		padding-bottom: 15px;
+	}
+	.modal-wrap p {
+	  padding: 15px 20px 0 20px;
+	}
+
+    .quantity-input {
+        width: 30px; /* Diminui a largura */
+      }
+
+    .fullheight-slogan {
+        margin-top: 150px;
+        height: 60vh;
+    }
+
+    /* MOBILE NAV */
+
+    .mb-nav {
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--white);
+        z-index: 99;
+        overflow: hidden;
+        border-top-left-radius: 2rem;
+        border-top-right-radius: 2rem;
+        box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    }
+
+    .mb-nav-item {
+        display: flex;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        flex: 25%;
+        padding: 1rem 0;
+    }
+
+    .mb-nav-item i,
+    .mb-nav-item a {
+        font-size: 2rem;
+        color: var(--secon-color);
+        z-index: 2;
+        transition: .5s ease-in-out;
+    }
+
+    .mb-nav-item.active i {
+        color: var(--white);
+    }
+
+    .mb-move-item {
+        position: absolute;
+        left: 0;
+        width: 25%;
+        height: 100%;
+        background-color: var(--primary-color);
+        transition: .5s ease-in-out;
+    }
+
+    .switch {
+        top: 90px;
+        bottom: auto; 
+        right: auto;
+        left: 10px;
+    }
+
+    /* END MOBILE NAV */
+
+    .col-xs-1 {
+        width: 8.33%;
+    }
+
+    .col-xs-2 {
+        width: 16.66%;
+    }
+
+    .col-xs-3 {
+        width: 25%;
+    }
+
+    .col-xs-4 {
+        width: 33.33%;
+    }
+
+    .col-xs-5 {
+        width: 41.66%;
+    }
+
+    .col-xs-6 {
+        width: 50%;
+    }
+
+    .col-xs-7 {
+        width: 58.33%;
+    }
+
+    .col-xs-8 {
+        width: 66.66%;
+    }
+
+    .col-xs-9 {
+        width: 75%;
+    }
+
+    .col-xs-10 {
+        width: 83.33%;
+    }
+
+    .col-xs-11 {
+        width: 91.66%;
+    }
+
+    .col-xs-12 {
+        width: 100%;
+    }
+
+    .h-xs {
+        display: none;
+    }
+}

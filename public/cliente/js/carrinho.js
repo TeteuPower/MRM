@@ -235,3 +235,11 @@ function decrementQuantity(productId) {
 
 //Chama a função para atualizar o carrinho quando o modal é aberto
 document.getElementById('cart-modal').addEventListener('shown.bs.modal', updateCartModal); //Use um evento mais apropriado para seu framework
+
+
+const botaoSubmit = document.getElementById('subscribe');
+    botaoSubmit.addEventListener('click', function(event) {
+        event.preventDefault(); // Impede o comportamento padrão do formulário
+        // Realize outras ações, como enviar os dados para um servidor ou exibir uma mensagem de sucesso
+        alert('Essa função ainda não está disponível, por favor entre em contato de outra maneira. Obrigado!');
+    });

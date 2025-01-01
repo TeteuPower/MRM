@@ -218,6 +218,11 @@ app.get('/minha_pagina', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'minha_pagina.html'));
 });
 
+// Rota testimonial
+app.get('/testimonial', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'exemplo_nova_pagina.html'));
+});
+
 
 
 module.exports = {
