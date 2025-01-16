@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 let paginaAtualPedidosFinalizados = 1;
-const pedidosPorPagina = 5; // Número de pedidos finalizados por página
+const pedidosPorPagina = 10; // Número de pedidos finalizados por página
 
 function exibirPedidos() {
     exibirPedidosAguardandoProducao();
