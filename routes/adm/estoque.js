@@ -1,7 +1,7 @@
 const express = require('express');
-const { db } = require('../db'); // Importa o módulo de conexão com o banco de dados
+const { db } = require('../../db'); // Importa o módulo de conexão com o banco de dados
 const app = express();
-const autenticar = require('../middleware/auth'); // Importa o middleware de autenticação
+const autenticar = require('../../middleware/auth'); // Importa o middleware de autenticação
 const router = express.Router();
 
 // Rota para obter os dados do estoque

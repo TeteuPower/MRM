@@ -236,31 +236,31 @@ app.get('/teste', (req, res) => {
 })
 
 // Todas as rotas dentro do administradores.js estarão disponíveis em /api/administradores se tiverem a autentificação do token
-app.use('/api/administradores', autenticar, require('./routes/administradores'));
+app.use('/api/administradores', autenticar, require('./routes/adm/administradores'));
 // Rotas clientes
-app.use('/api/clientes', autenticar, require('./routes/clientes'));
+app.use('/api/clientes', autenticar, require('./routes/adm/clientes.js'));
 //Rotas estoque
-app.use('/api/estoque', autenticar, require('./routes/estoque'));
+app.use('/api/estoque', autenticar, require('./routes/adm/estoque'));
 // Usa a rota de vendedores
-app.use('/api/funcionarios', autenticar, require('./routes/funcionarios'));
+app.use('/api/funcionarios', autenticar, require('./routes/adm/funcionarios'));
 // Usa a rota de pedidos
-app.use('/api/pedidos', autenticar, require('./routes/pedidos'));
+app.use('/api/pedidos', autenticar, require('./routes/adm/pedidos'));
 // Usa a rota de pedidos aguardando produção
-app.use('/api/pedidos-aguardando-producao', autenticar, require('./routes/pedidos-aguardando-producao'));
+app.use('/api/pedidos-aguardando-producao', autenticar, require('./routes/adm/pedidos-aguardando-producao'));
 // Usa a rota de pedidos aguardando envio
-app.use('/api/pedidos-finalizados-aguardando-envio', autenticar, require('./routes/pedidos-finalizados-aguardando-envio'));
+app.use('/api/pedidos-finalizados-aguardando-envio', autenticar, require('./routes/adm/pedidos-finalizados-aguardando-envio'));
 // Usa a rota de pedidos finalizados
-app.use('/api/pedidos-finalizados', autenticar, require('./routes/pedidos-finalizados'));
+app.use('/api/pedidos-finalizados', autenticar, require('./routes/adm/pedidos-finalizados'));
 // Usa a rota de pagamentos
-app.use('/api/pagamentos', autenticar, require('./routes/pagamentos'));
+app.use('/api/pagamentos', autenticar, require('./routes/adm/pagamentos'));
 // Usa a rota de gastos
-app.use('/api/gastos', autenticar, require('./routes/gastos'));
+app.use('/api/gastos', autenticar, require('./routes/adm/gastos'));
 // Usa a rota de financeiro
-app.use('/api/financeiro', autenticar, require('./routes/financeiro'));
+app.use('/api/financeiro', autenticar, require('./routes/adm/financeiro'));
 // Usa a rota de divisão de lucros
-app.use('/api/divisao-lucros', autenticar, require('./routes/divisao_lucros'));
+app.use('/api/divisao-lucros', autenticar, require('./routes/adm/divisao_lucros'));
 // Usa a rota de divisão de lucros simplificada
-app.use('/api/divisao-lucros-simples', autenticar, require('./routes/divisao_lucros_simples'));
+app.use('/api/divisao-lucros-simples', autenticar, require('./routes/adm/divisao_lucros_simples'));
 // Usa a rota para clientes sem token
 app.use('/api/produtos', require('./routes/cliente/produtos'));
 // Usa a rota para clientes sem token

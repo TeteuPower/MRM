@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { db } = require('../db');
-const autenticar = require('../middleware/auth');
+const { db } = require('../../db');
+const autenticar = require('../../middleware/auth');
 const bcrypt = require('bcrypt'); // Importa o módulo bcrypt
 
 // Rota para criar um novo cliente (POST /api/clientes)

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { db } = require('../db');
-const autenticar = require('../middleware/auth');
+const { db } = require('../../db');
+const autenticar = require('../../middleware/auth');
 
 // Rota para obter um pedido por ID (GET /api/pedidos/:id)
 router.get('/:id', autenticar, (req, res) => {

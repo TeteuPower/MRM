@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { db } = require('../db');
-const autenticar = require('../middleware/auth');
+const { db } = require('../../db');
+const autenticar = require('../../middleware/auth');
 
 // Rota para registrar um novo gasto (POST /api/gastos)
 router.post('/', autenticar, (req, res) => {

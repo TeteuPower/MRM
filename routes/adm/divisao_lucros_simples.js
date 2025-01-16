@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { db } = require('../db');
-const autenticar = require('../middleware/auth');
+const { db } = require('../../db');
+const autenticar = require('../../middleware/auth');
 
 // Rota para obter o resumo da divisão de lucros para o Rafael (GET /api/divisao-lucros-simples/rafael)
 router.get('/rafael', autenticar, (req, res) => {
