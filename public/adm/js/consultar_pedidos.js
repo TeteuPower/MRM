@@ -156,6 +156,8 @@ async function finalizarPedido(pedido) {
     totalKgElement.textContent = `Total a ser produzido: ${totalKg.toFixed(0)} Kg`;
     totalKgElementPacotes.textContent = `${(totalKg * 2).toFixed(0)} Pacotes`;
  }
+
+ totalKg = 0;
 function exibirPedidosAguardandoProducao() {
     const listaPedidos = document.getElementById('lista-pedidos-aguardando-producao');
     listaPedidos.innerHTML = ''; // Limpa a lista
@@ -175,7 +177,6 @@ function exibirPedidosAguardandoProducao() {
         return response.json();
     })
     .then(pedidos => {
-        totalKg = 0;
         // Filtra os pedidos com base no termo de pesquisa
         const pedidosFiltrados = pedidos.filter(pedido => {
             return (pedido.status === 'Em produção') &&
@@ -207,6 +208,55 @@ function exibirPedidosAguardandoProducao() {
         alert('Erro ao buscar pedidos.');
         console.error(error);
     });
+
+
+    //Adiciona pedidos vindos do próprio site
+    fetch('/api/pedidos-aguardando-producao/site', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar pedidos.');
+        }
+        return response.json();
+    })
+    .then(pedidos => {
+        console.log(pedidos);
+        // Filtra os pedidos com base no termo de pesquisa
+        const pedidosFiltrados = pedidos.filter(pedido => {
+            return (pedido.status === 'approved') &&
+                   (pedido.id.toString().includes(termoPesquisa) || 
+                    pedido.cliente_id.toLowerCase().includes(termoPesquisa) ||
+                    pedido.vendedor_id.toLowerCase().includes(termoPesquisa));
+        });
+        //console.log(pedidosFiltrados)
+        // Ordena os pedidos por data de criação (mais recentes primeiro)
+        pedidosFiltrados.sort((a, b) => b.id - a.id);
+
+        // Itera sobre os pedidos filtrados e adiciona cada um à lista
+        pedidosFiltrados.forEach(pedido => {
+            //console.log(pedido)
+            const listItem = document.createElement('li');
+            //Criando uma classe específica para esses elementos li
+            listItem.classList.add('li-pedido-site');
+            listItem.textContent = `Nº ${pedido.id} - ${pedido.vendedor} - ${pedido.cliente} - ${pedido.quantidade_rape_pacotes === null ? 'Itens Indefinidos' : `${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)} Kg`}`;
+            //totalKg = totalKg + parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2);
+
+            listItem.addEventListener('click', () => {
+                //exibirDetalhesPedido(pedido.id);
+            });
+
+            listaPedidos.appendChild(listItem);
+        });
+        somarTotalKg();
+        //console.log(totalKg)
+    })
+    .catch(error => {
+        alert('Erro ao buscar pedidos.');
+        console.error(error);
+    })
 }
 
 function exibirPedidosFinalizadosAguardandoEnvio() {

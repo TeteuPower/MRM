@@ -159,3 +159,7 @@
 .span-vermelho {
     color: red; /* Define a cor vermelha para o saldo negativo */
 }
+
+.li-pedido-site {
+    background-color: #25ac00 !important;
+}
