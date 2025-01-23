@@ -68,3 +68,11 @@
     padding: 8px;
     border-bottom: 1px solid #555;
 }
+
+.azul {
+    background-color: #4c54af !important;
+}
+
+.verde {
+    background-color: #4CAF50 !important;
+}

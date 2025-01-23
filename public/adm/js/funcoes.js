@@ -789,6 +789,12 @@ function exibirUltimosRepassesFeitos(area) {
             repasses.forEach(repasse => {
                 const listItem = document.createElement('li');
                 listItem.textContent = `Do ${repasse.vendedor} para ${area === 'producao' ? repasse.produtor : repasse.vendedor_destinatario} o valor de ${repasse.moeda === 'real' ? 'R$' : 'US$'} ${formatarValor(parseFloat(repasse.valor))}, cadastrado pelo ${repasse.administrador} no dia ${formatarData(repasse.data)}.`;
+                //Adiciona uma classe de estilos para cada vendedor
+                if (repasse.vendedor === 'Rafael') {
+                    listItem.classList.add('azul');
+                } else {
+                    listItem.classList.add('verde');
+                }
                 listaRepasses.appendChild(listItem);
         })};
     })
