@@ -105,6 +105,7 @@ router.put('/:id', autenticar, (req, res) => {
                 })
             })
             res.json({ message: 'Pedido atualizado com sucesso!' });
+            console.log(`Pedido ID: ${pedidoId} atualizado para "${status}" com sucesso!`);
         } else {
             res.status(404).json({ error: 'Pedido não encontrado.' });
         }

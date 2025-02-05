@@ -191,7 +191,7 @@ function exibirDetalhesPedido(id) {
                 atualizarStatusPedido(pedido);
                 //salvarPedidosNoLocalStorage();
                 //exibirPedidos();
-                fecharModalDetalhesPedido();
+                //fecharModalDetalhesPedido();
                 //atualizarPedidoNoCliente(pedido); // Atualiza o pedido dentro da array do cliente
             };
         } else {
@@ -259,6 +259,7 @@ function exibirDetalhesPedido(id) {
                 .then(data => {
                     alert(data.message);
                     location.reload();
+                    return;
                 })
                 .catch(error => {
                     alert('Erro ao atualizar pedido.');

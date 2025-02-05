@@ -301,6 +301,7 @@ app.post('/api/login-admin', (req, res) => {
             const senhaValida = await bcrypt.compare(senha, administrador.senha); 
 
             if (senhaValida) {
+                console.log(`Login administrador bem-sucedido: ${administrador.nome}`);
                 const token = jwt.sign({ id: administrador.id }, process.env.JWT_SECRET_ADMIN, { expiresIn: '24h' });
                 return res.json({ token, id: administrador.id, nome: administrador.nome, usuario: administrador.usuario });
             } else {

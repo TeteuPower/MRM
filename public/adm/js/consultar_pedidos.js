@@ -139,13 +139,14 @@ async function finalizarPedido(pedido) {
             alert(data.message);
             //salvarPedidosNoLocalStorage();
             location.reload();
+            return;
         })
         .catch(error => {
             alert('Erro ao finalizar pedido.');
             console.error(error);
         });
-        exibirPedidos();
-        fecharModalDetalhesPedido();
+        //exibirPedidos();
+        //fecharModalDetalhesPedido();
     }
 }
 
@@ -223,7 +224,7 @@ function exibirPedidosAguardandoProducao() {
         return response.json();
     })
     .then(pedidos => {
-        console.log(pedidos);
+        //console.log(pedidos);
         // Filtra os pedidos com base no termo de pesquisa
         const pedidosFiltrados = pedidos.filter(pedido => {
             return (pedido.status === 'approved') &&

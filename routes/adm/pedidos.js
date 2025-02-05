@@ -118,6 +118,8 @@ router.put('/:id', autenticar, (req, res) => {
                 })
             })
             res.json({ message: 'Pedido atualizado com sucesso!' });
+            console.log(`Pedido ID: ${pedidoId} atualizado para "${status}" com sucesso!`);
+            return;
         } else {
             res.status(404).json({ error: 'Pedido não encontrado.' });
         }
@@ -196,6 +198,7 @@ router.post('/', autenticar, (req, res) => {
         });
 
         res.json({ message: 'Pedido criado com sucesso!', id: pedidoId });
+        console.log(`Pedido criado com ID: ${pedidoId}`);
     });
 });
 
@@ -298,6 +301,7 @@ router.delete('/:id', autenticar, (req, res) => {
 
       if (result.affectedRows > 0) {
           res.json({ message: 'Pedido cancelado com sucesso!' });
+          console.log(`Pedido com ID: ${pedidoId}, CANCELADO! `);
       } else {
           res.status(404).json({ error: 'Pedido não encontrado.' });
       }

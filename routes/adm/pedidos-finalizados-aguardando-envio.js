@@ -88,6 +88,14 @@ router.put('/:id', autenticar, (req, res) => {
             res.status(500).json({ error: 'Erro ao atualizar pedido.' });
             return;
         }
+
+        if (result.affectedRows > 0) {
+            res.json({ message: `Pedido ID: ${pedidoId} atualizado para "${status}" com sucesso!` });
+            console.log(`Pedido ID: ${pedidoId} atualizado para "${status}" com sucesso!`);
+            return;
+        } else {
+            res.status(404).json({ error: 'Pedido nao encontrado.' });
+        }
     });
 });
 
