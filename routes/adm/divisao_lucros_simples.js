@@ -252,6 +252,7 @@ router.post('/repasses-producao-parcial', autenticar, (req, res) => {
                 res.status(500).json({ error: 'Erro ao registrar repasse.' });
                 return;
             }
+            console.log(`Repasse registrado pelo ADM ${administradorId === 1 ? 'Matheus' : administradorId}: do VENDEDOR ${vendedorId === 3 ? 'Rafael' : 'Maithê'} para o PRODUTOR ${produtorId === 1 ? 'Matheus' : produtorId} com o valor de ${valor} ${moeda === 'real' ? 'reais' : 'dolares'}.`);
             res.json({ message: 'Repasse registrado com sucesso!', id: result.insertId });
         });
 
