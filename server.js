@@ -282,6 +282,8 @@ app.use('/api/webhook/mercadopago', require('./routes/cliente/mercadopago_webhoo
 app.use('/api/email-pagamento-confirmado', require('./src/controllers/sg_pagamento_confirm_user'));
 // Rota que envia email de pedido aprovado para administrador
 app.use('/api/email-pagamento-confirmado-admin', require('./src/controllers/sg_pagamento_confirm_admin'));
+// Rota que faz alterações nos produtos do site
+app.use('/api/produtos-site', autenticar, require('./routes/adm/produtos_site'));
 
 
 // Rota para login do administrador (gera o token)

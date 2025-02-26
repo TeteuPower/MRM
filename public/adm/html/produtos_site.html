@@ -36,6 +36,43 @@
         
                     </div>
             </section>
+            <div id="modal-edicao" class="modal">
+                <div  class="modal-content">
+                    <h2>Editar Produto</h2>
+
+                    <label for=modal-titulo>Título:</label>
+                    <input id="modal-titulo"></input>
+
+                    <label for=modal-preco>Preço:</label>
+                    <input type="number" id="modal-preco">
+
+                    <label for=modal-quantidade>Qnt. Disponível:</label>
+                    <input type="number" id="modal-quantidade">
+
+                    <label for=modal-status>Status:</label>
+                    <select id="modal-status">
+                        <option value="1">Disponível</option>
+                        <option value="0">Indisponível</option>
+                    </select>
+
+                    <label for=modal-categoria>Categoria:</label>
+                    <select id="modal-categoria">
+                        <option value="rape">Rapé</option>
+                        <option value="couripes">Couripes</option>
+                        <option value="artesanatos">Artesanatos</option>
+                        <option value="outros">Outros</option>
+                    </select>
+
+                    <label for=modal-descricao>Descrição:</label>
+                    <textarea id="modal-descricao"></textarea>
+
+                    <label for=modal-imagem>Imagem:</label>
+                    <input id="modal-imagem" placeholder="Link da Imagem" type="text">
+
+                    <button onclick="salvarAlteracoes()">Salvar</button>
+                    <button onclick="fecharModal()">Fechar</button>        
+                </div>
+            </div>
     </main>
 
     <script src="../js/funcoes.js"></script>
