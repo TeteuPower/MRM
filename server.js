@@ -302,7 +302,7 @@ app.post('/api/login-admin', (req, res) => {
 
             if (senhaValida) {
                 console.log(`Login administrador bem-sucedido: ${administrador.nome}`);
-                const token = jwt.sign({ id: administrador.id }, process.env.JWT_SECRET_ADMIN, { expiresIn: '24h' });
+                const token = jwt.sign({ id: administrador.id }, process.env.JWT_SECRET_ADMIN, { expiresIn: '30d' });
                 return res.json({ token, id: administrador.id, nome: administrador.nome, usuario: administrador.usuario });
             } else {
                 return res.status(401).json({ error: 'Senha incorreta.' });
@@ -340,7 +340,7 @@ app.post('/api/login-user', (req, res) => {
             const senhaValida = await bcrypt.compare(senha, usuarioDb.senha);
 
             if (senhaValida) {
-                const token = jwt.sign({ id: usuarioDb.id }, process.env.JWT_SECRET_USER, { expiresIn: '24h' });
+                const token = jwt.sign({ id: usuarioDb.id }, process.env.JWT_SECRET_USER, { expiresIn: '30d' });
                 return res.json({ token, id: usuarioDb.id, nome: usuarioDb.nome, usuario: usuarioDb.usuario });
             } else {
                 return res.status(401).json({ error: 'Senha incorreta.' });
