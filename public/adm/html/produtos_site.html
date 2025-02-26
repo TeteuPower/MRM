@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estoque.css">
+    <link rel="stylesheet" href="../css/produtos_site.css">
+</head>
+<body>
+    <div id="nome-administrador" class="usuario-logado"></div>
+    <div id="cabecalho"></div>
+
+    <main>
+            <section id="extrato-pedidos">
+                    <div class="extrato-content">
+                        <h3 id="modal-nome-vendedor">Produtos no Banco de Dados:</h3>
+                        <p>Para uma melhor visualização, acesse essa página por um computador!</p>
+                        <table id="tabela-vendas-vendedor-simples">
+                            <thead>
+                                <tr>
+                                    <th>Imagem:</th>
+                                    <th>Título:</th>
+                                    <th>Preço:</th>
+                                    <th>Qnt. Disponível:</th>
+                                    <th>Status:</th>
+                                    <th>Categoria:</th>
+                                    <th>Descrição:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Os produtos serão adicionados aqui -->
+                            </tbody>
+                        </table>
+        
+                    </div>
+            </section>
+    </main>
+
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/produtos_site.js"></script>
+</body>
+</html>

@@ -223,6 +223,11 @@ app.get('/testimonial', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'cliente', 'html', 'exemplo_nova_pagina.html'));
 });
 
+// Define a rota para manutenção de produtos do site
+app.get('/adm/produtos_site', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'adm', 'html', 'produtos_site.html'));
+});
+
 
 
 module.exports = {

@@ -1,0 +1,291 @@
+.saudacao {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #fff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+.saudacao p {
+    font-size: 18px;
+}
+
+.saudacao strong {
+    font-weight: bold;
+    color: red;
+}
+
+#pesquisa-pedido {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 3px;
+    background-color: #111;
+    color: #eee;
+    margin-bottom: 20px;
+}
+
+.pedidos-container {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite que as divs quebrem para a próxima linha se necessário */
+}
+
+.pedidos-aguardando-producao, 
+.pedidos-finalizados-aguardando-envio,
+.pedidos-finalizados {
+    flex: 1 1 300px; /* Cada div ocupa pelo menos 300px e pode crescer */
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+.pedidos-aguardando-producao h3, 
+.pedidos-finalizados-aguardando-envio h3,
+.pedidos-finalizados h3 {
+    margin-bottom: 15px;
+}
+
+#lista-pedidos-aguardando-producao,
+#lista-pedidos-finalizados-aguardando-envio,
+#lista-pedidos-finalizados {
+    list-style: none;
+    padding: 0;
+}
+
+#lista-pedidos-aguardando-producao li,
+#lista-pedidos-finalizados-aguardando-envio li,
+#lista-pedidos-finalizados li {
+    background-color: #222;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#lista-pedidos-aguardando-producao li:hover,
+#lista-pedidos-finalizados-aguardando-envio li:hover,
+#lista-pedidos-finalizados li:hover {
+    background-color: #444;
+}
+
+#modal-tabela-itens,
+#modal-tabela-editar-itens {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+#modal-tabela-itens th,
+#modal-tabela-editar-itens th,
+#modal-tabela-editar-itens td,
+#modal-tabela-itens td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+}
+
+#area-frete,
+#area-nota-fiscal {
+    margin-top: 20px;
+}
+
+.azul { /* Nova classe para botões azuis */
+    background-color: #337ab7;
+}
+
+.laranja {
+    background-color: orange; 
+}
+
+.vermelho {
+    background-color: rgb(255, 0, 0); 
+}
+
+.paginacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+/*.paginacao button {
+     ... (seus estilos para botões) ... 
+}*/
+
+.paginacao ul {
+    display: flex;
+    gap: 5px;
+    list-style: none;
+    padding: 0;
+}
+
+.paginacao li {
+    background-color: #222; /* Cor de fundo dos itens */
+    padding: 8px 12px; /* Espaçamento interno */
+    border-radius: 5px; /* Cantos arredondados */
+    border: 1px solid #555; /* Borda sutil */
+}
+
+.paginacao li a {
+    text-decoration: none; /* Remove a decoração do link */
+    color: #eee; /* Cor do texto do link */
+    font-weight: bold; /* Texto em negrito */
+}
+
+.paginacao li.ativo { /* Estilo para a página atual */
+    background-color: #555; /* Cor de fundo mais escura */
+}
+
+#modal-editar-pedido input,
+#modal-editar-pedido select,
+#modal-editar-pedido textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 3px;
+    background-color: #111;
+    color: #eee;
+}
+#editar-descricao {
+    height: 100px; /* Define a altura padrão como 150px */
+}
+
+.span-verde {
+    color: rgb(0, 255, 0); /* Define a cor verde para "Pago" */
+}
+
+.span-laranja {
+    color:rgb(253, 215, 0);
+}
+
+.span-vermelho {
+    color: red; /* Define a cor vermelha para o saldo negativo */
+}
+
+#extrato-pedidos {
+    text-align: center;
+}
+
+#extrato-pedidos .extrato-content {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    overflow-x: auto; /* Permite rolagem horizontal apenas no container */
+    max-width: 100%; /* Define a largura máxima do container */
+}
+
+#extrato-pedidos .extrato-content h3 {
+    margin-bottom: 15px;
+}
+
+#tabela-vendas-vendedor-simples,
+#tabela-vendas-vendedor-simples-socio {
+    width: 100%; /* Define a largura da tabela como 100% do container */
+    border-collapse: collapse;
+    /*font-size: 0.8em;  Diminui o tamanho da fonte */
+}
+
+#tabela-vendas-vendedor-simples th,
+#tabela-vendas-vendedor-simples td,
+#tabela-vendas-vendedor-simples-socio th,
+#tabela-vendas-vendedor-simples-socio td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+    white-space: nowrap; /* Evita que o texto quebre em várias linhas */
+}
+
+/*#btn-proxima-pagina-vendedor {
+    /* ... (seus estilos para botões) ... 
+}*/
+
+#extrato-pedidos .extrato-content h3 + p { /* Seleciona o parágrafo que está imediatamente após o h3 */
+    display: none; /* Oculta o parágrafo em telas maiores */
+    font-size: 0.8em;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+.texto-socio{
+    display: block;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+/* Estilos para telas menores */
+@media (max-width: 768px) {
+    .texto-socio{
+        display: block;
+        font-size: 0.8em;
+        color: #aaa;
+        margin-bottom: 10px;
+    }
+    #extrato-pedidos .extrato-content h3 + p { /* Seleciona o parágrafo que está imediatamente após o h3 */
+        display: block; /* Exibe o parágrafo em telas menores */
+        font-size: 0.8em;
+        color: #aaa;
+        margin-bottom: 10px;
+    }
+    #tabela-vendas-vendedor-simples,
+    #tabela-vendas-vendedor-simples-socio {
+        font-size: 0.6em; /* Diminui o tamanho da fonte ainda mais */
+    }
+
+    #extrato-pedidos .extrato-content {
+        background-color: #333;
+        padding: 0px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        overflow-x: auto; /* Permite rolagem horizontal apenas no container */
+        max-width: 100%; /* Define a largura máxima do container */
+    }
+
+    #tabela-vendas-vendedor-simples th,
+    #tabela-vendas-vendedor-simples td,
+    #tabela-vendas-vendedor-simples-socio th,
+    #tabela-vendas-vendedor-simples-socio td {
+        padding: 3px; /* Diminui o espaçamento interno */
+    }
+
+    #tabela-vendas-vendedor-simples td:nth-child(2), /* Oculta a coluna */
+    #tabela-vendas-vendedor-simples th:nth-child(2) {
+        white-space: normal; /* Permite que o texto quebre a linha */
+        height: auto; /* Permite que a célula se ajuste à altura do texto */
+    }
+
+}
+
+.button-detalhes {
+    padding: 6px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5cb85c;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.8em;
+    transition: background-color 0.3s ease;
+}
+
+.button-detalhes:hover {
+    background-color: #4cae4c;
+}
+
+#tabela-vendas-vendedor th,
+#tabela-vendas-vendedor td,
+#tabela-producoes-produtor th,
+#tabela-producoes-produtor td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #555;
+}
