@@ -96,30 +96,33 @@ function salvarAlteracoes() {
     const categoria = document.getElementById('modal-categoria').value;
     const descricao = document.getElementById('modal-descricao').value;
     const imagem = document.getElementById('modal-imagem').value;
+    //confirma se deseja mesmo salvar as alterações
+    if (confirm(`Tem certeza que deseja salvar as alterações no produto ${titulo} ?`)) {
 
-    fetch(`/api/produtos-site/${produtoId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': localStorage.getItem('token')
-        },
-        body: JSON.stringify({
-            nome: titulo,
-            preco: preco,
-            quantidade: quantidade,
-            status: status,
-            categoria: categoria,
-            descricao: descricao,
-            img_url: imagem
-        }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log(data);
-        document.getElementById('modal-edicao').style.display = 'none';
-        carregarProdutos(); // Atualiza a tabela de produtos
-    })
-    .catch(error => console.error('Erro ao salvar alterações:', error));
+        fetch(`/api/produtos-site/${produtoId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify({
+                nome: titulo,
+                preco: preco,
+                quantidade: quantidade,
+                status: status,
+                categoria: categoria,
+                descricao: descricao,
+                img_url: imagem
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data);
+            document.getElementById('modal-edicao').style.display = 'none';
+            carregarProdutos(); // Atualiza a tabela de produtos
+        })
+        .catch(error => console.error('Erro ao salvar alterações:', error));
+    }
 }
 
 function excluirProduto() {
