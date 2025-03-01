@@ -251,6 +251,25 @@
                     <button class="buttonCarrinho-finalizar" id="checkout-btn">Finalizar Compra</button>
                 </div>
             </div>   		
+        </div> 
+
+    <input class="modal-btn-produto" type="checkbox" id="modal-produto-btn" name="modal-produto-btn"/>
+        <div class="modal-produto" id="modal-produto">		
+            <div class="modal-wrap">
+              <div class="cabecalho-produto">
+                <img src="https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/logo2.webp?alt=media&token=6016a6bf-968a-4919-973b-bce5f2b21ba0" alt="Logo Espirito do Nativo logo" class="logo-descricao left-to-right">
+                <div class="texto-cabecalho-produto right-to-left" id="nome-produto"><h2></h2></div>
+                <span class="close-modal-produto">×</span>
+              </div>   		
+                <div class="carrinho-produto modal-content zoom delay-8">
+                    <ul id="descricao-produto">
+                        <!-- A descrição do produto será adicionada aqui via JS -->
+                    </ul>
+                </div>
+                <div class="btn-checkout-produto left-to-right delay-4">
+                    <button class="buttonCarrinho-finalizar" id="adicionar-carrinho" onclick="adicionarAoCarrinhoProduto()">Adicionar ao carrinho!</button>
+                </div>
+            </div>   		
         </div>   
     <!-- END CARRINHO SECTION -->
     <!-- TESTIMONIAL SECTION -->

@@ -675,7 +675,8 @@ section {
     border-radius: 10px;
 }
 
-.close-modal {
+.close-modal,
+.close-modal-produto {
     color: #aaa;
     float: right;
     font-size: 28px;
@@ -689,21 +690,31 @@ section {
     cursor: pointer;
 }
 
+.close-modal-produto:hover,
+.close-modal-produto:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .cabecalho-carrinho {
     display: flex;
     align-items: center;
     justify-content: space-around; /* Centraliza o item do meio */
 }
 
-.logo-carrinho {
+.logo-carrinho,
+.logo-descricao {
     margin-left: 0px;
 }
 
-.close-modal {
+.close-modal,
+.close-modal-produto {
     margin-right: 7px;
 }
 
-.logo-carrinho {
+.logo-carrinho,
+.logo-descricao {
     max-height: 100px;
     max-width: 100px;
     border-radius: 50%;
@@ -717,7 +728,8 @@ section {
     margin-left: 25px;
 }*/
 
-.btn-checkout {
+.btn-checkout,
+.btn-checkout-produto {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -844,6 +856,34 @@ section {
   opacity: 1;
   transition: all 300ms ease-in-out;
 }
+
+.modal-produto{
+    position: fixed;
+    display: block;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -ms-flex-pack: center;
+    justify-content: center;
+    margin: 0 auto;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    overflow-x: hidden;
+    background-color: rgba(31,32,41,.75);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 250ms 700ms ease;
+}
+.modal-btn-produto:checked ~ .modal-produto{
+    pointer-events: auto;
+    opacity: 1;
+    transition: all 300ms ease-in-out;
+}
+
 .modal-wrap {
   position: relative;
   display: block;
@@ -878,6 +918,12 @@ section {
   transform: scale(1);
   transition: opacity 250ms 500ms ease, transform 350ms 500ms ease;
 }
+
+.modal-btn-produto:checked ~ .modal-produto .modal-wrap{
+    opacity: 1;
+    transform: scale(1);
+    transition: opacity 250ms 500ms ease, transform 350ms 500ms ease;
+  }
 
 
 .logo {
@@ -1143,6 +1189,10 @@ body.light .carrinho {
     background-color: var(--black-blue-light);
 }
 
+body.light .carrinho-produto {
+    background-color: var(--black-blue-light);
+}
+
 body.light .mb-nav {
     background-color: var(--black-blue);
 }
@@ -1373,7 +1423,8 @@ body.light .navbar-brand::after{
     margin: 0 9px;
   }
 
-  .carrinho ul {
+  .carrinho ul,
+  .carrinho-produto ul {
     list-style: none;
     padding: 0;
   }

@@ -312,6 +312,101 @@ async function carregarProdutos() {
     }
 }
 
+
+function abrirModalProduto(produtoId) {
+    const modalProdutoBtn = document.getElementById('modal-produto-btn');
+    const logoCarrinho = document.querySelector('.logo-descricao');
+    const textoCabecalho = document.querySelector('.texto-cabecalho-produto');
+    const carrinho = document.querySelector('.carrinho-produto');
+    const btnCheckout = document.querySelector('.btn-checkout-produto'); 
+
+    modalProdutoBtn.checked = true;
+    logoCarrinho.classList.add('start');
+    textoCabecalho.classList.add('start');
+    carrinho.classList.add('start'); 
+    btnCheckout.classList.add('start');
+
+    // 1. Buscar o produto pelo ID:
+    fetch(`/api/produtos/${produtoId}`)
+        .then(response => response.json())
+        .then(data => {
+            //console.log(data);
+            const produto = data;
+
+            if (!produto) {
+                console.error('Produto não encontrado:', produtoId);
+                return;
+            }
+            // 2. Preencher o modal:
+            document.querySelector('#modal-produto .texto-cabecalho-produto h2').textContent = produto.nome;
+            // Limpar conteúdo anterior da descrição:
+            const ulDescricao = document.getElementById('descricao-produto');
+            ulDescricao.innerHTML = '';
+        
+            // Adicionar a descrição (exemplo simples):
+                const li = document.createElement('li');
+                li.textContent = produto.descricao;
+                ulDescricao.appendChild(li);
+        
+            // 3. Adicionar o ID do produto ao modal:*
+            document.getElementById('modal-produto').setAttribute('data-produto-id', produto.id);
+        })
+        .catch(error => {
+            console.error('Erro ao buscar produto:', error);
+        });
+}
+
+function adicionarAoCarrinhoProduto() {
+    const produtoId = document.getElementById('modal-produto').getAttribute('data-produto-id');
+    closeModalProduto();
+
+    function addToCart(productId, quantity) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const produtoJaExiste = cart.find(item => parseInt(item.productId) === parseInt(productId));
+
+        if (produtoJaExiste) {
+            //console.log(produtoJaExiste.quantity , quantity);
+            produtoJaExiste.quantity = parseFloat(produtoJaExiste.quantity) + parseFloat(quantity);
+        } else {
+            cart.push({ productId: parseInt(productId), quantity: parseFloat(quantity) });
+        }
+
+        //cart.push(productId);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        //abrirCarrinho();
+    }
+    //intervalo de 1 segundo
+    setTimeout(() => {
+        addToCart(produtoId, 1);
+        popularMenu();
+        //alert('Produto adicionado ao carrinho.');
+        const resumoSection = document.getElementById('resumo-itens');
+        if (resumoSection) {
+            //console.log('tentei')
+            resumoSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, 1000);
+
+}
+
+
+document.querySelector('.close-modal-produto').addEventListener('click', closeModalProduto);
+function closeModalProduto() {
+    //const modalProduto = document.getElementById('modal-btn-produto');
+    const modalProdutoBtn = document.getElementById('modal-produto-btn');
+    const logoCarrinhoProduto = document.querySelector('.logo-descricao');
+    const textoCabecalhoProduto = document.querySelector('.texto-cabecalho-produto');
+    const carrinhoProduto = document.querySelector('.carrinho-produto');
+    const btnCheckoutProduto = document.querySelector('.btn-checkout-produto'); 
+    document.getElementById('modal-produto').removeAttribute('data-produto-id');
+
+    logoCarrinhoProduto.classList.remove('start');
+    textoCabecalhoProduto.classList.remove('start');
+    carrinhoProduto.classList.remove('start');
+    btnCheckoutProduto.classList.remove('start');
+    modalProdutoBtn.checked = false; // Desmarca o checkbox, fechando o modal
+}
+
 // Função para exibir os produtos na página
 function exibirProdutos(products) {
     productList.innerHTML = ''; // Limpa o container
@@ -334,7 +429,7 @@ function exibirProdutos(products) {
         productItem.innerHTML = `
             <div class="item-wrap bottom-up play-on-scroll">
                 <div class="item-img">
-                    <div class="img-holder bg-img" style="background-image: url(${imagemUrl || 'https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/logo2.webp?alt=media&token=6016a6bf-968a-4919-973b-bce5f2b21ba0'});"></div> </div>
+                    <div class="img-holder bg-img" style="background-image: url(${ imagemUrl || 'https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/logo2.webp?alt=media&token=6016a6bf-968a-4919-973b-bce5f2b21ba0'});" onclick="abrirModalProduto(${product.id})"></div> </div>
                 <div class="item-info">
                     <div class="cart-btn" data-product-id="${product.id}">
                         <i class='bx bx-up-arrow-alt increase-btn'></i>
