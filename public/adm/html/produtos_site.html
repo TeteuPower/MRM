@@ -17,6 +17,7 @@
                     <div class="extrato-content">
                         <h3 id="modal-nome-vendedor">Produtos no Banco de Dados:</h3>
                         <p>Para uma melhor visualização, acesse essa página por um computador!</p>
+                        <button id="btn-criar-produto">Criar novo produto!</button>
                         <table id="tabela-vendas-vendedor-simples">
                             <thead>
                                 <tr>
@@ -70,7 +71,52 @@
                     <input id="modal-imagem" placeholder="Link da Imagem" type="text">
 
                     <button onclick="salvarAlteracoes()">Salvar</button>
-                    <button onclick="fecharModal()">Fechar</button>        
+                    <button onclick="fecharModal()">Fechar</button>
+                    <button onclick="excluirProduto()">Excluir Produto</button>    
+                </div>
+            </div>
+            <div id="modal-adicionar-produto" class="modal">
+                <div class="modal-content">
+                    <h2>Adicionar Novo Produto</h2>
+
+                    <label for=modal-titulo-produto>Título:</label>
+                    <input id="modal-titulo-produto"></input>
+
+                    <label for=modal-preco-produto>Preço:</label>
+                    <input type="number" id="modal-preco-produto">
+
+                    <label for=modal-quantidade-produto>Qnt. Disponível:</label>
+                    <input type="number" id="modal-quantidade-produto">
+
+                    <label for="modal-unidade-de-medida">Unidade de Medida:</label>
+                    <select id="modal-unidade-de-medida">
+                        <option value="Kg">Kg</option>
+                        <option value="g">g</option>
+                        <option value="Unidades">Unidades</option>
+                    </select>
+
+                    <label for=modal-status-produto>Status:</label>
+                    <select id="modal-status-produto">
+                        <option value="1">Disponível</option>
+                        <option value="0">Indisponível</option>
+                    </select>
+
+                    <label for=modal-categoria-produto>Categoria:</label>
+                    <select id="modal-categoria-produto">
+                        <option value="rape">Rapé</option>
+                        <option value="couripes">Couripes</option>
+                        <option value="artesanatos">Artesanatos</option>
+                        <option value="outros">Outros</option>
+                    </select>
+
+                    <label for=modal-descricao-produto>Descrição:</label>
+                    <textarea id="modal-descricao-produto"></textarea>
+
+                    <label for=modal-imagem-produto>Imagem:</label>
+                    <input id="modal-imagem-produto" placeholder="Link da Imagem" type="text">
+
+                    <button onclick="criarProduto()">Adicionar</button>
+                    <button id="fechar-modal-adicionar-produto">Fechar</button>        
                 </div>
             </div>
     </main>

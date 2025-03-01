@@ -196,6 +196,10 @@
     /*font-size: 0.8em;  Diminui o tamanho da fonte */
 }
 
+#tabela-vendas-vendedor-simples tbody tr {
+    cursor: pointer; /* Muda o cursor para a "mãozinha" */
+}
+
 #tabela-vendas-vendedor-simples th,
 #tabela-vendas-vendedor-simples td,
 #tabela-vendas-vendedor-simples-socio th,

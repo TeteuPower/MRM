@@ -50,4 +50,35 @@ router.put('/:id', autenticar, (req, res) => {
     });
 });
 
+// Rota para criar um novo produto
+router.post('/', autenticar, (req, res) => {
+    const { nome, status, preco, categoria, img_url, descricao, quantidade, unidade_de_medida } = req.body;
+    const sql = 'INSERT INTO produtos_site (nome, status, preco, categoria, img_url, descricao, quantidade, unidade) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    db.query(sql, [nome, status, preco, categoria, img_url, descricao, quantidade, unidade_de_medida], (err, results) => {
+        if (err) {
+            console.error('Erro ao criar produto:', err);
+            res.status(500).json({ error: 'Erro ao criar produto.' });
+            return;
+        }
+        res.json({ message: 'Produto criado com sucesso.' });
+    });
+});
+
+// Rota para excluir um produto:
+router.put('/excluir/:id', autenticar, (req, res) => {
+    const produtoId = req.params.id;
+    const administador = req.usuario.id;
+    const { status } = req.body;
+    const sql = 'UPDATE produtos_site SET status = ? WHERE id = ?';
+    db.query(sql, [ status, produtoId], (err, results) => {
+        if (err) {
+            console.error('Erro ao excluir produto:', err);
+            res.status(500).json({ error: 'Erro ao excluir produto.' });
+            return;
+        }
+        console.log(`Produto de id: ${produtoId} excluido pelo admin ${administador}`);
+        res.json({ message: 'Produto excluido com sucesso.' });
+    });
+});
+
 module.exports = router;
