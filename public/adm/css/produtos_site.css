@@ -210,6 +210,13 @@
     white-space: nowrap; /* Evita que o texto quebre em várias linhas */
 }
 
+#tabela-vendas-vendedor-simples td:nth-child(7) { /* Seleciona a 7ª coluna (Descrição) */
+    max-width: 200px; /* Defina a largura máxima que você quer */
+    white-space: nowrap; /* Impede que o texto quebre para a próxima linha */
+    overflow: hidden; /* Esconde o texto que ultrapassa a largura */
+    text-overflow: ellipsis; /* Adiciona "..." ao final do texto cortado */
+}
+
 /*#btn-proxima-pagina-vendedor {
     /* ... (seus estilos para botões) ... 
 }*/

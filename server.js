@@ -228,6 +228,11 @@ app.get('/adm/produtos_site', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'adm', 'html', 'produtos_site.html'));
 });
 
+// Define a rota para a manipulação dos cupons
+app.get('/adm/manipular_cupons', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'adm', 'html', 'manipular_cupons.html'));
+});
+
 
 
 module.exports = {

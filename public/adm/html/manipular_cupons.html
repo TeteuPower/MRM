@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página Inicial</title>
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estoque.css">
+    <link rel="stylesheet" href="../css/manipular_cupons.css">
+</head>
+<body>
+    <div id="nome-administrador" class="usuario-logado"></div>
+    <div id="cabecalho"></div>
+
+    <main>
+            <section id="extrato-pedidos">
+                    <div class="extrato-content">
+                        <h3 id="modal-nome-vendedor">Cupons no Banco de Dados:</h3>
+                        <p>Para uma melhor visualização, acesse essa página por um computador!</p>
+                        <button id="btn-criar-produto">Criar novo cupon!</button>
+                        <table id="tabela-vendas-vendedor-simples">
+                            <thead>
+                                <tr>
+                                    <th>Status:</th>
+                                    <th>Código:</th>
+                                    <th>Desconto:</th>
+                                    <th>Revendedor:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Os Cupons serão adicionados aqui -->
+                            </tbody>
+                        </table>
+        
+                    </div>
+            </section>
+            <div id="modal-edicao" class="modal">
+                <div  class="modal-content">
+                    <h2>Editar Produto</h2>
+
+                    <label for=modal-titulo>Título:</label>
+                    <input id="modal-titulo"></input>
+
+                    <label for=modal-preco>Preço:</label>
+                    <input type="number" id="modal-preco">
+
+                    <label for=modal-quantidade>Qnt. Disponível:</label>
+                    <input type="number" id="modal-quantidade">
+
+                    <label for=modal-status>Status:</label>
+                    <select id="modal-status">
+                        <option value="1">Disponível</option>
+                        <option value="0">Indisponível</option>
+                    </select>
+
+                    <label for=modal-categoria>Categoria:</label>
+                    <select id="modal-categoria">
+                        <option value="rape">Rapé</option>
+                        <option value="couripes">Couripes</option>
+                        <option value="artesanatos">Artesanatos</option>
+                        <option value="outros">Outros</option>
+                    </select>
+
+                    <label for=modal-descricao>Descrição:</label>
+                    <textarea id="modal-descricao"></textarea>
+
+                    <label for=modal-imagem>Imagem:</label>
+                    <input id="modal-imagem" placeholder="Link da Imagem" type="text">
+
+                    <button onclick="salvarAlteracoes()">Salvar</button>
+                    <button onclick="fecharModal()">Fechar</button>
+                    <button onclick="excluirProduto()">Excluir Produto</button>    
+                </div>
+            </div>
+            <div id="modal-adicionar-produto" class="modal">
+                <div class="modal-content">
+                    <h2>Adicionar Novo Produto</h2>
+
+                    <label for=modal-titulo-produto>Título:</label>
+                    <input id="modal-titulo-produto"></input>
+
+                    <label for=modal-preco-produto>Preço:</label>
+                    <input type="number" id="modal-preco-produto">
+
+                    <label for=modal-quantidade-produto>Qnt. Disponível:</label>
+                    <input type="number" id="modal-quantidade-produto">
+
+                    <label for="modal-unidade-de-medida">Unidade de Medida:</label>
+                    <select id="modal-unidade-de-medida">
+                        <option value="Kg">Kg</option>
+                        <option value="g">g</option>
+                        <option value="Unidades">Unidades</option>
+                    </select>
+
+                    <label for=modal-status-produto>Status:</label>
+                    <select id="modal-status-produto">
+                        <option value="1">Disponível</option>
+                        <option value="0">Indisponível</option>
+                    </select>
+
+                    <label for=modal-categoria-produto>Categoria:</label>
+                    <select id="modal-categoria-produto">
+                        <option value="rape">Rapé</option>
+                        <option value="couripes">Couripes</option>
+                        <option value="artesanatos">Artesanatos</option>
+                        <option value="outros">Outros</option>
+                    </select>
+
+                    <label for=modal-descricao-produto>Descrição:</label>
+                    <textarea id="modal-descricao-produto"></textarea>
+
+                    <label for=modal-imagem-produto>Imagem:</label>
+                    <input id="modal-imagem-produto" placeholder="Link da Imagem" type="text">
+
+                    <button onclick="criarProduto()">Adicionar</button>
+                    <button id="fechar-modal-adicionar-produto">Fechar</button>        
+                </div>
+            </div>
+    </main>
+
+    <script src="../js/funcoes.js"></script>
+    <script src="../js/manipular_cupons.js"></script>
+</body>
+</html>
