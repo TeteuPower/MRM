@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
+    <title>ADM Espírito Do Nativo</title>
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/estoque.css">
     <link rel="stylesheet" href="../css/manipular_cupons.css">
@@ -17,7 +17,7 @@
                     <div class="extrato-content">
                         <h3 id="modal-nome-vendedor">Cupons no Banco de Dados:</h3>
                         <p>Para uma melhor visualização, acesse essa página por um computador!</p>
-                        <button id="btn-criar-produto">Criar novo cupon!</button>
+                        <button id="btn-criar-produto">Criar novo cupom!</button>
                         <table id="tabela-vendas-vendedor-simples">
                             <thead>
                                 <tr>
@@ -36,36 +36,19 @@
             </section>
             <div id="modal-edicao" class="modal">
                 <div  class="modal-content">
-                    <h2>Editar Produto</h2>
+                    <h2>Editar cupom</h2>
 
-                    <label for=modal-titulo>Título:</label>
-                    <input id="modal-titulo"></input>
+                    <label for=codigo-cupom>Código:</label>
+                    <input id="codigo-cupom"></input>
 
-                    <label for=modal-preco>Preço:</label>
-                    <input type="number" id="modal-preco">
+                    <label for=desconto-cupom>Desconto:(%)</label>
+                    <input type="number" id="desconto-cupom">
 
-                    <label for=modal-quantidade>Qnt. Disponível:</label>
-                    <input type="number" id="modal-quantidade">
-
-                    <label for=modal-status>Status:</label>
-                    <select id="modal-status">
+                    <label for=status-cupom>Status:</label>
+                    <select id="status-cupom">
                         <option value="1">Disponível</option>
                         <option value="0">Indisponível</option>
                     </select>
-
-                    <label for=modal-categoria>Categoria:</label>
-                    <select id="modal-categoria">
-                        <option value="rape">Rapé</option>
-                        <option value="couripes">Couripes</option>
-                        <option value="artesanatos">Artesanatos</option>
-                        <option value="outros">Outros</option>
-                    </select>
-
-                    <label for=modal-descricao>Descrição:</label>
-                    <textarea id="modal-descricao"></textarea>
-
-                    <label for=modal-imagem>Imagem:</label>
-                    <input id="modal-imagem" placeholder="Link da Imagem" type="text">
 
                     <button onclick="salvarAlteracoes()">Salvar</button>
                     <button onclick="fecharModal()">Fechar</button>
