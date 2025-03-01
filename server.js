@@ -340,6 +340,7 @@ app.post('/api/login-user', (req, res) => {
 
         //Verifica se o email foi verificado
         if (!usuarioDb.email_verificado) {
+            console.log(`Tentativa de login com email ${usuario} nao verificado`);
             return res.status(401).json({ error: 'Email não verificado. Por favor, verifique sua caixa de SPAM.' });
         }
 
