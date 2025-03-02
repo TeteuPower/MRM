@@ -345,11 +345,11 @@ app.post('/api/login-user', (req, res) => {
 
         const usuarioDb = results[0];
 
-        //Verifica se o email foi verificado
+        /*//Verifica se o email foi verificado
         if (!usuarioDb.email_verificado) {
             console.log(`Tentativa de login com email ${usuario} nao verificado`);
-            res.status(401).json({ error: 'Email não verificado. Por favor, verifique sua caixa de SPAM.' });
-        }
+            return res.status(401).json({ error: 'Email não verificado. Por favor, verifique sua caixa de SPAM.' });
+        }*/
 
         try {
             const senhaValida = await bcrypt.compare(senha, usuarioDb.senha);
