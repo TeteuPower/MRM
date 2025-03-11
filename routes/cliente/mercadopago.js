@@ -29,27 +29,48 @@ router.post('/', autenticarClientes, async (req, res) => {
   //itera sobre cada produto no pedido.produtos, consulta a tabela produtos e resgata o preco através do id e multiplica pela quantity do produto
   try {
     let total = 0;
+    let desconto = 0;
     const produtosParaMercadoPago = [];
     for (let i = 0; i < pedido.produtos.length; i++) {
-      const produto = await dbClientes.promise().query('SELECT preco, nome FROM produtos_site WHERE id = ?', [pedido.produtos[i].productId]);
-      total += produto[0][0].preco * pedido.produtos[i].quantity;
+      const produto = await dbClientes.promise().query('SELECT preco, nome, categoria FROM produtos_site WHERE id = ?', [pedido.produtos[i].productId]);
+      const precoProduto = parseFloat(produto[0][0].preco);
+      const quantitade = pedido.produtos[i].quantity;
+      //total += produto[0][0].preco * pedido.produtos[i].quantity;
       //console.log('Id do produto: ',pedido.produtos[i].productId,'Quantidade: ', pedido.produtos[i].quantity,'Preço: ', produto[0][0].preco);
       //console.log(produto[0][0].nome);
+      //console.log (produto[0][0]);
 
-      produtosParaMercadoPago.push({ // Adiciona o item ao array
-        id: pedido.produtos[i].productId, // Usando o ID do produto como ID do item.
-        title: produto[0][0].nome, // Nome do produto
-        quantity: pedido.produtos[i].quantity,
-        unit_price: parseFloat(produto[0][0].preco),
-        currency_id: 'BRL',
-        //picture_url: imagemProduto // URL da imagem do produto
-      });
+      if (produto[0][0].categoria === 'rape' && cupom[0].length > 0 && cupom[0][0].ativo == '1') {
+        // Aplica desconto SOMENTE se o produto tiver ID 1 e o cupom for válido
+        const descontoPorcentagem = cupom[0][0].desconto / 100;
+        const precoComDesconto = precoProduto * (1 - descontoPorcentagem);
+        total += precoComDesconto * quantitade;
+        desconto += (precoProduto - precoComDesconto) * quantitade;
+        produtosParaMercadoPago.push({ // Adiciona o item ao array
+          id: pedido.produtos[i].productId, // Usando o ID do produto como ID do item.
+          title: produto[0][0].nome, // Nome do produto
+          quantity: pedido.produtos[i].quantity,
+          unit_price: parseFloat(precoComDesconto),
+          currency_id: 'BRL',
+          //picture_url: imagemProduto // URL da imagem do produto
+        });
+      } else {
+        total += precoProduto * quantitade;
+        produtosParaMercadoPago.push({ // Adiciona o item ao array
+          id: pedido.produtos[i].productId, // Usando o ID do produto como ID do item.
+          title: produto[0][0].nome, // Nome do produto
+          quantity: pedido.produtos[i].quantity,
+          unit_price: parseFloat(precoProduto),
+          currency_id: 'BRL',
+          //picture_url: imagemProduto // URL da imagem do produto
+        });
+      }
 
 
     }
     //console.log(produtosParaMercadoPago);
-    let desconto = 0;
-    if (cupom[0].length > 0) {
+    
+    /*if (cupom[0].length > 0) {
       if (cupom[0][0].ativo == '1') {
         const totalComDesconto = total * (1 - (cupom[0][0].desconto/100));
         desconto = total - totalComDesconto;
@@ -67,7 +88,7 @@ router.post('/', autenticarClientes, async (req, res) => {
       }
     } else {
       console.log('Cupom não encontrado');
-    }
+    }*/
 
     //console.log('Total: ',total);
 

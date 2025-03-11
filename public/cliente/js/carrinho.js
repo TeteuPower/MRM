@@ -58,6 +58,7 @@ function abrirModalProduto(produtoId) {
         
             // 3. Adicionar o ID do produto ao modal:*
             document.getElementById('modal-produto').setAttribute('data-produto-id', produto.id);
+            document.getElementById('modal-produto').setAttribute('data-categoria', produto.categoria);
         })
         .catch(error => {
             console.error('Erro ao buscar produto:', error);
@@ -66,9 +67,10 @@ function abrirModalProduto(produtoId) {
 
 function adicionarAoCarrinhoProduto() {
     const produtoId = document.getElementById('modal-produto').getAttribute('data-produto-id');
+    const categoria = document.getElementById('modal-produto').getAttribute('data-categoria');
     closeModalProduto();
 
-    function addToCart(productId, quantity) {
+    function addToCart(productId, quantity, categoria) {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const produtoJaExiste = cart.find(item => parseInt(item.productId) === parseInt(productId));
 
@@ -76,7 +78,7 @@ function adicionarAoCarrinhoProduto() {
             //console.log(produtoJaExiste.quantity , quantity);
             produtoJaExiste.quantity = parseFloat(produtoJaExiste.quantity) + parseFloat(quantity);
         } else {
-            cart.push({ productId: parseInt(productId), quantity: parseFloat(quantity) });
+            cart.push({ productId: parseInt(productId), quantity: parseFloat(quantity), categoria: categoria });
         }
 
         //cart.push(productId);
@@ -85,7 +87,7 @@ function adicionarAoCarrinhoProduto() {
     }
     //intervalo de 1 segundo
     setTimeout(() => {
-        addToCart(produtoId, 1);
+        addToCart(produtoId, 1, categoria);
     }, 1000);
 
 }
@@ -114,7 +116,7 @@ function exibirProdutos(products) {
                 <div class="item-img">
                     <div class="img-holder bg-img" style="background-image: url(${ imagemUrl || 'https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/logo2.webp?alt=media&token=6016a6bf-968a-4919-973b-bce5f2b21ba0'});" onclick="abrirModalProduto(${product.id})"></div> </div>
                 <div class="item-info">
-                    <div class="cart-btn" data-product-id="${product.id}">
+                    <div class="cart-btn" data-product-id="${product.id}" data-product-type="${product.categoria}">
                         <i class='bx bx-up-arrow-alt increase-btn'></i>
                         <input type="number" min="1" value="1" class="quantity-input">
                         <i class='bx bx-down-arrow-alt decrease-btn'></i>
@@ -138,7 +140,9 @@ function exibirProdutos(products) {
         if (event.target.classList.contains('bx-cart-add')) {
             const productId = event.target.closest('.cart-btn').dataset.productId;
             const quantity = event.target.closest('.cart-btn').querySelector('.quantity-input').value;
-            addToCart(productId, quantity);
+            const categoria = event.target.closest('.cart-btn').dataset.productType;
+            //console.log(productId, quantity, categoria);
+            addToCart(productId, quantity, categoria);
         }
 
         if (event.target.classList.contains('increase-btn')) {
@@ -156,7 +160,8 @@ function exibirProdutos(products) {
         }
     });
 
-    function addToCart(productId, quantity) {
+    function addToCart(productId, quantity, categoria) {
+        //console.log(productId, quantity, categoria);
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const produtoJaExiste = cart.find(item => parseInt(item.productId) === parseInt(productId));
 
@@ -164,7 +169,7 @@ function exibirProdutos(products) {
             //console.log(produtoJaExiste.quantity , quantity);
             produtoJaExiste.quantity = parseFloat(produtoJaExiste.quantity) + parseFloat(quantity);
         } else {
-            cart.push({ productId: parseInt(productId), quantity: parseFloat(quantity) });
+            cart.push({ productId: parseInt(productId), quantity: parseFloat(quantity), categoria: categoria });
         }
 
         //cart.push(productId);
@@ -213,6 +218,7 @@ function closeModalProduto() {
     const carrinhoProduto = document.querySelector('.carrinho-produto');
     const btnCheckoutProduto = document.querySelector('.btn-checkout-produto'); 
     document.getElementById('modal-produto').removeAttribute('data-produto-id');
+    document.getElementById('modal-produto').removeAttribute('data-produto-categoria');
 
     logoCarrinhoProduto.classList.remove('start');
     textoCabecalhoProduto.classList.remove('start');

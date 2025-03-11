@@ -350,6 +350,7 @@ function abrirModalProduto(produtoId) {
         
             // 3. Adicionar o ID do produto ao modal:*
             document.getElementById('modal-produto').setAttribute('data-produto-id', produto.id);
+            document.getElementById('modal-produto').setAttribute('data-categoria', produto.categoria);
         })
         .catch(error => {
             console.error('Erro ao buscar produto:', error);
@@ -358,9 +359,10 @@ function abrirModalProduto(produtoId) {
 
 function adicionarAoCarrinhoProduto() {
     const produtoId = document.getElementById('modal-produto').getAttribute('data-produto-id');
+    const categoria = document.getElementById('modal-produto').getAttribute('data-categoria');
     closeModalProduto();
 
-    function addToCart(productId, quantity) {
+    function addToCart(productId, quantity, categoria) {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const produtoJaExiste = cart.find(item => parseInt(item.productId) === parseInt(productId));
 
@@ -368,7 +370,7 @@ function adicionarAoCarrinhoProduto() {
             //console.log(produtoJaExiste.quantity , quantity);
             produtoJaExiste.quantity = parseFloat(produtoJaExiste.quantity) + parseFloat(quantity);
         } else {
-            cart.push({ productId: parseInt(productId), quantity: parseFloat(quantity) });
+            cart.push({ productId: parseInt(productId), quantity: parseFloat(quantity), categoria: categoria });
         }
 
         //cart.push(productId);
@@ -377,7 +379,7 @@ function adicionarAoCarrinhoProduto() {
     }
     //intervalo de 1 segundo
     setTimeout(() => {
-        addToCart(produtoId, 1);
+        addToCart(produtoId, 1, categoria);
         popularMenu();
         //alert('Produto adicionado ao carrinho.');
         const resumoSection = document.getElementById('resumo-itens');
@@ -431,7 +433,7 @@ function exibirProdutos(products) {
                 <div class="item-img">
                     <div class="img-holder bg-img" style="background-image: url(${ imagemUrl || 'https://firebasestorage.googleapis.com/v0/b/ecommerceteste-adeaa.firebasestorage.app/o/logo2.webp?alt=media&token=6016a6bf-968a-4919-973b-bce5f2b21ba0'});" onclick="abrirModalProduto(${product.id})"></div> </div>
                 <div class="item-info">
-                    <div class="cart-btn" data-product-id="${product.id}">
+                    <div class="cart-btn" data-product-id="${product.id}" data-product-type="${product.categoria}">
                         <i class='bx bx-up-arrow-alt increase-btn'></i>
                         <input type="number" min="1" value="1" class="quantity-input">
                         <i class='bx bx-down-arrow-alt decrease-btn'></i>
@@ -455,7 +457,8 @@ function exibirProdutos(products) {
         if (event.target.classList.contains('bx-cart-add')) {
             const productId = event.target.closest('.cart-btn').dataset.productId;
             const quantity = event.target.closest('.cart-btn').querySelector('.quantity-input').value;
-            addToCart(productId, quantity);
+            const categoria = event.target.closest('.cart-btn').dataset.productType;
+            addToCart(productId, quantity, categoria);
         }
 
         if (event.target.classList.contains('increase-btn')) {
@@ -473,7 +476,7 @@ function exibirProdutos(products) {
         }
     });
 
-    function addToCart(productId, quantity) {
+    function addToCart(productId, quantity, categoria) {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const produtoJaExiste = cart.find(item => parseInt(item.productId) === parseInt(productId));
 
@@ -481,7 +484,7 @@ function exibirProdutos(products) {
             //console.log(produtoJaExiste.quantity , quantity);
             produtoJaExiste.quantity = parseFloat(produtoJaExiste.quantity) + parseFloat(quantity);
         } else {
-            cart.push({ productId: parseInt(productId), quantity: parseFloat(quantity) });
+            cart.push({ productId: parseInt(productId), quantity: parseFloat(quantity), categoria: categoria });
         }
 
         //cart.push(productId);
@@ -849,7 +852,9 @@ function atualizarFrete(enderecoId) {
 
 function codigoPromocional() {
     const cupom = document.getElementById('promoCode').value;
-    
+    const produtos = JSON.parse(localStorage.getItem('cart')) || []; // Pega os produtos do carrinho, array vazio se não houver nada.
+    //console.log(produtos);
+
     fetch(`/api/usuarios/cupons/${cupom}`, {
         method: 'GET',
         headers: {
@@ -859,18 +864,34 @@ function codigoPromocional() {
     })
     .then(response => response.json())
     .then(data => {
-        //console.log(data);
-        //Verifica se o booleano data.ativo é verdadeiro
         if (data.ativo === 1) {
-            const desconto = parseFloat(data.desconto);
-            //console.log('Desconto:',desconto);
+            const descontoPorcentagem = parseFloat(data.desconto) / 100;
             const descontoInput = document.getElementById('desconto');
             const totalInput = document.getElementById('total');
-            const total = parseFloat(totalInput.getAttribute('value'));
-            //console.log('Total:',total);
-            const novoTotal = total - (total * desconto / 100); // Calcula o novo total com o desconto
-            descontoInput.innerText = `Desconto: R$ ${formatarValor((novoTotal - total).toFixed(2))}`; // Atualiza o valor do desconto na tela
-            totalInput.innerText = `Total: R$ ${formatarValor(novoTotal.toFixed(2))}`;
+            let total = parseFloat(totalInput.getAttribute('value'));
+
+            let descontoTotal = 0;
+
+             for (const produto of produtos) {
+                //console.log(produto);
+               
+                if (produto.categoria === "rape") {
+                  
+                    //busca o valor original do produto:
+                    fetch(`/api/produtos/${produto.productId}`) // Substitua pela rota correta para buscar um produto
+                        .then(response => response.json())
+                        .then(produtoData => {
+                            const precoOriginal = parseFloat(produtoData.preco);
+                            descontoTotal += precoOriginal * produto.quantity * descontoPorcentagem;
+                            //Atualizando o valor total, com o desconto.
+                             const novoTotal = total - descontoTotal;
+                             descontoInput.innerText = `Desconto: R$ ${formatarValor(descontoTotal.toFixed(2))}`;
+                             totalInput.innerText = `Total: R$ ${formatarValor(novoTotal.toFixed(2))}`;
+                        })                 
+                }
+            }
+
+
             //Insere o cupom no localStorage
             sessionStorage.setItem('cupom', cupom);
             alert('Cupom aplicado com sucesso!');
@@ -882,7 +903,8 @@ function codigoPromocional() {
         console.error('Código promocional não encontrado:', error);
         alert('Código promocional não encontrado.');
     });
-    if (codigoPromocional === '') {
+
+    if (!cupom) { // Melhor usar !cupom em vez de codigoPromocional === ''
         alert('Por favor, insira um cupom.');
     }
 }
