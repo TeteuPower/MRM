@@ -1936,8 +1936,8 @@ body.light .navbar-brand::after{
   top: 50%;
   right: 50%;
   transform: translate(50%, -50%);
-  width: 200%;
-  height: 200%;
+  width: 80%;
+  height: 80%;
   transition: top 350ms 700ms cubic-bezier(0.23, 1, 0.32, 1),  
               right 350ms 700ms cubic-bezier(0.23, 1, 0.32, 1),
               transform 250ms 700ms ease,
