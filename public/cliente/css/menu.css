@@ -1680,7 +1680,7 @@ body.light .navbar-brand::after{
   top: 10px;
   transform: rotate(45deg);
   height: 2px;
-  background-color: #ececee;
+  background-color: red;
   border-width: 0;
   transition: border-width 100ms 340ms ease, 
               top 100ms 300ms cubic-bezier(0.23, 1, 0.32, 1),
