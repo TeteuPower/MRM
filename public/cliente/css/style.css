@@ -194,9 +194,18 @@ section {
     text-align: left;
 }
 
+.slogan p {
+    text-shadow: 
+    1px 1px 0 black, 1px -1px 0 black, -1px 1px 0 black, -1px -1px 0 black, /* borda 3D */
+    2px 2px 4px rgba(0, 0, 0, 0.5); /* sombra */
+}
+
 .slogan h1 {
     font-size: 5.8rem;
     color: var(--primary-color);
+    text-shadow: 
+    1px 1px 0 black, 1px -1px 0 black, -1px 1px 0 black, -1px -1px 0 black, /* borda 3D */
+    2px 2px 4px rgba(0, 0, 0, 0.5); /* sombra */
 }
 
 .slogan button {
