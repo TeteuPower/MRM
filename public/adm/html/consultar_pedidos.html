@@ -124,6 +124,84 @@
 
             </div>
         </div>
+        <div id="modal-detalhes-pedido-site" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalDetalhesPedidoSite()">×</span>
+                <h3 id="modal-numero-pedido-site">Detalhes do Pedido</h3>
+                <p><strong>Cliente:</strong> <span id="modal-cliente-site"></span></p>
+                <p><strong>Vendedor:</strong> <span id="modal-vendedor-site"></span></p>
+                <p><strong>CUPOM:</strong> <span id="modal-cupom-site"></span></p>
+                <p><strong>Criação:</strong> <span id="modal-data-criacao-site"></span></p> <!-- Data que o pedido foi criado -->
+                <p><strong>Produção:</strong> <span id="modal-data-producao-site"></span></p> <!-- Data que o pedido foi produzido -->
+                <p><strong>Finalização:</strong> <span id="modal-data-finalizacao-site"></span></p> <!-- Data que o pedido foi finalizado -->
+                <p><strong>Valor da Venda:</strong> <span id="modal-valor-venda-site"></span></p>
+                <p><strong>Pagamento:</strong> <span id="modal-status-site"></span></p>
+                <p><strong>Valor dos insumos:</strong> <span id="modal-valor-insumos-site"></span></p>
+                <p><strong>Valor do Frete:</strong> <span id="modal-valor-frete-exibicao-site"></span></p>
+                <p><strong>Lucro da venda:</strong> <span id="modal-lucro-venda-site"></span></p>
+                <p><strong>Produtor responsável:</strong> <span id="modal-produtor-span-site"></span></p>
+
+                <h4>Itens do Pedido:</h4>
+                <table id="modal-tabela-itens-site">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Itens do pedido serão adicionados aqui -->
+                    </tbody>
+                </table>
+
+                <div id="area-lote-site" style="display: none;">
+                    <div class="input-group">
+                        <label for="modal-produtor-site">Produtor:</label>
+                        <select id="modal-produtor-site">
+                            <!-- Opções de produtores serão adicionadas aqui -->
+                        </select>
+                    </div>
+                    <button id="btn-atualizar-status-site" class="btn-acao verde">Pronto, aguardando envio</button>
+                    <button id="btn-endereco-pedido-site" class="btn-acao laranja">Verificar Endereço</button>
+                </div>
+                <div id="area-frete-site" style="display: none;">
+                    <div class="input-group">
+                        <label for="modal-valor-frete-site">Valor do Frete:(Em Reais)</label>
+                        <input type="number" id="modal-valor-frete-site">
+                    </div>
+                    <button id="btn-atualizar-status-site2" class="btn-acao verde">Finalizar Pedido</button>
+                    <button id="btn-endereco-pedido-site2" class="btn-acao laranja">Verificar Endereço</button>
+                </div>
+                <div id="area-finalizado-site" style="display: none;">
+                    <button id="btn-endereco-pedido-site3" class="btn-acao laranja">Verificar Endereço</button>
+                </div>
+                <div id="area-nota-fiscal-site" style="display: none;">
+                    <button id="btn-adicionar-nota-fiscal-site" class="btn-acao azul">Adicionar Nota Fiscal</button>
+                    <button id="btn-consultar-nota-fiscal-site" class="btn-acao azul" style="display: none;">Consultar Nota Fiscal</button>
+                </div>
+
+            </div>
+        </div>
+        <div id="modal-endereco-pedido-site" class="modal">
+            <div class="modal-content">
+                <span class="close-btn" onclick="fecharModalEnderecoPedidoSite()">×</span>
+                <h3 id="endereco-nome-pedido-site">Dados do Cliente:</h3>
+                <p><strong>Nome Completo:</strong> <span id="endereco-nome-site"></span></p>
+                <p><strong>CPF:</strong> <span id="endereco-cpf-site"></span></p>
+                <p><strong>Telefone:</strong> <span id="endereco-telefone-site"></span></p>
+                <p><strong>Email:</strong> <span id="endereco-email-site"></span></p>
+                <h3>Endereço:</h3>
+                <p><strong>CEP:</strong> <span id="endereco-cep-site"></span></p>
+                <p><strong>Rua:</strong> <span id="endereco-rua-site"></span></p>
+                <p><strong>Número:</strong> <span id="endereco-numero-site"></span></p>
+                <p><strong>Complemento:</strong> <span id="endereco-complemento-site"></span></p>
+                <p><strong>Bairro:</strong> <span id="endereco-bairro-site"></span></p>
+                <p><strong>Cidade:</strong> <span id="endereco-cidade-site"></span></p>
+                <p><strong>Estado:</strong> <span id="endereco-estado-site"></span></p>
+                
+            </div>
+        </div>
+                
         <div id="modal-editar-pedido" class="modal">
             <div class="modal-content">
                 <span class="close-btn" onclick="fecharModalEditarPedido()">×</span>

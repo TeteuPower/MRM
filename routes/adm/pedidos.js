@@ -82,6 +82,47 @@ router.get('/:id', autenticar, (req, res) => {
     });
   });
 
+// Rota para obter itens de um pedido por ID (GET /api/pedidos/site/:id)
+router.get('/site/:id', autenticar, (req, res) => {
+  const pedidoId = req.params.id;
+
+  // Busca os itens do pedido
+  const sqlItens = 'SELECT * FROM itens_pedido_usuario WHERE pedido_id = ?';
+  db.query(sqlItens, [pedidoId], (err, itens) => {
+    if (err) {
+      console.error('Erro ao buscar itens do pedido:', err);
+      return res.status(500).json({ error: 'Erro ao buscar pedido.' });
+    }
+    res.json(itens);
+  });
+
+});
+
+// Rota para obter os dados do usuário e endereço de entrega
+router.get('/site/usuario/:id', autenticar, async (req, res) => {
+  const usuarioId = req.params.id;
+  const enderecoId = req.headers.endereco_id;
+
+  try {
+      // Busca os dados do usuário
+      const [usuario] = await db.promise().query('SELECT nome, email, telefone, sobrenome, cpf FROM usuarios WHERE id = ?', [usuarioId]);
+
+      if (usuario.length === 0) {
+          return res.status(404).json({ error: 'Usuário não encontrado.' });
+      }
+
+      // Busca o endereços do usuário do pedido
+      const [endereco] = await db.promise().query('SELECT * FROM enderecos WHERE id = ? AND usuario_id = ?', [ enderecoId,usuarioId]);
+
+      // Adiciona o endereço ao objeto do usuário
+      usuario[0].endereco = endereco;
+
+      res.json(usuario[0]);
+  } catch (error) {
+      console.error('Erro ao buscar usuário:', error);
+      res.status(500).json({ error: 'Erro ao buscar usuário.' });
+  }
+});
 
 // Rota para atualizar um pedido (PUT /api/pedidos/:id)
 router.put('/:id', autenticar, (req, res) => {

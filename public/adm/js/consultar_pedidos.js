@@ -150,6 +150,51 @@ async function finalizarPedido(pedido) {
     }
 }
 
+async function finalizarPedidoSite(pedido) {
+    //console.log(pedido);
+    if (confirm(`Confirma a finalização do pedido do ${pedido.cliente}?`)) {
+        pedido.status = 'Finalizado';
+        pedido.data_finalizacao = new Date().toISOString().slice(0, 19).replace('T', ' '), // Converte para o formato YYYY-MM-DD HH:MM:SS
+        pedido.valor_frete = (pedido.moeda === 'dolar' ? await converterRealParaDolar(parseFloat(document.getElementById('modal-valor-frete').value)) || 0 : parseFloat(document.getElementById('modal-valor-frete').value) || 0);
+        pedido.lucro_venda = pedido.lucro_venda - pedido.valor_frete;
+        //console.log(pedido)
+
+        // Atualiza o pedido na API
+        fetch(`/api/pedidos-finalizados-aguardando-envio/site/${pedido.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify(
+                {
+                status: 'Finalizado',
+                dataFinalizacao: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                valorFrete: pedido.valor_frete,
+                lucroVenda: pedido.lucro_venda
+                }
+        )})
+        
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao finalizar pedido.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            location.reload();
+            return;
+        })
+        .catch(error => {
+            alert('Erro ao finalizar pedido.');
+            console.error(error);
+        });
+        //exibirPedidos();
+        //fecharModalDetalhesPedido();
+    }
+}
+
  let totalKg = 0;
  function somarTotalKg() {
     const totalKgElement = document.getElementById('total-pedidos-aguardando-producao');
@@ -246,7 +291,7 @@ function exibirPedidosAguardandoProducao() {
             //totalKg = totalKg + parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2);
 
             listItem.addEventListener('click', () => {
-                //exibirDetalhesPedido(pedido.id);
+                exibirDetalhesPedidoSite(pedido);
             });
 
             listaPedidos.appendChild(listItem);
@@ -308,6 +353,54 @@ function exibirPedidosFinalizadosAguardandoEnvio() {
             alert('Erro ao buscar pedidos.');
             console.error(error);
         });
+
+        //Adiciona pedidos vindos do próprio site
+        fetch('/api/pedidos-finalizados-aguardando-envio/site', {
+            headers: {
+                'Authorization': localStorage.getItem('token')
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao buscar pedidos.');
+            }
+            return response.json();
+        })
+        .then(pedidos => {
+            //console.log(pedidos);
+            // Filtra os pedidos com base no termo de pesquisa
+            const pedidosFiltrados = pedidos.filter(pedido => {
+                return (pedido.status === 'Pronto, aguardando envio') &&
+                    (pedido.id.toString().includes(termoPesquisa) || 
+                        pedido.cliente_id.toLowerCase().includes(termoPesquisa) ||
+                        pedido.vendedor_id.toLowerCase().includes(termoPesquisa));
+            });
+            //console.log(pedidosFiltrados)
+            // Ordena os pedidos por data de criação (mais recentes primeiro)
+            pedidosFiltrados.sort((a, b) => b.id - a.id);
+
+            // Itera sobre os pedidos filtrados e adiciona cada um à lista
+            pedidosFiltrados.forEach(pedido => {
+                //console.log(pedido)
+                const listItem = document.createElement('li');
+                //Criando uma classe específica para esses elementos li
+                listItem.classList.add('li-pedido-site');
+                listItem.textContent = `Nº ${pedido.id} - ${pedido.vendedor} - ${pedido.cliente} - ${pedido.quantidade_rape_pacotes === null ? 'Itens Indefinidos' : `${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)} Kg`}`;
+                //totalKg = totalKg + parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2);
+
+                listItem.addEventListener('click', () => {
+                    exibirDetalhesPedidoSite(pedido);
+                });
+
+                listaPedidos.appendChild(listItem);
+            });
+            somarTotalKg();
+            //console.log(totalKg)
+        })
+        .catch(error => {
+            alert('Erro ao buscar pedidos.');
+            console.error(error);
+        })
     }
 
 function exibirPedidosFinalizados() {
@@ -352,27 +445,75 @@ function exibirPedidosFinalizados() {
         listaPedidos.appendChild(listItem);
     });
 
- // Controle de exibição dos botões de paginação
- const btnProximaPagina = document.getElementById('btn-proxima-pagina');
- const btnPaginaAnterior = document.getElementById('btn-pagina-anterior');
- if (fim < pedidosFinalizados.length) {
-     btnProximaPagina.style.display = 'block';
- } else {
-     btnProximaPagina.style.display = 'none';
- }
- if (paginaAtualPedidosFinalizados > 1) {
-     btnPaginaAnterior.style.display = 'block';
- } else {
-     btnPaginaAnterior.style.display = 'none';
- }
+    // Controle de exibição dos botões de paginação
+    const btnProximaPagina = document.getElementById('btn-proxima-pagina');
+    const btnPaginaAnterior = document.getElementById('btn-pagina-anterior');
+    if (fim < pedidosFinalizados.length) {
+        btnProximaPagina.style.display = 'block';
+    } else {
+        btnProximaPagina.style.display = 'none';
+    }
+    if (paginaAtualPedidosFinalizados > 1) {
+        btnPaginaAnterior.style.display = 'block';
+    } else {
+        btnPaginaAnterior.style.display = 'none';
+    }
 
- // Criação do menu de paginação
- criarMenuPaginacao(pedidosFinalizados.length);
-})
- .catch(error => {
-    alert('Erro ao buscar pedidos.');
-    console.error(error);
-});
+    // Criação do menu de paginação
+    criarMenuPaginacao(pedidosFinalizados.length);
+    })
+    .catch(error => {
+        alert('Erro ao buscar pedidos.');
+        console.error(error);
+    });
+
+    //Adiciona pedidos vindos do próprio site
+    fetch('/api/pedidos-finalizados/site', {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar pedidos.');
+        }
+        return response.json();
+    })
+    .then(pedidos => {
+        //console.log(pedidos);
+        // Filtra os pedidos com base no termo de pesquisa
+        const pedidosFiltrados = pedidos.filter(pedido => {
+            return (pedido.status === 'Finalizado') &&
+                (pedido.id.toString().includes(termoPesquisa) || 
+                    pedido.cliente_id.toLowerCase().includes(termoPesquisa) ||
+                    pedido.vendedor_id.toLowerCase().includes(termoPesquisa));
+        });
+        //console.log(pedidosFiltrados)
+        // Ordena os pedidos por data de criação (mais recentes primeiro)
+        pedidosFiltrados.sort((a, b) => b.id - a.id);
+
+        // Itera sobre os pedidos filtrados e adiciona cada um à lista
+        pedidosFiltrados.forEach(pedido => {
+            //console.log(pedido)
+            const listItem = document.createElement('li');
+            //Criando uma classe específica para esses elementos li
+            listItem.classList.add('li-pedido-site');
+            listItem.textContent = `Nº ${pedido.id} - ${pedido.vendedor} - ${pedido.cliente} - ${pedido.quantidade_rape_pacotes === null ? 'Itens Indefinidos' : `${parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2).toFixed(1)} Kg`}`;
+            //totalKg = totalKg + parseFloat(parseInt(pedido.quantidade_rape_pacotes)/2);
+
+            listItem.addEventListener('click', () => {
+                exibirDetalhesPedidoSite(pedido);
+            });
+
+            listaPedidos.appendChild(listItem);
+        });
+        somarTotalKg();
+        //console.log(totalKg)
+    })
+    .catch(error => {
+        alert('Erro ao buscar pedidos.');
+        console.error(error);
+    });
 }
 
 function criarMenuPaginacao(totalPedidos) {
@@ -428,6 +569,47 @@ function abrirModalEditarPedido(pedido) {
       document.getElementById('salvar-alteracoes').addEventListener('click', () => {
         editarPedido(pedido); 
       });
+}
+
+function abrirModalEnderecoPedidoSite(cliente_id, endereco_id) {
+    //console.log(cliente_id);
+    //console.log(endereco_id);
+    fetch(`/api/pedidos/site/usuario/${cliente_id}`, {
+      headers: {
+        'Authorization': localStorage.getItem('token'),
+        'Content-Type': 'application/json',
+        'endereco_id': endereco_id
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Erro ao buscar pedido. Verifique a conexão.');
+        }
+        return response.json();
+      })
+      .then((dados) => {
+        //console.log(dados);
+        document.getElementById('modal-endereco-pedido-site').style.display = 'block';
+        document.getElementById('endereco-nome-site').textContent = dados.nome + ' ' + dados.sobrenome;
+        document.getElementById('endereco-cpf-site').textContent = dados.cpf;
+        document.getElementById('endereco-telefone-site').textContent = dados.telefone;
+        document.getElementById('endereco-email-site').textContent = dados.email;
+        document.getElementById('endereco-cep-site').textContent = dados.endereco[0].cep;
+        document.getElementById('endereco-rua-site').textContent = dados.endereco[0].endereco;
+        document.getElementById('endereco-numero-site').textContent = dados.endereco[0].numero;
+        document.getElementById('endereco-complemento-site').textContent = dados.endereco[0].complemento;
+        document.getElementById('endereco-bairro-site').textContent = dados.endereco[0].bairro;
+        document.getElementById('endereco-cidade-site').textContent = dados.endereco[0].cidade;
+        document.getElementById('endereco-estado-site').textContent = dados.endereco[0].estado;        
+      })
+      .catch((error) => {
+        alert('Erro ao buscar pedido. Detalhes no console.');
+        console.error(error);
+      });
+}
+
+function fecharModalEnderecoPedidoSite() {
+    document.getElementById('modal-endereco-pedido-site').style.display = 'none';
 }
 
 // Função para preencher o modal de edição de pedido

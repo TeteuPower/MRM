@@ -128,6 +128,46 @@ function fecharModalDetalhesPedido() {
     window.location.reload();
 }
 
+function fecharModalDetalhesPedidoSite() {
+    document.getElementById('modal-detalhes-pedido').style.display = 'none';
+
+    // Limpa as informações do modal
+    document.getElementById('modal-numero-pedido').textContent = '';
+    document.getElementById('modal-cliente').textContent = '';
+    document.getElementById('modal-vendedor').textContent = '';
+    document.getElementById('modal-descricao').textContent = '';
+    document.getElementById('modal-data-criacao').textContent = '';
+    document.getElementById('modal-data-producao').textContent = '';
+    document.getElementById('modal-data-finalizacao').textContent = '';
+    document.getElementById('modal-valor-venda').textContent = '';
+    document.getElementById('modal-valor-pago').textContent = '';
+    document.getElementById('modal-valor-insumos').textContent = '';
+    document.getElementById('modal-lucro-venda').textContent = '';
+    document.getElementById('modal-status').textContent = '';
+    document.getElementById('modal-saldoVenda').textContent = '';
+    document.getElementById('modal-solicitado-por').textContent = '';
+    document.getElementById('modal-produtor-span').textContent = '';
+    document.getElementById('total-rape-pedido').textContent = '';
+
+    // Limpa os inputs do modal
+    document.getElementById('modal-produtor').value = '';
+    document.querySelectorAll('#area-lote input').forEach(input => input.value = '');
+
+    // Remove os event listeners dos botões "Cancelar Pedido"
+    document.getElementById('btn-cancelar-pedido').removeEventListener('click', cancelarPedido);
+    document.getElementById('btn-cancelar-pedido2').removeEventListener('click', cancelarPedido);
+    document.getElementById('btn-cancelar-pedido3').removeEventListener('click', cancelarPedido);
+    document.getElementById('btn-editar-pedido').removeEventListener('click', abrirModalEditarPedido);
+    document.getElementById('btn-editar-pedido2').removeEventListener('click', abrirModalEditarPedido);
+    document.getElementById('btn-editar-pedido3').removeEventListener('click', abrirModalEditarPedido);
+    document.getElementById('btn-formatar-texto').removeEventListener('click', copiarParaAreaDeTransferencia);
+    document.getElementById('btn-formatar-texto2').removeEventListener('click', copiarParaAreaDeTransferencia);
+
+    pedido = null;
+    // Recarrega a página
+    window.location.reload();
+}
+
 function exibirDetalhesPedido(id) {
     let pedido; // Define a variável 'pedido' dentro do escopo da função
     // Exibe o modal
@@ -343,6 +383,141 @@ function exibirDetalhesPedido(id) {
         } else {
             valorFreteExibicao.textContent = 'Não informado'; // Ou qualquer outro valor padrão se o frete não estiver definido
         }
+    })
+}
+
+function exibirDetalhesPedidoSite(pedido) {
+    // Exibe o modal
+    document.getElementById('modal-detalhes-pedido-site').style.display = 'block';
+    //console.log(pedido);
+
+    document.getElementById('modal-numero-pedido-site').textContent = `Detalhes do Pedido nº ${pedido.id}`;
+    document.getElementById('modal-cliente-site').textContent = pedido.cliente;
+    document.getElementById('modal-vendedor-site').textContent = pedido.vendedor;
+    document.getElementById('modal-cupom-site').textContent = pedido.cupom || 'Não possui';
+    document.getElementById('modal-data-criacao-site').textContent = formatarData(pedido.data_criacao); //Data que o pedido foi criado
+    document.getElementById('modal-data-producao-site').innerHTML = pedido.data_producao === null ? '<span class="span-vermelho">Não efetivada</span>' : formatarData(pedido.data_producao);
+    document.getElementById('modal-data-finalizacao-site').innerHTML = pedido.data_finalizacao === null ? '<span class="span-vermelho">Não efetivada</span>' : formatarData(pedido.data_finalizacao);
+    document.getElementById('modal-valor-venda-site').innerHTML = `<span class="span-laranja">${pedido.moeda === 'BRL' ? 'R$' : 'US$' } ${formatarValor(pedido.valor_venda)}</span>`;
+    document.getElementById('modal-status-site').innerHTML = `${pedido.status === 'approved' || pedido.status === 'Pronto, aguardando envio' || pedido.status === 'Finalizado' ? '<span class="span-verde">Realizado' : '<span class="span-vermelho">Pendente'}</span>`;
+    document.getElementById('modal-valor-insumos-site').innerHTML = `<span class="span-vermelho">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${formatarValor(pedido.valor_insumos)}</span>`;
+    document.getElementById('modal-valor-frete-exibicao-site').innerHTML = `<span class="span-vermelho">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${formatarValor(pedido.valor_frete)}</span>`;
+    document.getElementById('modal-lucro-venda-site').innerHTML = `<span class="span-verde">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${formatarValor(pedido.lucro_venda)}</span>`;
+    document.getElementById('modal-produtor-span-site').textContent = `${pedido.produtor === undefined ? 'Ainda não produzido' : pedido.produtor}`;
+
+    // Faz uma requisição GET para a API para obter os itens do pedido
+    fetch(`/api/pedidos/site/${pedido.id}`, {
+        headers: {
+            'Authorization': localStorage.getItem('token')
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erro ao buscar pedido.');
+        }
+        return response.json();
+    })
+    .then(itens => {
+        //console.log(itens);
+    if (pedido.produtor === undefined) {
+        exibirProdutores('modal-produtor-site'); // Chama a função para popular o select de produtores
+        const btnAtualizarStatus = document.getElementById('btn-atualizar-status-site');
+        const areaLoteSite = document.getElementById('area-lote-site');
+        areaLoteSite.style.display = 'block';
+        btnAtualizarStatus.onclick = () => {
+            pedido.produtor = document.getElementById('modal-produtor').value;
+            //console.log(pedido)
+            atualizarStatusPedidoSite(pedido);
+        };
+    }
+
+    if (pedido.status === 'Pronto, aguardando envio') {
+        const btnAtualizarStatus = document.getElementById('btn-atualizar-status-site2');
+        const areaFreteSite = document.getElementById('area-frete-site');
+        areaFreteSite.style.display = 'block';
+        btnAtualizarStatus.onclick = () => {
+            pedido.produtor = document.getElementById('modal-produtor').value;
+            //console.log(pedido)
+            finalizarPedidoSite(pedido);
+        };
+    }
+
+    if (pedido.status === 'Finalizado') {
+        const areaFinalizadoSite = document.getElementById('area-finalizado-site');
+        areaFinalizadoSite.style.display = 'block';
+    }
+
+        function atualizarStatusPedidoSite(pedido) {
+            console.log(pedido);
+        
+            // Verifica se um produtor foi selecionado
+            let produtor = document.getElementById('modal-produtor-site').value;
+            if (produtor === '') {
+                alert('Por favor, selecione um produtor!');
+                return;
+            }
+            
+            if (confirm(`Confirma a atualização do status do pedido do ${pedido.cliente} para "Pronto, aguardando envio"?`)) {
+                // Atualiza o pedido na API
+                fetch(`/api/pedidos-aguardando-producao/site/${pedido.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': localStorage.getItem('token')
+                    },
+                    body: JSON.stringify({
+                        status: 'Pronto, aguardando envio',
+                        dataProducao: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                        produtor: produtor
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao atualizar pedido.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message);
+                    location.reload();
+                    return;
+                })
+                .catch(error => {
+                    alert('Erro ao atualizar pedido.');
+                    console.error(error);
+                });
+            }
+        }
+
+        // Exibe os itens do pedido na tabela
+        const tbodyItens = document.getElementById('modal-tabela-itens-site').getElementsByTagName('tbody')[0];
+        tbodyItens.innerHTML = ''; // Limpa a tabela
+        itens.forEach(item => {
+            const row = tbodyItens.insertRow();
+            const cellProduto = row.insertCell();
+            const cellQuantidade = row.insertCell();
+            //const cellLote = row.insertCell();
+
+            let nomeProduto = item.produto;
+            cellProduto.textContent = nomeProduto;
+            cellQuantidade.textContent = parseInt(item.quantidade).toFixed(0);
+            //cellLote.textContent = item.lote || 'Não informado'; // Exibe o lote se existir, caso contrário, exibe "-"
+        });
+
+        //const btnFinalizarPedido = document.getElementById('btn-atualizar-status-site');
+        const btnVerificarEndereco = document.getElementById('btn-endereco-pedido-site');
+        btnVerificarEndereco.onclick = () => {
+            abrirModalEnderecoPedidoSite( pedido.usuario_id,pedido.endereco_id);
+        };
+        const btnVerificarEndereco2 = document.getElementById('btn-endereco-pedido-site2');
+        btnVerificarEndereco2.onclick = () => {
+            abrirModalEnderecoPedidoSite( pedido.usuario_id,pedido.endereco_id);
+        };
+        const btnVerificarEndereco3 = document.getElementById('btn-endereco-pedido-site3');
+        btnVerificarEndereco3.onclick = () => {
+            abrirModalEnderecoPedidoSite( pedido.usuario_id,pedido.endereco_id);
+        };
+    
     })
 }
 

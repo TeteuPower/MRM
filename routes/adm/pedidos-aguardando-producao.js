@@ -178,5 +178,39 @@ router.get('/site', autenticar, (req, res) => {
         });
       });
     });
+    
+//Atualiza o status do pedido do site
+router.put('/site/:id', autenticar, (req, res) => {
+  const pedidoId = req.params.id;
+  const {status, dataProducao, produtor} = req.body;
+  //console.log( "Pedido ID:", pedidoId, "Status:", status, "Data de Produção:", dataProducao, "Produtor:", produtor);
 
+  // Verifica se os campos obrigatórios foram fornecidos
+  if (!status) {
+      return res.status(400).json({ error: 'O status é obrigatório.' });
+  }
+  if (!dataProducao) {
+    return res.status(400).json({ error: 'A data de produção é obrigatória.' });
+  }
+  if (!produtor) {
+    return res.status(400).json({ error: 'O produtor é obrigatório.' });
+  }
+
+  // Atualiza o pedido no banco de dados
+  const sql = 'UPDATE pedidos_usuarios SET status = ?, produtor_id = ?, data_producao = ? WHERE id = ?';
+  db.query(sql, [status, produtor, dataProducao, pedidoId], (err, result) => {
+      if (err) {
+          console.error('Erro ao atualizar pedido:', err);
+          res.status(500).json({ error: 'Erro ao atualizar pedido.' });
+          return;
+      }
+
+      if (result.affectedRows > 0) {
+          res.json({ message: 'Pedido atualizado com sucesso!' });
+          console.log(`Pedido SITE ID: ${pedidoId} atualizado para "${status}" com sucesso!`);
+      } else {
+          res.status(404).json({ error: 'Pedido não encontrado.' });
+      }
+  });
+});
 module.exports = router;

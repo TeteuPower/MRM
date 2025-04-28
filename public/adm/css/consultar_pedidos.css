@@ -62,7 +62,8 @@
 }
 
 #modal-tabela-itens,
-#modal-tabela-editar-itens {
+#modal-tabela-editar-itens,
+#modal-tabela-itens-site {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
@@ -70,8 +71,10 @@
 
 #modal-tabela-itens th,
 #modal-tabela-editar-itens th,
+#modal-tabela-itens-site th,
 #modal-tabela-editar-itens td,
-#modal-tabela-itens td {
+#modal-tabela-itens td,
+#modal-tabela-itens-site td {
     text-align: left;
     padding: 8px;
     border-bottom: 1px solid #555;
