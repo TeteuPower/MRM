@@ -155,10 +155,12 @@ router.post('/', autenticarClientes, async (req, res) => {
 
       //Adiciona os dados dos itens do pedido na tabela itens_pedido_usuario
       for (let i = 0; i < pedido.produtos.length; i++) {
+        //resgata o nome do produto da tabela produtos
+        const produto = await dbClientes.promise().query('SELECT nome FROM produtos_site WHERE id =?', [pedido.produtos[i].productId]);
+        //console.log('Produto: ', produto);
         await dbClientes.promise().query
         ('INSERT INTO itens_pedido_usuario (pedido_id, produto_id, quantidade, produto, tipo_rape) VALUES (?,?,?,?,?)', 
-        [pedidoId, pedido.produtos[i].productId, pedido.produtos[i].quantity, 'produto[0][0].nome', 'tipo_rape']);
-        //console.log('Produto: ', pedido.produtos[i])
+        [pedidoId, pedido.produtos[i].productId, pedido.produtos[i].quantity, produto[0][0].nome, 'tipo_rape']);
       }
       res.status(200).json({
         message: 'Pedido criado com sucesso',
