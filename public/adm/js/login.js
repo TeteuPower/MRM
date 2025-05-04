@@ -60,13 +60,23 @@ function checkAdminPassword() {
     const adminPassword = document.getElementById('logpass').value;
     const adminUsuario = document.getElementById('logemail').value;
 
-    // Verifica se o usuário é um administrador (contém "(adm.)" no início)
+    // Verifica se o usuário é um administrador (contém "adm." no início)
     const ehAdministrador = adminUsuario.startsWith('adm.');
-    //console.log(ehAdministrador);
+    // Verifica se o acesso é para revendedores
+    const ehRevendedor = adminUsuario.startsWith('rev.');
+    // Verifica se o acesso é para envios
+    const ehEnvio = adminUsuario.startsWith('env.');
 
     // Define a rota de login com base no tipo de usuário
-    const rotaLogin = ehAdministrador ? '/api/login-admin' : '/api/login-user';
-    const rotaToken = ehAdministrador ? '/api/decodificar-token' : '/api/decodificar-token-user'
+    const rotaLogin = ehAdministrador ? '/api/login-admin'
+                      : ehRevendedor ? '/api/login-revendedor'
+                      : ehEnvio ? '/api/login-envios' // <-- Rota para Envios
+                      : '/api/login-user'; // <-- Usuário comum como padrão
+
+    const rotaToken = ehAdministrador ? '/api/decodificar-token'
+                      : ehRevendedor ? '/api/decodificar-token-revendedor'
+                      : ehEnvio ? '/api/decodificar-token-envios' // <-- Rota de token para Envios
+                      : '/api/decodificar-token-user'; // <-- Token de usuário comum como padrão
 
     // Faz uma requisição POST para a rota de login para obter o token
     fetch(rotaLogin, {
@@ -74,9 +84,13 @@ function checkAdminPassword() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
             senha: adminPassword,
-            usuario: ehAdministrador ? adminUsuario.substring(4).trim() : adminUsuario // Remove o prefixo "(adm.)" e remove espacos em branco
+            // Remove o prefixo ("adm.", "rev." ou "env.") e remove espaços em branco
+            usuario: ehAdministrador ? adminUsuario.substring(4).trim()
+                     : ehRevendedor ? adminUsuario.substring(4).trim()
+                     : ehEnvio ? adminUsuario.substring(4).trim() // <-- Tratamento para Envios
+                     : adminUsuario // <-- Usuário comum não tem prefixo
          })
     })
     .then(response => {
@@ -91,12 +105,22 @@ function checkAdminPassword() {
         //console.log(data);
         const token = data.token;
 
-        if (!ehAdministrador) {
+        if (!ehAdministrador && !ehRevendedor && !ehEnvio) {
             localStorage.setItem('Usuario', data.nome);
             localStorage.setItem('tokenUser', token);
-        } else {
+        }
+
+        if (ehAdministrador) {
         // Armazena o token no Local Storage
             localStorage.setItem('token', token);
+        }
+
+        if (ehRevendedor) {
+            localStorage.setItem('tokenRevendedor', token);
+        }
+
+        if (ehEnvio) {
+            localStorage.setItem('tokenEntregador', token);
         }
 
         // Faz uma requisição à API para decodificar o token
@@ -146,7 +170,71 @@ function checkAdminPassword() {
                     alert('Erro ao fazer login.');
                     console.error(error);
                 });
-            } else {
+            }
+            
+            if (ehRevendedor) {
+                const revendedorId = data.id; // Obtém o ID do revendedor da resposta
+
+                // Faz uma requisição à API de revendedores com o ID e o token
+                fetch(`/api/revendedores/${revendedorId}`, {
+                    headers: {
+                        'Authorization': token
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar dados do revendedor.');
+                    }
+                    return response.json();
+                })
+                .then(revendedor => {
+                    // Define a chave "revendedor" no Local Storage
+                    localStorage.setItem('revendedor', revendedor.id);
+                    localStorage.setItem('revendedorNome', revendedor.nome);
+
+                    // Exibe o alerta de boas-vindas
+                    alert(`Seja bem vindo, ${revendedor.nome}!`);
+                    window.location.href = '/rev/pagina_inicial'
+                })
+                .catch(error => {
+                    // Erro na requisição ou ao buscar dados do revendedor
+                    alert('Erro ao fazer login.');
+                    console.error(error);
+                });
+            }
+
+            if (ehEnvio) {
+                const envioId = data.id; // Obtém o ID do envio da resposta
+
+                // Faz uma requisição à API de envios com o ID e o token
+                fetch(`/api/envios/${envioId}`, {
+                    headers: {
+                        'Authorization': token
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Erro ao buscar dados do envio.');
+                    }
+                    return response.json();
+                })
+                .then(entregador => {
+                    // Define a chave "entregador" no Local Storage
+                    localStorage.setItem('entregador', entregador.id);
+                    localStorage.setItem('entregadorNome', entregador.nome);
+
+                    // Exibe o alerta de boas-vindas
+                    alert(`Seja bem vindo, ${entregador.nome}!`);
+                    window.location.href = '/entregador/pagina_inicial'
+                })
+                .catch(error => {
+                    // Erro na requisição ou ao buscar dados do envio
+                    alert('Erro ao fazer login.');
+                    console.error(error);
+                });
+            }
+
+            if (!ehAdministrador && !ehRevendedor && !ehEnvio) {
             const nome = localStorage.getItem('Usuario');
             alert(`Bem vindo(a) ${nome}!`);
             window.location.href = '/menu';

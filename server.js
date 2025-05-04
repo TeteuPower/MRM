@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken'); // Importa o módulo jsonwebtoken
 const request = require('request')
 const autenticar = require('./middleware/auth'); // Importa o middleware de autenticação
 const autenticarClientes = require('./middleware/authClientes'); // Importas o middleware de autenticação
+const autenticarRevendedor = require('./middleware/authRevendedor');
+const autenticarEnvio = require('./middleware/authEnvio');
 const bcrypt = require('bcrypt'); // Importa o módulo bcrypt
 require('dotenv').config(); // Carrega as variáveis do .env
 
@@ -249,6 +251,10 @@ app.get('/teste', (req, res) => {
 app.use('/api/administradores', autenticar, require('./routes/adm/administradores'));
 // Rotas clientes
 app.use('/api/clientes', autenticar, require('./routes/adm/clientes.js'));
+// Rota revendedores
+app.use('/api/revendedores', autenticarRevendedor, require('./routes/adm/revendedor'));
+// Rotas envios
+app.use('/api/envios', autenticarEnvio, require('./routes/adm/envios'));
 //Rotas estoque
 app.use('/api/estoque', autenticar, require('./routes/adm/estoque'));
 // Usa a rota de vendedores
@@ -367,6 +373,76 @@ app.post('/api/login-user', (req, res) => {
     });
 });
 
+// Rota para login do revendedor (gera o token)
+app.post('/api/login-revendedor', (req, res) => {
+    const { usuario, senha } = req.body; // Recebe usuário e senha
+
+    const sql = `SELECT * FROM usuarios WHERE usuario = ? AND revendedor = 1`; // Busca por usuário
+    db.query(sql, [usuario], async (err, results) => {
+        if (err) {
+            console.error('Erro ao verificar o usuário:', err);
+            return res.status(500).json({ error: 'Erro ao verificar o usuário.' });
+        }
+
+        if (results.length === 0) {
+            return res.status(401).json({ error: 'Usuário não encontrado.' }); 
+        }
+
+        const revendedor = results[0];
+
+        try {
+            // Compara a senha fornecida com o hash armazenado
+            const senhaValida = await bcrypt.compare(senha, revendedor.senha); 
+
+            if (senhaValida) {
+                console.log(`Login revendedor bem-sucedido: ${revendedor.nome}`);
+                const token = jwt.sign({ id: revendedor.id }, process.env.JWT_SECRET_REVENDEDOR, { expiresIn: '30d' });
+                return res.json({ token, id: revendedor.id, nome: revendedor.nome, usuario: revendedor.usuario });
+            } else {
+                return res.status(401).json({ error: 'Senha incorreta.' });
+            }
+        } catch (err) {
+            console.error('Erro ao comparar senhas:', err);
+            return res.status(500).json({ error: 'Erro ao verificar a senha.' });
+        }
+    });
+});
+
+// Rota para login do Entregador
+app.post('/api/login-envios', (req, res) => {
+    const { usuario, senha } = req.body; // Recebe usuário e senha
+
+    const sql = `SELECT * FROM usuarios WHERE usuario = ? AND entregador = 1 AND email_verificado = 1`; // Busca por usuário
+    db.query(sql, [usuario], async (err, results) => {
+        if (err) {
+            console.error('Erro ao verificar o usuário:', err);
+            return res.status(500).json({ error: 'Erro ao verificar o usuário.' });
+        }
+
+        if (results.length === 0) {
+            return res.status(401).json({ error: 'Usuário não encontrado.' }); 
+        }
+
+        const entregador = results[0];
+
+        try {
+            // Compara a senha fornecida com o hash armazenado
+            const senhaValida = await bcrypt.compare(senha, entregador.senha); 
+
+            if (senhaValida) {
+                console.log(`Login entregador bem-sucedido: ${entregador.nome}`);
+                const token = jwt.sign({ id: entregador.id }, process.env.JWT_SECRET_ENVIOS, { expiresIn: '30d' });
+                return res.json({ token, id: entregador.id, nome: entregador.nome, usuario: entregador.usuario });
+            } else {
+                return res.status(401).json({ error: 'Senha incorreta.' });
+            }
+        } catch (err) {
+            console.error('Erro ao comparar senhas:', err);
+            return res.status(500).json({ error: 'Erro ao verificar a senha.' });
+        }
+    });
+});
+
 // Rota para decodificar o token JWT
 app.get('/api/decodificar-token', autenticar, (req, res) => {
     const token = req.headers.authorization;
@@ -399,6 +475,38 @@ app.get('/api/decodificar-token-user', autenticarClientes, (req, res) => {
     }
 });
 
+// Rota para decodificar o token JWT
+app.get('/api/decodificar-token-revendedor', autenticarRevendedor, (req, res) => {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({ error: 'Token não fornecido.' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_REVENDEDOR);
+        res.json({ id: decoded.id }); // Envia o ID do administrador como resposta
+    } catch (err) {
+        return res.status(401).json({ error: 'Token inválido.' });
+    }
+});
+
+// Rota para decodificar o token JWT
+app.get('/api/decodificar-token-envios', autenticarEnvio, (req, res) => {
+    const token = req.headers.authorization;
+
+    if (!token) {
+        return res.status(401).json({ error: 'Token não fornecido.' });
+    }
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET_ENVIOS);
+        res.json({ id: decoded.id }); // Envia o ID do administrador como resposta
+    } catch (err) {
+        return res.status(401).json({ error: 'Token inválido.' });
+    }
+});
+
 // Rota para verificar a validade do token JWT
 app.get('/api/verificar-token', autenticar, (req, res) => {
     // Se o middleware autenticar for bem-sucedido, o token é válido
@@ -407,6 +515,18 @@ app.get('/api/verificar-token', autenticar, (req, res) => {
 
 // Rota para verificar a validade do token JWT
 app.get('/api/verificar-token-user', autenticarClientes, (req, res) => {
+    // Se o middleware autenticar for bem-sucedido, o token é válido
+    res.json({ valido: true });
+});
+
+// Rota para verificar a validade do token JWT
+app.get('/api/verificar-token-revendedor', autenticarRevendedor, (req, res) => {
+    // Se o middleware autenticar for bem-sucedido, o token é válido
+    res.json({ valido: true });
+});
+
+// Rota para verificar a validade do token JWT
+app.get('/api/verificar-token-envios', autenticarEnvio, (req, res) => {
     // Se o middleware autenticar for bem-sucedido, o token é válido
     res.json({ valido: true });
 });

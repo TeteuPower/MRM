@@ -3,6 +3,8 @@ require('dotenv').config();
 
 const DATABASE_URL_ADMINISTRADORES = process.env.DATABASE_URL_ADMINISTRADORES;
 const DATABASE_URL_CLIENTES = process.env.DATABASE_URL_CLIENTES;
+const DATABASE_URL_REVENDEDOR = process.env.DATABASE_URL_REVENDEDOR;
+const DATABASE_URL_ENTREGADOR = process.env.DATABASE_URL_ENTREGADOR;
 
 // Cria um pool de conexões para administradores
 const db = mysql.createPool({
@@ -16,6 +18,22 @@ const db = mysql.createPool({
 const dbClientes = mysql.createPool({
     uri: DATABASE_URL_CLIENTES, // Usando DATABASE_URL diretamente
     connectionLimit: 50, // Número máximo de conexões no pool (ajuste conforme necessário)
+    waitForConnections: true, // Espera por uma conexão disponível se o pool estiver cheio; Se true, o pool aguardará por uma conexão disponível se atingir o limite. Se false, ele retornará um erro imediatamente.
+    queueLimit: 0 // Define o número máximo de solicitações na fila de espera por uma conexão. 0 significa sem limite (pode consumir muita memória sob alta carga).
+});
+
+// Cria um pool de conexões para revendedores
+const dbRevendedor = mysql.createPool({
+    uri: DATABASE_URL_REVENDEDOR, // Usando DATABASE_URL diretamente
+    connectionLimit: 10, // Número máximo de conexões no pool (ajuste conforme necessário)
+    waitForConnections: true, // Espera por uma conexão disponível se o pool estiver cheio; Se true, o pool aguardará por uma conexão disponível se atingir o limite. Se false, ele retornará um erro imediatamente.
+    queueLimit: 0 // Define o número máximo de solicitações na fila de espera por uma conexão. 0 significa sem limite (pode consumir muita memória sob alta carga).
+});
+
+// Cria um pool de conexões para ENTREGADORES
+const dbEntregador = mysql.createPool({
+    uri: DATABASE_URL_ENTREGADOR, // Usando DATABASE_URL diretamente
+    connectionLimit: 10, // Número máximo de conexões no pool (ajuste conforme necessário)
     waitForConnections: true, // Espera por uma conexão disponível se o pool estiver cheio; Se true, o pool aguardará por uma conexão disponível se atingir o limite. Se false, ele retornará um erro imediatamente.
     queueLimit: 0 // Define o número máximo de solicitações na fila de espera por uma conexão. 0 significa sem limite (pode consumir muita memória sob alta carga).
 });
@@ -55,5 +73,7 @@ function getConnection() {
 module.exports = {
     db,
     dbClientes,
+    dbRevendedor,
+    dbEntregador,
     getConnection
 };
