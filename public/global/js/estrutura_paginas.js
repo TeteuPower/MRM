@@ -198,6 +198,16 @@ function temaSalvo() {
     }
 };
 
+function logout() {
+    localStorage.removeItem('Usuario');
+    localStorage.removeItem('tokenUser');
+    localStorage.removeItem('tokenEntregador');
+    localStorage.removeItem('entregador');
+    localStorage.removeItem('entregadorNome');
+    window.location.href = '/';
+    alert('Você foi deslogado com sucesso!');
+}
+
 // Função para carregar o header
 async function carregarHeaderEntregador() {
     try {
@@ -215,7 +225,7 @@ async function carregarHeaderEntregador() {
         }
 
         // Adicione aqui os ouvintes de evento para o logout, etc. (se necessário)
-        //document.getElementById('logout-btn').addEventListener('click', () => { logout(); });
+        document.getElementById('logout-btn').addEventListener('click', () => { logout(); });
 
 
     } catch (error) {
