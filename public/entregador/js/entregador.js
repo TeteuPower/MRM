@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
     formEnvio.addEventListener('submit', handleFormSubmit);
 
     // --- INICIALIZAÇÃO ---
-    //carregarHeader(); // Chama a função do estrutura_paginas.js (garanta que ele carregue antes)
+    carregarHeaderEntregador(); // Chama a função do estrutura_paginas.js (garanta que ele carregue antes)
     carregarPedidosPendentes(); // Carrega a lista inicial de pedidos
 
 }); // Fim do DOMContentLoaded

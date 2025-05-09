@@ -289,6 +289,11 @@ app.get('/entregador/pagina_inicial', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'entregador.html'));
 });
 
+// Define a rota para a página de repasses do entregador
+app.get('/entregador/repasses', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'meus_repasses.html'));
+})
+
 
 
 module.exports = {
@@ -353,6 +358,8 @@ app.use('/api/produtos-site', autenticar, require('./routes/adm/produtos_site'))
 app.use('/api/cupons', autenticar, require('./routes/adm/cupons'));
 // Rota para manipular os envios
 app.use('/api/envios', autenticarEnvio, require('./routes/adm/envios'));
+// Rota para manipular os repasses dos entregadores
+app.use('/api/entregador', autenticarEnvio, require('./routes/adm/repasses'));
 
 
 // Rota para login do administrador (gera o token)

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Repasses - Espírito Do Nativo</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- CSS Base -->
+    <link rel="stylesheet" href="../css/estrutura_paginas.css">
+    <!-- CSS Específico da Página -->
+    <link rel="stylesheet" href="../css/repasses.css"> <!-- Novo CSS para esta página -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <!-- BOTÃO VOLTAR AO TOPO (reutilizado) -->
+    <div class="progress-wrap">
+        <i class='bx bx-up-arrow-alt'></i>
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- END BOTÃO VOLTAR AO TOPO -->
+
+    <!-- Header carregado dinamicamente -->
+    <div id="header-container"></div>
+
+    <!-- CONTEÚDO PRINCIPAL DA PÁGINA DE REPASSES -->
+    <section id="meus-repasses-section" class="fullheight-dinamico">
+        <div class="container">
+            <h1 class="section-title">Meus Repasses de Comissão</h1>
+            <p style="text-align: center; margin-bottom: 35px;">Acompanhe suas comissões pendentes e o histórico de pagamentos.</p>
+
+            <!-- Seção de Repasses Pendentes -->
+            <div class="repasse-secao">
+                <h2><i class='bx bx-time-five bx-sm'></i> Repasses Pendentes</h2>
+                <div id="repasses-pendentes-container" class="lista-repasses">
+                    <!-- Exemplo estático de item pendente (será gerado dinamicamente) -->
+                    <!--
+                    <div class="repasse-item pendente">
+                        <div class="repasse-info">
+                            <p><strong>Envio ID:</strong> #123</p>
+                            <p><strong>Pedido:</strong> Caixa Modelo Padrão (Cliente: Maria Silva)</p>
+                            <p><strong>Data do Envio:</strong> 10/03/2024</p>
+                        </div>
+                        <div class="repasse-valores">
+                            <p><strong>Frete:</strong> R$ 50,00</p>
+                            <p class="comissao"><strong>Comissão (15%):</strong> R$ 7,50</p>
+                        </div>
+                    </div>
+                    -->
+                    <div id="loadingPendentes" class="loading-spinner" style="display: block;"></div>
+                    <p id="sem-pendentes-mensagem" class="mensagem-lista" style="display: none;">Você não possui comissões pendentes no momento. Continue o ótimo trabalho!🚀</p>
+                </div>
+                <div id="total-pendente-container" class="total-container" style="display: none;">
+                    <h3>Total Pendente a Receber: <span id="valor-total-pendente" class="valor-destaque">R$ 0,00</span></h3>
+                </div>
+            </div>
+
+            <!-- Seção de Histórico de Repasses Efetuados -->
+            <div class="repasse-secao" style="margin-top: 50px;">
+                <h2><i class='bx bx-history bx-sm'></i> Histórico de Repasses (Extrato)</h2>
+                <div id="historico-repasses-container" class="lista-repasses">
+                    <!-- Exemplo estático de lote de repasse (será gerado dinamicamente) -->
+                    <!--
+                    <div class="lote-repasse-item">
+                        <div class="lote-header">
+                            <h4>Lote de Repasse #LOTE001 <span class="data-lote">(Pago em: 15/03/2024)</span></h4>
+                            <button class="btn-toggle-detalhes-lote" data-lote-id="LOTE001"><i class='bx bx-chevron-down'></i> Ver Detalhes</button>
+                        </div>
+                        <p class="lote-info"><strong>Valor Total do Lote:</strong> R$ 150,75</p>
+                        <p class="lote-info"><strong>Método:</strong> Transferência Bancária</p>
+                        <div class="lote-detalhes-envios" id="detalhes-lote-LOTE001" style="display: none;">
+                            <p><strong>Envios incluídos neste lote:</strong></p>
+                            <ul>
+                                <li>Envio #101 - Comissão: R$ 10,00</li>
+                                <li>Envio #105 - Comissão: R$ 5,75</li>
+                                <li>Envio #112 - Comissão: R$ 135,00</li>
+                            </ul>
+                        </div>
+                    </div>
+                    -->
+                    <div id="loadingHistorico" class="loading-spinner" style="display: block;"></div>
+                    <p id="sem-historico-mensagem" class="mensagem-lista" style="display: none;">Ainda não há registros de repasses efetuados para você.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- END CONTEÚDO PRINCIPAL -->
+
+    <!-- SWITCH DARK/ LIGHT MODE (reutilizado) -->
+    <div class="switch">
+        <div class="circle">
+            <i class='bx bx-moon'></i>
+        </div>
+    </div>
+    <!-- END SWITCH DARK/ LIGHT MODE -->
+
+    <!-- FOOTER (reutilizado) -->
+    <footer class="footer">
+        <div class="containerFooter">
+             <div class="rowFooter" style="text-align: center;">
+                <div class="col-12">
+                    <p style="font-size: 13px;">
+                        Copyright © <script>document.write(new Date().getFullYear());</script> | Todos os direitos reservados |
+                        Desenvolvido pela <a href="https://tpowert.com.br/" target="_blank" class="link"> <span style="color: #563D7C;">TPowerTech</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- END FOOTER -->
+
+    <!-- Scripts Base -->
+    <script src="../js/estrutura_paginas.js"></script>
+    <!-- Script Específico da Página -->
+    <script type="module" src="../js/repasses.js"></script> <!-- Novo JS para esta página -->
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+/* css/repasses.css */
+
+/* Estilos gerais para as seções da página de repasses */
+.repasse-secao {
+    background-color: var(--white); /* Fundo branco para a seção */
+    padding: 25px 30px;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    margin-bottom: 30px;
+}
+
+.repasse-secao h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--background-color); /* Uma linha sutil abaixo do título */
+    display: flex; /* Para alinhar o ícone com o texto */
+    align-items: center; /* Alinha verticalmente o ícone e o texto */
+}
+
+.repasse-secao h2 i {
+    margin-right: 10px; /* Espaço entre o ícone e o texto do título */
+    color: var(--primary-color); /* Cor do ícone igual ao título */
+}
+
+/* Estilos para a lista de itens (pendentes ou lotes) */
+.lista-repasses {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Espaçamento entre os itens da lista */
+}
+
+/* Estilo para cada item de repasse pendente */
+.repasse-item.pendente {
+    background-color: #f9f9f9; /* Um fundo levemente diferente para itens pendentes */
+    border: 1px solid #e0e0e0;
+    border-left: 5px solid var(--yellow); /* Uma borda amarela para indicar pendência */
+    padding: 15px 20px;
+    border-radius: 0.5rem;
+    display: flex;
+    justify-content: space-between; /* Separa informações do envio e valores */
+    align-items: center;
+    flex-wrap: wrap; /* Permite quebra de linha em telas menores */
+}
+
+.repasse-item .repasse-info p,
+.repasse-item .repasse-valores p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    color: var(--grey);
+}
+
+.repasse-item .repasse-info p strong,
+.repasse-item .repasse-valores p strong {
+    color: var(--black-blue-light-3);
+}
+
+.repasse-item .repasse-valores {
+    text-align: right; /* Alinha os valores à direita */
+}
+
+.repasse-item .comissao strong {
+    color: var(--primary-color); /* Destaca o valor da comissão */
+    font-size: 1.1em;
+}
+
+/* Estilo para o container do total pendente */
+.total-container {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: var(--primary-color-light, #e8f5e9); /* Um verde claro, defina essa variável se não existir ou use uma cor direta */
+    border-radius: 0.5rem;
+    text-align: right;
+}
+
+.total-container h3 {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.total-container .valor-destaque {
+    font-weight: 700;
+    font-size: 1.1em; /* Um pouco maior */
+}
+
+/* Estilo para cada lote de repasse no histórico */
+.lote-repasse-item {
+    background-color: #fdfdfd;
+    border: 1px solid #eaeaea;
+    border-left: 5px solid var(--primary-color); /* Verde para indicar pago/processado */
+    padding: 20px;
+    border-radius: 0.5rem;
+    margin-bottom: 15px; /* Espaço entre os lotes, se a lista-repasses não tiver gap */
+}
+
+.lote-repasse-item .lote-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.lote-repasse-item .lote-header h4 {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+.lote-repasse-item .lote-header .data-lote {
+    font-size: 0.85rem;
+    color: var(--grey);
+    font-weight: normal;
+    margin-left: 10px;
+}
+
+.btn-toggle-detalhes-lote {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 6px 12px;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.3s, color 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.btn-toggle-detalhes-lote i {
+    margin-right: 5px; /* Espaço antes do texto "Ver Detalhes" */
+    transition: transform 0.3s ease; /* Para animar a seta */
+}
+
+.btn-toggle-detalhes-lote.aberto i {
+    transform: rotate(180deg); /* Gira a seta para cima */
+}
+
+.btn-toggle-detalhes-lote:hover {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.lote-repasse-item .lote-info {
+    font-size: 0.95rem;
+    color: var(--grey);
+    margin: 5px 0 10px 0;
+}
+
+.lote-repasse-item .lote-info strong {
+    color: var(--black-blue-light-3);
+}
+
+.lote-detalhes-envios {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: #f7f7f7;
+    border-radius: 0.3rem;
+    border: 1px solid #eee;
+}
+
+.lote-detalhes-envios p strong {
+    color: var(--primary-color);
+    font-size: 1rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.lote-detalhes-envios ul {
+    list-style: none; /* Remove marcadores padrão */
+    padding-left: 0;
+}
+
+.lote-detalhes-envios ul li {
+    padding: 8px 0;
+    border-bottom: 1px dashed #ddd;
+    font-size: 0.9rem;
+    color: var(--grey);
+}
+
+.lote-detalhes-envios ul li:last-child {
+    border-bottom: none;
+}
+
+/* Mensagens genéricas para listas vazias */
+.mensagem-lista {
+    text-align: center;
+    padding: 20px;
+    color: var(--grey);
+    font-style: italic;
+    font-size: 1rem;
+}
+
+/* Responsividade */
+@media only screen and (max-width: 768px) {
+    .repasse-secao h2 {
+        font-size: 1.6rem;
+    }
+
+    .repasse-item.pendente {
+        flex-direction: column; /* Empilha info e valores */
+        align-items: flex-start; /* Alinha tudo à esquerda */
+    }
+
+    .repasse-item .repasse-valores {
+        text-align: left; /* Alinha valores à esquerda também */
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .lote-repasse-item .lote-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .lote-repasse-item .lote-header .btn-toggle-detalhes-lote {
+        margin-top: 10px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .repasse-secao {
+        padding: 20px 15px;
+    }
+
+    .repasse-secao h2 {
+        font-size: 1.4rem;
+    }
+
+    .repasse-item .repasse-info p,
+    .repasse-item .repasse-valores p,
+    .lote-repasse-item .lote-info,
+    .lote-detalhes-envios ul li {
+        font-size: 0.9rem;
+    }
+
+    .total-container h3 {
+        font-size: 1.1rem;
+    }
+}

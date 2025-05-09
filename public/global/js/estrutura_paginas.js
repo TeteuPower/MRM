@@ -199,11 +199,12 @@ function temaSalvo() {
 };
 
 // Função para carregar o header
-async function carregarHeader() {
+async function carregarHeaderEntregador() {
     try {
-        const response = await fetch('/html/header.html'); // Caminho para o header.html
+        const response = await fetch('/html/header-entregador.html'); // Caminho para o header.html
         const headerHTML = await response.text();
         document.getElementById('header-container').innerHTML = headerHTML; // Adiciona o HTML ao container
+        //console.log('Header carregado com sucesso!');
 
         // Lógica para adicionar a classe "active"
         const currentPage = window.location.pathname.split('/').pop(); // Obtém o nome da página atual
@@ -214,7 +215,7 @@ async function carregarHeader() {
         }
 
         // Adicione aqui os ouvintes de evento para o logout, etc. (se necessário)
-        document.getElementById('logout-btn').addEventListener('click', () => { logout(); });
+        //document.getElementById('logout-btn').addEventListener('click', () => { logout(); });
 
 
     } catch (error) {
