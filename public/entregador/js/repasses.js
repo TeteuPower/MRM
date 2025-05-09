@@ -32,6 +32,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return parseFloat(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     };
 
+    // Formata um número para moeda em dólar (USD)
+    const formatarMoedaUSD = (valor) => {
+        return parseFloat(valor).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+    };
+
     // Formata data (ex: DD/MM/YYYY)
     const formatarData = (dataISO) => {
         if (!dataISO) return 'Data não informada';
@@ -43,64 +48,67 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- SEÇÃO DE REPASSES PENDENTES ---
 
     const criarHtmlItemPendente = (item) => {
-        const div = document.createElement('div');
-        div.classList.add('repasse-item', 'pendente');
-        // O backend deve calcular comissao_pendente
-        const comissao = item.comissao_pendente || (parseFloat(item.frete) * 0.15);
+    const div = document.createElement('div');
+    div.classList.add('repasse-item', 'pendente');
 
-        div.innerHTML = `
-            <div class="repasse-info">
-                <p><strong>Envio ID:</strong> #${item.envio_id}</p>
-                <p><strong>Pedido Ref.:</strong> ${item.caixa_modelo || 'N/A'} (ID: ${item.pedido_original_id || 'N/A'})</p>
-                <p><strong>Data do Envio:</strong> ${formatarData(item.data_envio)}</p>
-            </div>
-            <div class="repasse-valores">
-                <p><strong>Frete:</strong> ${formatarMoeda(item.frete)}</p>
-                <p class="comissao"><strong>Sua Comissão (15%):</strong> ${formatarMoeda(comissao)}</p>
-            </div>
-        `;
-        return div;
-    };
+    // Agora 'comissao_pendente_brl' e 'frete_brl' vêm diretamente do backend
+    const comissaoEmReais = item.comissao_pendente_brl;
+    const freteEmReais = item.frete_brl;
+    const freteEmDolar = item.frete_usd; // Se quiser exibir o valor em USD também
 
-    const carregarRepassesPendentes = async () => {
-        mostrarLoading(loadingPendentesSpinner);
-        esconderMensagem(semPendentesMensagemEl);
-        pendentesContainer.innerHTML = ''; // Limpa antes de carregar
-        totalPendenteContainerEl.style.display = 'none';
+    div.innerHTML = `
+        <div class="repasse-info">
+            <p><strong>Envio ID:</strong> #${item.envio_id}</p>
+            <p><strong>Pedido Ref.:</strong> ${item.caixa_modelo || 'N/A'} (ID: ${item.pedido_original_id || 'N/A'})</p>
+            <p><strong>Data do Envio:</strong> ${formatarData(item.data_envio)}</p>
+        </div>
+        <div class="repasse-valores">
+            <p><strong>Frete:</strong> ${formatarMoedaUSD(freteEmDolar)} / ${formatarMoeda(freteEmReais)}</p>
+            <p class="comissao"><strong>Sua Comissão (15%):</strong> ${formatarMoeda(comissaoEmReais)}</p>
+        </div>
+    `;
+    return div;
+};
 
-        try {
-            const response = await fetch(API_REPASSES_PENDENTES,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': localStorage.getItem('tokenEntregador')
-                    }
-                
+const carregarRepassesPendentes = async () => {
+    mostrarLoading(loadingPendentesSpinner);
+    esconderMensagem(semPendentesMensagemEl);
+    pendentesContainer.innerHTML = '';
+    totalPendenteContainerEl.style.display = 'none';
+
+    try {
+        const response = await fetch(API_REPASSES_PENDENTES,
+            {
+                method: 'GET',
+                headers: {
+                    'Authorization': localStorage.getItem('tokenEntregador')
                 }
-            );
-            if (!response.ok) {
-                throw new Error(`Erro ${response.status}: Falha ao buscar repasses pendentes.`);
             }
-            const data = await response.json(); // Espera-se um array de envios pendentes
-
-            if (data.pendentes && data.pendentes.length > 0) {
-                let totalPendente = 0;
-                data.pendentes.forEach(item => {
-                    pendentesContainer.appendChild(criarHtmlItemPendente(item));
-                    totalPendente += parseFloat(item.comissao_pendente || (parseFloat(item.frete) * 0.15));
-                });
-                valorTotalPendenteEl.textContent = formatarMoeda(totalPendente);
-                totalPendenteContainerEl.style.display = 'block';
-            } else {
-                mostrarMensagem(semPendentesMensagemEl, 'Você não possui comissões pendentes no momento. Continue o ótimo trabalho! 🚀');
-            }
-        } catch (error) {
-            console.error("Erro ao carregar repasses pendentes:", error);
-            mostrarMensagem(semPendentesMensagemEl, `Erro ao carregar dados: ${error.message}`);
-        } finally {
-            esconderLoading(loadingPendentesSpinner);
+        );
+        if (!response.ok) {
+            throw new Error(`Erro ${response.status}: Falha ao buscar repasses pendentes.`);
         }
-    };
+        const data = await response.json();
+
+        if (data.pendentes && data.pendentes.length > 0) {
+            let totalPendenteEmReais = 0;
+            data.pendentes.forEach(item => {
+                pendentesContainer.appendChild(criarHtmlItemPendente(item));
+                // Soma a comissão que já veio calculada em BRL do backend
+                totalPendenteEmReais += parseFloat(item.comissao_pendente_brl);
+            });
+            valorTotalPendenteEl.textContent = formatarMoeda(totalPendenteEmReais);
+            totalPendenteContainerEl.style.display = 'block';
+        } else {
+            mostrarMensagem(semPendentesMensagemEl, 'Você não possui comissões pendentes no momento. Continue o ótimo trabalho! 🚀');
+        }
+    } catch (error) {
+        console.error("Erro ao carregar repasses pendentes:", error);
+        mostrarMensagem(semPendentesMensagemEl, `Erro ao carregar dados: ${error.message}`);
+    } finally {
+        esconderLoading(loadingPendentesSpinner);
+    }
+};
 
     // --- SEÇÃO DE HISTÓRICO DE REPASSES (EXTRATO) ---
 

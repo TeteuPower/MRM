@@ -2,27 +2,40 @@ const express = require('express');
 const router = express.Router();
 const { dbEntregador } = require('../../db'); // Sua conexão com o banco de dados
 const autenticarEnvio = require('../../middleware/authEnvio'); // Seu middleware de autenticação
+const axios = require('axios'); // Importar axios
+
+// Função para obter a cotação do dólar
+async function obterCotacaoDolar() {
+    try {
+        const response = await axios.get('https://economia.awesomeapi.com.br/last/USD-BRL');
+        if (response.data && response.data.USDBRL && response.data.USDBRL.bid) {
+            return parseFloat(response.data.USDBRL.bid);
+        }
+        throw new Error('Resposta da API de cotação em formato inesperado.');
+    } catch (error) {
+        console.error('Erro ao obter cotação do dólar:', error.message);
+        throw error; // Re-lança o erro para ser tratado pela rota
+    }
+}
 
 // --- Rota para buscar Repasses Pendentes do Entregador Logado ---
 router.get('/repasses/pendentes', autenticarEnvio, async (req, res) => {
     const entregadorId = req.usuario.id;
 
     try {
-        // Consulta para buscar envios NÃO repassados (onde repasse_efetuado = FALSE na tabela envios)
-        // E que pertencem ao entregador logado.
-        // Se você optou por controlar o repasse apenas pela existência na tabela itens_lote_repasse,
-        // a query seria diferente (ver JOIN com itens_lote_repasse e checar se é NULL).
-        // Vamos assumir por agora que você ainda tem a coluna `repasse_efetuado` na tabela `envios`.
+        // 1. Obter a cotação atual do dólar
+        const cotacaoDolar = await obterCotacaoDolar();
+
+        // 2. Buscar os envios pendentes
         const sql = `
             SELECT
                 e.id AS envio_id,
                 e.pedido_id AS pedido_original_id,
-                p.caixa_modelo,             -- Exemplo de dado da tabela pedidos
+                p.caixa_modelo,
                 e.data_envio,
-                e.frete,
-                (e.frete * 0.15) AS comissao_pendente
+                e.frete AS frete_usd -- Renomeado para clareza
             FROM envios e
-            JOIN pedidos p ON e.pedido_id = p.id -- Fazendo JOIN com pedidos para pegar info como caixa_modelo
+            JOIN pedidos p ON e.pedido_id = p.id
             WHERE e.entregador_id = ?
             AND e.repasse_efetuado = FALSE
             ORDER BY e.data_envio DESC;
@@ -30,16 +43,31 @@ router.get('/repasses/pendentes', autenticarEnvio, async (req, res) => {
 
         dbEntregador.query(sql, [entregadorId], (err, results) => {
             if (err) {
-                console.error('Erro ao buscar repasses pendentes:', err);
+                console.error('Erro ao buscar repasses pendentes do DB:', err);
                 return res.status(500).json({ error: 'Erro interno ao buscar repasses pendentes.' });
             }
-            // O frontend espera um objeto com uma chave "pendentes" contendo o array
-            res.json({ pendentes: results });
+
+            // 3. Processar os resultados: converter frete para BRL e calcular comissão
+            const pendentesProcessados = results.map(item => {
+                const freteUSD = parseFloat(item.frete_usd);
+                const freteBRL = freteUSD * cotacaoDolar;
+                const comissaoBRL = freteBRL * 0.15;
+
+                return {
+                    ...item, // Mantém os outros campos do item
+                    frete_usd: freteUSD, // Frete original em USD
+                    frete_brl: freteBRL, // Frete convertido para BRL
+                    comissao_pendente_brl: comissaoBRL // Comissão calculada em BRL
+                };
+            });
+
+            res.json({ pendentes: pendentesProcessados });
         });
 
     } catch (error) {
-        console.error('Erro inesperado em GET /repasses/pendentes:', error);
-        res.status(500).json({ error: 'Erro inesperado no servidor.' });
+        // Se obterCotacaoDolar() falhar, cairá aqui
+        console.error('Erro na rota /repasses/pendentes (geral ou cotação):', error);
+        res.status(500).json({ error: 'Erro ao processar repasses pendentes. Verifique a cotação.' });
     }
 });
 

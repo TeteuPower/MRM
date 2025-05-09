@@ -238,13 +238,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (documentoEnvioFile) {
              //formData.append('documentos_envio', documentoEnvioFile);
         }
-        console.log('FormData:', formData);
+        /*console.log('FormData:', formData);
         // Para inspecionar o FormData
         console.log('--- Inspecionando FormData ---');
         for (let [key, value] of formData.entries()) {
             console.log(`${key}:`, value); // value será um File object para arquivos
         }
-        console.log('----------------------------');
+        console.log('----------------------------');*/
         // O backend (middleware firebase-envio-config) precisa lidar com a lógica
         // de usar a URL existente se o arquivo não estiver no FormData.
 

@@ -38,7 +38,7 @@ const realizarUploadFirebase = (arquivoOriginal, tipoArquivo, pedido_id) => {
                     expires: Date.now() + 7 * 24 * 60 * 60 * 1000, // 7 dias
                 };
                 const [signedUrl] = await file.getSignedUrl(options);
-                console.log(`${tipoArquivo} (${nomeArquivoNoStorage}) enviado. URL assinada gerada.`);
+                //console.log(`${tipoArquivo} (${nomeArquivoNoStorage}) enviado. URL assinada gerada.`);
                 resolve({ tipo: tipoArquivo, url: signedUrl, caminhoNoStorage: nomeArquivoNoStorage }); // Resolve com a URL e o tipo
             } catch (error) {
                 console.error(`Erro ao gerar URL assinada para ${nomeArquivoNoStorage}:`, error);
@@ -124,8 +124,7 @@ const uploadArquivosEnvio = async (req, res, next) => {
             }
         });
 
-        console.log("Todos os arquivos processados. URLs finais:", req.firebaseUrls);
-        // **AQUI É O LUGAR CORRETO PARA O next()**
+        //console.log("Todos os arquivos processados. URLs finais:", req.firebaseUrls);
         next();
 
     } catch (error) {
