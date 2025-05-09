@@ -61,7 +61,7 @@ router.get('/pendentes', autenticarEnvio, async (req, res) => {
 // API para obter um revendedor por ID
 router.get('/:id', autenticarEnvio, (req, res) => {
     const revendedorId = req.params.id;
-    const sql = 'SELECT id, nome FROM usuarios WHERE id = ? AND email_verificado = 1 AND entregador = 1';
+    const sql = 'SELECT id, nome FROM usuarios WHERE id = ? AND email_verificado = 1 AND entregador = TRUE';
     dbEntregador.query(sql, [revendedorId], (err, results) => {
         if (err) {
             console.error('Erro ao buscar entregador:', err);
