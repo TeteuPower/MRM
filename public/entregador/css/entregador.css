@@ -1,0 +1,220 @@
+/* css/entregador.css */
+
+/* Estilos para a lista de pedidos pendentes */
+.pedidos-lista {
+    display: flex; /* Organiza os itens lado a lado */
+    flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+    gap: 20px; /* Espaçamento entre os cartões de pedido */
+    justify-content: center; /* Centraliza os itens se não preencherem a linha toda */
+    margin-top: 20px;
+}
+
+.pedido-item {
+    background-color: var(--white); /* Fundo branco para o cartão */
+    border-radius: 1rem; /* Bordas arredondadas */
+    padding: 20px; /* Espaçamento interno */
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px; /* Sombra sutil */
+    width: calc(33.333% - 20px); /* Tenta encaixar 3 por linha (ajuste conforme necessário) */
+    box-sizing: border-box; /* Garante que padding não aumente a largura total */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transição suave para hover */
+    cursor: pointer; /* Indica que é clicável */
+    display: flex;
+    flex-direction: column; /* Organiza o conteúdo interno em coluna */
+    justify-content: space-between; /* Empurra o botão para baixo */
+    min-height: 220px; /* Altura mínima para consistência */
+}
+
+.pedido-item:hover {
+    transform: translateY(-5px); /* Leve elevação no hover */
+    box-shadow: rgba(0, 0, 0, 0.15) 0px 8px 16px; /* Sombra mais pronunciada */
+}
+
+.pedido-item h2 {
+    color: var(--primary-color); /* Cor primária para o título */
+    font-size: 1.4rem; /* Tamanho do título */
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--grey-light); /* Linha divisória sutil */
+    padding-bottom: 5px;
+}
+
+.pedido-item p {
+    font-size: 0.95rem; /* Tamanho do texto dos detalhes */
+    color: var(--grey); /* Cor cinza para detalhes */
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.pedido-item p strong {
+    color: var(--black-blue-light-3); /* Cor um pouco mais escura para os "labels" */
+    margin-right: 5px;
+}
+
+/* Estilizando o botão dentro do item, se houver (opcional, pode ser clicável no item todo) */
+.pedido-item .btn-detalhes {
+    padding: 8px 15px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 15px; /* Espaço acima do botão */
+    align-self: center; /* Centraliza o botão */
+    font-weight: 600;
+}
+
+.pedido-item .btn-detalhes:hover {
+    background-color: #0b7a43; /* Um tom mais escuro de verde no hover */
+}
+
+/* Ajustes responsivos para a lista de pedidos */
+@media only screen and (max-width: 991px) {
+    .pedido-item {
+        width: calc(50% - 15px); /* 2 por linha em telas médias */
+        gap: 15px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .pedido-item {
+        width: 100%; /* 1 por linha em telas pequenas */
+        min-height: auto; /* Altura automática */
+    }
+
+     .pedido-item h2 {
+        font-size: 1.2rem;
+    }
+
+    .pedido-item p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Estilos específicos para o Modal de Envio */
+.modal-envio-wrap {
+    max-width: 650px; /* Largura máxima um pouco maior para o formulário */
+    max-height: 90vh; /* Altura máxima para evitar cobrir a tela toda */
+    overflow-y: auto; /* Habilita scroll vertical se o conteúdo for maior */
+    padding: 25px 35px; /* Mais padding interno */
+}
+
+/* Estilos para o formulário dentro do modal */
+.form-envio-modal .input-group {
+    margin-bottom: 18px; /* Espaçamento entre os grupos de input */
+    border: 1px solid #ccc; /* Borda mais visível nos inputs do modal */
+    background-color: rgba(0, 0, 0, 0.02); /* Leve fundo para destacar */
+}
+
+.form-envio-modal label {
+    display: block; /* Faz o label ocupar a linha toda */
+    margin-bottom: 5px; /* Espaço abaixo do label */
+    color: var(--grey);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.form-envio-modal input[type="text"],
+.form-envio-modal input[type="email"],
+.form-envio-modal input[type="tel"],
+.form-envio-modal input[type="number"],
+.form-envio-modal textarea {
+    width: 100%; /* Ocupa toda a largura do input-group */
+    padding: 8px 10px; /* Padding interno dos inputs */
+    font-size: 1rem;
+    background: transparent; /* Remove fundo do input base se houver */
+    border: none; /* Remove borda do input base se houver */
+    color: var(--black-blue-light-3); /* Cor do texto digitado */
+}
+
+.form-envio-modal textarea {
+    resize: vertical; /* Permite redimensionar apenas verticalmente */
+    min-height: 60px; /* Altura mínima */
+}
+
+.form-envio-modal .upload-section {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px dashed var(--grey); /* Borda tracejada para indicar área de upload */
+    border-radius: 0.5rem;
+    background-color: rgba(15, 157, 88, 0.05); /* Fundo levemente esverdeado */
+}
+
+.form-envio-modal .upload-section label {
+    margin-bottom: 10px; /* Mais espaço abaixo do label da seção */
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.form-envio-modal input[type="file"] {
+    display: block; /* Garante que o input de arquivo ocupe a linha */
+    margin-top: 5px;
+    color: var(--grey);
+}
+
+.form-envio-modal small {
+    font-size: 0.8rem;
+    color: var(--secon-color);
+    display: block; /* Quebra linha */
+    margin-top: 5px;
+}
+
+.form-envio-modal .link-download {
+    display: inline-block; /* Para poder aplicar padding */
+    margin-top: 10px;
+    padding: 8px 12px;
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    font-weight: 500;
+}
+
+.form-envio-modal .link-download:hover {
+    background-color: #0b7a43;
+    text-decoration: none;
+    color: var(--white);
+}
+
+
+.form-envio-modal .btn-confirmar-envio {
+    width: 100%; /* Botão ocupa largura total */
+    padding: 12px; /* Mais padding vertical */
+    margin-top: 25px; /* Espaço acima do botão */
+    font-size: 1.1rem;
+}
+
+/* Botão de fechar o modal (ajustes se necessário) */
+.close-modal-envio {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--grey);
+    cursor: pointer;
+    transition: color 0.3s ease;
+    line-height: 1; /* Ajusta alinhamento vertical */
+}
+
+.close-modal-envio:hover {
+    color: var(--primary-color);
+}
+
+/* Mensagem de erro no formulário */
+#envio-error-message {
+    margin-top: 15px;
+    font-weight: 500;
+}
+
+/* Estilo para o spinner dentro do modal (se precisar de ajuste específico) */
+#envioLoadingSpinner {
+    margin: 20px auto; /* Centraliza e adiciona espaço */
+}
+
+/* Estilo para quando não há pedidos */
+#sem-pedidos-mensagem {
+    width: 100%; /* Ocupa toda a largura do container */
+    font-size: 1.1rem;
+    font-style: italic;
+}

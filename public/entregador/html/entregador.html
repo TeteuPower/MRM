@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciar Entregas - Espírito Do Nativo</title> <!-- Título específico -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- CSS Base -->
+    <link rel="stylesheet" href="../css/estrutura_paginas.css">
+    <!-- CSS Específico da Página -->
+    <link rel="stylesheet" href="../css/entregador.css"> <!-- Novo CSS -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <!-- BOTÃO VOLTAR AO TOPO (reutilizado) -->
+    <div class="progress-wrap">
+        <i class='bx bx-up-arrow-alt'></i>
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- END BOTÃO VOLTAR AO TOPO -->
+
+    <!-- Header carregado dinamicamente -->
+    <div id="header-container"></div>
+
+    <!-- CONTEÚDO PRINCIPAL DA PÁGINA DO ENTREGADOR -->
+    <section id="gerenciar-entregas" class="fullheight-dinamico align-items-center">
+        <div class="container">
+            <h1 class="section-title">Entregas Pendentes</h1>
+            <p style="text-align: center; margin-bottom: 35px;">Visualize e gerencie os pedidos prontos para envio.</p>
+
+            <div id="pedidos-pendentes-container" class="pedidos-lista">
+                <!-- Exemplo estático de como um item de pedido pode parecer (será gerado dinamicamente) -->
+                <!--
+                <div class="pedido-item" data-pedido-id="123">
+                    <h2>Pedido #123</h2>
+                    <p><strong>Caixa:</strong> Modelo Padrão</p>
+                    <p><strong>Peso:</strong> 1.5 kg</p>
+                    <p><strong>Vendedor:</strong> Artesão da Floresta</p>
+                    <p><strong>Cliente:</strong> Maria Silva</p>
+                    <button class="btn-detalhes">Ver Detalhes</button>
+                </div>
+                -->
+                <div id="loadingPedidos" class="loading-spinner" style="display: block;"></div>
+                 <!-- Mensagem caso não hajam pedidos -->
+                 <p id="sem-pedidos-mensagem" style="display: none; text-align: center; margin-top: 20px; color: var(--grey);">Nenhum pedido aguardando envio no momento. Hora do cafezinho? ☕</p>
+            </div>
+        </div>
+    </section>
+    <!-- END CONTEÚDO PRINCIPAL -->
+
+    <!-- Modal para Detalhes e Formulário de Envio -->
+    <!-- Checkbox oculto para controlar o modal -->
+    <input type="checkbox" id="modal-envio-checkbox" class="modal-btn" style="display: none;">
+    <!-- O modal em si -->
+    <div class="modal" id="modalEnvioContainer">
+        <div class="modal-wrap modal-envio-wrap"> <!-- Classe específica para estilização -->
+            <!-- Botão de fechar (usando label associado ao checkbox) -->
+            <label for="modal-envio-checkbox" class="close-modal-envio">×</label>
+
+            <h2>Detalhes do Envio - Pedido #<span id="modal-pedido-id"></span></h2>
+
+            <form id="formEnvio" class="form-envio-modal">
+                <input type="hidden" id="envio-pedido-id" name="pedido_id">
+
+                <div class="input-group">
+                    <label for="nome_cliente">Nome Cliente:</label>
+                    <input type="text" id="nome_cliente" name="nome_cliente" placeholder="Nome do cliente" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="telefone_cliente">Telefone:</label>
+                    <input type="tel" id="telefone_cliente" name="telefone" placeholder="(XX) XXXXX-XXXX" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="email_cliente">Email:</label>
+                    <input type="email" id="email_cliente" name="email" placeholder="cliente@email.com" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="pais_cliente">País:</label>
+                    <input type="text" id="pais_cliente" name="pais" placeholder="País de destino" required>
+                </div>
+
+                <div class="input-group">
+                    <label for="endereco_cliente">Endereço Completo:</label>
+                    <textarea id="endereco_cliente" name="endereco" rows="3" placeholder="Rua, Número, Bairro, Cidade, Estado, CEP" required></textarea>
+                </div>
+
+                 <div class="input-group">
+                    <label for="valor_frete">Valor do Frete (R$):</label>
+                    <input type="number" step="0.01" id="valor_frete" name="frete" placeholder="0.00" required>
+                </div>
+
+                <!-- Seção Nota Fiscal -->
+                <div id="notaFiscalSection" class="upload-section">
+                    <label>Nota Fiscal:</label>
+                    <div id="notaFiscalUpload" style="display: block;">
+                        <input type="file" id="notaFiscalInput" name="nota_fiscal" accept=".pdf,.xml,.doc,.docx,.jpg,.png,.jpeg">
+                        <small>Formatos aceitos: PDF, XML, DOC, DOCX, JPG, PNG, JPEG</small>
+                    </div>
+                    <div id="notaFiscalDownload" style="display: none;">
+                        <a id="notaFiscalDownloadLink" href="#" target="_blank" class="link-download">Baixar Nota Fiscal Existente</a>
+                    </div>
+                </div>
+
+                <!-- Seção Documento de Envio -->
+                <div id="documentoEnvioSection" class="upload-section">
+                     <label>Documento de Envio:</label>
+                    <div id="documentoEnvioUpload" style="display: block;">
+                       <input type="file" id="documentoEnvioInput" name="documentos_envio" accept=".*">
+                       <small>Anexe o comprovante/código de rastreio.</small>
+                    </div>
+                    <div id="documentoEnvioDownload" style="display: none;">
+                        <a id="documentoEnvioDownloadLink" href="#" target="_blank" class="link-download">Baixar Documento de Envio Existente</a>
+                    </div>
+                </div>
+
+                <div id="envioLoadingSpinner" class="loading-spinner"></div>
+                <p id="envio-error-message" style="color: red; text-align: center; display: none;"></p> <!-- Para mensagens de erro -->
+
+                <button type="submit" class="btn-enviar btn-confirmar-envio">Confirmar Envio</button>
+            </form>
+        </div>
+    </div>
+    <!-- END Modal -->
+
+
+    <!-- SWITCH DARK/ LIGHT MODE (reutilizado) -->
+    <div class="switch">
+        <div class="circle">
+            <i class='bx bx-moon'></i>
+        </div>
+    </div>
+    <!-- END SWITCH DARK/ LIGHT MODE -->
+
+    <!-- FOOTER (reutilizado) -->
+    <footer class="footer">
+        <div class="containerFooter">
+             <div class="rowFooter" style="text-align: center;">
+                <div class="col-12">
+                    <p style="font-size: 13px;">
+                        Copyright © <script>document.write(new Date().getFullYear());</script> | Todos os direitos reservados |
+                        Desenvolvido pela <a href="https://tpowert.com.br/" target="_blank" class="link"> <span style="color: #563D7C;">TPowerTech</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- END FOOTER -->
+
+    <!-- Scripts Base -->
+    <script src="../js/estrutura_paginas.js"></script>
+    <!--<script src="../js/funcoes.js"></script> <!-- Se você tiver funções globais -->
+    <!-- Script Específico da Página -->
+    <script src="../js/entregador.js"></script> <!-- Novo JS -->
+
+</body>
+</html>

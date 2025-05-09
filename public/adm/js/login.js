@@ -30,6 +30,8 @@ function jaEstaLogado() {
     const token = localStorage.getItem('token');
     const admId = localStorage.getItem('administrador');
     const tokenUser = localStorage.getItem('tokenUser');
+    const tokenRevendedor = localStorage.getItem('tokenRevendedor');
+    const tokenEntregador = localStorage.getItem('tokenEntregador');
 
     if (token && tokenUser) {
         alert('Você está logado com a conta de administrador e de cliente, será deslogada as duas contas');
@@ -42,10 +44,10 @@ function jaEstaLogado() {
 
     if (token) {
         if (admId === '1') {
-            alert('Você está logado!');
+            alert('Você está logado como administrador!');
             window.location.href = '/adm/consultar_pedidos';
         } else {
-            alert('Você está logado!');
+            alert('Você está logado como administrador!');
             window.location.href = '/adm/pagina_inicial';
         }
     }
@@ -53,6 +55,16 @@ function jaEstaLogado() {
     if (tokenUser) {
         alert('Você está logado!');
         window.location.href = '/menu';
+    }
+
+    if (tokenRevendedor) {
+        alert('Você está logado como revendedor!');
+        window.location.href = '/rev/pagina_inicial';
+    }
+
+    if (tokenEntregador) {
+        alert('Você está logado como entregador!');
+        window.location.href = '/entregador/pagina_inicial';
     }
 }
 

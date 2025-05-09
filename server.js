@@ -12,6 +12,30 @@ const autenticarEnvio = require('./middleware/authEnvio');
 const bcrypt = require('bcrypt'); // Importa o módulo bcrypt
 require('dotenv').config(); // Carrega as variáveis do .env
 
+//Iniciando o firebase
+var admin = require("firebase-admin");
+
+const serviceAccount = {
+    type: process.env.FIREBASE_TYPE,
+    projectId: process.env.FIREBASE_PROJECT_ID,
+    privateKeyId: process.env.FIREBASE_PRIVATE_KEY_ID,
+    privateKey: process.env.FIREBASE_PRIVATE_KEY,
+    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+    clientId: process.env.FIREBASE_CLIENT_ID,
+    authUri: process.env.FIREBASE_AUTH_URI,
+    tokenUri: process.env.FIREBASE_TOKEN_URI,
+    authProviderX509CertUrl: process.env.FIREBASE_AUTH_PROVIDER_CERT_URL,
+    client_x509_cert_url: process.env.FIREBASE_CLIENT_CERT_URL,
+    universe_domain: process.env.FIREBASE_UNIVERSE_DOMAIN,
+};
+
+const enderecoBucket = process.env.FIREBASE_STORAGE_BUCKET;
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: enderecoBucket
+});
+
 // Definir o fuso horário
 process.env.TZ = 'America/Sao_Paulo';
 
@@ -36,6 +60,11 @@ app.use('/html', express.static(path.join(__dirname, 'public', 'cliente', 'html'
         res.setHeader('Content-Type', 'text/html');
     }
 }));
+app.use('/html', express.static(path.join(__dirname, 'public', 'entregador', 'html'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/html');
+    }
+}));
 app.use('/html', express.static(path.join(__dirname, 'checkout', 'public', 'html'), {
     setHeaders: function (res, path, stat) {
         res.setHeader('Content-Type', 'text/html');
@@ -56,12 +85,32 @@ app.use('/css', express.static(path.join(__dirname, 'checkout', 'public', 'css')
         res.setHeader('Content-Type', 'text/css');
     }
 }));
+app.use('/css', express.static(path.join(__dirname, 'public', 'global', 'css'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/css');
+    }
+}));
+app.use('/css', express.static(path.join(__dirname, 'public', 'entregador', 'css'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/css');
+    }
+}));
 app.use('/js', express.static(path.join(__dirname, 'public', 'adm', 'js'), {
     setHeaders: function (res, path, stat) {
         res.setHeader('Content-Type', 'text/javascript');
     }
 }));
 app.use('/js', express.static(path.join(__dirname, 'public', 'cliente', 'js'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/javascript');
+    }
+}));
+app.use('/js', express.static(path.join(__dirname, 'public', 'entregador', 'js'), {
+    setHeaders: function (res, path, stat) {
+        res.setHeader('Content-Type', 'text/javascript');
+    }
+}));
+app.use('/js', express.static(path.join(__dirname, 'public', 'global', 'js'), {
     setHeaders: function (res, path, stat) {
         res.setHeader('Content-Type', 'text/javascript');
     }
@@ -235,6 +284,11 @@ app.get('/adm/manipular_cupons', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'adm', 'html', 'manipular_cupons.html'));
 });
 
+// Define a rota para a entregador
+app.get('/entregador/pagina_inicial', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'entregador.html'));
+});
+
 
 
 module.exports = {
@@ -297,6 +351,8 @@ app.use('/api/email-pagamento-confirmado-admin', require('./src/controllers/sg_p
 app.use('/api/produtos-site', autenticar, require('./routes/adm/produtos_site'));
 // Rota para manipular os cupons
 app.use('/api/cupons', autenticar, require('./routes/adm/cupons'));
+// Rota para manipular os envios
+app.use('/api/envios', autenticarEnvio, require('./routes/adm/envios'));
 
 
 // Rota para login do administrador (gera o token)
