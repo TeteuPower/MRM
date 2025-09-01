@@ -1,0 +1,159 @@
+/* css/envios-em-transito.css */
+
+/* Container principal da lista de envios */
+.lista-envios {
+    display: grid;
+    /* Colunas responsivas: cada card terá no mínimo 350px e se ajustarão ao espaço */
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 25px; /* Espaçamento entre os cards */
+}
+
+/* Estilo de cada card de envio */
+.envio-item {
+    background-color: var(--white);
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    padding: 20px 25px;
+    display: flex;
+    flex-direction: column; /* Empilha as seções verticalmente */
+    border-left: 5px solid var(--yellow); /* Amarelo para indicar "em andamento/atenção" */
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.envio-item:hover {
+    transform: translateY(-5px);
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 8px 24px;
+}
+
+/* Cabeçalho do card (WB e Dias) */
+.envio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--background-color);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+}
+
+.envio-header h3 {
+    margin: 0;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.envio-header .wb-valor {
+    font-weight: 600;
+    color: var(--black-blue-light-3);
+}
+
+.dias-na-estrada {
+    background-color: var(--yellow-light, #fffde7); /* Um amarelo bem clarinho */
+    color: var(--yellow-dark, #f57f17); /* Um laranja/amarelo escuro para contraste */
+    padding: 5px 12px;
+    border-radius: 2rem; /* Formato de pílula */
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    white-space: nowrap; /* Evita quebra de linha */
+}
+
+.dias-na-estrada i {
+    margin-right: 6px;
+}
+
+/* Seção de detalhes do envio */
+.envio-detalhes p {
+    margin: 6px 0;
+    font-size: 0.95rem;
+    color: var(--grey);
+}
+
+.envio-detalhes p strong {
+    color: var(--black-blue-light-3);
+    min-width: 130px; /* Alinha os valores */
+    display: inline-block;
+}
+
+/* Seção de contato do cliente */
+.cliente-contato {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed #ddd;
+}
+
+.cliente-contato h4 {
+    margin: 0 0 10px 0;
+    color: var(--primary-color);
+    font-size: 1.1rem;
+}
+
+.cliente-contato p {
+    margin: 8px 0;
+    font-size: 0.95rem;
+    color: var(--grey);
+    display: flex;
+    align-items: center;
+}
+
+.cliente-contato p i {
+    margin-right: 10px;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+/* Mensagem de lista vazia (reutilizado) */
+.mensagem-lista {
+    text-align: center;
+    padding: 20px;
+    color: var(--grey);
+    font-style: italic;
+    font-size: 1rem;
+    grid-column: 1 / -1; /* Ocupa todas as colunas do grid */
+}
+
+/* Responsividade */
+@media only screen and (max-width: 992px) {
+    .lista-envios {
+        /* Em telas médias, força uma única coluna para melhor leitura */
+        grid-template-columns: 1fr;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .envio-item {
+        padding: 15px 20px;
+    }
+
+    .envio-header {
+        flex-direction: column; /* Empilha o WB e os dias */
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .envio-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .envio-detalhes p strong {
+        min-width: 110px; /* Ajusta o alinhamento para telas menores */
+    }
+}
+/* Adicione este estilo ao final do arquivo */
+.btn-cadastrar-wb {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    padding: 6px 14px;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-cadastrar-wb:hover {
+    background-color: #0c7a46; /* Tom mais escuro */
+    transform: scale(1.05);
+}

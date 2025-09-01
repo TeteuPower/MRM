@@ -299,6 +299,11 @@ app.get('/entregador/faturas-dhl', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'faturas-dhl.html'));
 });
 
+// Define a rota para o entregador visualizar envios em trânsito
+app.get('/entregador/envios-em-transito', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'envios-em-transito.html'));
+});
+
 module.exports = {
     app: app // Exporta também o app do express
 };

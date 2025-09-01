@@ -59,6 +59,38 @@ router.get('/pendentes', autenticarEnvio, async (req, res) => {
     }
 });
 
+// Rota para buscar envios em trânsito
+router.get('/em-transito', autenticarEnvio, (req, res) => {
+    const entregadorId = req.usuario.id;
+
+    const sql = `
+        SELECT
+            id AS envio_id,
+            wb,
+            nota_fiscal,
+            data_envio,
+            pais,
+            nome_cliente,
+            telefone,
+            email
+        FROM envios
+        WHERE
+            entregador_id = ?
+        AND
+            fatura_gerada = FALSE
+        ORDER BY
+            data_envio ASC; -- Os mais antigos (mais tempo na estrada) aparecem primeiro
+    `;
+
+    dbEntregador.query(sql, [entregadorId], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar envios em trânsito:', err);
+            return res.status(500).json({ error: 'Erro interno ao buscar os envios.' });
+        }
+        res.json(results);
+    });
+});
+
 // API para obter um entregador por ID
 router.get('/:id', autenticarEnvio, (req, res) => {
     const entregadorId = req.params.id;
@@ -265,6 +297,37 @@ router.post('/confirmar', autenticarEnvio, parseForm.none(), /*handleUploads, up
             }
         }); // Fim connection.beginTransaction
     }); // Fim dbEntregador.getConnection
+});
+
+/**
+ * @route   PUT /api/envios/atualizar-wb
+ * @desc    Atualiza o WayBill de um envio específico.
+ * @access  Privado (Entregador)
+ */
+router.put('/atualizar-wb', autenticarEnvio, (req, res) => {
+    const entregadorId = req.usuario.id;
+    const { envio_id, nova_wb } = req.body;
+
+    if (!envio_id || !nova_wb || nova_wb.length !== 10) {
+        return res.status(400).json({ error: 'Dados inválidos. Forneça o ID do envio e uma WB com 10 dígitos.' });
+    }
+
+    const sql = `
+        UPDATE envios
+        SET wb = ?
+        WHERE id = ? AND entregador_id = ?; -- Segurança: só pode alterar seus próprios envios
+    `;
+
+    dbEntregador.query(sql, [nova_wb, envio_id, entregadorId], (err, result) => {
+        if (err) {
+            console.error('Erro ao atualizar WB no banco de dados:', err);
+            return res.status(500).json({ error: 'Erro interno ao atualizar a WayBill.' });
+        }
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Envio não encontrado ou não pertence a você.' });
+        }
+        res.json({ message: 'WayBill atualizada com sucesso!' });
+    });
 });
 
 module.exports = router;
