@@ -75,15 +75,15 @@
     color: var(--white);
 }
 
-.envio-item-selecao input[type="checkbox"]:checked ~ * {
-    /* Isso é um truque para mudar o fundo do pai, mas como não é possível, mudamos o fundo do label */
+/*.envio-item-selecao input[type="checkbox"]:checked ~ * {
+    /* Isso é um truque para mudar o fundo do pai, mas como não é possível, mudamos o fundo do label 
 }
 
-/* A melhor abordagem é mudar o fundo do container do item via JS, mas podemos fazer um truque com o label */
+/* A melhor abordagem é mudar o fundo do container do item via JS, mas podemos fazer um truque com o label 
 .envio-item-selecao input[type="checkbox"]:checked {
-    /* Quando o checkbox está marcado, o container muda de cor */
-    parent-container-background: var(--primary-color); /* Pseudocódigo, faremos isso com JS se necessário, mas vamos tentar com o label primeiro */
-}
+    /* Quando o checkbox está marcado, o container muda de cor 
+    parent-container-background: var(--primary-color); /* Pseudocódigo, faremos isso com JS se necessário, mas vamos tentar com o label primeiro 
+}*/
 
 /* A forma mais simples e eficaz é mudar o fundo do container inteiro */
 .envio-item-selecao.selecionado {

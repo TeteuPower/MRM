@@ -40,27 +40,27 @@
 
             <!-- Seção de Repasses Pendentes -->
             <div class="repasse-secao">
-                <h2><i class='bx bx-time-five bx-sm'></i> Repasses Pendentes</h2>
-                <div id="repasses-pendentes-container" class="lista-repasses">
-                    <!-- Exemplo estático de item pendente (será gerado dinamicamente) -->
-                    <!--
-                    <div class="repasse-item pendente">
-                        <div class="repasse-info">
-                            <p><strong>Envio ID:</strong> #123</p>
-                            <p><strong>Pedido:</strong> Caixa Modelo Padrão (Cliente: Maria Silva)</p>
-                            <p><strong>Data do Envio:</strong> 10/03/2024</p>
-                        </div>
-                        <div class="repasse-valores">
-                            <p><strong>Frete:</strong> R$ 50,00</p>
-                            <p class="comissao"><strong>Comissão (15%):</strong> R$ 7,50</p>
-                        </div>
-                    </div>
-                    -->
-                    <div id="loadingPendentes" class="loading-spinner" style="display: block;"></div>
-                    <p id="sem-pendentes-mensagem" class="mensagem-lista" style="display: none;">Você não possui comissões pendentes no momento. Continue o ótimo trabalho!🚀</p>
+                <h2><i class='bx bx-time-five bx-sm'></i> Comissões Prontas para Repasse (Real)</h2>
+                <p class="secao-subtitulo">Valores confirmados de envios já faturados pela DHL.</p>
+                <div id="repasses-reais-container" class="lista-repasses">
+                    <!-- Itens com comissão real serão inseridos aqui -->
+                    <div id="loadingReais" class="loading-spinner" style="display: block;"></div>
+                    <p id="sem-reais-mensagem" class="mensagem-lista" style="display: none;">Nenhuma comissão confirmada para repasse no momento. Continue o ótimo trabalho!🚀</p>
+                    <!--<div id="loadingPendentes" class="loading-spinner" style="display: block;"></div>
+                    <p id="sem-pendentes-mensagem" class="mensagem-lista" style="display: none;">Você não possui comissões pendentes no momento. Continue o ótimo trabalho!🚀</p>-->
                 </div>
                 <div id="total-pendente-container" class="total-container" style="display: none;">
-                    <h3>Total Pendente a Receber: <span id="valor-total-pendente" class="valor-destaque">R$ 0,00</span></h3>
+                    <h3>Total Confirmado a Receber: <span id="valor-total-pendente" class="valor-destaque">R$ 0,00</span></h3>
+                </div>
+            </div>
+
+            <div class="repasse-secao" style="margin-top: 30px;">
+                <h2><i class='bx bx-bullseye bx-sm'></i> Comissões a Confirmar (Estimativa)</h2>
+                <p class="secao-subtitulo">Valores estimados de envios que ainda não foram faturados. Estes valores serão confirmados futuramente.</p>
+                <div id="repasses-estimados-container" class="lista-repasses">
+                    <!-- Itens com comissão estimada serão inseridos aqui -->
+                    <div id="loadingEstimados" class="loading-spinner" style="display: block;"></div>
+                    <p id="sem-estimados-mensagem" class="mensagem-lista" style="display: none;">Nenhum envio aguardando faturamento no momento.</p>
                 </div>
             </div>
 
