@@ -1,0 +1,170 @@
+/* css/minhas-faturas.css */
+
+/* Container da lista de faturas */
+.lista-faturas {
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Espaço entre os cards de fatura */
+}
+
+/* Estilo de cada card de fatura */
+.fatura-item {
+    background-color: var(--white);
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+    padding: 20px 25px;
+    border-left: 5px solid var(--primary-color); /* Verde para indicar "processado" */
+}
+
+/* Cabeçalho do card (Código e Status) */
+.fatura-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--background-color);
+}
+
+.fatura-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+    font-weight: 400;
+    color: var(--primary-color);
+}
+
+.fatura-header .codigo-fatura {
+    font-weight: 600;
+    color: var(--black-blue-light-3);
+}
+
+/* Tags de Status (Paga / Pendente) */
+.status-tag {
+    padding: 5px 15px;
+    border-radius: 2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-paga {
+    background-color: var(--primary-color-light, #e8f5e9);
+    color: var(--primary-color);
+}
+
+.status-pendente {
+    background-color: var(--yellow-light, #fffde7);
+    color: var(--yellow-dark, #f57f17);
+}
+
+/* Detalhes da fatura (Valor e Vencimento) */
+.fatura-detalhes {
+    margin-bottom: 15px;
+}
+
+.fatura-detalhes p {
+    margin: 6px 0;
+    font-size: 0.95rem;
+    color: var(--grey);
+}
+
+.fatura-detalhes p strong {
+    color: var(--black-blue-light-3);
+    min-width: 120px;
+    display: inline-block;
+}
+
+/* Seção das WayBills */
+.fatura-wbs {
+    margin-top: 10px;
+}
+
+.fatura-wbs h4 {
+    margin: 0 0 10px 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--black-blue-light-3);
+}
+
+.wb-lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.wb-tag {
+    background-color: var(--background-color);
+    padding: 4px 10px;
+    border-radius: 0.3rem;
+    font-size: 0.85rem;
+    color: var(--grey);
+    font-family: 'Courier New', Courier, monospace; /* Fonte monoespaçada para códigos */
+}
+
+/* Controles de Paginação */
+.paginacao-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+}
+
+.paginacao-controls button {
+    background-color: var(--white);
+    border: 1px solid var(--border-color);
+    color: var(--primary-color);
+    padding: 8px 15px;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.paginacao-controls button:hover:not(:disabled) {
+    background-color: var(--primary-color-light, #e8f5e9);
+}
+
+.paginacao-controls button.active {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border-color: var(--primary-color);
+}
+
+.paginacao-controls button:disabled {
+    color: var(--grey);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Mensagem de lista vazia */
+.mensagem-lista {
+    text-align: center;
+    padding: 20px;
+    color: var(--grey);
+    font-style: italic;
+    font-size: 1rem;
+}
+
+/* Responsividade */
+@media only screen and (max-width: 768px) {
+    .fatura-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .fatura-item {
+        padding: 15px 20px;
+    }
+
+    .fatura-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .fatura-detalhes p strong {
+        min-width: 100px;
+    }
+}

@@ -304,6 +304,11 @@ app.get('/entregador/envios-em-transito', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'envios-em-transito.html'));
 });
 
+// Define a rota para o entregador visualizar suas faturas
+app.get('/entregador/minhas-faturas', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'minhas-faturas.html'));
+});
+
 module.exports = {
     app: app // Exporta também o app do express
 };

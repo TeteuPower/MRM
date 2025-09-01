@@ -75,7 +75,35 @@
                         <p id="sem-envios-mensagem" class="mensagem-lista" style="display: none;">Não há envios aguardando fatura. Tudo em dia por aqui! ✨</p>
                     </div>
                 </div>
+                <!-- ================================================== -->
+                <!-- =========   NOVA SEÇÃO DE VALORES EM BRL   ========= -->
+                <!-- ================================================== -->
+                <div id="valores-brl-secao" class="fatura-secao" style="margin-top: 30px; display: none;">
+                    <h2><i class='bx bx-dollar-circle bx-sm'></i> Detalhar Valores em Reais (R$)</h2>
+                    <p style="text-align: center; font-size: 0.9rem; color: var(--grey); margin-bottom: 20px;">
+                        Insira o valor exato em Reais para cada WayBill, conforme a fatura.
+                    </p>
+                    
+                    <div id="valores-brl-container">
+                        <!-- Exemplo estático (será gerado dinamicamente pelo JS) -->
+                        <!--
+                        <div class="input-group-brl">
+                            <label for="brl-envio-123">WB1234567890:</label>
+                            <input type="number" step="0.01" id="brl-envio-123" name="valor_brl" data-envio-id="123" placeholder="0.00" required>
+                        </div>
+                        -->
+                    </div>
 
+                    <!-- Verificador de Soma -->
+                    <div id="soma-verificador-container" class="soma-verificador">
+                        <p>Valor Total da Fatura: <strong id="soma-valor-fatura">R$ 0,00</strong></p>
+                        <p>Soma dos Itens: <strong id="soma-valor-itens">R$ 0,00</strong></p>
+                        <p class="status-soma" id="soma-status">Aguardando valores...</p>
+                    </div>
+                </div>
+                <!-- ================================================== -->
+                <!-- ============   FIM DA NOVA SEÇÃO   ============= -->
+                <!-- ================================================== -->
                 <!-- Ação de Envio do Formulário -->
                 <div class="form-actions">
                     <div id="criacao-loading-spinner" class="loading-spinner"></div>
