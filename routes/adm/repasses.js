@@ -31,11 +31,14 @@ router.get('/repasses/pendentes', autenticarEnvio, async (req, res) => {
             SELECT
                 e.id AS envio_id,
                 e.pedido_id AS pedido_original_id,
-                p.caixa_modelo,
+                c.nome AS nome_cliente,
+                e.nota_fiscal,
+                e.wb,
                 e.data_envio,
                 e.frete AS frete_usd -- Renomeado para clareza
             FROM envios e
             JOIN pedidos p ON e.pedido_id = p.id
+            JOIN clientes c ON p.cliente_id = c.id 
             WHERE e.entregador_id = ?
             AND e.repasse_efetuado = FALSE
             ORDER BY e.data_envio DESC;

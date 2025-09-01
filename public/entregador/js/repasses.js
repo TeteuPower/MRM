@@ -58,12 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     div.innerHTML = `
         <div class="repasse-info">
-            <p><strong>Envio ID:</strong> #${item.envio_id}</p>
-            <p><strong>Pedido Ref.:</strong> ${item.caixa_modelo || 'N/A'} (ID: ${item.pedido_original_id || 'N/A'})</p>
+            <p><strong>WB/Nº Nota Fiscal:</strong> WB${item.wb || 'N/A'} / ${item.nota_fiscal || 'N/A'}</p>
+            <p><strong>Pedido Ref.:</strong> ${item.nome_cliente || 'N/A'} (ID: ${item.pedido_original_id || 'N/A'})</p>
             <p><strong>Data do Envio:</strong> ${formatarData(item.data_envio)}</p>
         </div>
         <div class="repasse-valores">
-            <p><strong>Frete:</strong> ${formatarMoedaUSD(freteEmDolar)} / ${formatarMoeda(freteEmReais)}</p>
+            <p><strong>Frete:</strong> US${formatarMoedaUSD(freteEmDolar)} / ${formatarMoeda(freteEmReais)}</p>
             <p class="comissao"><strong>Sua Comissão (15%):</strong> ${formatarMoeda(comissaoEmReais)}</p>
         </div>
     `;
@@ -89,6 +89,7 @@ const carregarRepassesPendentes = async () => {
             throw new Error(`Erro ${response.status}: Falha ao buscar repasses pendentes.`);
         }
         const data = await response.json();
+        console.log('Repasses pendentes carregados com sucesso:', data);
 
         if (data.pendentes && data.pendentes.length > 0) {
             let totalPendenteEmReais = 0;
