@@ -73,7 +73,7 @@ router.get('/', autenticar, (req, res) => {
 // Rota para atualizar um pedido (PUT /api/pedidos/:id)
 router.put('/:id', autenticar, (req, res) => {
     const pedidoId = req.params.id;
-    const { status, dataProducao, produtor, itens} = req.body;
+    const { status, dataProducao, produtor, itens, caixa, peso } = req.body;
 
     // Verifica se o status foi fornecido
     if (!status) {
@@ -81,8 +81,8 @@ router.put('/:id', autenticar, (req, res) => {
     }
 
     // Atualiza o pedido no banco de dados
-    const sql = 'UPDATE pedidos SET status = ?, produtor_id = ?, data_producao = ? WHERE id = ?';
-    db.query(sql, [status, produtor, dataProducao, pedidoId], (err, result) => {
+    const sql = 'UPDATE pedidos SET status = ?, produtor_id = ?, data_producao = ?, caixa_modelo = ?, peso = ? WHERE id = ?';
+    db.query(sql, [status, produtor, dataProducao, caixa, peso, pedidoId], (err, result) => {
         if (err) {
             console.error('Erro ao atualizar pedido:', err);
             res.status(500).json({ error: 'Erro ao atualizar pedido.' });

@@ -13,11 +13,12 @@ const upload = multer({
     limits: { fileSize: 10 * 1024 * 1024 } // Limite de 10MB por arquivo (ajuste se necessário)
 });
 
-// Middleware Multer para os dois campos de arquivo esperados no formulário
+/* Middleware Multer para os dois campos de arquivo esperados no formulário
 const handleUploads = upload.fields([
     { name: 'nota_fiscal', maxCount: 1 },
     { name: 'documentos_envio', maxCount: 1 }
-]);
+]);*/
+const parseForm = multer();
 
 // --- Rotas da API para Envios ---
 
@@ -58,11 +59,11 @@ router.get('/pendentes', autenticarEnvio, async (req, res) => {
     }
 });
 
-// API para obter um revendedor por ID
+// API para obter um entregador por ID
 router.get('/:id', autenticarEnvio, (req, res) => {
-    const revendedorId = req.params.id;
+    const entregadorId = req.params.id;
     const sql = 'SELECT id, nome FROM usuarios WHERE id = ? AND email_verificado = 1 AND entregador = TRUE';
-    dbEntregador.query(sql, [revendedorId], (err, results) => {
+    dbEntregador.query(sql, [entregadorId], (err, results) => {
         if (err) {
             console.error('Erro ao buscar entregador:', err);
             res.status(500).json({ error: 'Erro ao buscar entregador.' });
@@ -95,7 +96,7 @@ router.get('/detalhes/:pedidoId', autenticarEnvio, async (req, res) => {
                 p.caixa_modelo,
                 p.peso,
                 p.nota_fiscal,       -- URL da nota fiscal existente
-                p.documentos_envio,  -- URL do documento de envio existente
+                p.wb,  -- URL do documento de envio existente
                 c.id AS cliente_id,
                 c.nome AS nome_cliente,
                 c.telefone AS telefone_cliente,
@@ -134,8 +135,10 @@ router.get('/detalhes/:pedidoId', autenticarEnvio, async (req, res) => {
  * @desc    Confirma o envio, faz upload de arquivos (NF/Doc), insere na tabela 'envios' e atualiza 'pedidos'
  * @access  Privado (Entregador)
  */
-router.post('/confirmar', autenticarEnvio, handleUploads, uploadArquivosEnvio, async (req, res) => {
+router.post('/confirmar', autenticarEnvio, parseForm.none(), /*handleUploads, uploadArquivosEnvio,*/ async (req, res) => {
     const entregadorId = req.usuario.id; // ID do entregador logado, vindo do middleware autenticarEnvio
+    //const teste = req.body;
+    //console.log('Dados recebidos na confirmação de envio:', teste);
     const {
         pedido_id,
         nome_cliente, // Note: Esses dados do cliente vêm do formulário preenchido pelo entregador
@@ -143,18 +146,24 @@ router.post('/confirmar', autenticarEnvio, handleUploads, uploadArquivosEnvio, a
         email,
         pais,
         endereco,
-        frete
+        frete,
+        continente,
+        nota_fiscal,
+        waybill
     } = req.body;
 
+    const documentos_envio = waybill; // Renomeia para manter consistência com o DB
+
+
     // --- Validação de Dados Essenciais ---
-    if (!pedido_id || !nome_cliente || !telefone || !email || !pais || !endereco || frete === undefined || frete === null) {
-        return res.status(400).json({ error: 'Todos os campos do formulário são obrigatórios (incluindo frete).' });
+    if (!pedido_id || !nome_cliente || !telefone || !email || !pais || !endereco || frete === undefined || frete === null || !continente || !nota_fiscal || !documentos_envio) {
+        return res.status(400).json({ error: 'Todos os campos do formulário são obrigatórios (incluindo frete e continente).' });
     }
     if (isNaN(parseFloat(frete)) || parseFloat(frete) < 0) {
          return res.status(400).json({ error: 'Valor do frete inválido.' });
     }
 
-    // --- URLs dos arquivos ---
+    /* --- URLs dos arquivos ---
     // As URLs vêm do middleware uploadArquivosEnvio, que as anexa em req.firebaseUrls
     // O middleware também deve ter lidado com a lógica de usar URLs existentes se novos arquivos não foram enviados.
     const urlNotaFiscal = req.firebaseUrls?.nota_fiscal;
@@ -164,7 +173,7 @@ router.post('/confirmar', autenticarEnvio, handleUploads, uploadArquivosEnvio, a
     if (!urlNotaFiscal || !urlDocumentoEnvio) {
          console.warn(`Tentativa de confirmar envio do pedido ${pedido_id} sem NF ou Doc. NF: ${urlNotaFiscal}, Doc: ${urlDocumentoEnvio}`);
          return res.status(400).json({ error: 'É necessário fornecer ou já existir uma Nota Fiscal e um Documento de Envio.' });
-    }
+    }*/
 
     // --- Transação no Banco de Dados ---
     dbEntregador.getConnection((err, connection) => {
@@ -183,10 +192,10 @@ router.post('/confirmar', autenticarEnvio, handleUploads, uploadArquivosEnvio, a
             try {
                 // 1. Inserir na tabela 'envios'
                 const sqlInsertEnvio = `
-                    INSERT INTO envios (pedido_id, entregador_id, nome_cliente, frete, pais, endereco, telefone, email, data_envio)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())
+                    INSERT INTO envios (pedido_id, entregador_id, nome_cliente, frete, pais, continente, endereco, telefone, email, data_envio, nota_fiscal, wb)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?, ?)
                 `;
-                const valuesInsertEnvio = [pedido_id, entregadorId, nome_cliente, parseFloat(frete), pais, endereco, telefone, email];
+                const valuesInsertEnvio = [pedido_id, entregadorId, nome_cliente, parseFloat(frete), pais, continente, endereco, telefone, email, nota_fiscal, documentos_envio];
 
                 await new Promise((resolve, reject) => {
                     connection.query(sqlInsertEnvio, valuesInsertEnvio, (err, result) => {
@@ -201,14 +210,15 @@ router.post('/confirmar', autenticarEnvio, handleUploads, uploadArquivosEnvio, a
                 const sqlUpdatePedido = `
                     UPDATE pedidos
                     SET
-                        status = 'Finalizado',
+                        status = 'Enviado, aguardando pagamento',
                         valor_frete = ?,
                         data_finalizacao = NOW(),
                         nota_fiscal = ?,
-                        documentos_envio = ?
+                        wb = ?,
+                        pais = ?
                     WHERE id = ? AND status = 'Pronto, aguardando envio' -- Condição crucial
                 `;
-                const valuesUpdatePedido = [parseFloat(frete), urlNotaFiscal, urlDocumentoEnvio, pedido_id];
+                const valuesUpdatePedido = [parseFloat(frete), nota_fiscal, documentos_envio, pais, pedido_id];
 
                 const updateResult = await new Promise((resolve, reject) => {
                     connection.query(sqlUpdatePedido, valuesUpdatePedido, (err, result) => {

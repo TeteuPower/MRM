@@ -122,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
         valorFreteInput.value = ''; // Limpa o frete, pois deve ser inserido
 
         // Configura seções de upload/download
-        configurarUploadDownload('notaFiscal', detalhes.nota_fiscal);
-        configurarUploadDownload('documentoEnvio', detalhes.documentos_envio);
+        //configurarUploadDownload('notaFiscal', detalhes.nota_fiscal);
+        //configurarUploadDownload('documentoEnvio', detalhes.documentos_envio);
 
         // Limpa mensagens de erro anteriores e reseta botão
         esconderMensagem(envioErrorMessage);
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Validação dos arquivos
+        /* Validação dos arquivos
         const notaFiscalFile = notaFiscalInput.files[0];
         const notaFiscalExistente = notaFiscalDownloadDiv.style.display !== 'none';
         if (!notaFiscalFile && !notaFiscalExistente) {
@@ -225,28 +225,43 @@ document.addEventListener('DOMContentLoaded', () => {
             submitButton.disabled = false;
             submitButton.textContent = 'Confirmar Envio';
             return;
+        }*/
+       // Validação da Nota Fiscal
+        const notaFiscalInput = document.getElementById('nota_fiscal');
+        if (parseInt(notaFiscalInput.value) <= 0) {
+            mostrarMensagem(envioErrorMessage, 'O número da Nota Fiscal deve ser um número positivo.', 'erro');
+            esconderLoading(envioLoadingSpinner);
+            submitButton.disabled = false;
+            submitButton.textContent = 'Confirmar Envio';
+            return;
+        }
+       // Validação do WayBill (o "required" e "pattern" do HTML já ajudam!)
+        const waybillInput = document.getElementById('waybill');
+        if (waybillInput.value.length !== 10 || !/^\d+$/.test(waybillInput.value)) {
+            mostrarMensagem(envioErrorMessage, 'O WayBill deve conter exatamente 10 números.', 'erro');
+            esconderLoading(envioLoadingSpinner);
+            submitButton.disabled = false;
+            submitButton.textContent = 'Confirmar Envio';
+            return;
         }
 
         // Monta o FormData
         const formData = new FormData(formEnvio); // Pega todos os campos do form, incluindo o hidden pedido_id
         //console.log('FormData inicial:', formEnvio);
+        const continenteSelecionado = paisClienteInput.value; // Pega o value (ex: "Asia")
+        const paisSelecionado = paisClienteInput.options[paisClienteInput.selectedIndex].text; // Pega o texto (ex: "Afeganistão")
+        formData.set('continente', continenteSelecionado); // Cria o campo 'continente'
+        formData.set('pais', paisSelecionado);
 
-        // Adiciona os arquivos APENAS se foram selecionados novos arquivos
-        if (notaFiscalFile) {
-            //formData.append('nota_fiscal', notaFiscalFile);
-        }
-        if (documentoEnvioFile) {
-             //formData.append('documentos_envio', documentoEnvioFile);
-        }
         /*console.log('FormData:', formData);
         // Para inspecionar o FormData
         console.log('--- Inspecionando FormData ---');
         for (let [key, value] of formData.entries()) {
             console.log(`${key}:`, value); // value será um File object para arquivos
         }
-        console.log('----------------------------');*/
+        console.log('----------------------------');
         // O backend (middleware firebase-envio-config) precisa lidar com a lógica
-        // de usar a URL existente se o arquivo não estiver no FormData.
+        // de usar a URL existente se o arquivo não estiver no FormData.*/
 
         try {
             const response = await fetch(API_CONFIRMAR, {
