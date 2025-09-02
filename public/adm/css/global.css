@@ -9,7 +9,7 @@ body {
     min-height: 100vh;
     margin: 0;
     flex-direction: column;
-    visibility: hidden; /* Oculta o conteúdo da página por padrão */
+    /*visibility: hidden;  Oculta o conteúdo da página por padrão */
 }
 
 body.visivel {

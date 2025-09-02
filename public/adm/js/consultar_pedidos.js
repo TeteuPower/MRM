@@ -49,6 +49,7 @@ const pedidosPorPagina = 10; // Número de pedidos finalizados por página
 function exibirPedidos() {
     exibirPedidosAguardandoProducao();
     exibirPedidosFinalizadosAguardandoEnvio();
+    exibirPedidosEnviados();
     exibirPedidosFinalizados();
 }
 
@@ -124,6 +125,52 @@ async function finalizarPedido(pedido) {
                 {
                 status: 'Finalizado',
                 dataFinalizacao: new Date().toISOString().slice(0, 19).replace('T', ' '),
+                valorFrete: pedido.valor_frete,
+                lucroVenda: pedido.lucro_venda
+                }
+        )})
+        
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao finalizar pedido.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert(data.message);
+            //salvarPedidosNoLocalStorage();
+            location.reload();
+            return;
+        })
+        .catch(error => {
+            alert('Erro ao finalizar pedido.');
+            console.error(error);
+        });
+        //exibirPedidos();
+        //fecharModalDetalhesPedido();
+    }
+}
+
+async function enviarPedido(pedido) {
+    if (confirm(`Confirma o envio do pedido nº ${pedido.id}?`)) {
+        pedido.status = 'Enviado, aguardando pagamento';
+        pedido.data_envio = new Date().toISOString().slice(0, 19).replace('T', ' '), // Converte para o formato YYYY-MM-DD HH:MM:SS
+        pedido.valor_frete = (pedido.moeda === 'dolar' ? await converterRealParaDolar(parseFloat(document.getElementById('modal-valor-frete').value)) || 0 : parseFloat(document.getElementById('modal-valor-frete').value) || 0);
+        pedido.lucro_venda = pedido.lucro_venda - pedido.valor_frete;
+        //pedido.produtor = document.getElementById('modal-produtor').value;
+        //console.log(pedido)
+
+        // Atualiza o pedido na API
+        fetch(`/api/pedidos-finalizados-aguardando-envio/${pedido.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': localStorage.getItem('token')
+            },
+            body: JSON.stringify(
+                {
+                status: 'Enviado, aguardando pagamento',
+                dataEnvio: new Date().toISOString().slice(0, 19).replace('T', ' '),
                 valorFrete: pedido.valor_frete,
                 lucroVenda: pedido.lucro_venda
                 }
@@ -402,6 +449,51 @@ function exibirPedidosFinalizadosAguardandoEnvio() {
             console.error(error);
         })
     }
+
+function exibirPedidosEnviados() {
+    const listaPedidos = document.getElementById('lista-pedidos-enviados-aguardando-pagamento');
+    listaPedidos.innerHTML = ''; // Limpa a lista
+
+    const termoPesquisa = document.getElementById('pesquisa-pedido').value.toLowerCase();
+
+            // Faz uma requisição GET para a API para obter os pedidos
+            fetch('/api/pedidos-enviados-aguardando-pagamento', {
+                headers: {
+                    'Authorization': localStorage.getItem('token')
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar pedidos.');
+                }
+                return response.json();
+            })
+            .then(pedidos => {
+                // Filtra os pedidos com base no termo de pesquisa
+                const pedidosFiltrados = pedidos.filter(pedido => {
+                    return pedido.status === 'Enviado, aguardando pagamento' &&
+                    (pedido.id.toString().includes(termoPesquisa) || 
+                    pedido.cliente.toLowerCase().includes(termoPesquisa) ||
+                    pedido.vendedor.toLowerCase().includes(termoPesquisa)); // Adiciona pesquisa por vendedor
+                });
+                // Ordena os pedidos por data de criação (mais recentes primeiro)
+                pedidosFiltrados.sort((a, b) => b.dataCriacao - a.dataCriacao);
+                // Itera sobre os pedidos filtrados e adiciona cada um à lista
+                pedidosFiltrados.forEach(pedido => {
+                    //console.log(pedido)
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `Nº ${pedido.id} - ${pedido.cliente} - ${pedido.vendedor} - ${pedido.frete})}`;
+                    listItem.addEventListener('click', () => {
+                        exibirDetalhesPedido(pedido.id);
+                    });
+                    listaPedidos.appendChild(listItem);
+                });
+            })
+            .catch(error => {
+                alert('Erro ao buscar pedidos.');
+                console.error(error);
+            });
+}
 
 function exibirPedidosFinalizados() {
     const listaPedidos = document.getElementById('lista-pedidos-finalizados');

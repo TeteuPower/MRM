@@ -34,6 +34,14 @@
                         <!-- Pedidos finalizados aguardando envio serão adicionados aqui -->
                     </ul>
                 </div>
+
+                <div class="pedidos-enviados-aguardando-pagamento">
+                    <h3>Pedidos Enviados, aguardando pagamento DHL!</h3>
+                    <ul id="lista-pedidos-enviados-aguardando-pagamento">
+                        <!-- Pedidos enviados aguardando pagamento serão adicionados aqui -->
+                    </ul>
+                    <button id="relatorio" class="btn-acao azul">Gerar Relatório de Pedidos</button>
+                </div>
         
                 <div class="pedidos-finalizados">
                     <h3>Pedidos Finalizados</h3>
@@ -70,6 +78,8 @@
                 <p><strong>Status:</strong> <span id="modal-status"></span></p>
                 <p><strong>Produtor responsável:</strong> <span id="modal-produtor-span"></span></p>
                 <p><strong>Cadastrado por:</strong> <span id="modal-solicitado-por"></span></p>
+                <p><strong>Modelo da Caixa:</strong> <span id="modal-modelo-caixa"></span></p>
+                <p><strong>Peso Total:</strong> <span id="modal-peso-total"></span></p>
 
                 <h4>Itens do Pedido:</h4>
                 <table id="modal-tabela-itens">
@@ -91,6 +101,15 @@
                     <div id="inputs-lote">
                         <!-- Inputs para os lotes serão adicionados aqui -->
                     </div>
+                    <h4>Envio:</h4>
+                    <div class="input-group">
+                        <label for="modal-caixa">Modelo da Caixa:</label>
+                        <input type="text" id="modal-caixa">
+                    </div>
+                    <div class="input-group">
+                        <label for="modal-peso">Peso Total:</label>
+                        <input type="text" id="modal-peso">
+                    </div>
                     <div class="input-group">
                         <label for="modal-produtor">Produtor:</label>
                         <select id="modal-produtor">
@@ -107,7 +126,7 @@
                         <label for="modal-valor-frete">Valor do Frete:(Em Reais)</label>
                         <input type="number" id="modal-valor-frete">
                     </div>
-                    <button id="btn-finalizar-pedido" class="btn-acao verde">Finalizar Pedido</button>
+                    <button id="btn-enviar-pedido" class="btn-acao verde">Enviar Pedido</button>
                     <button id="btn-editar-pedido2" class="btn-acao laranja" disabled>Editar Pedido(Não Disponivel)</button>
                     <button id="btn-formatar-texto" class="btn-acao verde">Formatar Texto</button>
                     <button id="btn-cancelar-pedido2" class="btn-acao vermelho">Cancelar Pedido</button>

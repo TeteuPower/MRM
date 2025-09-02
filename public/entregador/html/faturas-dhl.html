@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Fatura DHL - Espírito Do Nativo</title> <!-- Título novo -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- CSS Base -->
+    <link rel="stylesheet" href="../css/estrutura_paginas.css">
+    <!-- CSS Específico da Página -->
+    <link rel="stylesheet" href="../css/faturas-dhl.css"> <!-- Novo CSS para esta página -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <!-- BOTÃO VOLTAR AO TOPO (reutilizado) -->
+    <div class="progress-wrap">
+        <i class='bx bx-up-arrow-alt'></i>
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- END BOTÃO VOLTAR AO TOPO -->
+
+    <!-- Header carregado dinamicamente -->
+    <div id="header-container"></div>
+
+    <!-- CONTEÚDO PRINCIPAL DA PÁGINA DE FATURAS -->
+    <section id="adicionar-fatura-section" class="fullheight-dinamico">
+        <div class="container">
+            <h1 class="section-title">Adicionar Nova Fatura DHL</h1>
+            <p style="text-align: center; margin-bottom: 35px;">Preencha os dados da fatura e selecione os envios correspondentes.</p>
+
+            <!-- Formulário para criar a fatura -->
+            <form id="form-nova-fatura" class="fatura-form-container">
+
+                <!-- Seção de Dados da Fatura -->
+                <div class="fatura-secao">
+                    <h2><i class='bx bx-file-blank bx-sm'></i> Dados da Fatura</h2>
+                    <div class="input-group">
+                        <label for="codigo_fatura">Código da Fatura:</label>
+                        <input type="text" id="codigo_fatura" name="codigo_fatura" placeholder="Ex: GRUR004969766" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="valor_total">Valor Total (BRL$):</label>
+                        <input type="number" step="0.01" id="valor_total" name="valor_total" placeholder="0.00" required>
+                    </div>
+                    <div class="input-group">
+                        <label for="data_vencimento">Data de Vencimento:</label>
+                        <input type="date" id="data_vencimento" name="data_vencimento" required>
+                    </div>
+                </div>
+
+                <!-- Seção de Seleção de Envios -->
+                <div class="fatura-secao" style="margin-top: 30px;">
+                    <h2><i class='bx bx-list-ul bx-sm'></i> Envios Pendentes de Fatura</h2>
+                    <p style="text-align: center; font-size: 0.9rem; color: var(--grey); margin-bottom: 20px;">Selecione abaixo todos os WayBills (WB) que constam nesta fatura.</p>
+                    
+                    <div id="envios-pendentes-container" class="lista-envios-selecao">
+                        <!-- Exemplo estático de item (será gerado dinamicamente) -->
+                        <!--
+                        <div class="envio-item-selecao">
+                            <input type="checkbox" id="envio-123" name="envios_selecionados" value="123">
+                            <label for="envio-123">WB1234567890</label>
+                        </div>
+                        -->
+                        <div id="loadingEnvios" class="loading-spinner" style="display: block;"></div>
+                        <p id="sem-envios-mensagem" class="mensagem-lista" style="display: none;">Não há envios aguardando fatura. Tudo em dia por aqui! ✨</p>
+                    </div>
+                </div>
+                <!-- ================================================== -->
+                <!-- =========   NOVA SEÇÃO DE VALORES EM BRL   ========= -->
+                <!-- ================================================== -->
+                <div id="valores-brl-secao" class="fatura-secao" style="margin-top: 30px; display: none;">
+                    <h2><i class='bx bx-dollar-circle bx-sm'></i> Detalhar Valores em Reais (R$)</h2>
+                    <p style="text-align: center; font-size: 0.9rem; color: var(--grey); margin-bottom: 20px;">
+                        Insira o valor exato em Reais para cada WayBill, conforme a fatura.
+                    </p>
+                    
+                    <div id="valores-brl-container">
+                        <!-- Exemplo estático (será gerado dinamicamente pelo JS) -->
+                        <!--
+                        <div class="input-group-brl">
+                            <label for="brl-envio-123">WB1234567890:</label>
+                            <input type="number" step="0.01" id="brl-envio-123" name="valor_brl" data-envio-id="123" placeholder="0.00" required>
+                        </div>
+                        -->
+                    </div>
+
+                    <!-- Verificador de Soma -->
+                    <div id="soma-verificador-container" class="soma-verificador">
+                        <p>Valor Total da Fatura: <strong id="soma-valor-fatura">R$ 0,00</strong></p>
+                        <p>Soma dos Itens: <strong id="soma-valor-itens">R$ 0,00</strong></p>
+                        <p class="status-soma" id="soma-status">Aguardando valores...</p>
+                    </div>
+                </div>
+                <!-- ================================================== -->
+                <!-- ============   FIM DA NOVA SEÇÃO   ============= -->
+                <!-- ================================================== -->
+                <!-- Ação de Envio do Formulário -->
+                <div class="form-actions">
+                    <div id="criacao-loading-spinner" class="loading-spinner"></div>
+                    <p id="criacao-error-message" style="color: red; text-align: center; display: none; margin-bottom: 15px;"></p>
+                    <button type="submit" class="btn-enviar btn-criar-fatura">Criar Fatura</button>
+                </div>
+
+            </form>
+        </div>
+    </section>
+    <!-- END CONTEÚDO PRINCIPAL -->
+
+    <!-- SWITCH DARK/ LIGHT MODE (reutilizado) -->
+    <div class="switch">
+        <div class="circle">
+            <i class='bx bx-moon'></i>
+        </div>
+    </div>
+    <!-- END SWITCH DARK/ LIGHT MODE -->
+
+    <!-- FOOTER (reutilizado) -->
+    <footer class="footer">
+        <div class="containerFooter">
+             <div class="rowFooter" style="text-align: center;">
+                <div class="col-12">
+                    <p style="font-size: 13px;">
+                        Copyright © <script>document.write(new Date().getFullYear());</script> | Todos os direitos reservados |
+                        Desenvolvido pela <a href="https://tpowert.com.br/" target="_blank" class="link"> <span style="color: #563D7C;">TPowerTech</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- END FOOTER -->
+
+    <!-- Scripts Base -->
+    <script src="../js/estrutura_paginas.js"></script>
+    <!-- Script Específico da Página -->
+    <script type="module" src="../js/faturas-dhl.js"></script> <!-- Novo JS para esta página -->
+
+</body>
+</html>

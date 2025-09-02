@@ -202,6 +202,8 @@ function exibirDetalhesPedido(id) {
     document.getElementById('modal-saldoVenda').innerHTML = pedido.saldo_venda === "0.00" ? '<span class="span-verde">Pago</span>' : `<span class="span-vermelho">${pedido.moeda === 'real' ? 'R$' : 'US$' } ${parseFloat(pedido.saldo_venda).toFixed(2)}</span>`;
     document.getElementById('modal-solicitado-por').textContent = pedido.administrador;
     document.getElementById('modal-produtor-span').textContent = `${pedido.produtor === undefined ? 'Ainda não produzido' : pedido.produtor}`;
+    document.getElementById('modal-modelo-caixa').textContent = pedido.caixa_modelo=== null ? 'Não informado' : pedido.caixa_modelo;
+    document.getElementById('modal-peso-total').textContent = pedido.peso === null ? 'Não informado' : `${pedido.peso}`;
 
     // Calcula a quantidade total de rapé no pedido
     let totalKg = 0;
@@ -267,6 +269,14 @@ function exibirDetalhesPedido(id) {
                 alert('Por favor, preencha todos os lotes!');
                 return;
             }
+
+            // Verifica se o modelo da caixa e o peso do pedido foram preenchidos
+            const caixa = document.getElementById('modal-caixa').value;
+            const peso = document.getElementById('modal-peso').value;
+            if (caixa === '' || peso === '') {
+                alert('Por favor, preencha o modelo da caixa e o peso do pedido!');
+                return;
+            }
             if (confirm(`Confirma a atualização do status do pedido nº ${pedido.id} para "Pronto, aguardando envio"?`)) {
                 // Atualiza o pedido na API
                 fetch(`/api/pedidos-aguardando-producao/${pedido.id}`, {
@@ -279,6 +289,8 @@ function exibirDetalhesPedido(id) {
                         status: 'Pronto, aguardando envio',
                         dataProducao: new Date().toISOString().slice(0, 19).replace('T', ' '),
                         produtor: produtor,
+                        caixa: caixa,
+                        peso: peso,
                         itens: pedido.itens.map(item => {
                             if (item.produto_id === 1) {
                                 return {
@@ -333,7 +345,7 @@ function exibirDetalhesPedido(id) {
     const areaFrete = document.getElementById('area-frete');
     const areaFinalizado = document.getElementById('area-finalizado');
     const areaNotaFiscal = document.getElementById('area-nota-fiscal');
-    const btnFinalizarPedido = document.getElementById('btn-finalizar-pedido');
+    const btnEnviarPedido = document.getElementById('btn-enviar-pedido');
     const btnAdicionarNotaFiscal = document.getElementById('btn-adicionar-nota-fiscal');
     const btnConsultarNotaFiscal = document.getElementById('btn-consultar-nota-fiscal');
 
@@ -341,8 +353,8 @@ function exibirDetalhesPedido(id) {
         areaFinalizado.style.display = 'none';
         areaFrete.style.display = 'block';
         areaNotaFiscal.style.display = 'block';
-        btnFinalizarPedido.onclick = () => {
-            finalizarPedido(pedido);
+        btnEnviarPedido.onclick = () => {
+            enviarPedido(pedido);
         };
 
         // Se já tiver nota fiscal, exibe o botão "Consultar" e oculta o botão "Adicionar"
@@ -365,7 +377,7 @@ function exibirDetalhesPedido(id) {
         areaFrete.style.display = 'none';
         areaNotaFiscal.style.display = 'none';
     }
-    if (pedido.status === 'Finalizado') {
+    if (pedido.status === 'Finalizado' || pedido.status === 'Enviado, aguardando pagamento') {
         areaFinalizado.style.display = 'block';
         //areaNotaFiscal.style.display = 'block';
         /*btnFinalizarPedido.onclick = () => {

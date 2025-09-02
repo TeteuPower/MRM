@@ -23,6 +23,7 @@
 
 .pedidos-aguardando-producao, 
 .pedidos-finalizados-aguardando-envio,
+.pedidos-enviados-aguardando-pagamento,
 .pedidos-finalizados {
     flex: 1 1 300px; /* Cada div ocupa pelo menos 300px e pode crescer */
     background-color: #333;
@@ -33,12 +34,14 @@
 
 .pedidos-aguardando-producao h3, 
 .pedidos-finalizados-aguardando-envio h3,
+.pedidos-enviados-aguardando-pagamento h3,
 .pedidos-finalizados h3 {
     margin-bottom: 15px;
 }
 
 #lista-pedidos-aguardando-producao,
 #lista-pedidos-finalizados-aguardando-envio,
+#lista-pedidos-enviados-aguardando-pagamento,
 #lista-pedidos-finalizados {
     list-style: none;
     padding: 0;
@@ -46,6 +49,7 @@
 
 #lista-pedidos-aguardando-producao li,
 #lista-pedidos-finalizados-aguardando-envio li,
+#lista-pedidos-enviados-aguardando-pagamento li,
 #lista-pedidos-finalizados li {
     background-color: #222;
     padding: 10px;
@@ -57,6 +61,7 @@
 
 #lista-pedidos-aguardando-producao li:hover,
 #lista-pedidos-finalizados-aguardando-envio li:hover,
+#lista-pedidos-enviados-aguardando-pagamento li:hover,
 #lista-pedidos-finalizados li:hover {
     background-color: #444;
 }

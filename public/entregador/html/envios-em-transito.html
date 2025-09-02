@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Envios em Trânsito - Espírito Do Nativo</title> <!-- Título novo -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- CSS Base -->
+    <link rel="stylesheet" href="../css/estrutura_paginas.css">
+    <!-- CSS Específico da Página -->
+    <link rel="stylesheet" href="../css/envios-em-transito.css"> <!-- Novo CSS -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <!-- BOTÃO VOLTAR AO TOPO (reutilizado) -->
+    <div class="progress-wrap">
+        <i class='bx bx-up-arrow-alt'></i>
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- END BOTÃO VOLTAR AO TOPO -->
+
+    <!-- Header carregado dinamicamente -->
+    <div id="header-container"></div>
+
+    <!-- CONTEÚDO PRINCIPAL DA PÁGINA -->
+    <section id="envios-em-transito-section" class="fullheight-dinamico">
+        <div class="container">
+            <h1 class="section-title">Envios em Trânsito</h1>
+            <p style="text-align: center; margin-bottom: 35px;">Acompanhe os envios que ainda não chegaram ao destino e gerencie o contato com os clientes.</p>
+
+            <div id="envios-em-transito-container" class="lista-envios">
+                <!-- Exemplo estático de como um item de envio vai parecer (será gerado dinamicamente) -->
+                <!--
+                <div class="envio-item">
+                    <div class="envio-header">
+                        <h3>WB: <span class="wb-valor">WB1234567890</span></h3>
+                        <span class="dias-na-estrada">
+                            <i class='bx bx-time-five'></i> 12 dias na estrada
+                        </span>
+                    </div>
+                    <div class="envio-detalhes">
+                        <p><strong>Nota Fiscal:</strong> 1146</p>
+                        <p><strong>Data do Envio:</strong> 15/03/2024</p>
+                        <p><strong>País de Destino:</strong> Portugal</p>
+                    </div>
+                    <div class="cliente-contato">
+                        <h4>Contato do Cliente</h4>
+                        <p><i class='bx bxs-user'></i> Maria Silva</p>
+                        <p><i class='bx bxs-phone'></i> (11) 99999-8888</p>
+                        <p><i class='bx bxs-envelope'></i> maria.silva@email.com</p>
+                    </div>
+                </div>
+                -->
+                <div id="loadingEnvios" class="loading-spinner" style="display: block;"></div>
+                <p id="sem-envios-mensagem" class="mensagem-lista" style="display: none;">Nenhum envio em trânsito no momento. Ótimo sinal! ✅</p>
+            </div>
+        </div>
+    </section>
+    <!-- END CONTEÚDO PRINCIPAL -->
+
+    <!-- SWITCH DARK/ LIGHT MODE (reutilizado) -->
+    <div class="switch">
+        <div class="circle">
+            <i class='bx bx-moon'></i>
+        </div>
+    </div>
+    <!-- END SWITCH DARK/ LIGHT MODE -->
+
+    <!-- FOOTER (reutilizado) -->
+    <footer class="footer">
+        <div class="containerFooter">
+             <div class="rowFooter" style="text-align: center;">
+                <div class="col-12">
+                    <p style="font-size: 13px;">
+                        Copyright © <script>document.write(new Date().getFullYear());</script> | Todos os direitos reservados |
+                        Desenvolvido pela <a href="https://tpowert.com.br/" target="_blank" class="link"> <span style="color: #563D7C;">TPowerTech</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- END FOOTER -->
+
+    <!-- Scripts Base -->
+    <script src="../js/estrutura_paginas.js"></script>
+    <!-- Script Específico da Página -->
+    <script type="module" src="../js/envios-em-transito.js"></script> <!-- Novo JS -->
+
+</body>
+</html>

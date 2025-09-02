@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Faturas - Espírito Do Nativo</title>
+     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- CSS Base -->
+    <link rel="stylesheet" href="../css/estrutura_paginas.css">
+    <!-- CSS Específico da Página -->
+    <link rel="stylesheet" href="../css/minhas-faturas.css"> <!-- Novo CSS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+<body>
+    <!-- BOTÃO VOLTAR AO TOPO (reutilizado) -->
+    <div class="progress-wrap">
+        <i class='bx bx-up-arrow-alt'></i>
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- END BOTÃO VOLTAR AO TOPO -->
+
+    <!-- Header carregado dinamicamente -->
+    <div id="header-container"></div>
+
+    <section id="minhas-faturas-section" class="fullheight-dinamico">
+        <div class="container">
+            <h1 class="section-title">Minhas Faturas DHL</h1>
+            <p style="text-align: center; margin-bottom: 35px;">Consulte o histórico de todas as faturas geradas para os seus envios.</p>
+
+            <div id="faturas-container" class="lista-faturas">
+                <!-- Exemplo estático de item de fatura -->
+                <!--
+                <div class="fatura-item">
+                    <div class="fatura-header">
+                        <h3>Fatura: <span class="codigo-fatura">GRUR004969766</span></h3>
+                        <span class="status-paga">Paga</span>
+                    </div>
+                    <div class="fatura-detalhes">
+                        <p><strong>Valor Total:</strong> $1,250.50</p>
+                        <p><strong>Vencimento:</strong> 25/04/2024</p>
+                    </div>
+                    <div class="fatura-wbs">
+                        <h4>WayBills Incluídas:</h4>
+                        <div class="wb-lista">
+                            <span class="wb-tag">WB1234567890</span>
+                            <span class="wb-tag">WB0987654321</span>
+                        </div>
+                    </div>
+                </div>
+                -->
+                <div id="loadingFaturas" class="loading-spinner" style="display: block;"></div>
+                <p id="sem-faturas-mensagem" class="mensagem-lista" style="display: none;">Nenhuma fatura encontrada no seu histórico. 📂</p>
+            </div>
+
+            <!-- Controles de Paginação -->
+            <div id="paginacao-container" class="paginacao-controls">
+                <!-- Os botões serão gerados pelo JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER (reutilizado) -->
+    <footer class="footer">
+        <div class="containerFooter">
+             <div class="rowFooter" style="text-align: center;">
+                <div class="col-12">
+                    <p style="font-size: 13px;">
+                        Copyright © <script>document.write(new Date().getFullYear());</script> | Todos os direitos reservados |
+                        Desenvolvido pela <a href="https://tpowert.com.br/" target="_blank" class="link"> <span style="color: #563D7C;">TPowerTech</span></a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- END FOOTER -->
+    <script src="../js/estrutura_paginas.js"></script>
+    <script type="module" src="../js/minhas-faturas.js"></script> <!-- Novo JS -->
+</body>
+</html>

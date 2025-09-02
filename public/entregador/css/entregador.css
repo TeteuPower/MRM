@@ -218,3 +218,25 @@
     font-size: 1.1rem;
     font-style: italic;
 }
+
+/* Estilo para o input com prefixo "WB" */
+.input-prefix-group {
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--border-color); /* Adapte a cor da borda */
+    border-radius: 5px;
+    background-color: var(--bg-color); /* Adapte a cor de fundo */
+}
+
+.input-prefix-group span {
+    padding: 0 10px;
+    color: var(--text-color-secondary); /* Cor do texto do prefixo */
+    background-color: var(--bg-color-secondary); /* Fundo do prefixo */
+    border-right: 1px solid var(--border-color);
+}
+
+.input-prefix-group input {
+    border: none; /* Remove a borda do input interno */
+    flex-grow: 1; /* Faz o input ocupar o espaço restante */
+    background-color: transparent;
+}

@@ -31,11 +31,16 @@ router.get('/repasses/pendentes', autenticarEnvio, async (req, res) => {
             SELECT
                 e.id AS envio_id,
                 e.pedido_id AS pedido_original_id,
-                p.caixa_modelo,
+                c.nome AS nome_cliente,
+                e.nota_fiscal,
+                e.wb,
                 e.data_envio,
-                e.frete AS frete_usd -- Renomeado para clareza
+                e.frete AS frete_usd, -- Renomeado para clareza
+                e.fatura_gerada,
+                e.frete_final_brl
             FROM envios e
             JOIN pedidos p ON e.pedido_id = p.id
+            JOIN clientes c ON p.cliente_id = c.id 
             WHERE e.entregador_id = ?
             AND e.repasse_efetuado = FALSE
             ORDER BY e.data_envio DESC;
@@ -49,15 +54,29 @@ router.get('/repasses/pendentes', autenticarEnvio, async (req, res) => {
 
             // 3. Processar os resultados: converter frete para BRL e calcular comissão
             const pendentesProcessados = results.map(item => {
-                const freteUSD = parseFloat(item.frete_usd);
-                const freteBRL = freteUSD * cotacaoDolar;
-                const comissaoBRL = freteBRL * 0.15;
+                let freteBRL;
+                let comissaoBRL;
+                let statusComissao; // Para o front saber o que está mostrando
+
+                // SE a fatura foi gerada E temos o valor final em BRL...
+                if (item.fatura_gerada && item.frete_final_brl) {
+                    freteBRL = parseFloat(item.frete_final_brl);
+                    comissaoBRL = freteBRL * 0.15; // Comissão sobre o valor REAL
+                    statusComissao = 'Real';
+                }
+                // SENÃO, usamos a estimativa como antes...
+                else {
+                    const freteUSD = parseFloat(item.frete_usd);
+                    freteBRL = freteUSD * cotacaoDolar;
+                    comissaoBRL = freteBRL * 0.15; // Comissão sobre o valor ESTIMADO
+                    statusComissao = 'Estimada';
+                }
 
                 return {
-                    ...item, // Mantém os outros campos do item
-                    frete_usd: freteUSD, // Frete original em USD
-                    frete_brl: freteBRL, // Frete convertido para BRL
-                    comissao_pendente_brl: comissaoBRL // Comissão calculada em BRL
+                    ...item,
+                    frete_brl: freteBRL,
+                    comissao_pendente_brl: comissaoBRL,
+                    status_comissao: statusComissao // <<-- NOVO!
                 };
             });
 

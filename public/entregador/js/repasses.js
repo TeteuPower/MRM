@@ -7,6 +7,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const semPendentesMensagemEl = document.getElementById('sem-pendentes-mensagem');
     const totalPendenteContainerEl = document.getElementById('total-pendente-container');
     const valorTotalPendenteEl = document.getElementById('valor-total-pendente');
+    const reaisContainer = document.getElementById('repasses-reais-container');
+    const estimadosContainer = document.getElementById('repasses-estimados-container');
+    const loadingReaisSpinner = document.getElementById('loadingReais');
+    const loadingEstimadosSpinner = document.getElementById('loadingEstimados');
+    const semReaisMensagemEl = document.getElementById('sem-reais-mensagem');
+    const semEstimadosMensagemEl = document.getElementById('sem-estimados-mensagem');
 
     // Elementos do DOM - Seção Histórico
     const historicoContainer = document.getElementById('historico-repasses-container');
@@ -51,62 +57,81 @@ document.addEventListener('DOMContentLoaded', () => {
     const div = document.createElement('div');
     div.classList.add('repasse-item', 'pendente');
 
-    // Agora 'comissao_pendente_brl' e 'frete_brl' vêm diretamente do backend
     const comissaoEmReais = item.comissao_pendente_brl;
     const freteEmReais = item.frete_brl;
-    const freteEmDolar = item.frete_usd; // Se quiser exibir o valor em USD também
+    const freteEmDolar = item.frete_usd;
+
+    // Lógica para o status visual
+    const statusTag = item.status_comissao === 'Real'
+        ? '<span class="status-tag real">Real</span>'
+        : '<span class="status-tag estimada">Estimada</span>';
 
     div.innerHTML = `
         <div class="repasse-info">
-            <p><strong>Envio ID:</strong> #${item.envio_id}</p>
-            <p><strong>Pedido Ref.:</strong> ${item.caixa_modelo || 'N/A'} (ID: ${item.pedido_original_id || 'N/A'})</p>
+            <p><strong>WB/Nº Nota Fiscal:</strong> WB${item.wb || 'N/A'} / ${item.nota_fiscal || 'N/A'}</p>
+            <p><strong>Pedido Ref.:</strong> ${item.nome_cliente || 'N/A'} (ID: ${item.pedido_original_id || 'N/A'})</p>
             <p><strong>Data do Envio:</strong> ${formatarData(item.data_envio)}</p>
         </div>
         <div class="repasse-valores">
-            <p><strong>Frete:</strong> ${formatarMoedaUSD(freteEmDolar)} / ${formatarMoeda(freteEmReais)}</p>
-            <p class="comissao"><strong>Sua Comissão (15%):</strong> ${formatarMoeda(comissaoEmReais)}</p>
+            <p><strong>Frete:</strong> US${formatarMoedaUSD(freteEmDolar)} / ${formatarMoeda(freteEmReais)}</p>
+            <p class="comissao"><strong>Sua Comissão (15%):</strong> ${formatarMoeda(comissaoEmReais)} ${statusTag}</p>
         </div>
     `;
     return div;
 };
 
 const carregarRepassesPendentes = async () => {
-    mostrarLoading(loadingPendentesSpinner);
-    esconderMensagem(semPendentesMensagemEl);
-    pendentesContainer.innerHTML = '';
+    mostrarLoading(loadingReaisSpinner);
+    mostrarLoading(loadingEstimadosSpinner);
+    esconderMensagem(semReaisMensagemEl);
+    esconderMensagem(semEstimadosMensagemEl);
+    reaisContainer.innerHTML = '';
+    estimadosContainer.innerHTML = '';
     totalPendenteContainerEl.style.display = 'none';
 
     try {
-        const response = await fetch(API_REPASSES_PENDENTES,
-            {
-                method: 'GET',
-                headers: {
-                    'Authorization': localStorage.getItem('tokenEntregador')
-                }
-            }
-        );
-        if (!response.ok) {
-            throw new Error(`Erro ${response.status}: Falha ao buscar repasses pendentes.`);
-        }
+        const response = await fetch(API_REPASSES_PENDENTES, {
+            method: 'GET',
+            headers: { 'Authorization': localStorage.getItem('tokenEntregador') }
+        });
+        if (!response.ok) throw new Error(`Erro ${response.status}`);
+        
         const data = await response.json();
+        const pendentes = data.pendentes || [];
 
-        if (data.pendentes && data.pendentes.length > 0) {
+        // Separa os itens em duas listas
+        const repassesReais = pendentes.filter(item => item.status_comissao === 'Real');
+        const repassesEstimados = pendentes.filter(item => item.status_comissao === 'Estimada');
+
+        // Processa a lista de comissões REAIS
+        if (repassesReais.length > 0) {
             let totalPendenteEmReais = 0;
-            data.pendentes.forEach(item => {
-                pendentesContainer.appendChild(criarHtmlItemPendente(item));
-                // Soma a comissão que já veio calculada em BRL do backend
+            repassesReais.forEach(item => {
+                reaisContainer.appendChild(criarHtmlItemPendente(item));
                 totalPendenteEmReais += parseFloat(item.comissao_pendente_brl);
             });
             valorTotalPendenteEl.textContent = formatarMoeda(totalPendenteEmReais);
             totalPendenteContainerEl.style.display = 'block';
         } else {
-            mostrarMensagem(semPendentesMensagemEl, 'Você não possui comissões pendentes no momento. Continue o ótimo trabalho! 🚀');
+            mostrarMensagem(semReaisMensagemEl, 'Nenhuma comissão confirmada para repasse no momento.');
         }
+
+        // Processa a lista de comissões ESTIMADAS
+        if (repassesEstimados.length > 0) {
+            repassesEstimados.forEach(item => {
+                estimadosContainer.appendChild(criarHtmlItemPendente(item));
+            });
+        } else {
+            mostrarMensagem(semEstimadosMensagemEl, 'Nenhum envio aguardando faturamento no momento.');
+        }
+
     } catch (error) {
         console.error("Erro ao carregar repasses pendentes:", error);
-        mostrarMensagem(semPendentesMensagemEl, `Erro ao carregar dados: ${error.message}`);
+        mostrarMensagem(semReaisMensagemEl, `Erro ao carregar dados.`);
+        mostrarMensagem(semEstimadosMensagemEl, `Erro ao carregar dados.`);
     } finally {
-        esconderLoading(loadingPendentesSpinner);
+        esconderLoading(loadingReaisSpinner);
+        esconderLoading(loadingEstimadosSpinner);
     }
 };
 

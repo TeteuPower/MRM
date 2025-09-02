@@ -294,7 +294,25 @@ app.get('/entregador/repasses', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'meus_repasses.html'));
 })
 
+// Define a rota para o entregador gerar faturas da DHL
+app.get('/entregador/faturas-dhl', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'faturas-dhl.html'));
+});
 
+// Define a rota para o entregador visualizar envios em trânsito
+app.get('/entregador/envios-em-transito', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'envios-em-transito.html'));
+});
+
+// Define a rota para o entregador visualizar suas faturas
+app.get('/entregador/minhas-faturas', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'entregador', 'html', 'minhas-faturas.html'));
+});
+
+// Rota administrativa para gerenciar pagamentos ao entregador
+app.get('/adm/gestao-repasses', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'adm', 'html', 'gestao-repasses.html'));
+});
 
 module.exports = {
     app: app // Exporta também o app do express
@@ -360,6 +378,12 @@ app.use('/api/cupons', autenticar, require('./routes/adm/cupons'));
 app.use('/api/envios', autenticarEnvio, require('./routes/adm/envios'));
 // Rota para manipular os repasses dos entregadores
 app.use('/api/entregador', autenticarEnvio, require('./routes/adm/repasses'));
+// Rota para manipular pedidos enviados porém aguardando pagamento
+app.use('/api/pedidos-enviados-aguardando-pagamento', autenticar, require('./routes/adm/pedidos-enviados-aguardando-pagamento'));
+// Rota para manipular as faturas da DHL
+app.use('/api/dhl-faturas', autenticarEnvio, require('./routes/adm/dhl_faturas'));
+// Rota para manipular os pagamentos ao entregador
+app.use('/api/admin/repasses', autenticar, require('./routes/adm/gestao_repasses'));
 
 
 // Rota para login do administrador (gera o token)

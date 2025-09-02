@@ -239,3 +239,29 @@
         font-size: 1.1rem;
     }
 }
+
+.secao-subtitulo {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--grey);
+    margin: -20px 0 25px 0;
+}
+
+.status-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 1rem;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.status-tag.real {
+    background-color: #e8f5e9; /* Verde claro */
+    color: #2e7d32; /* Verde escuro */
+}
+
+.status-tag.estimada {
+    background-color: #fffde7; /* Amarelo claro */
+    color: #f57f17; /* Amarelo escuro */
+}
