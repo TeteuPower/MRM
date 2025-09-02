@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Repasses - Admin</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+    <!-- CSS Base -->
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/estoque.css">
+    <link rel="stylesheet" href="../css/estrutura_paginas.css">
+    <!-- CSS Específico da Página -->
+    <link rel="stylesheet" href="../css/gestao-repasses.css"> <!-- Novo CSS -->
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+</head>
+
+<body>
+    <!-- BOTÃO VOLTAR AO TOPO (reutilizado) -->
+    <div class="progress-wrap">
+        <i class='bx bx-up-arrow-alt'></i>
+        <svg class="progress-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- END BOTÃO VOLTAR AO TOPO -->
+
+    <!-- Header carregado dinamicamente (versão admin) -->
+    <div id="header-container-admin"></div>
+    <div id="nome-administrador" class="usuario-logado"></div>
+    <div id="cabecalho"></div>
+
+    <!-- CONTEÚDO PRINCIPAL DA PÁGINA -->
+    <section id="gestao-repasses-section" class="fullheight-dinamico">
+        <div class="container">
+            <h1 class="section-title">Gestão de Repasses de Comissão</h1>
+            <p style="text-align: center; margin-bottom: 35px;">Selecione as comissões confirmadas para criar um novo lote de pagamento.</p>
+
+            <!-- Seção de Comissões Prontas para Pagamento -->
+            <div class="repasse-secao">
+                <h2><i class='bx bx-check-circle bx-sm'></i> Comissões Prontas para Pagamento (Real)</h2>
+                <div id="repasses-prontos-container" class="lista-repasses-admin">
+                    <!-- Cabeçalho da Tabela -->
+                    <div class="repasse-item-admin header">
+                        <div class="col-check"></div>
+                        <div class="col-wb">WayBill</div>
+                        <div class="col-cliente">Cliente</div>
+                        <div class="col-comissao">Valor da Comissão</div>
+                    </div>
+                    <!-- Itens serão inseridos aqui pelo JS -->
+                    <div id="loading-prontos" class="loading-spinner"></div>
+                    <p id="sem-repasses-prontos" class="mensagem-lista" style="display: none;">Nenhuma comissão pronta para pagamento no momento.</p>
+                </div>
+                <div id="acoes-lote-container" class="acoes-lote" style="display: none;">
+                    <div class="total-selecionado">
+                        Total Selecionado: <span id="valor-total-selecionado" class="valor-destaque">R$ 0,00</span>
+                    </div>
+                    <button id="btn-criar-lote" class="btn-principal" disabled>Criar Lote de Repasse</button>
+                </div>
+            </div>
+
+            <!-- Seção de Comissões a Confirmar (Estimativa) -->
+            <div class="repasse-secao" style="margin-top: 40px;">
+                <h2><i class='bx bx-bullseye bx-sm'></i> Comissões a Confirmar (Estimativa)</h2>
+                <div id="repasses-estimados-container" class="lista-repasses-admin">
+                    <!-- Cabeçalho da Tabela -->
+                    <div class="repasse-item-admin header">
+                        <div class="col-wb">WayBill</div>
+                        <div class="col-cliente">Cliente</div>
+                        <div class="col-comissao">Comissão Estimada</div>
+                    </div>
+                    <!-- Itens serão inseridos aqui pelo JS -->
+                    <div id="loading-estimados" class="loading-spinner"></div>
+                    <p id="sem-repasses-estimados" class="mensagem-lista" style="display: none;">Nenhum envio aguardando faturamento.</p>
+                </div>
+                <div class="total-container">
+                    <h3>Total Estimado a Pagar Futuramente: <span id="valor-total-estimado" class="valor-destaque">R$ 0,00</span></h3>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- END CONTEÚDO PRINCIPAL -->
+
+    <!-- Modal para Criar Lote de Repasse (escondido por padrão) -->
+    <div id="modal-criar-lote" class="modal-admin-overlay" style="display: none;">
+        <div class="modal-admin-content">
+            <span class="close-modal" id="close-lote-modal">&times;</span>
+            <h2>Registrar Novo Lote de Repasse</h2>
+            <form id="form-lote-repasse">
+                <div id="resumo-lote" class="resumo-lote-modal">
+                    <!-- Ex: "Você está pagando 5 comissões, totalizando R$ 250,75." -->
+                </div>
+                <div class="input-group">
+                    <label for="metodo_pagamento">Método de Pagamento:</label>
+                    <select id="metodo_pagamento" name="metodo_pagamento" required>
+                        <option value="" disabled selected>Selecione...</option>
+                        <option value="Pix">Pix</option>
+                        <option value="Transferência Bancária">Transferência Bancária</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="referencia_pagamento">Referência do Pagamento (Gerado Automaticamente)</label>
+                    <textarea id="referencia_pagamento" name="referencia_pagamento" rows="3" readonly required></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="observacao_lote">Observações (Opcional):</label>
+                    <textarea id="observacao_lote" name="observacao_lote" rows="2" placeholder="Ex: Pagamento referente à primeira quinzena de Abril."></textarea>
+                </div>
+                <div class="form-actions-modal">
+                    <div id="lote-loading-spinner" class="loading-spinner"></div>
+                    <p id="lote-error-message" style="color: red; text-align: center; display: none;"></p>
+                    <button type="submit" class="btn-principal btn-confirmar-lote">Confirmar e Registrar Pagamento</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- SWITCH DARK/ LIGHT MODE (reutilizado) -->
+    <div class="switch">
+        <!-- ... (código do switch) ... -->
+    </div>
+
+    <!-- FOOTER (reutilizado) -->
+    <footer class="footer">
+        <!-- ... (código do footer) ... -->
+    </footer>
+
+    <!-- Scripts Base -->
+    <script src="../js/estrutura_paginas.js"></script>
+    <script src="../js/funcoes.js"></script>
+
+    <!-- Script Específico da Página -->
+    <script type="module" src="../js/gestao-repasses.js"></script> <!-- Novo JS -->
+
+</body>
+</html>

@@ -1,0 +1,212 @@
+/* css/gestao-repasses.css */
+
+/* Estilo geral para as seções da página */
+.repasse-secao {
+    background-color: var(--white);
+    padding: 25px 30px;
+    border-radius: 1rem;
+    box-shadow: rgba(0, 0, 0, 0.08) 0px 4px 12px;
+}
+
+.repasse-secao h2 {
+    color: var(--primary-color);
+    font-size: 1.8rem;
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--background-color);
+    display: flex;
+    align-items: center;
+}
+
+.repasse-secao h2 i {
+    margin-right: 10px;
+}
+
+/* Estrutura da lista/tabela de repasses */
+.lista-repasses-admin {
+    display: flex;
+    flex-direction: column;
+}
+
+.repasse-item-admin {
+    display: grid;
+    grid-template-columns: 50px 1fr 1fr 1fr; /* Colunas: Checkbox, WB, Cliente, Comissão */
+    gap: 15px;
+    align-items: center;
+    padding: 15px 10px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+.repasse-item-admin:last-child {
+    border-bottom: none;
+}
+
+.repasse-item-admin:not(.header):hover {
+    background-color: #f9f9f9;
+}
+
+/* Estilo do cabeçalho da tabela */
+.repasse-item-admin.header {
+    font-weight: 600;
+    color: var(--black-blue-light-3);
+    background-color: transparent;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+/* Estilo das colunas */
+.col-check { text-align: center; }
+.col-wb { font-weight: 500; }
+.col-cliente { color: var(--grey); }
+.col-comissao { font-weight: 600; color: var(--primary-color); text-align: right; }
+
+.col-check input[type="checkbox"] {
+    transform: scale(1.3);
+    cursor: pointer;
+}
+
+/* Container de ações (total e botão) */
+.acoes-lote {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 25px;
+    padding: 20px;
+    background-color: #f7f7f7;
+    border-radius: 0.5rem;
+}
+
+.total-selecionado {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.valor-destaque {
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Botão principal (reutilizável) */
+.btn-principal {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 2rem;
+    border: 1px solid var(--primary-color);
+    background-color: var(--primary-color);
+    color: var(--white);
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.btn-principal:hover:not(:disabled) {
+    background-color: #0c7a46;
+    transform: translateY(-2px);
+}
+
+.btn-principal:disabled {
+    background-color: var(--grey);
+    border-color: var(--grey);
+    cursor: not-allowed;
+}
+
+/* Totalizador (reutilizado) */
+.total-container {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: var(--primary-color-light, #e8f5e9);
+    border-radius: 0.5rem;
+    text-align: right;
+}
+
+.total-container h3 {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    margin: 0;
+}
+
+/* Estilos do Modal */
+.modal-admin-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-admin-content {
+    background-color: var(--white);
+    padding: 30px 40px;
+    border-radius: 1rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--grey);
+    cursor: pointer;
+}
+
+.modal-admin-content h2 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.resumo-lote-modal {
+    background-color: #f7f7f7;
+    padding: 15px;
+    border-radius: 0.5rem;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+}
+
+.form-actions-modal {
+    text-align: center;
+    margin-top: 30px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .repasse-item-admin {
+        grid-template-columns: 40px 1fr 1fr; /* Remove a coluna de comissão */
+        grid-template-rows: auto auto; /* Cria duas linhas */
+        padding: 15px 5px;
+    }
+
+    .col-check { grid-row: 1 / 3; } /* Checkbox ocupa as duas linhas */
+    .col-wb { grid-column: 2 / 4; } /* WB ocupa o resto da primeira linha */
+    .col-cliente { grid-column: 2 / 3; } /* Cliente na segunda linha */
+    .col-comissao { grid-column: 3 / 4; text-align: right; } /* Comissão na segunda linha */
+
+    .repasse-item-admin.header { display: none; } /* Esconde o cabeçalho em telas pequenas */
+
+    .acoes-lote { flex-direction: column; gap: 15px; }
+}
+.repasse-item-admin.selecionado {
+    background-color: #105616; /* Um verdinho bem suave */
+    font-weight: 500;
+}
+
+/* E vamos dar um cursor de "mãozinha" na linha toda pra indicar que é clicável */
+.repasse-item-admin:not(.header) {
+    cursor: pointer;
+}
+
+body {
+    color: black;
+}
