@@ -242,7 +242,9 @@ function exibirDetalhesPedido(id) {
 
         function atualizarStatusPedido(pedido) {
             const lotes = {};
+            const lotesInseridos = new Set(); // NOVO: Um conjunto para guardar os lotes já usados
             let todosOsLotesPreenchidos = true;
+            let temLoteDuplicado = false;
         
             pedido.itens.forEach(item => {
                 //console.log(item)
@@ -254,9 +256,21 @@ function exibirDetalhesPedido(id) {
                         todosOsLotesPreenchidos = false;
                         return; // Sai do loop se algum lote estiver vazio
                     }
+                    // NOVO: Verificação de duplicidade!
+                    if (lotesInseridos.has(lote)) {
+                        alert(`Opa! O lote "${lote}" já foi usado em outro item. Cada rapé precisa de um lote único nesse pedido!`);
+                        temLoteDuplicado = true;
+                        return;
+                    }
+                    lotesInseridos.add(lote); 
                     lotes[item.tipo_rape] = lote;
                 }
             });
+
+            // NOVO: Se encontrou lote duplicado, para a função aqui
+            if (temLoteDuplicado) {
+                return;
+            }
         
             // Verifica se um produtor foi selecionado
             let produtor = document.getElementById('modal-produtor').value;
