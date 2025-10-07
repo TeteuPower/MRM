@@ -155,6 +155,8 @@ router.get('/maithe', autenticar, (req, res) => {
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Finalizado'
+                OR
+                p.vendedor_id = 2 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Enviado, aguardando pagamento'
             ) * 0.1 - (
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_parciais_producao rp 
@@ -165,6 +167,8 @@ router.get('/maithe', autenticar, (req, res) => {
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Finalizado'
+                OR
+                p.vendedor_id = 2 AND pr.id = 1 AND p.repasse_comissao = 0 AND p.status = 'Enviado, aguardando pagamento'
             ) * 0.1 - (
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN rp.valor ELSE 0 END), 0)
                 FROM repasses_parciais_producao rp 
@@ -181,24 +185,32 @@ router.get('/maithe', autenticar, (req, res) => {
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Finalizado'
+                OR
+                p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Enviado, aguardando pagamento'
             ) AS vendas_totais_maithe_matheus_reais,
             (
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.valor_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Finalizado'
+                OR
+                p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Enviado, aguardando pagamento'
             ) AS vendas_totais_maithe_matheus_dolares,
             (
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Finalizado'
+                OR
+                p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Enviado, aguardando pagamento'
             ) AS lucro_real_maithe_reais,
             (
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'dolar' THEN p.lucro_venda ELSE 0 END), 0)
                 FROM pedidos p 
                 JOIN produtores pr ON p.produtor_id = pr.id 
                 WHERE p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Finalizado'
+                OR
+                p.vendedor_id = 2 AND pr.id = 1 AND p.status = 'Enviado, aguardando pagamento'
             ) AS lucro_real_maithe_dolares,
             (
                 SELECT COALESCE(SUM(CASE WHEN moeda = 'real' THEN rp.valor ELSE 0 END), 0)
