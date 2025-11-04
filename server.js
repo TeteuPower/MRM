@@ -628,33 +628,49 @@ app.get('/shutdown', autenticar, (req, res) => {
     }, 1000);
 });
 
-// API para converter dólar para real
+// API para converter dólar para real (com fallback)
 app.get('/api/converter-dolar-real', async (req, res) => {
-    const url = 'https://economia.awesomeapi.com.br/last/USD-BRL';
-
     try {
-        const response = await axios.get(url);
-        const json = response.data; // Axios já parseia o JSON automaticamente
-        const cotacao = parseFloat(json.USDBRL.bid);
+        // Tenta a API principal
+        const url = 'https://economia.awesomeapi.com.br/last/USD-BRL';
+        const response = await axios.get(url, { timeout: 3000 }); // Timeout de 3s
+        const cotacao = parseFloat(response.data.USDBRL.bid);
         res.json({ cotacao });
     } catch (error) {
-        console.error('Erro ao consultar API de conversão (Dolar-Real):', error.message);
-        res.status(500).json({ error: 'Erro ao consultar API de conversão.' });
+        console.warn('API principal (AwesomeAPI) falhou. Tentando fallback...');
+        try {
+            // Se a primeira falhar, tenta a API de fallback
+            const fallbackUrl = 'https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd/brl.json';
+            const fallbackResponse = await axios.get(fallbackUrl, { timeout: 3000 });
+            const cotacao = parseFloat(fallbackResponse.data.brl);
+            res.json({ cotacao });
+        } catch (fallbackError) {
+            console.error('Ambas as APIs de conversão falharam (Dolar-Real):', fallbackError.message);
+            res.status(500).json({ error: 'Serviço de conversão indisponível no momento.' });
+        }
     }
 });
 
-// API para converter real para dolar
+// API para converter real para dolar (com fallback)
 app.get('/api/converter-real-dolar', async (req, res) => {
-    const url = 'https://economia.awesomeapi.com.br/last/BRL-USD';
-
     try {
-        const response = await axios.get(url);
-        const json = response.data; // Axios já parseia o JSON automaticamente
-        const cotacao = parseFloat(json.BRLUSD.bid);
+        // Tenta a API principal
+        const url = 'https://economia.awesomeapi.com.br/last/BRL-USD';
+        const response = await axios.get(url, { timeout: 3000 }); // Timeout de 3s
+        const cotacao = parseFloat(response.data.BRLUSD.bid);
         res.json({ cotacao });
     } catch (error) {
-        console.error('Erro ao consultar API de conversão (Real-Dolar):', error.message);
-        res.status(500).json({ error: 'Erro ao consultar API de conversão.' });
+        console.warn('API principal (AwesomeAPI) falhou. Tentando fallback...');
+        try {
+            // Se a primeira falhar, tenta a API de fallback
+            const fallbackUrl = 'https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/brl/usd.json';
+            const fallbackResponse = await axios.get(fallbackUrl, { timeout: 3000 });
+            const cotacao = parseFloat(fallbackResponse.data.usd);
+            res.json({ cotacao });
+        } catch (fallbackError) {
+            console.error('Ambas as APIs de conversão falharam (Real-Dolar):', fallbackError.message);
+            res.status(500).json({ error: 'Serviço de conversão indisponível no momento.' });
+        }
     }
 });
 
