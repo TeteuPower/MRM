@@ -126,6 +126,7 @@ router.get('/site/usuario/:id', autenticar, async (req, res) => {
 
 // Rota para atualizar um pedido (PUT /api/pedidos/:id)
 router.put('/:id', autenticar, (req, res) => {
+  console.log('Requisição para atualizar pedido recebida');
     const pedidoId = req.params.id;
     const { status, dataFinalizacao, valorFrete, produtor, repasseComissao, saldoVenda, itens, dataProducao } = req.body;
 
@@ -169,6 +170,7 @@ router.put('/:id', autenticar, (req, res) => {
 
 // Rota para EDITAR um pedido
 router.put('/editar/:id', autenticar, (req, res) => {
+  console.log('Requisição para editar pedido recebida');
   const pedidoId = req.params.id;
   const { cliente_id, vendedor_id, descricao, moeda, valor_venda, valor_pago, status, valor_frete, produtor_id, saldo_venda, itens, lucro_venda } = req.body;
 
@@ -310,6 +312,7 @@ router.get('/vendedor/:id', autenticar, (req, res) => {
 
 // Rota para remover um item do pedido (DELETE /api/pedidos/:id/itens/:itemId)
 router.delete('/itens/:itemId', autenticar, (req, res) => {
+  console.log('Requisição para remover item do pedido recebida');
   //const pedidoId = req.params.id;
   const itemId = req.params.itemId;
 
@@ -330,6 +333,7 @@ router.delete('/itens/:itemId', autenticar, (req, res) => {
 
 // Rota para cancelar um pedido (DELETE /api/pedidos/:id)
 router.delete('/:id', autenticar, (req, res) => {
+  console.log('Requisição para cancelar pedido recebida');
   const pedidoId = req.params.id;
 
   const sql = 'DELETE FROM pedidos WHERE id = ?';

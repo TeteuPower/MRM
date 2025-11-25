@@ -91,6 +91,7 @@ router.put('/:id', autenticar, (req, res) => {
 
 // Rota para excluir um cliente (DELETE /api/clientes/:id)
 router.delete('/:id', autenticar, (req, res) => {
+    console.log('Requisição para excluir cliente recebida');
     const clienteId = req.params.id;
     const sql = 'DELETE FROM clientes WHERE id = ?';
     db.query(sql, [clienteId], (err, result) => {
