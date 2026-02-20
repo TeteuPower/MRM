@@ -1,83 +1,106 @@
-# MRM - Sistema de Gerenciamento de Vendas e Estoque
+# Sistema de Gestão Empresarial (ERP) Completo
 
-**Um sistema web completo para gerenciar clientes, vendas, estoque, funcionários e finanças, desenvolvido integralmente por mim!**
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
+![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 
-## Visão Geral
+## 🚀 Sobre o Projeto
 
-O MRM é um sistema web intuitivo e poderoso projetado para simplificar o gerenciamento de negócios. Ele oferece uma gama completa de funcionalidades, incluindo:
+Este não é apenas um projeto de portfólio; é um **sistema de gestão empresarial (ERP) completo, desenvolvido e implementado em um ambiente de produção real**. Durante dois anos, atuei como desenvolvedor Full Stack imerso nas operações da empresa, participando ativamente da produção, logística e suporte. Essa experiência me permitiu entender profundamente as dores e necessidades do negócio e traduzi-las em soluções de software eficazes.
 
-- **Gerenciamento de Clientes:** Cadastro, consulta e atualização de dados de clientes, com extrato de transações e saldo.
-- **Gerenciamento de Vendas:** Criação de novas vendas com adição de produtos ao carrinho, cálculo de valores (insumos, comissões etc), atualização de estoque e registro de pagamentos.
-- **Controle de Estoque:** Visualização e atualização de estoque de produtos e matérias-primas, com alertas visuais para níveis baixos, médio e altos!
-- **Gerenciamento de Funcionários:** Cadastro, remoção e visualização do desempenho de vendedores e produtores.
-- **Controle Financeiro:** Registro de repasses de comissão aos produtores, pagamentos de clientes, visualização de clientes com saldo negativo e resumo mensal de ganhos.
+O sistema foi criado do zero para automatizar processos, fornecer insights financeiros claros, gerenciar a logística de envios e, crucialmente, **calcular a complexa divisão de lucros entre os sócios e produtores**, eliminando planilhas e processos manuais.
 
-## Processo de Desenvolvimento
+> ### ⚠️ Nota para Recrutadores e Avaliadores Técnicos
+> Este repositório foi tornado público para fins de demonstração do meu trabalho, arquitetura e organização de código. A empresa que financiou o projeto ainda o utiliza ativamente em suas operações diárias (o nome foi omitido por questões de confidencialidade).
+>
+> Devido à complexidade do ecossistema, integrações com APIs pagas e chaves de segurança sensíveis, **não incluí instruções para instalação local**. 
+> 
+> 💡 **No entanto, me coloco à total disposição para ligar o servidor em produção e realizar uma demonstração ao vivo.** Terei o maior prazer em apresentar a interface funcionando, explicar o fluxo de dados e detalhar a lógica de negócio por trás do código em uma videochamada. Basta entrar em contato!
 
-O desenvolvimento do MRM foi um processo impulsionado pela inteligência artificial Gemini 1.5 Pro. A IA forneceu sugestões de código, ajudou a resolver problemas, otimizou a lógica e aprimorou a estrutura do sistema.
+---
 
-## Linguagens e Tecnologias
+## ✨ Funcionalidades Principais
 
-- **HTML:** Estrutura e conteúdo das páginas web.
-- **CSS:** Estilização e layout das páginas web, com foco em um tema escuro e moderno.
-- **JavaScript:** Lógica do sistema, interação com o usuário, manipulação de dados e comunicação com o servidor.
-- **Node.js:** Ambiente de execução JavaScript no servidor para conectar o sistema ao banco de dados MySQL.
-- **MySQL Database:** Banco de dados relacional para armazenar os dados do sistema de forma persistente.
-- **Railway:** Plataforma de implantação e hospedagem para o sistema web e o banco de dados.
+O sistema é dividido em múltiplos portais, cada um com seu próprio conjunto de funcionalidades e nível de acesso baseado em autenticação JWT.
 
-### Segurança
+### 🏛️ Painel Administrativo
+*   **Gestão de Pedidos Completa:** Criação, edição, cancelamento e acompanhamento de status (`Em produção`, `Pronto para envio`, `Enviado`, `Finalizado`).
+*   **Controle Financeiro:** Lançamento de pagamentos de clientes e registro de gastos da empresa.
+*   **Divisão de Lucros Automatizada:** Módulos complexos para calcular e registrar repasses para produtores, sócios e para o caixa da empresa, com base em regras de negócio específicas.
+*   **Gestão de Estoque:** Controle de produtos acabados e matérias-primas, com funcionalidades para adicionar e reduzir quantidades.
+*   **Gerenciamento de Clientes e Funcionários:** CRUD completo para clientes, vendedores e produtores.
+*   **Gestão de E-commerce:** Manutenção de produtos, preços e estoque da loja virtual.
+*   **Gestão de Cupons de Desconto:** Criação e administração de cupons para revendedores.
+*   **Gestão de Repasses (Logística):** Interface para gerenciar o pagamento de comissões aos entregadores.
 
-- **Autenticação:** As APIs são protegidas por JWT (JSON Web Token). Rotas que geram um token para administradores autenticados, e para CADA acesso o middleware verifica a validade do token em rotas protegidas.
-- **Redundância** As rotas são protegidas na criação do seu caminho e também na chamada. Os tokens de segurança têm validade de 1 hora e após o login precisa ser refeito. A página a cada 10s consulta se existe um token de segurança.
-- **DB** As credenciais do DB são armazenadas em variáveis de ambiente!
+### 👤 Portal do Cliente
+*   Autenticação de usuário (Login/Cadastro).
+*   Confirmação de e-mail e recuperação de senha.
+*   Área do cliente para gerenciar dados pessoais e endereços.
+*   Histórico de pedidos realizados através do site.
+*   Checkout de pagamento integrado com **MercadoPago**.
 
-## Estrutura do Código
+### 🚚 Portal do Entregador (Logística)
+*   Autenticação específica para entregadores.
+*   Visualização de pedidos prontos para envio.
+*   Formulário para confirmar o envio, registrando dados do frete, nota fiscal e WayBill (DHL).
+*   Acompanhamento de envios em trânsito.
+*   Gestão e criação de faturas da DHL.
+*   Extrato de comissões a receber e histórico de pagamentos (repasses).
 
-O código do sistema está organizado da seguinte forma:
+---
 
-### Backend (Node.js)
+## 🛠️ Tecnologias e Ferramentas
 
-- **`server.js`:** Arquivo principal do servidor Node.js, responsável por:
-    - Configurar o servidor.
-    - Definir as rotas principais das APIs.
-    - Iniciar o servidor.
-- **`db.js`:** Contém a lógica para conectar ao banco de dados MySQL e exportar a conexão.
-- **`routes/`:** Pasta que contém os arquivos que definem as rotas da API:
-- **`middleware/`:** Pasta que contém os middlewares para a API:
-    - **`auth.js`:** Middleware para autenticação com JWT.
+Este projeto foi construído utilizando um conjunto de tecnologias robustas e confiáveis:
 
-### Frontend (HTML, CSS, JavaScript)
+*   **Backend:** Node.js, Express.js
+*   **Banco de Dados:** MySQL com o driver `mysql2`
+*   **Autenticação:** JSON Web Tokens (JWT) para controle de acesso e `bcrypt` para hashing de senhas.
+*   **Armazenamento de Arquivos:** Firebase Admin SDK (Cloud Storage) para notas fiscais e documentos de envio.
+*   **Integrações de API:**
+    *   **Pagamentos:** MercadoPago SDK
+    *   **E-mails Transacionais:** SendGrid
+    *   **Consulta de Endereços:** ViaCEP
+    *   **Cotação de Moedas:** AwesomeAPI (com API de fallback).
+*   **Frontend:** HTML5, CSS3, JavaScript (Vanilla).
+*   **Gerenciamento de Ambiente:** `dotenv`.
 
-- **`public/`:** Pasta que contém os arquivos estáticos do frontend:
-    - **`html/`:**
-    - **`css/`:** 
-    - **`js/`:** 
-- **Arquivos JavaScript Específicos:** Cada página HTML possui um arquivo JavaScript correspondente para lidar com a lógica específica daquela página.
-- **`funcoes.js`:** Contém funções JavaScript reutilizáveis, que precisam ser acessadas em mais de uma página como por exemplo popular inputs com informações do DB.
+---
 
-### Observações
+## 🏗️ Arquitetura e Estrutura do Projeto
 
-- **Organização:** A estrutura do backend segue boas práticas de organização, separando as responsabilidades em rotas.
-- **Escalabilidade:** A estrutura é escalável, permitindo adicionar novas rotas e funcionalidades de forma organizada.
+O projeto segue uma estrutura organizada, visando a separação de responsabilidades e a manutenibilidade:
 
-## Destaques do Projeto
+*   **`server.js`**: Ponto de entrada da aplicação, configuração do Express, middlewares globais e definição das rotas principais.
+*   **`db.js`**: Módulo centralizado para a configuração e exportação dos pools de conexão com o banco de dados MySQL, com conexões separadas por nível de permissão.
+*   **`/routes`**: Diretório que organiza os endpoints da API por funcionalidade (e.g., `pedidos.js`, `clientes.js`, `envios.js`), mantendo o código limpo e modular.
+*   **`/middleware`**: Contém os middlewares de autenticação (e.g., `auth.js`, `authClientes.js`), que protegem as rotas e validam os tokens JWT.
+*   **`/public`**: Armazena todos os arquivos estáticos do frontend (HTML, CSS, JS), organizados por portal (admin, cliente, entregador).
 
-- **Tema Escuro e Moderno:** O sistema possui um tema escuro e moderno, proporcionando uma experiência visual agradável.
-- **Interface Intuitiva:** A interface do usuário é intuitiva e fácil de usar, com menus de navegação claros e modais informativos.
-- **Responsividade:** O sistema é responsivo e se adapta a diferentes tamanhos de tela, incluindo dispositivos móveis.
-- **Persistência de Dados:** Os dados do sistema são armazenados em um banco de dados MySQL, garantindo a persistência das informações.
-- **Segurança:** As credenciais do banco de dados são armazenadas de forma segura usando variáveis de ambiente e autentificação token JWT.
+---
 
-## Próximos Passos
+### 💡 Destaques Técnicos e Precauções Adotadas
 
-- Implementar a área do cliente, permitindo que os clientes façam login, visualizem seus pedidos e atualizem seus dados.
-- Integrar com um sistema de pagamento para processar pagamentos online.
-- Adicionar recursos avançados de relatórios e análises.
+Abaixo, destaco algumas das precauções arquiteturais e lógicas de negócio implementadas para garantir a robustez do sistema em produção:
 
-## Contribuições
+**1. Resiliência na Conversão de Moeda (Mecanismo de Fallback):**
+A aplicação depende de cotações do dólar em tempo real para precificação e cálculos financeiros. Como precaução contra instabilidades de serviços terceiros, foi implementado um mecanismo de *fallback*. Caso a API principal de cotação sofra uma queda ou demore a responder (timeout), o sistema intercepta a falha e aciona automaticamente uma segunda API de contingência. Isso garante que a operação da empresa não seja paralisada por falhas externas, mantendo a resiliência do sistema.
 
-Contribuições são bem-vindas! Desenvolvi esse projeto como o meu "TCC" de programador, é o meu primeiro trabalho na área e espero melhorar muito e continuar desenvolvendo minhas habilidades de programador!
+**2. Atomicidade e Integridade Financeira (Transações SQL):**
+Operações financeiras complexas, como a geração de lotes de repasse para entregadores, exigem múltiplas inserções e atualizações simultâneas no banco de dados (ex: criar o registro do lote, vincular os pedidos específicos a este lote e alterar o status de pagamento de cada um desses pedidos). Para evitar qualquer inconsistência nos dados caso ocorra um erro no meio do processo (como uma queda de conexão), toda a operação foi encapsulada em transações SQL. Se uma única etapa falhar, o sistema executa um *rollback* automático, desfazendo todas as alterações daquela requisição e garantindo que o banco de dados permaneça em um estado consistente e seguro.
 
-## Agradecimentos
+---
 
-Um agradecimento especial à inteligência artificial Gemini 1.5 Pro por sua valiosa assistência no desenvolvimento deste projeto.
+## 📬 Contato e Agendamento de Demonstração
+
+Ficou interessado em ver o sistema em ação? Entre em contato comigo para agendarmos uma demonstração do ERP rodando em ambiente de produção!
+
+**[Seu Nome Completo]**
+
+*   **E-mail:** [tpowertech7@gmail.com](mailto:tpowertech7@gmail.com)
+*   **LinkedIn:** [https://www.linkedin.com/in/matheustavares7/](https://www.linkedin.com/in/matheustavares7/)
+*   **GitHub:** [https://github.com/TeteuPower](https://github.com/TeteuPower)
